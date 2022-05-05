@@ -580,7 +580,7 @@ internal class DefaultKeysBackupService @Inject constructor(
         }
     }
 
-    override fun onSecretKeyGossip(secret: String) {
+    fun onSecretKeyGossip(secret: String) {
         Timber.i("## CrossSigning - onSecretKeyGossip")
 
         cryptoCoroutineScope.launch(coroutineDispatchers.io) {
