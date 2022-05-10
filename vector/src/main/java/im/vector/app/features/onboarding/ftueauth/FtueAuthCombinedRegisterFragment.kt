@@ -187,11 +187,11 @@ class FtueAuthCombinedRegisterFragment @Inject constructor() : AbstractSSOFtueAu
         views.ssoGroup.isVisible = ssoProviders?.isNotEmpty() == true
         views.ssoButtons.mode = SocialLoginButtonsView.Mode.MODE_CONTINUE
         views.ssoButtons.ssoIdentityProviders = ssoProviders?.sorted()
-        views.ssoButtons.listener = SocialLoginButtonsView.InteractionListener { id ->
+        views.ssoButtons.listener = SocialLoginButtonsView.InteractionListener { provider ->
             viewModel.getSsoUrl(
                     redirectUrl = SSORedirectRouterActivity.VECTOR_REDIRECT_URL,
                     deviceId = deviceId,
-                    providerId = id
+                    providerId = provider?.id
             )?.let { openInCustomTab(it) }
         }
     }
