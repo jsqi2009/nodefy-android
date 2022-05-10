@@ -23,6 +23,7 @@ import io.realm.RealmConfiguration
 import io.realm.RealmResults
 import io.realm.kotlin.createObject
 import kotlinx.coroutines.CompletableDeferred
+import org.matrix.android.sdk.api.MatrixCoroutineDispatchers
 import org.matrix.android.sdk.api.extensions.orFalse
 import org.matrix.android.sdk.api.failure.Failure
 import org.matrix.android.sdk.api.failure.MatrixError
@@ -103,6 +104,7 @@ internal class LoadTimelineStrategy constructor(
             val onLimitedTimeline: () -> Unit,
             val onNewTimelineEvents: (List<String>) -> Unit,
             val stateEventDataSource: StateEventDataSource,
+            val matrixCoroutineDispatchers: MatrixCoroutineDispatchers,
     )
 
     private var getContextLatch: CompletableDeferred<Unit>? = null
@@ -167,7 +169,11 @@ internal class LoadTimelineStrategy constructor(
             onEventsUpdated = dependencies.onEventsUpdated
     )
 
-    private val liveRoomStateListener = LiveRoomStateListener(roomId, dependencies.stateEventDataSource)
+    private val liveRoomStateListener = LiveRoomStateListener(
+            roomId,
+            dependencies.stateEventDataSource,
+            dependencies.matrixCoroutineDispatchers.main
+    )
 
     suspend fun onStart() {
         dependencies.eventDecryptor.start()

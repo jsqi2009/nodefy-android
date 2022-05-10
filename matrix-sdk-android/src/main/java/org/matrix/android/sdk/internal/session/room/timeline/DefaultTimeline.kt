@@ -110,6 +110,7 @@ internal class DefaultTimeline(
             onLimitedTimeline = this::onLimitedTimeline,
             onNewTimelineEvents = this::onNewTimelineEvents,
             stateEventDataSource = stateEventDataSource,
+            matrixCoroutineDispatchers = coroutineDispatchers,
     )
 
     private var strategy: LoadTimelineStrategy = buildStrategy(LoadTimelineStrategy.Mode.Live)

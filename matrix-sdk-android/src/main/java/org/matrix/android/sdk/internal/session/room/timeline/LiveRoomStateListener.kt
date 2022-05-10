@@ -18,7 +18,7 @@ package org.matrix.android.sdk.internal.session.room.timeline
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.matrix.android.sdk.api.query.QueryStringValue
 import org.matrix.android.sdk.api.session.events.model.Event
@@ -33,6 +33,7 @@ import org.matrix.android.sdk.internal.session.room.state.StateEventDataSource
 internal class LiveRoomStateListener(
         roomId: String,
         stateEventDataSource: StateEventDataSource,
+        private val mainDispatcher: CoroutineDispatcher,
 ) {
     private val roomStateObserver = Observer<List<Event>> { stateEvents ->
         stateEvents.map { event ->
@@ -43,19 +44,19 @@ internal class LiveRoomStateListener(
     }
     private val stateEventsLiveData: LiveData<List<Event>> by lazy {
         stateEventDataSource.getStateEventsLive(
-                roomId,
-                setOf(EventType.STATE_ROOM_MEMBER),
-                QueryStringValue.NoCondition
+                roomId = roomId,
+                eventTypes = setOf(EventType.STATE_ROOM_MEMBER),
+                stateKey = QueryStringValue.NoCondition,
         )
     }
 
     private val liveRoomState = mutableMapOf<String, RoomMemberContent>()
 
-    suspend fun start() = withContext(Dispatchers.Main) {
+    suspend fun start() = withContext(mainDispatcher) {
         stateEventsLiveData.observeForever(roomStateObserver)
     }
 
-    suspend fun stop() = withContext(Dispatchers.Main) {
+    suspend fun stop() = withContext(mainDispatcher) {
         if (stateEventsLiveData.hasActiveObservers()) {
             stateEventsLiveData.removeObserver(roomStateObserver)
         }
