@@ -20,6 +20,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.mvrx.Mavericks
+import com.airbnb.mvrx.viewModel
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
 import com.mapbox.mapboxsdk.maps.SupportMapFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,19 +46,19 @@ class LocationLiveMapViewActivity : VectorBaseActivity<ActivityLocationSharingBi
 
     @Inject lateinit var urlMapProvider: UrlMapProvider
 
+    private val viewModel: LocationLiveMapViewModel by viewModel()
+
     override fun getBinding() = ActivityLocationSharingBinding.inflate(layoutInflater)
 
     override fun initUiAndData() {
-        val mapViewArgs: LocationLiveMapViewArgs? = intent?.extras?.getParcelable(EXTRA_LOCATION_LIVE_MAP_VIEW_ARGS)
-        if (mapViewArgs == null) {
-            finish()
-            return
-        }
+        setupToolbar()
+        setupMap()
+    }
+
+    private fun setupToolbar() {
         setupToolbar(views.toolbar)
                 .setTitle(getString(R.string.location_activity_title_preview))
                 .allowBack()
-
-        setupMap()
     }
 
     private fun setupMap() {
@@ -78,12 +80,11 @@ class LocationLiveMapViewActivity : VectorBaseActivity<ActivityLocationSharingBi
 
     companion object {
 
-        private const val EXTRA_LOCATION_LIVE_MAP_VIEW_ARGS = "EXTRA_LOCATION_LIVE_MAP_VIEW_ARGS"
         private const val MAP_FRAGMENT_TAG = "im.vector.app.features.location.live.map"
 
         fun getIntent(context: Context, locationLiveMapViewArgs: LocationLiveMapViewArgs): Intent {
-            return Intent(context, LocationLiveMapViewActivity::class.java).apply {
-                putExtra(EXTRA_LOCATION_LIVE_MAP_VIEW_ARGS, locationLiveMapViewArgs)
+            return Intent(context, LocationLiveMapViewActivity::class.java).also {
+                it.putExtra(Mavericks.KEY_ARG, locationLiveMapViewArgs)
             }
         }
     }
