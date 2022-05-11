@@ -31,7 +31,7 @@ class SocialLoginButtonsView @JvmOverloads constructor(context: Context, attrs: 
         LinearLayout(context, attrs, defStyle) {
 
     fun interface InteractionListener {
-        fun onProviderSelected(id: SsoIdentityProvider?)
+        fun onProviderSelected(provider: SsoIdentityProvider?)
     }
 
     enum class Mode {
