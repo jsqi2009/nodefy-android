@@ -410,6 +410,7 @@
     <string name="bottom_action_favourites">Favourites</string>
     <string name="bottom_action_people">People</string>
     <string name="bottom_action_rooms">Rooms</string>
+    <string name="bottom_action_dialer">Dialer</string>
 
     <!-- Home screen -->
     <string name="home_filter_placeholder_home">Filter room names</string>
@@ -3037,4 +3038,11 @@
     <!-- Screen sharing -->
     <string name="screen_sharing_notification_title">${app_name} Screen Sharing</string>
     <string name="screen_sharing_notification_description">Screen sharing is in progress</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Dialer -->
+    <string name="dialer_fragment">Dial pad</string>
+
+
 </resources>

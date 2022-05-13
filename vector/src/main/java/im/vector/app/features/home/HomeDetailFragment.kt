@@ -55,6 +55,7 @@ import im.vector.app.features.settings.VectorSettingsActivity.Companion.EXTRA_DI
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.workers.signout.BannerState
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
+import im.vector.app.kelare.dialer.DialerFragment
 import org.matrix.android.sdk.api.session.crypto.model.DeviceInfo
 import org.matrix.android.sdk.api.session.group.model.GroupSummary
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
@@ -343,6 +344,7 @@ class HomeDetailFragment @Inject constructor(
                 R.id.bottom_action_people       -> HomeTab.RoomList(RoomListDisplayMode.PEOPLE)
                 R.id.bottom_action_rooms        -> HomeTab.RoomList(RoomListDisplayMode.ROOMS)
                 R.id.bottom_action_notification -> HomeTab.RoomList(RoomListDisplayMode.NOTIFICATIONS)
+                R.id.bottom_action_dialer       -> HomeTab.DialerFragment
                 else                            -> HomeTab.DialPad
             }
             viewModel.handle(HomeDetailAction.SwitchTab(tab))
@@ -366,6 +368,16 @@ class HomeDetailFragment @Inject constructor(
         views.groupToolbarTitleView.setText(tab.titleRes)
         updateSelectedFragment(tab)
         invalidateOptionsMenu()
+
+        updateGroupToolbar(tab)
+    }
+
+    private fun updateGroupToolbar(tab: HomeTab) {
+        if (tab is HomeTab.DialerFragment) {
+            views.groupToolbar.visibility = View.GONE
+        } else {
+            views.groupToolbar.visibility = View.VISIBLE
+        }
     }
 
     private fun HomeTab.toFragmentTag() = "FRAGMENT_TAG_$this"
@@ -388,6 +400,9 @@ class HomeDetailFragment @Inject constructor(
                     is HomeTab.DialPad  -> {
                         add(R.id.roomListContainer, createDialPadFragment(), fragmentTag)
                     }
+                    is HomeTab.DialerFragment  -> {
+                        add(R.id.roomListContainer, createDialerFragment(), fragmentTag)
+                    }
                 }
             } else {
                 if (tab is HomeTab.DialPad) {
@@ -407,6 +422,16 @@ class HomeDetailFragment @Inject constructor(
                 putString(DialPadFragment.EXTRA_REGION_CODE, VectorLocale.applicationLocale.country)
             }
             applyCallback()
+        }
+    }
+
+    private fun createDialerFragment(): Fragment {
+        val fragment = childFragmentManager.fragmentFactory.instantiate(vectorBaseActivity.classLoader, DialerFragment::class.java.name)
+        return (fragment as DialerFragment).apply {
+            arguments = Bundle().apply {
+
+            }
+            //applyCallback()
         }
     }
 
@@ -464,6 +489,7 @@ class HomeDetailFragment @Inject constructor(
 
     private fun HomeTab.toMenuId() = when (this) {
         is HomeTab.DialPad  -> R.id.bottom_action_dial_pad
+        is HomeTab.DialerFragment  -> R.id.bottom_action_dialer
         is HomeTab.RoomList -> when (displayMode) {
             RoomListDisplayMode.PEOPLE -> R.id.bottom_action_people
             RoomListDisplayMode.ROOMS  -> R.id.bottom_action_rooms

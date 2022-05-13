@@ -21,6 +21,13 @@
         android:visible="false" />
 
     <item
+        android:id="@+id/bottom_action_dialer"
+        android:enabled="true"
+        android:icon="@drawable/bottom_nav_dialer_selector"
+        android:title="@string/bottom_action_dialer"
+        android:visible="true" />
+
+    <item
         android:id="@+id/bottom_action_dial_pad"
         android:enabled="true"
         android:icon="@drawable/ic_call_dial_pad"
