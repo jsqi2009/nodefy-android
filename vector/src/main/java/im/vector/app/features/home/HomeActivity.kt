@@ -34,6 +34,7 @@ import androidx.lifecycle.lifecycleScope
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.viewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.gyf.immersionbar.ImmersionBar
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.AppStateHandler
 import im.vector.app.R
@@ -271,6 +272,8 @@ class HomeActivity :
             handleIntent(intent)
         }
         homeActivityViewModel.handle(HomeActivityViewActions.ViewStarted)
+
+        statusBarColor(this)
     }
 
     private fun handleShowAnalyticsOptIn() {
@@ -619,5 +622,12 @@ class HomeActivity :
 
     override fun mxToBottomSheetSwitchToSpace(spaceId: String) {
         navigator.switchToSpace(this, spaceId, Navigator.PostSwitchSpaceAction.OpenRoomList)
+    }
+
+    private fun statusBarColor(activity: Activity) {
+        ImmersionBar.with(activity)
+                .statusBarColor(R.color.app_color)
+                .fitsSystemWindows(true)
+                .init()
     }
 }
