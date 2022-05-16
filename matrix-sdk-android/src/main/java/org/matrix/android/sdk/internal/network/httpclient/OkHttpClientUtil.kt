@@ -17,6 +17,7 @@
 package org.matrix.android.sdk.internal.network.httpclient
 
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.matrix.android.sdk.api.auth.data.HomeServerConnectionConfig
 import org.matrix.android.sdk.internal.network.AccessTokenInterceptor
 import org.matrix.android.sdk.internal.network.interceptors.CurlLoggingInterceptor
@@ -30,6 +31,7 @@ internal fun OkHttpClient.Builder.addAccessTokenInterceptor(accessTokenProvider:
     interceptors().removeAll(existingCurlInterceptors)
 
     addInterceptor(AccessTokenInterceptor(accessTokenProvider))
+    addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
 
     // Re add eventually the curl logging interceptors
     existingCurlInterceptors.forEach {
