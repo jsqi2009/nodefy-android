@@ -5,7 +5,8 @@
         <item name="android:background">@drawable/bg_bottom_navigation</item>
         <item name="itemBackground">@drawable/bg_bottom_navigation</item>
         <item name="itemIconSize">20dp</item>
-        <item name="itemIconTint">@color/bottom_navigation_icon_tint_selector</item>
+        <!--<item name="itemIconTint">@color/bottom_navigation_icon_tint_selector</item>-->
+        <item name="itemIconTint">@color/nodefy_bottom_navigation_icon_tint_selector</item>
         <item name="labelVisibilityMode">unlabeled</item>
     </style>
 
