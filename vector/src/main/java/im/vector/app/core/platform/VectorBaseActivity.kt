@@ -48,9 +48,11 @@ import com.bumptech.glide.util.Util
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.gyf.immersionbar.ImmersionBar
 import dagger.hilt.android.EntryPointAccessors
 import im.vector.app.BuildConfig
 import im.vector.app.R
+import im.vector.app.VectorApplication
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.di.ActivityEntryPoint
 import im.vector.app.core.dialogs.DialogLocker
@@ -85,6 +87,7 @@ import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.receivers.DebugReceiver
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.linphone.core.Core
 import org.matrix.android.sdk.api.extensions.tryOrNull
 import org.matrix.android.sdk.api.failure.GlobalError
 import org.matrix.android.sdk.api.failure.InitialSyncRequestReason
@@ -166,6 +169,8 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
 
     private val restorables = ArrayList<Restorable>()
 
+    lateinit var core: Core
+
     override fun attachBaseContext(base: Context) {
         val vectorConfiguration = VectorConfiguration(this)
         super.attachBaseContext(vectorConfiguration.getLocalisedContext(base))
@@ -246,6 +251,8 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
                 setTitle(titleRes)
             }
         }
+
+        core = VectorApplication.get(this).linphoneCore
     }
 
     /**
@@ -649,5 +656,20 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
      * */
     fun setupToolbar(toolbar: MaterialToolbar) = ToolbarConfig(this, toolbar).also {
         this.toolbar = it.setup()
+    }
+
+    fun statusBarColor(activity: Activity) {
+        ImmersionBar.with(activity)
+                .statusBarColor(R.color.app_color)
+                .fitsSystemWindows(true)
+                .init()
+    }
+
+    fun statusBarWhiteColor(activity: Activity) {
+        ImmersionBar.with(activity)
+                .statusBarColor(R.color.white)
+                .statusBarDarkFont(true)
+                .fitsSystemWindows(true)
+                .init()
     }
 }

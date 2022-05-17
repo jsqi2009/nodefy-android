@@ -23,6 +23,7 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import com.gyf.immersionbar.ImmersionBar
 import com.kaopiz.kprogresshud.KProgressHUD
+import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
 
 /**

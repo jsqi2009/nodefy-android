@@ -62,6 +62,8 @@ import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.version.VersionProvider
 import im.vector.app.push.fcm.FcmHelper
 import org.jitsi.meet.sdk.log.JitsiMeetDefaultLogHandler
+import org.linphone.core.Core
+import org.linphone.core.Factory
 import org.matrix.android.sdk.api.Matrix
 import org.matrix.android.sdk.api.auth.AuthenticationService
 import org.matrix.android.sdk.api.legacy.LegacySessionImporter
@@ -103,6 +105,9 @@ class VectorApplication :
 
     // font thread handler
     private var fontThreadHandler: Handler? = null
+
+    //nodefy sip
+    lateinit var linphoneCore: Core
 
     private val powerKeyReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
@@ -201,6 +206,8 @@ class VectorApplication :
 
         // Initialize Mapbox before inflating mapViews
         Mapbox.getInstance(this)
+
+        initLinPhone()
     }
 
     private val startSyncOnFirstStart = object : DefaultLifecycleObserver {
@@ -263,5 +270,25 @@ class VectorApplication :
         val handlerThread = HandlerThread("fonts")
         handlerThread.start()
         return Handler(handlerThread.looper)
+    }
+
+    private fun initLinPhone(){
+        // Core is the main object of the SDK. You can't do much without it.
+        // To create a Core, we need the instance of the Factory.
+        val factory = Factory.instance()
+
+        // Some configuration can be done before the Core is created, for example enable debug logs.
+        factory.setDebugMode(true, "Hello Linphone")
+
+        // Your Core can use up to 2 configuration files, but that isn't mandatory.
+        // On Android the Core needs to have the application context to work.
+        // If you don't, the following method call will crash.
+        linphoneCore = factory.createCore(null, null, this)
+    }
+
+    companion object{
+        operator fun get(content: Context): VectorApplication {
+            return content.applicationContext as VectorApplication
+        }
     }
 }
