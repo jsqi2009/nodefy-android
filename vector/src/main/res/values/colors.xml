@@ -2,6 +2,7 @@
 <resources>
     <color name="palette_element_green">#0DBD8B</color>
     <color name="app_color">#FF29194F</color>
+    <color name="color_2">#6629194F</color>
     <color name="tab_indicator_color">#D5C4FF</color>
     <color name="sub_tab_bg_color">#F5F5F5</color>
     <color name="text_color_dark_gray">#666666</color>
@@ -12,28 +13,32 @@
     <color name="popup_bg_color">#F8F8F8</color>
     <color name="sip_room_user_color">#373B40</color>
     <color name="room_avatar_color">#99E1AF</color>
+    <color name="line_color">#D8D8D8</color>
+    <color name="normal_bg_color">#ECECEC</color>
+    <color name="red">#ff0000</color>
+    <color name="tab_bottom_line_color">#DCE4E6</color>
+    <color name="line_color_2">#F8F8F8</color>
+    <color name="green">#FF00FF00</color>
+    <color name="black">#000000</color>
+    <color name="sky_blue">#14B5EB</color>
+    <color name="colorPrimary">#1B7EC1</color>
+    <color name="light_blue_color">#4A90E2</color>
+    <color name="normal_line_color">#ECECEC</color>
+    <color name="decline_color">#f44474</color>
+    <color name="call_action_color">#DFD5F4</color>
 
 
 
 
 
     <color name="app_top_color">#0096B6</color>
-    <color name="colorPrimary">#1B7EC1</color>
-    <color name="colorPrimaryDark">#1B7EC1</color>
     <color name="colorAccent">#FF4081</color>
-
     <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
     <color name="line_gray">#DBDBDB</color>
-    <color name="gray">#888888</color>
+    <color name="gray">#60888888</color>
     <color name="gray_bg">#CC888888</color>
-
     <color name="line_blue">#177BBD</color>
     <color name="text_color">#494A51</color>
-
-    <color name="red">#ff0000</color>
-    <color name="sky_blue">#14B5EB</color>
-
     <color name="selector_oragnge">#F47E2F</color>
     <color name="trans_black">#66000000</color>
     <color name="new_trans_black">#D9000000</color>
@@ -42,18 +47,10 @@
     <color name="preview">#B7B7B7</color>
     <color name="home_tab_toolbar">#0Dffffff</color>
     <color name="keyboard_bg">#C3C4C9</color>
-
     <color name="tab_bar_color_light">#0096B6</color>
     <color name="tab_bar_color_default">#B2C3C8</color>
-    <color name="tab_bottom_line_color">#DCE4E6</color>
-
     <color name="icon_default_color">#cdcdcd</color>
-
-
-
-
     <color name="text_color_gray">#4D4D4D</color>
-
     <color name="app_bg_color">#F0F0F2</color>
     <color name="device_online_color">#0096B6</color>
     <color name="device_offline_color">#F7A81E</color>
@@ -63,12 +60,9 @@
     <color name="scan_tips_color">#CCCCCC</color>
     <color name="scan_mask_color">#66FFFFFF</color>
     <color name="scan_light_black_color">#1A1A1A</color>
-
     <color name="score_start_color">#FFEF8861</color>
     <color name="score_end_color">#FFFF0000</color>
     <color name="ring_bg_color">#FFDCE4E6</color>
-
-
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -76,7 +70,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="yellow">#FFFFFF00</color>
     <color name="orange">#FFFFA500</color>
-    <color name="green">#FF00FF00</color>
     <color name="blue">#FF0000FF</color>
 
 

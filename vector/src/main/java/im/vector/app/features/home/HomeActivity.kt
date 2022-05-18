@@ -625,10 +625,4 @@ class HomeActivity :
         navigator.switchToSpace(this, spaceId, Navigator.PostSwitchSpaceAction.OpenRoomList)
     }
 
-    private fun statusBarColor(activity: Activity) {
-        ImmersionBar.with(activity)
-                .statusBarColor(R.color.app_color)
-                .fitsSystemWindows(true)
-                .init()
-    }
 }

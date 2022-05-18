@@ -84,6 +84,8 @@ import im.vector.app.features.settings.FontScale
 import im.vector.app.features.settings.VectorPreferences
 import im.vector.app.features.themes.ActivityOtherThemes
 import im.vector.app.features.themes.ThemeUtils
+import im.vector.app.kelare.content.AndroidBus
+import im.vector.app.kelare.content.Session
 import im.vector.app.receivers.DebugReceiver
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -169,6 +171,10 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
 
     private val restorables = ArrayList<Restorable>()
 
+    //dialer needed
+    lateinit var mBus: AndroidBus
+    lateinit var mSession: Session
+    //lateinit var mContext: VectorBaseActivity
     lateinit var core: Core
 
     override fun attachBaseContext(base: Context) {
