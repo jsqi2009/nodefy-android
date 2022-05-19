@@ -3043,6 +3043,23 @@
 
     <!-- Dialer -->
     <string name="dialer_fragment">Dial pad</string>
+    <string name="tab_overview">History</string>
+    <string name="tab_devices">Contact</string>
+    <string name="tab_me">Messaging</string>
+
+    <!-- Dialer History Fragment -->
+    <string name="all_history">ALL</string>
+    <string name="missed_history">Missed</string>
+
+    <!-- Dialer Contact Fragment -->
+    <string name="dialer_contact_sip">SIP</string>
+    <string name="dialer_contact_xmpp">XMPP</string>
+
+    <!-- Dialer Message Fragment -->
+    <string name="dialer_message_people">People</string>
+    <string name="dialer_message_group">Group</string>
+    <string name="dialer_message_sms">SMS</string>
+    <string name="dialer_message_delete_group">Delete \"%s\" ?</string>
 
 
 </resources>

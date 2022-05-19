@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root"
+    android:layout_width="80dp"
+    android:layout_height="35dp"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/title_tab"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="123"
+        android:textColor="@drawable/tab_main_title_selector"
+        android:textSize="15sp"
+        tools:ignore="HardcodedText,RtlSymmetry" />
+
+</LinearLayout>
