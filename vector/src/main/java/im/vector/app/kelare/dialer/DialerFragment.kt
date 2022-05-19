@@ -41,7 +41,6 @@ class DialerFragment : VectorBaseFragment<FragmentDialerBinding>(), View.OnClick
 
         views.rlBack.setOnClickListener(this)
         views.tvCall.setOnClickListener(this)
-        views.tvTitle.text = "Test"
     }
 
     @SuppressLint("UseRequireInsteadOfGet")
