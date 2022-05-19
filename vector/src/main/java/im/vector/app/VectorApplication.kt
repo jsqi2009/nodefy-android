@@ -60,13 +60,29 @@ import im.vector.app.features.settings.VectorLocale
 import im.vector.app.features.settings.VectorPreferences
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.version.VersionProvider
+import im.vector.app.kelare.content.AndroidBus
+import im.vector.app.kelare.greendao.DaoMaster
+import im.vector.app.kelare.greendao.DaoSession
+import im.vector.app.kelare.network.HttpClient
+import im.vector.app.kelare.utils.LinphoneUtils
 import im.vector.app.push.fcm.FcmHelper
 import org.jitsi.meet.sdk.log.JitsiMeetDefaultLogHandler
+import org.jivesoftware.smack.android.AndroidSmackInitializer
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
+import org.linphone.core.Call
+import org.linphone.core.ChatMessage
+import org.linphone.core.ChatRoom
+import org.linphone.core.ChatRoomBackend
 import org.linphone.core.Core
+import org.linphone.core.CoreListenerStub
 import org.linphone.core.Factory
+import org.linphone.core.InfoMessage
+import org.linphone.core.LogCollectionState
 import org.matrix.android.sdk.api.Matrix
 import org.matrix.android.sdk.api.auth.AuthenticationService
 import org.matrix.android.sdk.api.legacy.LegacySessionImporter
+import org.zhx.common.bgstart.library.BgManager
+import org.zhx.common.bgstart.library.impl.BgStart
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -108,6 +124,9 @@ class VectorApplication :
 
     //nodefy sip
     lateinit var linphoneCore: Core
+    lateinit var mBus: AndroidBus
+    private var daoSession: DaoSession? = null
+    var mConnectionList: ArrayList<XMPPTCPConnection> = ArrayList()
 
     private val powerKeyReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
@@ -207,7 +226,14 @@ class VectorApplication :
         // Initialize Mapbox before inflating mapViews
         Mapbox.getInstance(this)
 
+        //dialer feature
+        mBus = AndroidBus()
+        HttpClient.init(this, mBus)
+        mBus.register(this)
         initLinPhone()
+        initGreenDao()
+        AndroidSmackInitializer.initialize(this)
+        BgManager.getInstance().init(this)
     }
 
     private val startSyncOnFirstStart = object : DefaultLifecycleObserver {
@@ -276,14 +302,102 @@ class VectorApplication :
         // Core is the main object of the SDK. You can't do much without it.
         // To create a Core, we need the instance of the Factory.
         val factory = Factory.instance()
-
         // Some configuration can be done before the Core is created, for example enable debug logs.
         factory.setDebugMode(true, "Hello Linphone")
+        factory.isChatroomBackendAvailable(ChatRoomBackend.Basic)
+        Factory.instance().setLogCollectionPath(filesDir.absolutePath)
+        factory.enableLogCollection(LogCollectionState.Enabled)
 
         // Your Core can use up to 2 configuration files, but that isn't mandatory.
         // On Android the Core needs to have the application context to work.
         // If you don't, the following method call will crash.
         linphoneCore = factory.createCore(null, null, this)
+        // Make sure the core is configured to use push notification token from firebase
+        linphoneCore.isPushNotificationEnabled = true
+        /**
+         * this is very important, or it will have SSL handshake fail: X509
+         */
+        linphoneCore.verifyServerCertificates(false)
+        linphoneCore.addListener(coreListener)
+    }
+
+    fun getDaoSession(): DaoSession? {
+        return daoSession
+    }
+
+    /**
+     * 初始化GreenDao,直接在Application中进行初始化操作
+     */
+    private fun initGreenDao() {
+        val helper = DaoMaster.DevOpenHelper(this, "nodefy_sip.db")
+        val db = helper.writableDatabase
+        val daoMaster = DaoMaster(db)
+        daoSession = daoMaster.newSession()
+    }
+
+    private val coreListener = object: CoreListenerStub() {
+
+        override fun onMessageReceived(core: Core, receivedChatRoom: ChatRoom, message: ChatMessage) {
+
+            //user the receivedPeerDomain, receivedLocalDomain is the IP, maybe not correct
+            /**
+             * receivedLocalDomain:,182.119.130.45
+             * receivedLocalUser:, 2222
+             * receivedPeerDomain:, comms.kelare-demo.com
+             * receivedPeerUser:, 3333
+             */
+            val receivedLocalDomain = message.localAddress.domain
+            val receivedLocalUser = message.localAddress.username
+            val receivedPeerDomain = message.fromAddress.domain
+            val receivedPeerUser = message.fromAddress.username
+            Timber.e("receivedLocalDomain:,$receivedLocalDomain")
+            Timber.e("receivedLocalUser:, $receivedLocalUser")
+            Timber.e("receivedPeerDomain:, $receivedPeerDomain")
+            Timber.e("receivedPeerUser:, $receivedPeerUser")
+
+            Timber.e("toAddress:, ${message.toAddress.domain}")
+
+
+            val localAccount = LinphoneUtils.getSipAccount(message, linphoneCore)
+            LinphoneUtils.createBasicChatRoom(message, localAccount!!, linphoneCore)
+
+            for (content in message.contents) {
+                if (content.isText) {
+                    LinphoneUtils.insertSipMessage(content.utf8Text.toString(), false, message, localAccount, getDaoSession()!!)
+                }
+            }
+        }
+
+        override fun onInfoReceived(core: Core, call: Call, message: InfoMessage) {
+
+        }
+
+        override fun onCallStateChanged(
+                core: Core,
+                call: Call,
+                state: Call.State?,
+                message: String
+        ) {
+            when (state) {
+                Call.State.IncomingReceived -> {
+                    Timber.e("receivedPeerUser: 监听到来电")
+
+                    Timber.e("call remote domain: ${call.remoteAddress.domain}")
+                    Timber.e("call remote user: ${call.remoteAddress.username}")
+                    Timber.e("call local domain: ${call.callLog.localAddress.domain}")
+                    Timber.e("call local user: ${call.callLog.localAddress.username}")
+
+                    /*if (call.remoteAddress.username != call.callLog.localAddress.username) {
+                        val intent = Intent(applicationContext, ComingCallActivity::class.java)
+                        intent.putExtra("local_user", call.callLog.localAddress.username)
+                        intent.putExtra("remote_user", call.remoteAddress.username)
+                        intent.putExtra("domain", call.remoteAddress.domain)
+                        BgStart.getInstance().startActivity(applicationContext, intent, ComingCallActivity::class.java.name)
+                    }*/
+                }
+            }
+
+        }
     }
 
     companion object{
