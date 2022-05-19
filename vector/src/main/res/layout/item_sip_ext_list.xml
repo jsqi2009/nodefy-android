@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/top_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/normal_line_color"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingStart="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        tools:ignore="RtlSymmetry,UselessParent">
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="name"
+            android:textColor="@color/text_color_black"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/normal_line_color"/>
+
+        <EditText
+            android:id="@+id/et_ext"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="start|center_vertical"
+            android:textSize="14sp"
+            android:textColor="@color/text_color_black"
+            android:textColorHint="@color/scan_tips_color"
+            android:text=""
+            tools:ignore="LabelFor,TextFields" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:background="@color/normal_line_color"/>
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/normal_line_color"
+        android:visibility="gone"/>
+
+
+
+
+</LinearLayout>
