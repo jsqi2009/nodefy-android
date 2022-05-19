@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".kelare.dialer.fragments.HistoryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mTabLayout"
+        style="@style/NoPaddingTabLayout"
+        android:layout_width="wrap_content"
+        android:background="@drawable/shap_tab_20dp"
+        android:layout_height="35dp"
+        app:tabIndicatorHeight="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        app:tabIndicatorColor="@color/score_start_color"
+        app:tabIndicatorGravity="bottom"
+        app:tabSelectedTextColor="@color/red"
+        app:tabMode="fixed"
+        app:tabMaxWidth="0dp"
+        app:tabGravity="fill"
+        app:tabTextColor="@color/tab_bar_color_default"
+        app:tabRippleColor="@android:color/transparent"
+        android:visibility="visible"/>
 
-</FrameLayout>
+    <im.vector.app.kelare.widget.NestedScrollableHost
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"/>
+
+    </im.vector.app.kelare.widget.NestedScrollableHost>
+
+</LinearLayout>

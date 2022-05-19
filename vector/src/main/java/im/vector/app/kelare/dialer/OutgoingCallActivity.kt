@@ -17,20 +17,30 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
 
     override fun getBinding() = ActivityOutgoingCallBinding.inflate(layoutInflater)
 
-    var accountList:ArrayList<DialerAccountInfo> = ArrayList()
+    private var accountList:ArrayList<DialerAccountInfo> = ArrayList()
     private var fullAccount = ""
     private var dialerNumber = ""
     private var selectedAccount:DialerAccountInfo = DialerAccountInfo()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         statusBarWhiteColor(this)
+
+        initView()
     }
 
+    private fun initView() {
+
+        views.rlBack.setOnClickListener(this)
+    }
 
     override fun onClick(v: View?) {
-
+        when (v!!.id) {
+            R.id.rl_back    -> {
+               finish()
+            }
+            else -> {}
+        }
     }
 
     override fun onLongClick(v: View?): Boolean {
