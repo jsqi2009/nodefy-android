@@ -49,6 +49,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.gyf.immersionbar.ImmersionBar
+import com.kaopiz.kprogresshud.KProgressHUD
 import dagger.hilt.android.EntryPointAccessors
 import im.vector.app.BuildConfig
 import im.vector.app.R
@@ -86,9 +87,11 @@ import im.vector.app.features.themes.ActivityOtherThemes
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.greendao.DaoSession
 import im.vector.app.receivers.DebugReceiver
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import org.linphone.core.Core
 import org.matrix.android.sdk.api.extensions.tryOrNull
 import org.matrix.android.sdk.api.failure.GlobalError
@@ -174,8 +177,10 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
     //dialer needed
     lateinit var mBus: AndroidBus
     lateinit var mSession: Session
-    //lateinit var mContext: VectorBaseActivity
     lateinit var core: Core
+    var loadingDialog: KProgressHUD? = null
+    lateinit var daoSession: DaoSession
+    lateinit var mConnectionList: ArrayList<XMPPTCPConnection>
 
     override fun attachBaseContext(base: Context) {
         val vectorConfiguration = VectorConfiguration(this)
@@ -258,7 +263,12 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
             }
         }
 
+        mBus = VectorApplication.get(this).mBus
+        this.mBus.register(this)
+        mSession = Session(this)
         core = VectorApplication.get(this).linphoneCore
+        daoSession = VectorApplication.get(this).getDaoSession()!!
+        mConnectionList = VectorApplication.get(this).mConnectionList
     }
 
     /**

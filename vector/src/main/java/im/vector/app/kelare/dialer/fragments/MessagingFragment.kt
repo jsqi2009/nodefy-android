@@ -36,16 +36,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.otto.Subscribe
 import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseFragment
-import im.vector.app.databinding.FragmentHistoryBinding
 import im.vector.app.databinding.FragmentMessagingBinding
 import im.vector.app.kelare.adapter.FragmentAdapter
-import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.message.GroupMessageFragment
 import im.vector.app.kelare.message.PeopleMessageFragment
 import im.vector.app.kelare.message.SMSMessageFragment
+import im.vector.app.kelare.message.SendMessageActivity
 import im.vector.app.kelare.message.widget.ChooseXMPPAccountDialog
 import im.vector.app.kelare.message.widget.CreateXMPPGroupDialog
-import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.models.DialerAccountInfo
 import im.vector.app.kelare.widget.DataGenerator
@@ -106,8 +104,8 @@ class MessagingFragment : VectorBaseFragment<FragmentMessagingBinding>(), View.O
     override fun onClick(view: View?) {
         when (view!!.id) {
             R.id.iv_send    -> {
-                /*val intent = Intent(requireContext(), SendMessageActivity::class.java)
-                startActivity(intent)*/
+                val intent = Intent(requireContext(), SendMessageActivity::class.java)
+                startActivity(intent)
             }
             R.id.iv_create    -> {
                 showChooseAccountDialog()
