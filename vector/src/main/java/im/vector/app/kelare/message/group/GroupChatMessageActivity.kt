@@ -19,11 +19,13 @@ package im.vector.app.kelare.message.group
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityGroupChatMessageBinding
 import im.vector.app.databinding.ActivityGroupCreateBinding
 import im.vector.app.databinding.ActivitySendMessageBinding
 
+@AndroidEntryPoint
 class GroupChatMessageActivity : VectorBaseActivity<ActivityGroupChatMessageBinding>(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -32,6 +32,8 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
     private fun initView() {
 
         views.rlBack.setOnClickListener(this)
+
+
     }
 
     override fun onClick(v: View?) {

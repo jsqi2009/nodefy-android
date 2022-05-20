@@ -18,9 +18,11 @@ package im.vector.app.kelare.message
 
 import android.os.Bundle
 import android.view.View
+import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivitySendMessageBinding
 
+@AndroidEntryPoint
 class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), View.OnClickListener {
 
     override fun getBinding() = ActivitySendMessageBinding.inflate(layoutInflater)

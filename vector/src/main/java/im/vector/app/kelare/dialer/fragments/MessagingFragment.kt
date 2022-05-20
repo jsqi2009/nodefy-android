@@ -42,6 +42,7 @@ import im.vector.app.kelare.message.GroupMessageFragment
 import im.vector.app.kelare.message.PeopleMessageFragment
 import im.vector.app.kelare.message.SMSMessageFragment
 import im.vector.app.kelare.message.SendMessageActivity
+import im.vector.app.kelare.message.group.GroupCreateActivity
 import im.vector.app.kelare.message.widget.ChooseXMPPAccountDialog
 import im.vector.app.kelare.message.widget.CreateXMPPGroupDialog
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
@@ -217,10 +218,10 @@ class MessagingFragment : VectorBaseFragment<FragmentMessagingBinding>(), View.O
         Timber.e("user info: ${event.info}")
         Timber.e("group name: ${event.groupName}")
 
-        /*val intent = Intent(requireContext(), GroupCreateActivity::class.java)
+        val intent = Intent(requireContext(), GroupCreateActivity::class.java)
         intent.putExtra("user_info", event.info)
         intent.putExtra("group_name", event.groupName)
-        startActivity(intent)*/
+        startActivity(intent)
 
     }
 
