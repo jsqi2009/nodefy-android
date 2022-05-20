@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_add_sip_contact_bg"
+    android:descendantFocusability="beforeDescendants"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Add Sip Contact"
+            android:textSize="15sp"
+            android:textColor="@color/text_color_black"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"
+        android:layout_above="@id/ll_add_contact">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center_vertical"
+                android:text="First Name"
+                android:textSize="14sp"
+                android:textColor="@color/text_color_black"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/et_first_username"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:paddingStart="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_add_contact_et_bg"
+                android:gravity="center|start"
+                android:textSize="15sp"
+                android:textColor="@color/text_color_black"
+                android:textColorHint="@color/scan_tips_color"
+                android:text=""
+                tools:ignore="LabelFor,RtlSymmetry,TextFields" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Last Name"
+                android:textSize="14sp"
+                android:textColor="@color/text_color_black"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/et_last_username"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_add_contact_et_bg"
+                android:gravity="center|start"
+                android:textSize="15sp"
+                android:textColor="@color/text_color_black"
+                android:textColorHint="@color/scan_tips_color"
+                android:text=""
+                tools:ignore="LabelFor,RtlSymmetry,TextFields" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Note"
+                android:textSize="14sp"
+                android:textColor="@color/text_color_black"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/et_note"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_add_contact_et_bg"
+                android:gravity="center|start"
+                android:textSize="15sp"
+                android:textColor="@color/text_color_black"
+                android:textColorHint="@color/scan_tips_color"
+                android:text=""
+                tools:ignore="LabelFor,RtlSymmetry,TextFields" />
+
+            <LinearLayout
+                android:id="@+id/ll_add_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_circle_plus"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_add_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical"
+                    android:text="Add phone Number"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimary"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/phone_top_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/normal_line_color"
+                android:visibility="gone"/>
+
+            <com.yanzhenjie.recyclerview.SwipeRecyclerView
+                android:id="@+id/rv_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"/>
+
+            <View
+                android:id="@+id/phone_bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/normal_line_color"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/ll_add_ext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_circle_plus"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_add_ext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical"
+                    android:text="Add work ext"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimary"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <com.yanzhenjie.recyclerview.SwipeRecyclerView
+                android:id="@+id/rv_ext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
+                android:text="SET DEFAULT ACCOUNT"
+                android:textSize="14sp"
+                android:textColor="@color/text_color_black1"
+                tools:ignore="HardcodedText" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/normal_line_color"/>
+
+            <LinearLayout
+                android:id="@+id/ll_set_default"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_set_default_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical"
+                    android:text="Set default number"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color_black"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="ContentDescription" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/normal_line_color"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_add_contact"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="45dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/shape_cancel_add_contact"
+            android:gravity="center"
+            android:text="Cancel"
+            android:textSize="15sp"
+            android:textColor="@color/app_color"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tv_add_contact"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/shape_add_contact"
+            android:gravity="center"
+            android:text="Add Contact"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

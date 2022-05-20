@@ -16,6 +16,7 @@
 
 package im.vector.app.core.platform
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
@@ -35,8 +36,10 @@ import com.airbnb.mvrx.MavericksView
 import com.bumptech.glide.util.Util.assertMainThread
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kaopiz.kprogresshud.KProgressHUD
 import dagger.hilt.android.EntryPointAccessors
 import im.vector.app.R
+import im.vector.app.VectorApplication
 import im.vector.app.core.di.ActivityEntryPoint
 import im.vector.app.core.dialogs.UnrecognizedCertificateDialog
 import im.vector.app.core.error.ErrorFormatter
@@ -46,9 +49,14 @@ import im.vector.app.core.utils.ToolbarConfig
 import im.vector.app.features.analytics.AnalyticsTracker
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.navigation.Navigator
+import im.vector.app.kelare.content.AndroidBus
+import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.greendao.DaoSession
 import im.vector.lib.ui.styles.dialogs.MaterialProgressDialog
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
+import org.linphone.core.Core
 import reactivecircus.flowbinding.android.view.clicks
 import timber.log.Timber
 
@@ -107,6 +115,14 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
     protected val views: VB
         get() = _binding!!
 
+    //dialer module
+    lateinit var mBus: AndroidBus
+    lateinit var mSession: Session
+    lateinit var core: Core
+    var loadingDialog: KProgressHUD? = null
+    lateinit var daoSession: DaoSession
+    lateinit var mConnectionList: ArrayList<XMPPTCPConnection>
+
     /* ==========================================================================================
      * Life cycle
      * ========================================================================================== */
@@ -123,12 +139,21 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
         super.onAttach(context)
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (getMenuRes() != -1) {
             setHasOptionsMenu(true)
         }
+
+        //dialer module
+        mBus = VectorApplication.get(activity!!).mBus
+        mBus.register(this)
+        core = VectorApplication.get(activity!!).linphoneCore
+        mSession = Session(activity!!)
+        daoSession = VectorApplication.get(activity!!).getDaoSession()!!
+        mConnectionList = VectorApplication.get(activity!!).mConnectionList
     }
 
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
