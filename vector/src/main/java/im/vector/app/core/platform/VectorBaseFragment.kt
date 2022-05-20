@@ -319,4 +319,20 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
                 .setPositiveButton(R.string.ok, null)
                 .show()
     }
+
+    fun showLoadingDialog() {
+        if (this.loadingDialog == null || !this.loadingDialog!!.isShowing) {
+            loadingDialog = KProgressHUD.create(activity)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDimAmount(0.5f)
+            loadingDialog!!.show()
+        }
+    }
+
+    fun hideLoadingDialog() {
+        if (this.loadingDialog != null && this.loadingDialog!!.isShowing) {
+            this.loadingDialog!!.dismiss()
+            this.loadingDialog = null
+        }
+    }
 }
