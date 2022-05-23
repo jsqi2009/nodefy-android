@@ -23,12 +23,14 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.MenuRes
@@ -705,6 +707,12 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
         if (this.loadingDialog != null && this.loadingDialog!!.isShowing) {
             this.loadingDialog!!.dismiss()
             this.loadingDialog = null
+        }
+    }
+
+    fun showToast(message: String) {
+        if (!TextUtils.isEmpty(message)) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
 }

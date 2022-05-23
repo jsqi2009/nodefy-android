@@ -61,6 +61,7 @@ import im.vector.app.features.settings.VectorPreferences
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.version.VersionProvider
 import im.vector.app.kelare.content.AndroidBus
+import im.vector.app.kelare.dialer.call.ComingCallActivity
 import im.vector.app.kelare.greendao.DaoMaster
 import im.vector.app.kelare.greendao.DaoSession
 import im.vector.app.kelare.network.HttpClient
@@ -387,13 +388,13 @@ class VectorApplication :
                     Timber.e("call local domain: ${call.callLog.localAddress.domain}")
                     Timber.e("call local user: ${call.callLog.localAddress.username}")
 
-                    /*if (call.remoteAddress.username != call.callLog.localAddress.username) {
+                    if (call.remoteAddress.username != call.callLog.localAddress.username) {
                         val intent = Intent(applicationContext, ComingCallActivity::class.java)
                         intent.putExtra("local_user", call.callLog.localAddress.username)
                         intent.putExtra("remote_user", call.remoteAddress.username)
                         intent.putExtra("domain", call.remoteAddress.domain)
                         BgStart.getInstance().startActivity(applicationContext, intent, ComingCallActivity::class.java.name)
-                    }*/
+                    }
                 }
             }
 
