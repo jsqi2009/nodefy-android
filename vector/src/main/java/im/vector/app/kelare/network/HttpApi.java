@@ -80,13 +80,13 @@ public interface HttpApi {
     Call<JsonObject> getDialerAccount2(@HeaderMap Map<String, String> headerMap, @QueryMap Map<String, Object> map);
 
     @POST("_matrix/client/r0/sip_accounts")
-    Call<JsonObject> saveDialerAccount(@Header("Authorization") String authorization, @Body SaveAccountInfo info);
+    Call<JsonObject> saveDialerAccount(@HeaderMap Map<String, String> headerMap, @Body SaveAccountInfo info);
 
     @PUT("_matrix/client/r0/sip_accounts")
-    Call<JsonObject> updateDialerAccount(@Header("Authorization") String authorization, @Body UpdateAccountInfo info);
+    Call<JsonObject> updateDialerAccount(@HeaderMap Map<String, String> headerMap, @Body UpdateAccountInfo info);
 
     @HTTP(method = "DELETE", path = "_matrix/client/r0/sip_accounts", hasBody = true)
-    Call<JsonObject> deleteDialerAccount(@Header("Authorization") String authorization, @Body DeleteAccountInfo info);
+    Call<JsonObject> deleteDialerAccount(@HeaderMap Map<String, String> headerMap, @Body DeleteAccountInfo info);
 
     @GET("_matrix/client/r0/dialer_contacts")
     Call<JsonObject> getDialerContact(@HeaderMap Map<String, String> headerMap, @QueryMap Map<String, Object> map);

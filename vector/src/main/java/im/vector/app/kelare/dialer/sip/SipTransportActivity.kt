@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivitySipEncryptBinding
@@ -31,6 +32,7 @@ import im.vector.app.kelare.adapter.SipTransportAdapter
 import im.vector.app.kelare.network.models.SipTransportInfo
 import java.util.Locale
 
+@AndroidEntryPoint
 class SipTransportActivity : VectorBaseActivity<ActivitySipTransportBinding>(), View.OnClickListener, RecyclerItemClickListener {
 
     override fun getBinding() = ActivitySipTransportBinding.inflate(layoutInflater)

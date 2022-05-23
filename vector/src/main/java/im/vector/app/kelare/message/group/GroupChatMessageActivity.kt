@@ -27,11 +27,14 @@ import im.vector.app.databinding.ActivitySendMessageBinding
 
 @AndroidEntryPoint
 class GroupChatMessageActivity : VectorBaseActivity<ActivityGroupChatMessageBinding>(), View.OnClickListener {
+
+    override fun getBinding() = ActivityGroupChatMessageBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun getBinding() = ActivityGroupChatMessageBinding.inflate(layoutInflater)
+
 
     override fun onClick(v: View?) {
 

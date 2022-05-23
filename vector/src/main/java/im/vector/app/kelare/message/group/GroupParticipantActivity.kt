@@ -26,11 +26,14 @@ import im.vector.app.databinding.ActivitySendMessageBinding
 
 @AndroidEntryPoint
 class GroupParticipantActivity : VectorBaseActivity<ActivityGroupParticipantBinding>(), View.OnClickListener {
+
+    override fun getBinding() = ActivityGroupParticipantBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun getBinding() = ActivityGroupParticipantBinding.inflate(layoutInflater)
+
 
     override fun onClick(v: View?) {
 

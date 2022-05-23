@@ -48,7 +48,6 @@ class SipAdvancedActivity : VectorBaseActivity<ActivitySipAdvancedBinding>(), Vi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sip_advanced)
         statusBarWhiteColor(this)
 
         initView()

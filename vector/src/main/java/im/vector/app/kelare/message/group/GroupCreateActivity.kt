@@ -26,12 +26,15 @@ import im.vector.app.databinding.ActivitySendMessageBinding
 
 @AndroidEntryPoint
 class GroupCreateActivity : VectorBaseActivity<ActivityGroupCreateBinding>(), View.OnClickListener {
+
+    override fun getBinding() = ActivityGroupCreateBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         statusBarWhiteColor(this)
     }
 
-    override fun getBinding() = ActivityGroupCreateBinding.inflate(layoutInflater)
+
 
     override fun onClick(v: View?) {
 

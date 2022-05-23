@@ -21,7 +21,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -33,7 +32,6 @@ import com.suke.widget.SwitchButton
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseActivity
-import im.vector.app.databinding.ActivityDialerSettingBinding
 import im.vector.app.databinding.ActivitySipLoginBinding
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.SaveAccountInfoResponseEvent
@@ -70,7 +68,16 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sip_login)
+        statusBarWhiteColor(this)
+
+        index = intent.extras!!.getString("index")!!
+        if (index == "2") {
+            accountInfo = intent.getSerializableExtra("account") as DialerAccountInfo
+            isUpload = accountInfo.is_upload
+            if (accountInfo.extension.encryptMedia!!.toLowerCase(Locale.ROOT) == "never") {
+                accountInfo.extension.encryptMedia = "NONE"
+            }
+        }
 
         initView()
     }
@@ -339,7 +346,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         saveAccountInfo.primary_user_id = dialerSession.userID
 
         showLoadingDialog()
-        HttpClient.saveDialerAccountInfo(saveAccountInfo)
+        HttpClient.saveDialerAccountInfo(this, saveAccountInfo)
     }
 
     @Subscribe
@@ -358,7 +365,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         updateAccountInfo.primary_user_id = dialerSession.userID
 
         showLoadingDialog()
-        HttpClient.updateDialerAccountInfo(updateAccountInfo)
+        HttpClient.updateDialerAccountInfo(this, updateAccountInfo)
     }
 
     @Subscribe

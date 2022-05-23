@@ -18,10 +18,12 @@ package im.vector.app.kelare.dialer.call
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityComingCallBinding
 import im.vector.app.databinding.ActivityDialerContactDetailBinding
 
+@AndroidEntryPoint
 class ComingCallActivity : VectorBaseActivity<ActivityComingCallBinding>() {
 
     override fun getBinding() = ActivityComingCallBinding.inflate(layoutInflater)

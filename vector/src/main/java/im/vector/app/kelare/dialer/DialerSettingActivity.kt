@@ -259,7 +259,7 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
         }
 
         showLoadingDialog()
-        HttpClient.deleteDialerAccountInfo(deleteAccountInfo)
+        HttpClient.deleteDialerAccountInfo(this, deleteAccountInfo)
     }
 
     @Subscribe

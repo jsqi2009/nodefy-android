@@ -166,14 +166,6 @@ object HttpClient {
         return headerMap
     }
 
-    fun getAuthor(): String {
-        val headerMap = "Bearer " + Contants.ACCESS_TOKEN
-
-        return headerMap
-    }
-
-
-
     /**
      * login
      */
@@ -203,27 +195,27 @@ object HttpClient {
     /**
      * save dialer account info
      */
-    fun saveDialerAccountInfo(info: SaveAccountInfo) {
+    fun saveDialerAccountInfo(context: Context,info: SaveAccountInfo) {
 
-        val call = mHttpApi!!.saveDialerAccount(getAuthor(), info)
+        val call = mHttpApi!!.saveDialerAccount(getHeaders(context), info)
         dispatchClient!!.enqueue(call, SaveAccountInfoResponse::class.java, SaveAccountInfoResponseEvent::class.java)
     }
 
     /**
      * update dialer account info
      */
-    fun updateDialerAccountInfo(info: UpdateAccountInfo) {
+    fun updateDialerAccountInfo(context: Context,info: UpdateAccountInfo) {
 
-        val call = mHttpApi!!.updateDialerAccount(getAuthor(), info)
+        val call = mHttpApi!!.updateDialerAccount(getHeaders(context), info)
         dispatchClient!!.enqueue(call, UpdateAccountInfoResponse::class.java, UpdateAccountInfoResponseEvent::class.java)
     }
 
     /**
      * delete dialer account info
      */
-    fun deleteDialerAccountInfo(info: DeleteAccountInfo) {
+    fun deleteDialerAccountInfo(context: Context,info: DeleteAccountInfo) {
 
-        val call = mHttpApi!!.deleteDialerAccount(getAuthor(), info)
+        val call = mHttpApi!!.deleteDialerAccount(getHeaders(context), info)
         dispatchClient!!.enqueue(call, DeleteAccountInfoResponse::class.java, DeleteAccountInfoResponseEvent::class.java)
     }
 

@@ -26,11 +26,14 @@ import im.vector.app.databinding.ActivitySendMessageBinding
 
 @AndroidEntryPoint
 class InviteContactActivity : VectorBaseActivity<ActivityInviteContactBinding>(), View.OnClickListener {
+
+    override fun getBinding() = ActivityInviteContactBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun getBinding() = ActivityInviteContactBinding.inflate(layoutInflater)
+
 
     override fun onClick(v: View?) {
     }

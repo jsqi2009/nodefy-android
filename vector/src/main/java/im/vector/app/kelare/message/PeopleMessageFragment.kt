@@ -31,11 +31,6 @@ import im.vector.app.databinding.FragmentPeopleMessageBinding
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PeopleMessageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PeopleMessageFragment : VectorBaseFragment<FragmentPeopleMessageBinding>() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
