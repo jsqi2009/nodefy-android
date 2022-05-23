@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".kelare.dialer.sip.SipAdvancedActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:text="Account Advanced"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="visible"
+            tools:ignore="HardcodedText" />
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_icon_back"
+                tools:ignore="ContentDescription" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/device_list_bg_color"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:text="ADDITIONAL ACCOUNT"
+                    android:textColor="@color/text_color_black1"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_proxy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="Out.Proxy"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                <EditText
+                    android:id="@+id/et_proxy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:text=""
+                    android:hint="[domain is the default]"
+                    android:textAlignment="textEnd"
+                    tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color_2"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_auth_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="Auth Name"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                <EditText
+                    android:id="@+id/et_auth_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:text=""
+                    android:hint="[username is the default]"
+                    android:textAlignment="textEnd"
+                    tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/device_list_bg_color"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:text="SIP REGISTRATION"
+                    android:textColor="@color/text_color_black1"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_incoming_calls"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="Incoming Calls"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <com.suke.widget.SwitchButton
+                    android:id="@+id/sb_incoming_calls"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:paddingEnd="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_gravity="center_vertical"
+                    app:sb_show_indicator="false"
+                    tools:ignore="RtlSymmetry" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color_2"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_refresh_interval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="Refresh Interval"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                <EditText
+                    android:id="@+id/et_refresh_interval"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    tools:ignore="RtlCompat,TextFields" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/device_list_bg_color"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:text="KEEP ALIVE"
+                    android:textColor="@color/text_color_black1"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_interval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="Interval"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                <EditText
+                    android:id="@+id/et_interval"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:text="3600"
+                    android:textAlignment="textEnd"
+                    tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/device_list_bg_color"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:text="TRANSPORT AND SECURITY"
+                    android:textColor="@color/text_color_black1"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_transport"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="SIP Transport"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <TextView
+                    android:id="@+id/tv_sip_transport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="TCP"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="ContentDescription,ObsoleteLayoutParam" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color_2"/>
+
+            <LinearLayout
+                android:id="@+id/ll_encrypt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Encrypt Media"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <TextView
+                    android:id="@+id/tv_encrypt_media"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="SRTP"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="ContentDescription,ObsoleteLayoutParam" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color_2"/>
+
+            <LinearLayout
+                android:id="@+id/ll_range"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="SIP Port Range"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="ContentDescription,ObsoleteLayoutParam" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_range_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="30dp"
+                android:paddingEnd="15dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color_2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:text="SIP Port Range Start"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:textSize="13sp"
+                        android:visibility="visible"
+                        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                    <EditText
+                        android:id="@+id/et_range_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:text="5060"
+                        android:textAlignment="textEnd"
+                        tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color_2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:text="SIP Port Range End"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:textSize="13sp"
+                        android:visibility="visible"
+                        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                    <EditText
+                        android:id="@+id/et_range_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:text="5060"
+                        android:textAlignment="textEnd"
+                        tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color_2"/>
+
+            <LinearLayout
+                android:id="@+id/ll_audio"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="RTP Port Range Audio"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="ContentDescription,ObsoleteLayoutParam" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_audio_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="30dp"
+                android:paddingEnd="15dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color_2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:text="RTP Port Range Audio Start"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:textSize="13sp"
+                        android:visibility="visible"
+                        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                    <EditText
+                        android:id="@+id/et_audio_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:text="7200"
+                        android:textAlignment="textEnd"
+                        tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color_2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:text="RTP Port Range Audio End"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:textSize="13sp"
+                        android:visibility="visible"
+                        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                    <EditText
+                        android:id="@+id/et_audio_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:text="7299"
+                        android:textAlignment="textEnd"
+                        tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color_2"/>
+
+            <LinearLayout
+                android:id="@+id/ll_video"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="RTP Port Range Video"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="ContentDescription,ObsoleteLayoutParam" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_video_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="30dp"
+                android:paddingEnd="15dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color_2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:text="RTP Port Range Video Start"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:textSize="13sp"
+                        android:visibility="visible"
+                        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                    <EditText
+                        android:id="@+id/et_video_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:text="9200"
+                        android:textAlignment="textEnd"
+                        tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color_2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:text="RTP Port Range Video End"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:textSize="13sp"
+                        android:visibility="visible"
+                        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+
+                    <EditText
+                        android:id="@+id/et_video_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_color_dark_gray"
+                        android:text="9299"
+                        android:textAlignment="textEnd"
+                        tools:ignore="HardcodedText,RtlCompat,TextFields" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@color/device_list_bg_color"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:text="TLS CERT MANAGEMENT"
+                    android:textColor="@color/text_color_black1"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:text="Verify TLS Cert"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <com.suke.widget.SwitchButton
+                    android:id="@+id/sb_verify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:paddingEnd="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_gravity="center_vertical"
+                    app:sb_show_indicator="false"
+                    tools:ignore="RtlSymmetry" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingTop="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/device_list_bg_color">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Please ensure that the TLS certificate is downloaded and verified on the device before enabling 'Verify TLS Cert'"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textSize="13sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

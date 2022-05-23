@@ -82,11 +82,14 @@ import im.vector.app.kelare.dialer.DialerFragment
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.models.DialerAccountInfo
+import im.vector.app.kelare.utils.SIPLoginUtil
+import im.vector.app.kelare.utils.XMPPLoginUtil
 import im.vector.app.push.fcm.FcmHelper
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import org.linphone.core.Account
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.initsync.SyncStatusService
 import org.matrix.android.sdk.api.session.permalinks.PermalinkService
@@ -193,6 +196,8 @@ class HomeActivity :
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
 
     private var accountList: ArrayList<DialerAccountInfo> = ArrayList()
+    private var sipAccountList : ArrayList<DialerAccountInfo> = ArrayList()
+    private var xmppAccountList : ArrayList<DialerAccountInfo> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -285,9 +290,6 @@ class HomeActivity :
         homeActivityViewModel.handle(HomeActivityViewActions.ViewStarted)
 
         statusBarColor(this)
-
-        //Dialer module
-        setBaseInfo()
     }
 
     private fun handleShowAnalyticsOptIn() {
@@ -532,6 +534,9 @@ class HomeActivity :
 
         // Force remote backup state update to update the banner if needed
         serverBackupStatusViewModel.refreshRemoteStateIfNeeded()
+
+        //Dialer module
+        setBaseInfo()
     }
 
     override fun getMenuRes() = R.menu.home
@@ -669,6 +674,112 @@ class HomeActivity :
             accountList = event.model!!.sip_accounts!!
             dialerSession.accountListInfo = event.model!!.sip_accounts!!
             Timber.e("account info: ${event.model!!.sip_accounts}")
+
+            filterSIPAccount()
+            filterXMPPAccount()
+        }
+    }
+
+    private fun filterSIPAccount() {
+        sipAccountList.clear()
+        if (accountList.isNotEmpty()) {
+            for (dialerAccountInfo in accountList) {
+                if (dialerAccountInfo.type_value == "sip") {
+                    sipAccountList.add(dialerAccountInfo)
+                }
+            }
+        }
+
+        loginSIPAccount()
+    }
+
+    private fun filterXMPPAccount() {
+        xmppAccountList.clear()
+        if (accountList.isNotEmpty()) {
+            for (dialerAccountInfo in accountList) {
+                if (dialerAccountInfo.type_value == "xmpp") {
+                    xmppAccountList.add(dialerAccountInfo)
+                }
+            }
+        }
+
+        loginXMPPAccount()
+    }
+
+    /**
+     * only login enabled account
+     */
+    private fun loginSIPAccount() {
+        val accountList = core.accountList
+        if (accountList.isNotEmpty()) {
+            for (dialerAccountInfo in sipAccountList) {
+                if (dialerAccountInfo.enabled) {
+                    val dialerAccount = dialerAccountInfo.username + "@" + dialerAccountInfo.domain
+                    var flag = true
+                    var mAccount: Account? = null
+                    for (account in accountList) {
+                        val domain = account.findAuthInfo()!!.domain.toString()
+                        val username = account.findAuthInfo()!!.username
+                        val info = "$username@$domain"
+                        if (dialerAccount == info) {
+                            mAccount = account
+                            flag = false
+                            break
+                        }
+                    }
+
+                    if (mAccount != null) {
+                        if (mAccount.state.toInt() == 2) {  //2:OK
+
+                        } else {
+                            SIPLoginUtil(this, core, dialerAccountInfo, daoSession).loginSIPAccount()
+                        }
+                    } else if (mAccount == null && flag) {
+                        SIPLoginUtil(this, core, dialerAccountInfo, daoSession).loginSIPAccount()
+                    }
+                }
+            }
+        } else {
+            sipAccountList.forEach {
+                if (it.enabled) {
+                    SIPLoginUtil(this, core, it, daoSession).loginSIPAccount()
+                }
+            }
+        }
+
+    }
+
+    /**
+     * only login enabled account
+     */
+    private fun loginXMPPAccount() {
+        if (xmppAccountList.isNotEmpty()) {
+            if (mConnectionList.isNotEmpty()) {
+                for (item in xmppAccountList) {
+                    if (item.enabled) {
+                        val dialerAccount = item.username + "@" + item.domain
+                        var flag = true
+                        for (xmpptcpConnection in mConnectionList) {
+                            val loginUser = xmpptcpConnection.user.asBareJid().toString()
+                            if (loginUser == dialerAccount) {
+                                flag = false
+                                break
+                            }
+                        }
+                        if (flag) {
+                            XMPPLoginUtil(this, daoSession, mConnectionList)
+                                    .initXMPPTCPConnection(item.domain!!, item.extension.proxy, item.username!!, item.password!!)
+                        }
+                    }
+                }
+            } else {
+                for (item in xmppAccountList) {
+                    if (item.enabled) {
+                        XMPPLoginUtil(this, daoSession, mConnectionList)
+                                .initXMPPTCPConnection(item.domain!!, item.extension.proxy, item.username!!, item.password!!)
+                    }
+                }
+            }
         }
     }
 

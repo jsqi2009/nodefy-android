@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_sip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_action_sheet_sip_selector"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="SIP"
+        android:textColor="@color/text_color_black"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_color"/>
+
+    <TextView
+        android:id="@+id/tv_xmpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/picTextView"
+        android:background="@drawable/bottom_action_sheet_xmpp_selector"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="XMPP"
+        android:textColor="@color/text_color_black"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/camTextView"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bottom_action_sheet_selector"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Cancel"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+</LinearLayout>

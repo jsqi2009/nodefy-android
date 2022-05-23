@@ -74,8 +74,8 @@ class DialerFragment : VectorBaseFragment<FragmentDialerBinding>(), View.OnClick
                 startActivity(intent)
             }
             R.id.iv_setting    -> {
-                /*val intent = Intent(activity, DialerSettingActivity::class.java)
-                startActivity(intent)*/
+                val intent = Intent(activity, DialerSettingActivity::class.java)
+                startActivity(intent)
             }
             else -> {}
         }
