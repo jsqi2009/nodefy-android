@@ -175,6 +175,7 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
     private val restorables = ArrayList<Restorable>()
 
     //dialer needed
+    lateinit var mContext: Context
     lateinit var mBus: AndroidBus
     lateinit var dialerSession: DialerSession
     lateinit var core: Core
@@ -263,6 +264,8 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
             }
         }
 
+        //Dialer
+        mContext = this
         mBus = VectorApplication.get(this).mBus
         this.mBus.register(this)
         dialerSession = DialerSession(this)

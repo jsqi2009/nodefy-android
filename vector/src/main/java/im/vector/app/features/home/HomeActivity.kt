@@ -669,7 +669,7 @@ class HomeActivity :
             accountList = event.model!!.sip_accounts!!
             dialerSession.accountListInfo = event.model!!.sip_accounts!!
             Timber.e("account info: ${event.model!!.sip_accounts}")
-        } 
+        }
     }
 
 }

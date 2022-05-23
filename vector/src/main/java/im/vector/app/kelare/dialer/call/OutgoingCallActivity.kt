@@ -1,6 +1,6 @@
 
 
-package im.vector.app.kelare.dialer
+package im.vector.app.kelare.dialer.call
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -13,8 +13,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.databinding.FragmentDialerBinding
-import im.vector.app.databinding.FragmentRecyclerviewWithSearchBinding
 import im.vector.app.kelare.adapter.FragmentAdapter
+import im.vector.app.kelare.dialer.call.OutgoingCallActivity
 import im.vector.app.kelare.widget.DataGenerator
 
 class DialerFragment : VectorBaseFragment<FragmentDialerBinding>(), View.OnClickListener {
