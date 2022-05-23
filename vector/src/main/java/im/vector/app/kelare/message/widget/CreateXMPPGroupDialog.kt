@@ -26,7 +26,7 @@ import android.widget.EditText
 import android.widget.TextView
 import im.vector.app.R
 import im.vector.app.kelare.content.AndroidBus
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.models.DialerAccountInfo
 
 /**
@@ -37,7 +37,7 @@ import im.vector.app.kelare.network.models.DialerAccountInfo
 class CreateXMPPGroupDialog(private val mContext: Activity, private val mBus: AndroidBus, private val account: DialerAccountInfo) :
         Dialog(mContext, R.style.Dialog_Fullscreen), View.OnClickListener{
 
-    private var mSession: Session? = null
+    private var mSession: DialerSession? = null
     private var etGroupName: EditText? = null
     private var tvCancel: TextView? = null
     private var tvCreate: TextView? = null
@@ -46,7 +46,7 @@ class CreateXMPPGroupDialog(private val mContext: Activity, private val mBus: An
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_create_xmpp_group)
-        mSession = Session(mContext)
+        mSession = DialerSession(mContext)
         mBus.register(this)
         setCancelable(true)
         setCanceledOnTouchOutside(true)

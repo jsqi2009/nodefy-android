@@ -5,7 +5,7 @@ import android.content.Context
 import im.vector.app.kelare.network.event.LoginResponseEvent
 import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.Contants
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.event.DeleteAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactResponseEvent
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
@@ -58,7 +58,7 @@ object HttpClient {
 
     var authorization: String? = null
 
-    var mSession: Session? = null
+    var mSession: DialerSession? = null
 
     var dispatchClient: DispatchClient? = null
 
@@ -68,8 +68,9 @@ object HttpClient {
 
     fun init(context: Context, bus: AndroidBus) {
         //severRootUrl = ManifestMetaReader.getMetaValue(context, "SERVER_ROOT_URL")
-        mSession = Session(context)
-        severRootUrl = Contants.HOME_SERVER
+        mSession = DialerSession(context)
+        //severRootUrl = Contants.HOME_SERVER
+        severRootUrl = mSession!!.homeServer
         initOkHTTP()
         mBus = bus
         dispatchClient = DispatchClient(mBus!!)
@@ -159,7 +160,7 @@ object HttpClient {
 
     private fun getHeaders(context: Context): HashMap<String, String> {
         var headerMap: HashMap<String, String> = HashMap<String, String>()
-        headerMap.put("Authorization", "Bearer " + Contants.ACCESS_TOKEN)
+        headerMap.put("Authorization", "Bearer " + mSession!!.accessToken)
         headerMap.put("User-Agent", APPUtil.getUserAgent(context))
 
         return headerMap

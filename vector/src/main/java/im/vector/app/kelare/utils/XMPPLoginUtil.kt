@@ -2,7 +2,7 @@ package im.vector.app.kelare.utils
 
 import android.content.Context
 import android.text.TextUtils
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.greendao.DaoSession
 import im.vector.app.kelare.greendao.DaoUtils
 import im.vector.app.kelare.network.models.DialerAccountInfo
@@ -408,7 +408,7 @@ class XMPPLoginUtil(val context: Context, private val mDaoSession: DaoSession, v
 
     private fun getAccountName(jid: String): String? {
         var accountName = ""
-        val mSession = Session(context)
+        val mSession = DialerSession(context)
         val accountList = mSession.accountListInfo
         accountList!!.forEach {
             if (it.username + "@" + it.domain == jid) {

@@ -28,7 +28,7 @@ import im.vector.app.R
 import im.vector.app.kelare.adapter.DialerContactStatusAdapter
 import im.vector.app.kelare.adapter.RecyclerItemClickListener
 import im.vector.app.kelare.content.AndroidBus
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 
 /**
  * author : Jason
@@ -38,7 +38,7 @@ import im.vector.app.kelare.content.Session
 class DialerContactStatusDialog(private val mContext: Activity, private val mBus: AndroidBus, private val statusList: ArrayList<String>?) :
         Dialog(mContext, R.style.Dialog_Fullscreen2), View.OnClickListener, RecyclerItemClickListener {
 
-    private var mSession: Session? = null
+    private var mSession: DialerSession? = null
     private var tvCancel: TextView? = null
     private var mAdapter: DialerContactStatusAdapter? = null
     private var mList: ArrayList<String>? = ArrayList()
@@ -47,7 +47,7 @@ class DialerContactStatusDialog(private val mContext: Activity, private val mBus
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_dialer_contact_status)
-        mSession = Session(mContext)
+        mSession = DialerSession(mContext)
         mBus.register(this)
         mList = statusList
         setCancelable(true)

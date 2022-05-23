@@ -50,7 +50,7 @@ import im.vector.app.features.analytics.AnalyticsTracker
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.navigation.Navigator
 import im.vector.app.kelare.content.AndroidBus
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.greendao.DaoSession
 import im.vector.lib.ui.styles.dialogs.MaterialProgressDialog
 import kotlinx.coroutines.flow.launchIn
@@ -117,7 +117,7 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
 
     //dialer module
     lateinit var mBus: AndroidBus
-    lateinit var mSession: Session
+    lateinit var dialerSession: DialerSession
     lateinit var core: Core
     var loadingDialog: KProgressHUD? = null
     lateinit var daoSession: DaoSession
@@ -151,7 +151,7 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
         mBus = VectorApplication.get(activity!!).mBus
         mBus.register(this)
         core = VectorApplication.get(activity!!).linphoneCore
-        mSession = Session(activity!!)
+        dialerSession = DialerSession(activity!!)
         daoSession = VectorApplication.get(activity!!).getDaoSession()!!
         mConnectionList = VectorApplication.get(activity!!).mConnectionList
     }

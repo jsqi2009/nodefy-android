@@ -35,6 +35,7 @@ import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.viewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gyf.immersionbar.ImmersionBar
+import com.squareup.otto.Subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.AppStateHandler
 import im.vector.app.R
@@ -76,12 +77,17 @@ import im.vector.app.features.spaces.share.ShareSpaceBottomSheet
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
 import im.vector.app.kelare.base.BaseActivity
+import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.dialer.DialerFragment
+import im.vector.app.kelare.network.HttpClient
+import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
+import im.vector.app.kelare.network.models.DialerAccountInfo
 import im.vector.app.push.fcm.FcmHelper
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.initsync.SyncStatusService
 import org.matrix.android.sdk.api.session.permalinks.PermalinkService
 import org.matrix.android.sdk.api.session.sync.InitialSyncStrategy
@@ -128,6 +134,8 @@ class HomeActivity :
     @Inject lateinit var avatarRenderer: AvatarRenderer
     @Inject lateinit var initSyncStepFormatter: InitSyncStepFormatter
     @Inject lateinit var appStateHandler: AppStateHandler
+
+    @Inject lateinit var session: Session
 
     private val createSpaceResultLauncher = registerStartForActivityResult { activityResult ->
         if (activityResult.resultCode == Activity.RESULT_OK) {
@@ -183,6 +191,8 @@ class HomeActivity :
     override fun getCoordinatorLayout() = views.coordinatorLayout
 
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
+
+    private var accountList: ArrayList<DialerAccountInfo> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -275,6 +285,9 @@ class HomeActivity :
         homeActivityViewModel.handle(HomeActivityViewActions.ViewStarted)
 
         statusBarColor(this)
+
+        //Dialer module
+        setBaseInfo()
     }
 
     private fun handleShowAnalyticsOptIn() {
@@ -623,6 +636,40 @@ class HomeActivity :
 
     override fun mxToBottomSheetSwitchToSpace(spaceId: String) {
         navigator.switchToSpace(this, spaceId, Navigator.PostSwitchSpaceAction.OpenRoomList)
+    }
+
+    private fun setBaseInfo() {
+        val userID = session.myUserId
+        val accessToken = session.sessionParams.credentials.accessToken
+        val homeServer = session.sessionParams.homeServerUrl
+
+        Timber.e("userID-----$userID")
+        Timber.e("token-----$accessToken")
+        Timber.e("homeServer-----$homeServer")
+
+        dialerSession.homeServer = homeServer
+        dialerSession.userID = userID
+        dialerSession.accessToken = accessToken
+
+        HttpClient.init(this, mBus)
+
+        getDialerAccounts()
+    }
+
+    private fun getDialerAccounts() {
+        try {
+            HttpClient.getDialerAccountInfo(this, dialerSession.userID)
+        } catch (e: Exception) {
+        }
+    }
+
+    @Subscribe
+    fun onDialerAccountEvent(event: DialerAccountInfoResponseEvent) {
+        if (event.isSuccess) {
+            accountList = event.model!!.sip_accounts!!
+            dialerSession.accountListInfo = event.model!!.sip_accounts!!
+            Timber.e("account info: ${event.model!!.sip_accounts}")
+        } 
     }
 
 }

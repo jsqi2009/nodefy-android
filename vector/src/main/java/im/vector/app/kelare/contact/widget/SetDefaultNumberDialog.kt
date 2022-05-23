@@ -28,7 +28,7 @@ import im.vector.app.R
 import im.vector.app.kelare.adapter.RecyclerItemClickListener
 import im.vector.app.kelare.adapter.SetDefaultNumberAdapter
 import im.vector.app.kelare.content.AndroidBus
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.models.PhoneInfo
 
 /**
@@ -39,7 +39,7 @@ import im.vector.app.kelare.network.models.PhoneInfo
 class SetDefaultNumberDialog(private val mContext: Activity, private val index: Int, private val mBus: AndroidBus, private val statusList: ArrayList<PhoneInfo>?) :
         Dialog(mContext, R.style.Dialog_Fullscreen2), View.OnClickListener, RecyclerItemClickListener {
 
-    private var mSession: Session? = null
+    private var mSession: DialerSession? = null
     private var tvCancel: TextView? = null
     private var mAdapter: SetDefaultNumberAdapter? = null
     private var mList: ArrayList<PhoneInfo>? = ArrayList()
@@ -48,7 +48,7 @@ class SetDefaultNumberDialog(private val mContext: Activity, private val index: 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_set_default_number)
-        mSession = Session(mContext)
+        mSession = DialerSession(mContext)
         mBus.register(this)
         mList = statusList
         setCancelable(true)

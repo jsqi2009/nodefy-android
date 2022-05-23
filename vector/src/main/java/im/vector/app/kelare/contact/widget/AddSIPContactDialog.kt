@@ -31,7 +31,7 @@ import im.vector.app.kelare.adapter.SipExtAdapter
 import im.vector.app.kelare.adapter.SipPhoneAdapter
 import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.Contants
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.SaveContactInfoResponseEvent
 import im.vector.app.kelare.network.event.UpdateContactInfoResponseEvent
@@ -45,7 +45,7 @@ import timber.log.Timber
  * date   : 4/22/22
  * desc   :
  */
-class AddSIPContactDialog(val mContext: Context, private val mBus: AndroidBus, val mSession: Session, val contactInfo: DialerContactInfo?) : BottomSheetDialogFragment() {
+class AddSIPContactDialog(val mContext: Context, private val mBus: AndroidBus, val mSession: DialerSession, val contactInfo: DialerContactInfo?) : BottomSheetDialogFragment() {
 
     private var phoneRecycler: SwipeRecyclerView? = null
     private var extRecycler: SwipeRecyclerView? = null

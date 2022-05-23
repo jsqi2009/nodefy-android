@@ -180,7 +180,7 @@ class MessagingFragment : VectorBaseFragment<FragmentMessagingBinding>(), View.O
     @SuppressLint("UseRequireInsteadOfGet")
     private fun showChooseAccountDialog() {
         var xmppList: ArrayList<DialerAccountInfo> = ArrayList()
-        val listInfo = mSession.accountListInfo
+        val listInfo = dialerSession.accountListInfo
         if (mConnectionList.isEmpty()) {
             xmppList = ArrayList()
         } else {

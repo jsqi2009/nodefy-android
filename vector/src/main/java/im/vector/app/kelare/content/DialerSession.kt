@@ -8,14 +8,14 @@ import com.google.gson.reflect.TypeToken
 import im.vector.app.kelare.network.models.AddSipPhoneBean
 import im.vector.app.kelare.network.models.DialerAccountInfo
 
-class Session(c: Context) {
+class DialerSession(c: Context) {
 
     private val mHashStorage: HashStorage
 
     companion object {
 
         private const val FILE_NAME = ".session"
-        private const val KEY_TOKEN = "token"
+
         private val KEY_BASE_IP = "base_ip"
         private val KEY_BASE_SERVER_URL = "base_server_url"
         private val KEY_ACCOUNT = "account"
@@ -29,6 +29,11 @@ class Session(c: Context) {
 
         private const val KEY_DIALER_ACCOUNT_INFO = "dialer_account_info"
         private const val KEY_DIALER_PHONE_NUMBER = "dialer_phone_number"
+        private const val KEY_ACCESS_TOKEN = "access_token"
+
+        //Dialer
+        private const val KEY_APP_HOME_SERVER = "app_home_server"
+        private const val KEY_USER_ID = "user_id"
 
     }
 
@@ -41,13 +46,13 @@ class Session(c: Context) {
     }
 
     fun hasToken(): Boolean {
-        return !TextUtils.isEmpty(token)
+        return !TextUtils.isEmpty(accessToken)
     }
 
-    // 清除所有与登陆相关的信息
+    // clear information
     fun removeLoginInfo() {
 
-        this.mHashStorage.remove(KEY_TOKEN)
+        this.mHashStorage.remove(KEY_ACCESS_TOKEN)
         this.mHashStorage.remove(KEY_BASE_SERVER_URL)
         this.mHashStorage.remove(KEY_USER_INFO)
         this.mHashStorage.remove(KEY_LOGOUT_FLAG)
@@ -67,9 +72,17 @@ class Session(c: Context) {
         return gson.fromJson<T>(this.mHashStorage.getString(key), type)
     }
 
-    var token: String
-        get() = this.mHashStorage.getString(KEY_TOKEN)
-        set(paramString) = this.mHashStorage.put(KEY_TOKEN, paramString)
+    var homeServer: String
+        get() = this.mHashStorage.getString(KEY_APP_HOME_SERVER)
+        set(paramString) = this.mHashStorage.put(KEY_APP_HOME_SERVER, paramString)
+
+    var userID: String
+        get() = this.mHashStorage.getString(KEY_USER_ID)
+        set(paramString) = this.mHashStorage.put(KEY_USER_ID, paramString)
+
+    var accessToken: String
+        get() = this.mHashStorage.getString(KEY_ACCESS_TOKEN)
+        set(paramString) = this.mHashStorage.put(KEY_ACCESS_TOKEN, paramString)
 
     var rememberFlag: Boolean
         get() = this.mHashStorage.getBoolean(KEY_REMEMBER_FLAG)

@@ -29,7 +29,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import im.vector.app.R
 import im.vector.app.kelare.content.AndroidBus
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.models.PhoneInfo
 
 /**
@@ -37,7 +37,7 @@ import im.vector.app.kelare.network.models.PhoneInfo
  *  date   : 2022/4/21 13:49
  *  desc   :
  */
-class SipPhoneAdapter(private val mContext: Activity, val mSession: Session, val mBus: AndroidBus, private val mOnItemClickListener: RecyclerItemClickListener) : AbstractBaseRecyclerAdapter<PhoneInfo>(mContext) {
+class SipPhoneAdapter(private val mContext: Activity, val mSession: DialerSession, val mBus: AndroidBus, private val mOnItemClickListener: RecyclerItemClickListener) : AbstractBaseRecyclerAdapter<PhoneInfo>(mContext) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         val context = LayoutInflater.from(mContext)

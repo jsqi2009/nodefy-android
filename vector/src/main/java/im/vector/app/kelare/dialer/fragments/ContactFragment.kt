@@ -133,7 +133,7 @@ class ContactFragment : VectorBaseFragment<FragmentContactBinding>(), View.OnCli
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_add_sip_contact    -> {
-                AddSIPContactDialog(activity!!, mBus, mSession, null).show(activity!!.supportFragmentManager, "tag")
+                AddSIPContactDialog(activity!!, mBus, dialerSession, null).show(activity!!.supportFragmentManager, "tag")
             }
             R.id.ll_status    -> {
                 showChooseStatusDialog()

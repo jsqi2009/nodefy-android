@@ -86,7 +86,7 @@ import im.vector.app.features.settings.VectorPreferences
 import im.vector.app.features.themes.ActivityOtherThemes
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.kelare.content.AndroidBus
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.greendao.DaoSession
 import im.vector.app.receivers.DebugReceiver
 import kotlinx.coroutines.flow.launchIn
@@ -176,7 +176,7 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
 
     //dialer needed
     lateinit var mBus: AndroidBus
-    lateinit var mSession: Session
+    lateinit var dialerSession: DialerSession
     lateinit var core: Core
     var loadingDialog: KProgressHUD? = null
     lateinit var daoSession: DaoSession
@@ -265,7 +265,7 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
 
         mBus = VectorApplication.get(this).mBus
         this.mBus.register(this)
-        mSession = Session(this)
+        dialerSession = DialerSession(this)
         core = VectorApplication.get(this).linphoneCore
         daoSession = VectorApplication.get(this).getDaoSession()!!
         mConnectionList = VectorApplication.get(this).mConnectionList
@@ -687,5 +687,21 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
                 .statusBarDarkFont(true)
                 .fitsSystemWindows(true)
                 .init()
+    }
+
+    fun showLoadingDialog() {
+        if (this.loadingDialog == null || !this.loadingDialog!!.isShowing) {
+            loadingDialog = KProgressHUD.create(this)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDimAmount(0.5f)
+            loadingDialog!!.show()
+        }
+    }
+
+    fun hideLoadingDialog() {
+        if (this.loadingDialog != null && this.loadingDialog!!.isShowing) {
+            this.loadingDialog!!.dismiss()
+            this.loadingDialog = null
+        }
     }
 }

@@ -28,7 +28,7 @@ import im.vector.app.R
 import im.vector.app.kelare.adapter.RecyclerItemClickListener
 import im.vector.app.kelare.adapter.XMPPAccountAdapter
 import im.vector.app.kelare.content.AndroidBus
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.models.DialerAccountInfo
 
 /**
@@ -39,7 +39,7 @@ import im.vector.app.kelare.network.models.DialerAccountInfo
 class ChooseXMPPAccountDialog(private val mContext: Activity, private val mBus: AndroidBus, private val accountList: ArrayList<DialerAccountInfo>?) :
         Dialog(mContext, R.style.Dialog_Fullscreen2), View.OnClickListener, RecyclerItemClickListener {
 
-    private var mSession: Session? = null
+    private var mSession: DialerSession? = null
     private var tvCancel: TextView? = null
     private var mAdapter: XMPPAccountAdapter? = null
     private var xmppList: ArrayList<DialerAccountInfo>? = ArrayList()
@@ -48,7 +48,7 @@ class ChooseXMPPAccountDialog(private val mContext: Activity, private val mBus: 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_choose_xmpp_account)
-        mSession = Session(mContext)
+        mSession = DialerSession(mContext)
         mBus.register(this)
         xmppList = accountList
         setCancelable(true)

@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.text.TextUtils
 import androidx.core.app.ActivityCompat.requestPermissions
-import im.vector.app.kelare.content.Session
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.greendao.DaoSession
 import im.vector.app.kelare.network.models.DialerAccountInfo
 import org.linphone.core.*
@@ -129,7 +129,7 @@ class SIPLoginUtil(val context: Context, val core: Core, private val accountInfo
     }
 
     private fun updateConnectStatus() {
-        val mSession : Session = Session(context)
+        val mSession : DialerSession = DialerSession(context)
 
     }
 }
