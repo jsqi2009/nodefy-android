@@ -79,7 +79,7 @@
         android:theme="@style/Theme.Vector.Light"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".XMPPAdvancedActivity"
+            android:name=".kelare.dialer.xmpp.XMPPAdvancedActivity"
             android:exported="false" />
         <activity
             android:name=".kelare.dialer.sip.SipTransportActivity"
@@ -447,6 +447,8 @@
             android:name="androidx.sharetarget.ChooserTargetServiceCompat"
             android:exported="false"
             tools:node="merge" />
+
+        <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" />
     </application>
 
 </manifest>

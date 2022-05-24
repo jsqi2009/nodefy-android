@@ -59,6 +59,8 @@ import im.vector.app.kelare.dialer.DialerFragment
 import org.matrix.android.sdk.api.session.crypto.model.DeviceInfo
 import org.matrix.android.sdk.api.session.group.model.GroupSummary
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
+import org.zhx.common.bgstart.library.api.PermissionLisenter
+import org.zhx.common.bgstart.library.impl.BgStart
 import javax.inject.Inject
 
 class HomeDetailFragment @Inject constructor(
@@ -189,6 +191,9 @@ class HomeDetailFragment @Inject constructor(
                     currentCallsViewPresenter.updateCall(callManager.getCurrentCall(), callManager.getCalls())
                     invalidateOptionsMenu()
                 }
+
+        //dialer module
+        checkPermission()
     }
 
     private fun handleCallStarted() {
@@ -521,5 +526,18 @@ class HomeDetailFragment @Inject constructor(
             }
         }
         return this
+    }
+
+    private fun checkPermission() {
+        BgStart.getInstance().requestStartPermisstion(activity, object : PermissionLisenter {
+            override fun onGranted() {
+            }
+
+            override fun cancel() {
+            }
+
+            override fun onDenied() {
+            }
+        }, "huawei", "oppo", "vivo", "meizu")
     }
 }

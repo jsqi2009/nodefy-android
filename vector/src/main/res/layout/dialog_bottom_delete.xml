@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_room"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bottom_action_sheet_selector"
+        android:gravity="center"
+        android:text="SIP"
+        android:textColor="@color/text_color_black"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/camTextView"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bottom_action_sheet_selector"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Cancel"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+</LinearLayout>

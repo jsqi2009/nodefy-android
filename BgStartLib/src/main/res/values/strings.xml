@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_dialog">Tips：</string>
+    <string name="message_background_failed">The background pop-up page and floating window have not been allowed, and the function cannot be used normally </string>
+    <string name="message_overlay_failed">The floating window permission has not been allowed, and the function cannot be used normally </string>
+    <string name="setting">Set Now</string>
+    <string name="cancel">Cancel</string>
+    <string name="message_notify_failed">The notification permission has not been allowed, and the function cannot be used normally</string>
+</resources>

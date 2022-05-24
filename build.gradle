@@ -41,6 +41,7 @@ buildscript {
         // in the individual module build.gradle files
 
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0' // add plugin
+        classpath 'com.novoda:bintray-release:+'
     }
 }
 

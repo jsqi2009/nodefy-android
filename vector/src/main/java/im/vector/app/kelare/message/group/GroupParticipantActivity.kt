@@ -16,26 +16,71 @@
 
 package im.vector.app.kelare.message.group
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityGroupParticipantBinding
 import im.vector.app.databinding.ActivitySendMessageBinding
+import im.vector.app.kelare.adapter.GroupParticipantAdapter
+import im.vector.app.kelare.adapter.RecyclerItemClickListener
 
 @AndroidEntryPoint
-class GroupParticipantActivity : VectorBaseActivity<ActivityGroupParticipantBinding>(), View.OnClickListener {
+class GroupParticipantActivity : VectorBaseActivity<ActivityGroupParticipantBinding>(), View.OnClickListener, RecyclerItemClickListener {
 
     override fun getBinding() = ActivityGroupParticipantBinding.inflate(layoutInflater)
 
+    private var groupName : String ? = null
+    private var participant : String ? = null
+    private var mAdapter: GroupParticipantAdapter? = null
+    private var mList: ArrayList<String> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        statusBarWhiteColor(this)
+
+        groupName = intent.extras!!.getString("group_name")!!
+        participant = intent.extras!!.getString("participant")!!
+
+        initView()
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun initView() {
 
+        val array = participant!!.split(",")
+        array.forEach {
+            mList.add(it)
+        }
 
-    override fun onClick(v: View?) {
+        views.tvRoom.text = groupName
+        views.tvTitle.text = "Members"
+        views.rlBack.setOnClickListener(this)
+
+        views.participantRecycler.layoutManager = LinearLayoutManager(this)
+        mAdapter = GroupParticipantAdapter(this,this)
+        views.participantRecycler.adapter = mAdapter
+
+        mAdapter!!.clearDataList()
+        mAdapter!!.addDataList(mList)
+        mAdapter!!.notifyDataSetChanged()
+    }
+
+    override fun onClick(view: View?) {
+        when (view!!.id) {
+            R.id.rl_back -> {
+                finish()
+            }
+            else         -> {
+            }
+        }
+    }
+
+    override fun onRecyclerViewItemClick(view: View, position: Int) {
 
     }
 }
