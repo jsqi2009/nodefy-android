@@ -57,6 +57,8 @@ class DialerCallActivity : VectorBaseActivity<ActivityDialerCallBinding>(), View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        statusBarWhiteColor(this)
+        initView()
     }
 
     private fun initView() {

@@ -1,9 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context=".kelare.message.SendMessageActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Back"
+            android:textColor="@color/app_color"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:ignore="HardcodedText" />
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_icon_back"
+                tools:ignore="ContentDescription" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/chat_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:id="@+id/ll_local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From: "
+                android:textColor="@color/gray"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/tv_default_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:textColor="@color/text_color_black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_remote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_local"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="To: "
+                android:textColor="@color/gray"
+                tools:ignore="HardcodedText" />
+
+            <im.vector.app.kelare.widget.CloudEditText
+                android:inputType="phone|textMultiLine"
+                android:id="@+id/et_user_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="add"
+                android:padding="5dp"
+                android:textSize="14sp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_color_black"
+                tools:ignore="HardcodedText,RtlCompat,RtlSymmetry" />
+
+            <EditText
+                android:id="@+id/remote_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:hint="add"
+                android:background="@null"
+                android:minLines="1"
+                android:layout_weight="1"
+                android:singleLine="false"
+                android:inputType="number"
+                android:textSize="16sp"
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_color_black"
+                tools:ignore="HardcodedText,TextFields"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/iv_add"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_add_contact"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_send"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/popup_bg_color"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            tools:ignore="RtlSymmetry">
+
+            <ImageView
+                android:id="@+id/send_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_upload"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+            <EditText
+                android:id="@+id/message"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:background="@drawable/shape_send_message_bg"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="@color/text_color_black"
+                android:textColorHint="@color/scan_tips_color"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText,LabelFor,TextFields" />
+
+            <TextView
+                android:id="@+id/send_message"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:gravity="center"
+                android:text="Send"
+                android:textColor="@color/app_top_color"
+                android:textSize="18sp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_below="@id/ll_remote"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/popup_bg_color"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/message_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/ll_send"
+            android:layout_below="@id/line"
+            android:background="@color/white"/>
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/ll_send"
+            android:layout_below="@id/line"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@color/white"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/messages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</LinearLayout>

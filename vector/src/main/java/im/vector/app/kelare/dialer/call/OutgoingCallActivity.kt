@@ -57,7 +57,6 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         statusBarWhiteColor(this)
-        statusBarWhiteColor(this)
         initView()
     }
 
