@@ -21,7 +21,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
+import androidx.core.view.isInvisible
+import com.google.android.material.textfield.TextInputLayout
+import im.vector.app.BuildConfig
+import im.vector.app.R
 import im.vector.app.databinding.FragmentFtueAuthKelareLoginBinding
+import im.vector.app.features.onboarding.OnboardingViewState
 import im.vector.app.features.onboarding.ftueauth.AbstractSSOFtueAuthFragment
 import javax.inject.Inject
 
@@ -43,7 +49,26 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
         }
     }
 
+    private fun setupUi(state: OnboardingViewState){
+        val completions = state.knownCustomHomeServersUrls + if (BuildConfig.DEBUG) listOf("User name") else emptyList()
+        views.loginServerUrlFormHomeServerUrl.setAdapter(
+                ArrayAdapter(
+                        requireContext(),
+                        R.layout.item_completion_homeserver,
+                        completions
+                )
+        )
+        views.loginServerUrlFormHomeServerUrlTil.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
+                .takeIf { completions.isNotEmpty() }
+                ?: TextInputLayout.END_ICON_NONE
+    }
+
     override fun resetViewModel() {
+
+    }
+
+    override fun updateWithState(state: OnboardingViewState) {
+        setupUi(state)
 
     }
 }

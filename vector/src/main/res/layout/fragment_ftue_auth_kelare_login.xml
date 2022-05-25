@@ -7,10 +7,19 @@
     android:background="@color/app_color"
     tools:context=".features.onboarding.ftueauth.kelare.FtueAuthKelareLoginFragment">
 
+
+    <ImageView
+        android:layout_width="@dimen/margin_50"
+        android:layout_height="@dimen/margin_50"
+        android:layout_marginTop="@dimen/margin_40"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/ic_launcher"
+        tools:ignore="ContentDescription" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_30"
         android:orientation="vertical"
         android:background="@drawable/shape_kelare_login_bg_5dp"
         android:layout_marginHorizontal="@dimen/margin_20"
@@ -30,16 +39,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_60"
                 android:text="Sign in with"
                 android:gravity="center"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/text_color_black1"
                 android:textSize="@dimen/textsize_15"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/loginServerUrlFormHomeServerUrlTil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/loginServerUrlFormHomeServerUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_45"
+                    android:paddingStart="@dimen/margin_15"
+                    android:hint="User name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textUri"
+                    android:maxLines="1"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
