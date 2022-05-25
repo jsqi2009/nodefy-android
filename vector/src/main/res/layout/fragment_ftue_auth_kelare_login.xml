@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/app_color"
+    tools:context=".features.onboarding.ftueauth.kelare.FtueAuthKelareLoginFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"
+        android:orientation="vertical"
+        android:background="@drawable/shape_kelare_login_bg_5dp"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:padding="@dimen/margin_20"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:gravity="center"
+            tools:ignore="HardcodedText"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/textsize_15"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign in with"
+                android:gravity="center"
+                tools:ignore="HardcodedText"
+                android:textColor="@color/text_color_black1"
+                android:textSize="@dimen/textsize_15"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/serverEt"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_45"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingEnd="48dp"
+            android:hint="URL (e.g.https://matrix.org)"
+            android:background="@drawable/shape_kelare_login_et_bg_5dp"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+
+        <EditText
+            android:id="@+id/userNameEt"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_45"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingEnd="48dp"
+            android:hint="User name"
+            android:background="@drawable/shape_kelare_login_et_bg_5dp"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+
+        <EditText
+            android:id="@+id/passwordEt"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_45"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingEnd="48dp"
+            android:hint="Password"
+            android:background="@drawable/shape_kelare_login_et_bg_5dp"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+
+
+        <TextView
+            android:id="@+id/forgotPasswordTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot password?"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_20"
+            tools:ignore="HardcodedText"
+            android:textColor="@color/sky_blue"/>
+
+        <TextView
+            android:id="@+id/loginTv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_35"
+            android:text="Log in"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@drawable/shape_kelare_login_button_bg_5dp"
+            tools:ignore="HardcodedText"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_13"/>
+
+        <TextView
+            android:id="@+id/createAccountTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create account"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_20"
+            tools:ignore="HardcodedText"
+            android:textColor="@color/sky_blue"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
