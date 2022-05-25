@@ -33,7 +33,7 @@
             android:gravity="center"
             tools:ignore="HardcodedText"
             android:textColor="@color/text_color_black"
-            android:textSize="@dimen/textsize_15"/>
+            android:textSize="@dimen/textsize_20"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:gravity="center"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/text_color_black1"
-                android:textSize="@dimen/textsize_15"/>
+                android:textSize="@dimen/textsize_16"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/loginServerUrlFormHomeServerUrlTil"
@@ -66,6 +66,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="textUri"
                     android:maxLines="1"
+                    android:textSize="@dimen/textsize_14"
                     tools:ignore="HardcodedText,RtlSymmetry" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -83,6 +84,7 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:paddingEnd="48dp"
+            android:textSize="@dimen/textsize_14"
             android:hint="URL (e.g.https://matrix.org)"
             android:background="@drawable/shape_kelare_login_et_bg_5dp"
             tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
@@ -99,6 +101,7 @@
             android:maxLines="1"
             android:paddingEnd="48dp"
             android:hint="User name"
+            android:textSize="@dimen/textsize_14"
             android:background="@drawable/shape_kelare_login_et_bg_5dp"
             tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
 
@@ -114,6 +117,7 @@
             android:maxLines="1"
             android:paddingEnd="48dp"
             android:hint="Password"
+            android:textSize="@dimen/textsize_14"
             android:background="@drawable/shape_kelare_login_et_bg_5dp"
             tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
 
@@ -126,7 +130,8 @@
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_20"
             tools:ignore="HardcodedText"
-            android:textColor="@color/sky_blue"/>
+            android:textSize="@dimen/textsize_12"
+            android:textColor="@color/create_account_color"/>
 
         <TextView
             android:id="@+id/loginTv"
@@ -138,7 +143,7 @@
             android:background="@drawable/shape_kelare_login_button_bg_5dp"
             tools:ignore="HardcodedText"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_13"/>
+            android:textSize="@dimen/textsize_14"/>
 
         <TextView
             android:id="@+id/createAccountTv"
@@ -148,7 +153,8 @@
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_20"
             tools:ignore="HardcodedText"
-            android:textColor="@color/sky_blue"/>
+            android:textSize="@dimen/textsize_12"
+            android:textColor="@color/create_account_color"/>
 
 
     </LinearLayout>
