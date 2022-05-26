@@ -113,6 +113,11 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
         } else {
             startNextActivityAndFinish()
         }
+
+        /**
+         * set statusbar color
+         */
+        statusBarColor(this)
     }
 
     private fun clearNotifications() {

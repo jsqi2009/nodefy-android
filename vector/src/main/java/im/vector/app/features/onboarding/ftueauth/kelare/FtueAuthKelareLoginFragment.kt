@@ -56,12 +56,20 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
         }
 
         views.loginTv.setOnClickListener(this)
+        views.forgotPasswordTv.setOnClickListener(this)
+        views.createAccountTv.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.loginTv    -> {
                 submit()
+            }
+            R.id.forgotPasswordTv    -> {
+
+            }
+            R.id.createAccountTv    -> {
+
             }
             else -> {}
         }
@@ -71,8 +79,6 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
 
         val userName = views.userNameEt.text.toString()
         val password = views.passwordEt.text.toString()
-
-
 
         // This can be called by the IME action, so deal with empty cases
         var error = 0
@@ -94,7 +100,8 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
     }
 
     private fun setupUi(state: OnboardingViewState){
-        val completions = state.knownCustomHomeServersUrls + if (BuildConfig.DEBUG) listOf("User name") else emptyList()
+//        val completions = state.knownCustomHomeServersUrls + if (BuildConfig.DEBUG) listOf("User name") else emptyList()
+        val completions = arrayListOf("User name")
         views.loginServerUrlFormHomeServerUrl.setAdapter(
                 ArrayAdapter(
                         requireContext(),
