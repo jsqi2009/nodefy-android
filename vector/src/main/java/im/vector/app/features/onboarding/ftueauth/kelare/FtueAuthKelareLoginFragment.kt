@@ -85,7 +85,6 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
 
         if (error == 0) {
             loginWithHomeServer(userName, password)
-            //viewModel.handle(OnboardingAction.LoginOrRegister(userName, password, getString(R.string.login_default_session_public_name)))
         }
     }
 
