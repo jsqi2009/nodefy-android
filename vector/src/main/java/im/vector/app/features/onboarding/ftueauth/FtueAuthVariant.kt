@@ -51,6 +51,7 @@ import im.vector.app.features.onboarding.OnboardingVariant
 import im.vector.app.features.onboarding.OnboardingViewEvents
 import im.vector.app.features.onboarding.OnboardingViewModel
 import im.vector.app.features.onboarding.OnboardingViewState
+import im.vector.app.features.onboarding.ftueauth.kelare.FtueAuthKelareLoginFragment
 import im.vector.app.features.onboarding.ftueauth.terms.FtueAuthLegacyStyleTermsFragment
 import im.vector.app.features.onboarding.ftueauth.terms.FtueAuthTermsFragment
 import im.vector.app.features.onboarding.ftueauth.terms.FtueAuthTermsLegacyStyleFragmentArgument
@@ -95,7 +96,8 @@ class FtueAuthVariant(
 
     override fun initUiAndData(isFirstCreation: Boolean) {
         if (isFirstCreation) {
-            addFirstFragment()
+            //addFirstFragment()
+            addKelareFirstFragment()
         }
 
         with(activity) {
@@ -116,6 +118,17 @@ class FtueAuthVariant(
     private fun addFirstFragment() {
         val splashFragment = when (vectorFeatures.isOnboardingSplashCarouselEnabled()) {
             true -> FtueAuthSplashCarouselFragment::class.java
+            else -> FtueAuthSplashFragment::class.java
+        }
+        activity.addFragment(views.loginFragmentContainer, splashFragment)
+    }
+
+    /**
+     * jsqi add kelare first fragment
+     */
+    private fun addKelareFirstFragment() {
+        val splashFragment = when (vectorFeatures.isOnboardingSplashCarouselEnabled()) {
+            true -> FtueAuthKelareLoginFragment::class.java
             else -> FtueAuthSplashFragment::class.java
         }
         activity.addFragment(views.loginFragmentContainer, splashFragment)

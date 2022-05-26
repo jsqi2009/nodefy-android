@@ -160,6 +160,8 @@ class OnboardingViewModel @AssistedInject constructor(
             OnboardingAction.SaveSelectedProfilePicture    -> updateProfilePicture()
             is OnboardingAction.PostViewEvent              -> _viewEvents.post(action.viewEvent)
             OnboardingAction.StopEmailValidationCheck      -> cancelWaitForEmailValidation()
+            is OnboardingAction.KelareLoginWithHomeServer     -> handleKelareLoginWithHomeserver(action)
+            is OnboardingAction.UpdateKelareSignMode     -> updateKelareSignMode()
         }
     }
 
@@ -513,6 +515,31 @@ class OnboardingViewModel @AssistedInject constructor(
         }
     }
 
+    private fun handKelareleLogin(action: OnboardingAction.KelareLoginWithHomeServer) {
+        val safeLoginWizard = loginWizard
+
+        if (safeLoginWizard == null) {
+            setState { copy(isLoading = false) }
+            _viewEvents.post(OnboardingViewEvents.Failure(Throwable("Bad configuration")))
+        } else {
+            setState { copy(isLoading = true) }
+            currentJob = viewModelScope.launch {
+                try {
+                    val result = safeLoginWizard.login(
+                            action.username,
+                            action.password,
+                            action.initialDeviceName
+                    )
+                    reAuthHelper.data = action.password
+                    onSessionCreated(result, isAccountCreated = false)
+                } catch (failure: Throwable) {
+                    setState { copy(isLoading = false) }
+                    _viewEvents.post(OnboardingViewEvents.Failure(failure))
+                }
+            }
+        }
+    }
+
     private fun startAuthenticationFlow() {
         // Ensure Wizard is ready
         loginWizard
@@ -599,6 +626,44 @@ class OnboardingViewModel @AssistedInject constructor(
         } else {
             startAuthenticationFlow(action, homeServerConnectionConfig)
         }
+    }
+
+    /**
+     * verify and login the homeserver
+     */
+    private fun handleKelareLoginWithHomeserver(action: OnboardingAction.KelareLoginWithHomeServer) {
+        val homeServerConnectionConfig = homeServerConnectionConfigFactory.create(action.homeServerUrl)
+        if (homeServerConnectionConfig == null) {
+            // This is invalid
+            _viewEvents.post(OnboardingViewEvents.Failure(Throwable("Unable to create a HomeServerConnectionConfig")))
+        } else {
+            setState {
+                copy(
+                        serverType = ServerType.Other
+                )
+            }
+            updateSignMode(SignMode.SignIn)
+            currentHomeServerConnectionConfig = homeServerConnectionConfig
+            currentJob = viewModelScope.launch {
+                setState { copy(isLoading = true) }
+                runCatching { startAuthenticationFlowUseCase.execute(homeServerConnectionConfig) }.fold(
+                        onSuccess = { kelareLogin(action, homeServerConnectionConfig) },
+                        onFailure = { _viewEvents.post(OnboardingViewEvents.Failure(it)) }
+                )
+                setState { copy(isLoading = false) }
+            }
+            Timber.e("home server: ${homeServerConnectionConfig.homeServerUri}")
+        }
+    }
+
+    /**
+     * kelare login
+     */
+    private fun kelareLogin(action: OnboardingAction.KelareLoginWithHomeServer,
+                            homeServerConnectionConfig: HomeServerConnectionConfig) {
+        rememberHomeServer(homeServerConnectionConfig.homeServerUri.toString())
+
+        handKelareleLogin(action)
     }
 
     private fun startAuthenticationFlow(
@@ -791,6 +856,10 @@ class OnboardingViewModel @AssistedInject constructor(
 
     private fun cancelWaitForEmailValidation() {
         currentJob = null
+    }
+
+    private fun updateKelareSignMode() {
+        updateSignMode(SignMode.SignIn)
     }
 }
 

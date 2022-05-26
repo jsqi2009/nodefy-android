@@ -75,4 +75,9 @@ sealed interface OnboardingAction : VectorViewModelAction {
     data class ProfilePictureSelected(val uri: Uri) : OnboardingAction
     object SaveSelectedProfilePicture : OnboardingAction
     object UpdateProfilePictureSkipped : OnboardingAction
+
+    object  UpdateKelareSignMode : OnboardingAction
+    data class KelareLoginWithHomeServer(val homeServerUrl: String, val username: String,
+                                      val password: String,val initialDeviceName: String) : OnboardingAction
+
 }
