@@ -27,14 +27,14 @@
     <color name="decline_color">#f44474</color>
     <color name="call_action_color">#DFD5F4</color>
     <color name="create_account_color">#00D1FF</color>
-
+    <color name="white">#ffffff</color>
 
 
 
 
     <color name="app_top_color">#0096B6</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="white">#ffffff</color>
+
     <color name="line_gray">#DBDBDB</color>
     <color name="gray">#60888888</color>
     <color name="gray_bg">#CC888888</color>

@@ -16,6 +16,8 @@
 
 package im.vector.app.features.onboarding.ftueauth.kelare
 
+import UpdateLanguageEvent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,8 @@ import android.widget.ArrayAdapter
 import androidx.core.text.isDigitsOnly
 import androidx.core.view.isInvisible
 import com.google.android.material.textfield.TextInputLayout
+import com.labo.kaji.relativepopupwindow.RelativePopupWindow
+import com.squareup.otto.Subscribe
 import im.vector.app.BuildConfig
 import im.vector.app.R
 import im.vector.app.core.utils.ensureProtocol
@@ -32,22 +36,32 @@ import im.vector.app.databinding.FragmentFtueAuthKelareLoginBinding
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingViewState
 import im.vector.app.features.onboarding.ftueauth.AbstractSSOFtueAuthFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 
-class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFragment<FragmentFtueAuthKelareLoginBinding>(), View.OnClickListener {
+class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthKelareLoginBinding>(), View.OnClickListener {
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentFtueAuthKelareLoginBinding {
         return FragmentFtueAuthKelareLoginBinding.inflate(inflater, container, false)
     }
 
+    private val languageList = arrayListOf("English(US)", "中文")
+    private val defaultType = "User name"
+    private val defaultLanguage = languageList.first()
+
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        statusBarColor(activity!!)
         setupViews()
     }
 
     private fun setupViews() {
+
+        views.tvType.text = defaultType
+        views.tvLanguage.text = defaultLanguage
         views.passwordEt.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 return@setOnEditorActionListener true
@@ -58,6 +72,8 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
         views.loginTv.setOnClickListener(this)
         views.forgotPasswordTv.setOnClickListener(this)
         views.createAccountTv.setOnClickListener(this)
+        views.llSignInType.setOnClickListener(this)
+        views.llLanguage.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -70,6 +86,12 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
             }
             R.id.createAccountTv    -> {
 
+            }
+            R.id.ll_sign_in_type    -> {
+                switchSignInType()
+            }
+            R.id.ll_language    -> {
+                switchLanguage()
             }
             else -> {}
         }
@@ -94,24 +116,37 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
         }
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
+    private fun switchSignInType() {
+        views.ivArrow.setImageDrawable(resources.getDrawable(R.drawable.ic_icon_up_arrow, null))
+        val typeList = arrayListOf(defaultType)
+        val signInTypePopup = SignInTypePopup(activity!!, mBus, views.tvType.text.toString(), typeList)
+        signInTypePopup!!.showOnAnchor(views.llSignInType, RelativePopupWindow.VerticalPosition.BELOW,
+                RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, 0, 5,true)
+        signInTypePopup.setOnDismissListener {
+            views.ivArrow.setImageDrawable(resources.getDrawable(R.drawable.ic_icon_down_arrow, null))
+        }
+    }
+
+    @SuppressLint("UseRequireInsteadOfGet", "UseCompatLoadingForDrawables")
+    private fun switchLanguage() {
+        views.ivLanguageArrow.setImageDrawable(resources.getDrawable(R.drawable.ic_icon_up_arrow_white, null))
+        val languagePopup = SwitchLanguagePopup(activity!!, mBus, views.tvLanguage.text.toString(), languageList)
+        languagePopup!!.showOnAnchor(views.llLanguage, RelativePopupWindow.VerticalPosition.ABOVE,
+                RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, 0, 5,true)
+        languagePopup.setOnDismissListener {
+            views.ivLanguageArrow.setImageDrawable(resources.getDrawable(R.drawable.ic_icon_down_arrow_white, null))
+        }
+    }
+
+    @Subscribe
+    fun onUpdateLanguageEvent(event: UpdateLanguageEvent) {
+        views.tvLanguage.text = event.value
+    }
+
     private fun loginWithHomeServer(username: String, password: String) {
         val serverUrl = views.serverEt.text.toString().trim().ensureProtocol()
         viewModel.handle(OnboardingAction.KelareLoginWithHomeServer(serverUrl, username, password, getString(R.string.login_default_session_public_name)))
-    }
-
-    private fun setupUi(state: OnboardingViewState){
-//        val completions = state.knownCustomHomeServersUrls + if (BuildConfig.DEBUG) listOf("User name") else emptyList()
-        val completions = arrayListOf("User name")
-        views.loginServerUrlFormHomeServerUrl.setAdapter(
-                ArrayAdapter(
-                        requireContext(),
-                        R.layout.item_completion_sign_in_type,
-                        completions
-                )
-        )
-        views.loginServerUrlFormHomeServerUrlTil.endIconMode = TextInputLayout.END_ICON_DROPDOWN_MENU
-                .takeIf { completions.isNotEmpty() }
-                ?: TextInputLayout.END_ICON_NONE
     }
 
     override fun resetViewModel() {
@@ -119,6 +154,6 @@ class FtueAuthKelareLoginFragment @Inject constructor(): AbstractSSOFtueAuthFrag
     }
 
     override fun updateWithState(state: OnboardingViewState) {
-        setupUi(state)
+
     }
 }

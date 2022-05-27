@@ -17,6 +17,7 @@
 package im.vector.app.core.platform
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
@@ -36,6 +37,7 @@ import com.airbnb.mvrx.MavericksView
 import com.bumptech.glide.util.Util.assertMainThread
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.gyf.immersionbar.ImmersionBar
 import com.kaopiz.kprogresshud.KProgressHUD
 import dagger.hilt.android.EntryPointAccessors
 import im.vector.app.R
@@ -334,5 +336,20 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
             this.loadingDialog!!.dismiss()
             this.loadingDialog = null
         }
+    }
+
+    fun statusBarColor(activity: Activity) {
+        ImmersionBar.with(activity)
+                .statusBarColor(R.color.app_color)
+                .fitsSystemWindows(true)
+                .init()
+    }
+
+    fun statusBarWhiteColor(activity: Activity) {
+        ImmersionBar.with(activity)
+                .statusBarColor(R.color.white)
+                .statusBarDarkFont(true)
+                .fitsSystemWindows(true)
+                .init()
     }
 }

@@ -10,17 +10,44 @@
     tools:context=".features.onboarding.ftueauth.kelare.FtueAuthKelareLoginFragment">
 
     <ImageView
-        android:layout_width="@dimen/margin_80"
-        android:layout_height="@dimen/margin_80"
-        android:layout_marginTop="@dimen/margin_40"
+        android:layout_width="@dimen/margin_60"
+        android:layout_height="@dimen/margin_60"
+        android:layout_marginTop="@dimen/margin_60"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/playstore_icon"
+        android:src="@drawable/ic_nodefy_logo_small"
         tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_30"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="nodefy."
+            android:gravity="center"
+            tools:ignore="HardcodedText"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_20"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="me"
+            android:gravity="center"
+            tools:ignore="HardcodedText"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_20"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"
         android:orientation="vertical"
         android:background="@drawable/shape_kelare_login_bg_5dp"
         android:layout_marginHorizontal="@dimen/margin_20"
@@ -37,7 +64,7 @@
             android:gravity="center"
             tools:ignore="HardcodedText"
             android:textColor="@color/text_color_black"
-            android:textSize="@dimen/textsize_20"/>
+            android:textSize="@dimen/textsize_17"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,45 +76,52 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_40"
                 android:text="Sign in with"
                 android:gravity="center"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/text_color_black1"
-                android:textSize="@dimen/textsize_16"/>
+                android:textSize="@dimen/textsize_15"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/loginServerUrlFormHomeServerUrlTil"
-                android:layout_width="match_parent"
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/ll_sign_in_type"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                app:hintEnabled="false">
+                android:background="@drawable/shape_kelare_login_et_bg_5dp">
 
-                <AutoCompleteTextView
-                    android:id="@+id/loginServerUrlFormHomeServerUrl"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_45"
-                    android:paddingStart="@dimen/margin_15"
-                    android:layout_gravity="center_vertical"
-                    android:text="User name"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:maxLines="1"
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="@dimen/margin_5"
+                    android:hint="User name"
+                    android:gravity="center_vertical"
                     android:textSize="@dimen/textsize_14"
-                    android:ellipsize="end"
-                    android:singleLine="true"
                     android:textColor="@color/black"
-                    android:dropDownVerticalOffset="3dp"
-                    android:background="@drawable/shape_kelare_login_et_bg_5dp"
-                    tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+                    tools:ignore="HardcodedText,LabelFor,RtlSymmetry"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="@dimen/margin_5"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_icon_down_arrow"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <EditText
             android:id="@+id/serverEt"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_45"
+            android:layout_height="@dimen/margin_40"
             android:paddingHorizontal="@dimen/margin_10"
             android:layout_marginTop="@dimen/margin_10"
             android:ems="10"
@@ -103,7 +137,7 @@
         <EditText
             android:id="@+id/userNameEt"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_45"
+            android:layout_height="@dimen/margin_40"
             android:paddingHorizontal="@dimen/margin_10"
             android:layout_marginTop="@dimen/margin_10"
             android:ems="10"
@@ -119,7 +153,7 @@
         <EditText
             android:id="@+id/passwordEt"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_45"
+            android:layout_height="@dimen/margin_40"
             android:paddingHorizontal="@dimen/margin_10"
             android:layout_marginTop="@dimen/margin_10"
             android:ems="10"
@@ -167,6 +201,43 @@
             android:textSize="@dimen/textsize_12"
             android:textColor="@color/create_account_color"/>
 
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/ll_language"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/margin_5"
+            android:hint="User name"
+            android:text="English(US)"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry"/>
+
+        <ImageView
+            android:id="@+id/iv_language_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="@dimen/margin_5"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_icon_down_arrow_white"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
