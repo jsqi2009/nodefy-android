@@ -10,7 +10,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/nodefy_logo" />
+            android:src="@drawable/nodefy_splash_white" />
     </item>
 
 </layer-list>
