@@ -116,7 +116,7 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
         }
     }
 
-    @SuppressLint("UseRequireInsteadOfGet")
+    @SuppressLint("UseRequireInsteadOfGet", "UseCompatLoadingForDrawables")
     private fun switchSignInType() {
         views.ivArrow.setImageDrawable(resources.getDrawable(R.drawable.ic_icon_up_arrow, null))
         val typeList = arrayListOf(defaultType)

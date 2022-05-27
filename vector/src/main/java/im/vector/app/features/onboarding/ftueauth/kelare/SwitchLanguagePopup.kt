@@ -52,7 +52,7 @@ class SwitchLanguagePopup(context: Context, private val mBus: AndroidBus, privat
     init {
         @SuppressLint("InflateParams")
         contentView = LayoutInflater.from(context).inflate(R.layout.popup_sign_in_type_list, null)
-        width = UIUtils.dip2px(context, 120)
+        width = UIUtils.dip2px(context, 150)
         height = ViewGroup.LayoutParams.WRAP_CONTENT
         isFocusable = true
         isOutsideTouchable = true

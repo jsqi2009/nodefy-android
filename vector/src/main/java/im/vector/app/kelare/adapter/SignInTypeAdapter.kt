@@ -42,17 +42,27 @@ class SignInTypeAdapter(private val mContext: Activity, private val  selectedTyp
 
     }
 
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val holder = holder as ViewHolder
         val info = getDataList()!![position]
 
         holder.tvType.text = info
 
-        if (selectedType == info) {
-//            holder.llRoot.setBackgroundColor(mContext.resources.getColor(R.color.text_color_black1, null))
-            holder.llRoot.setBackgroundColor(R.color.text_color_black1)
+        if (getDataList()!!.size == 1) {
+            holder.llRoot.background = mContext.resources.getDrawable(R.drawable.shape_kelare_login_popup_selected_bg, null)
             holder.ivChecked.visibility = View.VISIBLE
+        } else {
+            if (selectedType == info) {
+                if (position == 0) {
+                    holder.llRoot.background = mContext.resources.getDrawable(R.drawable.shape_kelare_login_popup_top_bg, null)
+                } else if (position == getDataList()!!.size - 1) {
+                    holder.llRoot.background = mContext.resources.getDrawable(R.drawable.shape_kelare_login_popup_bottom_bg, null)
+                } else {
+                    holder.llRoot.background = mContext.resources.getDrawable(R.drawable.shape_kelare_login_popup_middle_bg, null)
+                }
+                holder.ivChecked.visibility = View.VISIBLE
+            }
         }
 
         holder.itemView.setOnClickListener {

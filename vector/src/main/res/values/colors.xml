@@ -28,6 +28,7 @@
     <color name="call_action_color">#DFD5F4</color>
     <color name="create_account_color">#00D1FF</color>
     <color name="white">#ffffff</color>
+    <color name="popup_selected_item_color">#AAAAA9</color>
 
 
 

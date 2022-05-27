@@ -55,7 +55,8 @@ class SignInTypePopup(context: Context, private val mBus: AndroidBus, private va
         height = ViewGroup.LayoutParams.WRAP_CONTENT
         isFocusable = true
         isOutsideTouchable = true
-        setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        //setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        setBackgroundDrawable(context.resources.getDrawable(R.drawable.shape_kelare_login_popup_bg, null))
 
         mContext = context
         mSession = DialerSession(context)
