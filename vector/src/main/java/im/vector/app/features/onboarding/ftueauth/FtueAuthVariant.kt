@@ -96,8 +96,8 @@ class FtueAuthVariant(
 
     override fun initUiAndData(isFirstCreation: Boolean) {
         if (isFirstCreation) {
-            //addFirstFragment()
-            addKelareFirstFragment()
+            addFirstFragment()
+//            addKelareFirstFragment()
         }
 
         with(activity) {
