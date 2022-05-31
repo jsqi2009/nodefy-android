@@ -64,6 +64,8 @@ class SharedSecureStorageActivity :
         viewModel.observeViewEvents { observeViewEvents(it) }
 
         viewModel.onEach { renderState(it) }
+
+        statusBarWhiteColor(this)
     }
 
     override fun onDestroy() {

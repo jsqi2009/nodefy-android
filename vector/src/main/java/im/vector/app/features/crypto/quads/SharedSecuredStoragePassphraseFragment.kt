@@ -16,7 +16,12 @@
 
 package im.vector.app.features.crypto.quads
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,18 +50,19 @@ class SharedSecuredStoragePassphraseFragment @Inject constructor(
 
     val sharedViewModel: SharedSecureStorageViewModel by activityViewModel()
 
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // If has passphrase
         val pass = getString(R.string.recovery_passphrase)
         val key = getString(R.string.recovery_key)
-        views.ssssRestoreWithPassphraseWarningText.text = getString(
-                R.string.enter_secret_storage_passphrase_or_key,
-                pass,
-                key
-        )
-                .toSpannable()
+//        views.ssssRestoreWithPassphraseWarningText.text = getString(
+//                R.string.enter_secret_storage_passphrase_or_key,
+//                pass,
+//                key
+//        )
+        views.ssssRestoreWithPassphraseWarningText.text = getString(R.string.enter_secret_storage_passphrase_or_key2).toSpannable()
         // TODO Restore coloration when we will have a FAQ to open with those terms
         // .colorizeMatchingText(pass, colorProvider.getColorFromAttribute(android.R.attr.textColorLink))
         // .colorizeMatchingText(key, colorProvider.getColorFromAttribute(android.R.attr.textColorLink))
@@ -77,9 +83,9 @@ class SharedSecuredStoragePassphraseFragment @Inject constructor(
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)
 
-        views.ssssPassphraseReset.views.bottomSheetActionClickableZone.debouncedClicks {
+        /*views.ssssPassphraseReset.views.bottomSheetActionClickableZone.debouncedClicks {
             sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
-        }
+        }*/
 
         sharedViewModel.observeViewEvents {
             when (it) {
@@ -92,6 +98,18 @@ class SharedSecuredStoragePassphraseFragment @Inject constructor(
 
         views.ssssPassphraseSubmit.debouncedClicks { submit() }
         views.ssssPassphraseUseKey.debouncedClicks { sharedViewModel.handle(SharedSecureStorageAction.UseKey) }
+
+        statusBarColor(activity!!)
+
+        val spannable = SpannableString(resources.getString(R.string.bad_passphrase_key_reset_all_action))
+        spannable.setSpan(
+                ForegroundColorSpan(Color.RED), spannable.length - 11, spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        views.ssssPassphraseReset.text = spannable
+
+        views.ssssPassphraseReset.setOnClickListener {
+            sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
+        }
     }
 
     fun submit() {

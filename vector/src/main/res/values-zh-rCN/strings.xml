@@ -2297,7 +2297,12 @@
 
     <!-- nodefy.me -->
     <string name="or_other_nodefy_me_client">这适用于${app_name}和其他能够交叉签名的Nodefy客户端</string>
-    <string name="verification_this_login">使用安全密钥</string>
+    <string name="verification_this_login">使用安全口令或密钥</string>
     <string name="verification_open_other_to_verify2">使用现有其他会话来验证此会话，并授予其访问加密消息的权限。</string>
+    <string name="enter_secret_storage_passphrase_or_key2">使用你的安全口令验证此设备</string>
+    <string name="enter_phrase">输入</string>
+    <string name="forget_phrase_to_use_recovery_key">不知道您的安全口令？您可以使用您的安全密钥。</string>
+    <string name="recovery_passphrase2">安全口令</string>
+    <string name="use_phrase">使用口令</string>
 
 </resources>

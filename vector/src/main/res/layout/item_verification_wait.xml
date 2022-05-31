@@ -16,6 +16,7 @@
         style="@style/Widget.Vector.TextView.Body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_15"
         android:gravity="center_horizontal"
         android:text="@string/use_latest_app"
         android:textColor="@color/text_color_dark_gray"
@@ -91,14 +92,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_20"
+        android:gravity="center_horizontal"
         android:text="@string/or_other_nodefy_me_client"
         android:textColor="@color/text_color_black"
-        android:textSize="@dimen/textsize_13"
-        android:layout_marginBottom="@dimen/margin_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/textsize_13"
+        android:layout_marginBottom="@dimen/margin_20"
         app:layout_constraintTop_toBottomOf="@id/labelsBarrier" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
