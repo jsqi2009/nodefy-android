@@ -29,7 +29,7 @@
             tools:src="@sample/user_round_avatars"
             android:visibility="invisible"/>
 
-        <im.vector.app.core.ui.views.ShieldImageView
+        <!--<im.vector.app.core.ui.views.ShieldImageView
             android:id="@+id/otherUserShield"
             android:layout_width="16dp"
             android:layout_height="16dp"
@@ -38,7 +38,7 @@
             app:layout_constraintCircleRadius="16dp"
             tools:ignore="MissingConstraints"
             android:visibility="gone"
-            tools:visibility="gone"/>
+            tools:visibility="gone"/>-->
 
         <TextView
             android:id="@+id/otherUserNameText"

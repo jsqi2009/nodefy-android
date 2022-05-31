@@ -158,9 +158,9 @@ class VerificationBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetV
                 if (state.sasTransactionState == VerificationTxState.Verified ||
                         state.qrTransactionState == VerificationTxState.Verified ||
                         state.verifiedFromPrivateKeys) {
-                    views.otherUserShield.render(RoomEncryptionTrustLevel.Trusted)
+                    //views.otherUserShield.render(RoomEncryptionTrustLevel.Trusted)
                 } else {
-                    views.otherUserShield.render(RoomEncryptionTrustLevel.Warning)
+                    //views.otherUserShield.render(RoomEncryptionTrustLevel.Warning)
                 }
                 views.otherUserNameText.text = getString(
                         if (state.selfVerificationMode) R.string.crosssigning_verify_this_session else R.string.crosssigning_verify_session
@@ -170,10 +170,10 @@ class VerificationBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetV
 
                 if (state.sasTransactionState == VerificationTxState.Verified || state.qrTransactionState == VerificationTxState.Verified) {
                     views.otherUserNameText.text = getString(R.string.verification_verified_user, matrixItem.getBestName())
-                    views.otherUserShield.render(RoomEncryptionTrustLevel.Trusted)
+                    //views.otherUserShield.render(RoomEncryptionTrustLevel.Trusted)
                 } else {
                     views.otherUserNameText.text = getString(R.string.verification_verify_user, matrixItem.getBestName())
-                    views.otherUserShield.render(null)
+                    //views.otherUserShield.render(null)
                 }
             }
         }
