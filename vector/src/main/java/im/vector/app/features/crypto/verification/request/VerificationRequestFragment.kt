@@ -75,10 +75,12 @@ class VerificationRequestFragment @Inject constructor(
     }
 
     override fun onClickSkip() {
-        viewModel.queryCancel()
+        //viewModel.queryCancel()
     }
 
     override fun onClickOnWasNotMe() {
         viewModel.itWasNotMe()
     }
+
+
 }

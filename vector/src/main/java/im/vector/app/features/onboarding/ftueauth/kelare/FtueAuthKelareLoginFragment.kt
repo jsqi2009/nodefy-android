@@ -58,7 +58,10 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
         setupViews()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupViews() {
+
+        views.serverEt.setText("https://kelare.istory.cc:8448")
 
         views.tvType.text = defaultType
         views.tvLanguage.text = defaultLanguage

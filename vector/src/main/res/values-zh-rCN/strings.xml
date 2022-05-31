@@ -2294,4 +2294,10 @@
     <string name="room_threads_filter">在房间中筛选子区</string>
     <string name="action_thread_copy_link_to_thread">复制子区的链接</string>
     <string name="action_thread_view_in_room">在房间中查看</string>
+
+    <!-- nodefy.me -->
+    <string name="or_other_nodefy_me_client">这适用于${app_name}和其他能够交叉签名的Nodefy客户端</string>
+    <string name="verification_this_login">使用安全密钥</string>
+    <string name="verification_open_other_to_verify2">使用现有其他会话来验证此会话，并授予其访问加密消息的权限。</string>
+
 </resources>

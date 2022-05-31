@@ -3061,5 +3061,10 @@
     <string name="dialer_message_sms">SMS</string>
     <string name="dialer_message_delete_group">Delete \"%s\" ?</string>
 
+    <!-- nodefy.me -->
+    <string name="or_other_nodefy_me_client">This works with ${app_name} and other cross-signing capable Nodefy clients</string>
+    <string name="verification_this_login">Use Security Key</string>
+    <string name="verification_open_other_to_verify2">Verify this session from one of your other sessions, granting it access to encrypted messages.</string>
+
 
 </resources>

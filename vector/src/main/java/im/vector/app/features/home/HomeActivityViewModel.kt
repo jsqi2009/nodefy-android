@@ -118,7 +118,10 @@ class HomeActivityViewModel @AssistedInject constructor(
                 .liveCrossSigningInfo(safeActiveSession.myUserId)
                 .onEach {
                     val isVerified = it.getOrNull()?.isTrusted() ?: false
+                    Timber.e("isVerified------$isVerified")
+                    Timber.e("onceTrusted------$onceTrusted")
                     if (!isVerified && onceTrusted) {
+//                    if (!isVerified && !onceTrusted) {
                         // cross signing keys have been reset
                         // Trigger a popup to re-verify
                         // Note: user can be null in case of logout
@@ -257,6 +260,7 @@ class HomeActivityViewModel @AssistedInject constructor(
             if (mxCrossSigningInfo != null) {
                 // Cross-signing is already set up for this user, is it trusted?
                 if (!mxCrossSigningInfo.isTrusted()) {
+                    Timber.e("mxCrossSigningInfo.isTrusted------false")
                     // New session
                     _viewEvents.post(
                             HomeActivityViewEvents.OnNewSession(

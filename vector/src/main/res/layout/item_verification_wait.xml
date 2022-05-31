@@ -16,9 +16,10 @@
         style="@style/Widget.Vector.TextView.Body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start"
+        android:gravity="center_horizontal"
         android:text="@string/use_latest_app"
         android:textColor="?vctr_content_primary"
+        android:textSize="@dimen/textsize_13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +63,8 @@
         android:textColor="?vctr_content_primary"
         app:layout_constraintEnd_toEndOf="@id/monitorIcon"
         app:layout_constraintStart_toStartOf="@id/monitorIcon"
-        app:layout_constraintTop_toBottomOf="@id/monitorIcon" />
+        app:layout_constraintTop_toBottomOf="@id/monitorIcon"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/app_ios_android"
@@ -75,14 +77,16 @@
         android:textColor="?vctr_content_primary"
         app:layout_constraintEnd_toEndOf="@id/smartphoneIcon"
         app:layout_constraintStart_toStartOf="@id/smartphoneIcon"
-        app:layout_constraintTop_toBottomOf="@id/smartphoneIcon" />
+        app:layout_constraintTop_toBottomOf="@id/smartphoneIcon"
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/labelsBarrier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="app_ios_android,app_desktop_web" />
+        app:constraint_referenced_ids="app_ios_android,app_desktop_web"
+        android:visibility="gone"/>
 
     <TextView
         style="@style/Widget.Vector.TextView.Caption"
@@ -90,8 +94,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="@string/or_other_mx_capable_client"
-        android:textColor="?vctr_content_secondary"
+        android:text="@string/or_other_nodefy_me_client"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/textsize_13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/labelsBarrier" />

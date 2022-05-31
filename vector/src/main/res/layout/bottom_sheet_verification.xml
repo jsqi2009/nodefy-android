@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <ImageView
             android:id="@+id/otherUserAvatarImageView"
@@ -25,7 +26,8 @@
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@sample/user_round_avatars" />
+            tools:src="@sample/user_round_avatars"
+            android:visibility="invisible"/>
 
         <im.vector.app.core.ui.views.ShieldImageView
             android:id="@+id/otherUserShield"
@@ -34,7 +36,9 @@
             app:layout_constraintCircle="@id/otherUserAvatarImageView"
             app:layout_constraintCircleAngle="135"
             app:layout_constraintCircleRadius="16dp"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:visibility="gone"
+            tools:visibility="gone"/>
 
         <TextView
             android:id="@+id/otherUserNameText"
@@ -47,8 +51,10 @@
             android:maxLines="2"
             android:textColor="?vctr_content_primary"
             android:textStyle="bold"
+            android:gravity="center_horizontal"
             app:layout_constraintBottom_toBottomOf="@id/otherUserAvatarImageView"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintStart_toEndOf="@id/otherUserAvatarImageView"
             app:layout_constraintTop_toTopOf="@id/otherUserAvatarImageView"
             tools:text="@string/verification_verify_user" />

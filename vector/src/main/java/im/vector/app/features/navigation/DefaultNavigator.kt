@@ -112,6 +112,7 @@ import org.matrix.android.sdk.api.session.room.model.roomdirectory.PublicRoom
 import org.matrix.android.sdk.api.session.terms.TermsService
 import org.matrix.android.sdk.api.session.widgets.model.Widget
 import org.matrix.android.sdk.api.session.widgets.model.WidgetType
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -250,6 +251,7 @@ class DefaultNavigator @Inject constructor(
                 .filter { it.deviceId != session.sessionParams.deviceId }
                 .map { it.deviceId }
         if (context is AppCompatActivity) {
+            Timber.e("otherSessions.isNotEmpty()-----${otherSessions.isNotEmpty()}")
             if (otherSessions.isNotEmpty()) {
                 val pr = session.cryptoService().verificationService().requestKeyVerification(
                         supportedVerificationMethodsProvider.provide(),

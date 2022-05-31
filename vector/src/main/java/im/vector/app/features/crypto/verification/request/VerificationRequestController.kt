@@ -56,10 +56,11 @@ class VerificationRequestController @Inject constructor(
         val host = this
 
         if (state.selfVerificationMode) {
-            if (state.hasAnyOtherSession) {
+//            if (state.hasAnyOtherSession) {
+            if (true) {
                 bottomSheetVerificationNoticeItem {
                     id("notice")
-                    notice(host.stringProvider.getString(R.string.verification_open_other_to_verify).toEpoxyCharSequence())
+                    notice(host.stringProvider.getString(R.string.verification_open_other_to_verify2).toEpoxyCharSequence())
                 }
 
                 bottomSheetSelfWaitItem {
@@ -72,12 +73,20 @@ class VerificationRequestController @Inject constructor(
             }
 
             if (state.quadSContainsSecrets) {
-                val subtitle = if (state.hasAnyOtherSession) {
+//                val subtitle = if (state.hasAnyOtherSession) {
+                val subtitle = if (true) {
                     stringProvider.getString(R.string.verification_use_passphrase)
                 } else {
                     null
                 }
                 bottomSheetVerificationActionItem {
+                    id("passphrase")
+                    title(host.stringProvider.getString(R.string.verification_this_login))
+                    subTitle(subtitle)
+                    listener { host.listener?.onClickRecoverFromPassphrase() }
+                }
+
+                /*bottomSheetVerificationActionItem {
                     id("passphrase")
                     title(host.stringProvider.getString(R.string.verification_cannot_access_other_session))
                     titleColor(host.colorProvider.getColorFromAttribute(R.attr.vctr_content_primary))
@@ -85,10 +94,10 @@ class VerificationRequestController @Inject constructor(
                     iconRes(R.drawable.ic_arrow_right)
                     iconColor(host.colorProvider.getColorFromAttribute(R.attr.vctr_content_primary))
                     listener { host.listener?.onClickRecoverFromPassphrase() }
-                }
+                }*/
             }
 
-            bottomSheetDividerItem {
+            /*bottomSheetDividerItem {
                 id("sep1")
             }
 
@@ -99,7 +108,7 @@ class VerificationRequestController @Inject constructor(
                 iconRes(R.drawable.ic_arrow_right)
                 iconColor(host.colorProvider.getColorFromAttribute(R.attr.colorError))
                 listener { host.listener?.onClickSkip() }
-            }
+            }*/
         } else {
             val styledText =
                     if (state.isMe) {

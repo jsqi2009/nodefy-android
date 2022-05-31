@@ -272,7 +272,8 @@ class HomeActivity :
         homeActivityViewModel.observeViewEvents {
             when (it) {
                 is HomeActivityViewEvents.AskPasswordToInitCrossSigning -> handleAskPasswordToInitCrossSigning(it)
-                is HomeActivityViewEvents.OnNewSession                  -> handleOnNewSession(it)
+//                is HomeActivityViewEvents.OnNewSession                  -> handleOnNewSession(it)
+                is HomeActivityViewEvents.OnNewSession                  -> handleOnNewSession2(it)
                 HomeActivityViewEvents.PromptToEnableSessionPush        -> handlePromptToEnablePush()
                 is HomeActivityViewEvents.OnCrossSignedInvalidated      -> handleCrossSigningInvalidated(it)
                 HomeActivityViewEvents.ShowAnalyticsOptIn               -> handleShowAnalyticsOptIn()
@@ -420,6 +421,15 @@ class HomeActivity :
                 R.string.confirm_your_identity
         ) {
             it.navigator.waitSessionVerification(it)
+        }
+    }
+
+    private fun handleOnNewSession2(event: HomeActivityViewEvents.OnNewSession) {
+        // We need to ask
+        if (event.waitForIncomingRequest) {
+            navigator.waitSessionVerification(this)
+        } else {
+            navigator.requestSelfSessionVerification(this)
         }
     }
 
