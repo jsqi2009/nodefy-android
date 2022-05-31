@@ -60,7 +60,7 @@ abstract class BottomSheetVerificationActionItem : VectorEpoxyModel<BottomSheetV
         super.bind(holder)
         holder.view.onClick(listener)
         holder.title.text = title
-        holder.title.setTextColor(titleColor)
+        //holder.title.setTextColor(titleColor)
 
         holder.subTitle.setTextOrHide(subTitle)
 

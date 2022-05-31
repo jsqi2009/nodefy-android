@@ -82,7 +82,7 @@ class VerificationRequestController @Inject constructor(
                 bottomSheetVerificationActionItem {
                     id("passphrase")
                     title(host.stringProvider.getString(R.string.verification_this_login))
-                    titleColor(R.color.text_color_black)
+                    //titleColor(R.color.text_color_black)
                     subTitle(subtitle)
                     listener { host.listener?.onClickRecoverFromPassphrase() }
                 }
