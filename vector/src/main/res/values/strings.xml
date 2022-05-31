@@ -3070,5 +3070,9 @@
     <string name="forget_phrase_to_use_recovery_key">Don\'t know your Security Phrase? You can use your Security Key.</string>
     <string name="recovery_passphrase2">Security Phrase</string>
     <string name="use_phrase">Use Phrase</string>
+    <string name="passphrase_enter_passphrase2">Enter Phrase</string>
+    <string name="recovery_key2">Security Key</string>
+    <string name="enter_secret_storage_input_key2">Use your Security Key to verify this device.</string>
+
 
 </resources>

@@ -16,8 +16,13 @@
 
 package im.vector.app.features.crypto.quads
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +50,7 @@ class SharedSecuredStorageKeyFragment @Inject constructor() : VectorBaseFragment
 
     val sharedViewModel: SharedSecureStorageViewModel by activityViewModel()
 
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views.ssssRestoreWithKeyText.text = getString(R.string.enter_secret_storage_input_key)
@@ -68,9 +74,9 @@ class SharedSecuredStorageKeyFragment @Inject constructor() : VectorBaseFragment
 
         views.ssssKeyUseFile.debouncedClicks { startImportTextFromFileIntent(requireContext(), importFileStartForActivityResult) }
 
-        views.ssssKeyReset.views.bottomSheetActionClickableZone.debouncedClicks {
+        /*views.ssssKeyReset.views.bottomSheetActionClickableZone.debouncedClicks {
             sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
-        }
+        }*/
 
         sharedViewModel.observeViewEvents {
             when (it) {
@@ -82,6 +88,9 @@ class SharedSecuredStorageKeyFragment @Inject constructor() : VectorBaseFragment
         }
 
         views.ssssKeySubmit.debouncedClicks { submit() }
+
+        statusBarColor(activity!!)
+        initViews()
     }
 
     fun submit() {
@@ -104,5 +113,26 @@ class SharedSecuredStorageKeyFragment @Inject constructor() : VectorBaseFragment
                 }
             }
         }
+    }
+
+    private fun initViews() {
+
+        views.tvEnter.text = resources.getString(R.string.enter_phrase)
+        views.tvEnter.setTextColor(resources.getColor(R.color.text_color_black, null))
+
+        views.ssssShield.setOnClickListener {
+            sharedViewModel.handle(SharedSecureStorageAction.Back)
+        }
+
+        val spannable = SpannableString(resources.getString(R.string.bad_passphrase_key_reset_all_action))
+        spannable.setSpan(
+                ForegroundColorSpan(Color.RED), spannable.length - 17, spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        views.ssssKeyReset.text = spannable
+
+        views.ssssKeyReset.setOnClickListener {
+            sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
+        }
+
     }
 }

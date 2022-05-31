@@ -50,6 +50,8 @@ class SharedSecuredStoragePassphraseFragment @Inject constructor(
 
     val sharedViewModel: SharedSecureStorageViewModel by activityViewModel()
 
+    private var isSecurityVisible = false
+
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -99,23 +101,40 @@ class SharedSecuredStoragePassphraseFragment @Inject constructor(
         views.ssssPassphraseSubmit.debouncedClicks { submit() }
         views.ssssPassphraseUseKey.debouncedClicks { sharedViewModel.handle(SharedSecureStorageAction.UseKey) }
 
-        statusBarColor(activity!!)
-
-        val spannable = SpannableString(resources.getString(R.string.bad_passphrase_key_reset_all_action))
-        spannable.setSpan(
-                ForegroundColorSpan(Color.RED), spannable.length - 11, spannable.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        views.ssssPassphraseReset.text = spannable
-
         views.ssssPassphraseReset.setOnClickListener {
             sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
         }
+
+        statusBarColor(activity!!)
+        initViews()
     }
+
 
     fun submit() {
         val text = views.ssssPassphraseEnterEdittext.text.toString()
         if (text.isBlank()) return // Should not reach this point as button disabled
         views.ssssPassphraseSubmit.isEnabled = false
         sharedViewModel.handle(SharedSecureStorageAction.SubmitPassphrase(text))
+    }
+
+    private fun initViews() {
+
+        views.tvEnter.text = resources.getString(R.string.enter_phrase)
+        views.tvEnter.setTextColor(resources.getColor(R.color.text_color_black, null))
+
+        views.ssssShield.setOnClickListener {
+            sharedViewModel.handle(SharedSecureStorageAction.Back)
+        }
+
+        val spannable = SpannableString(resources.getString(R.string.bad_passphrase_key_reset_all_action))
+        spannable.setSpan(
+                ForegroundColorSpan(Color.RED), spannable.length - 17, spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        views.ssssPassphraseReset.text = spannable
+
+        views.ssssPassphraseReset.setOnClickListener {
+            sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
+        }
+
     }
 }

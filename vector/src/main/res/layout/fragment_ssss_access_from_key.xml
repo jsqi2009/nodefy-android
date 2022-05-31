@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ssss__root"
+    android:background="@color/line_color_2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,33 +11,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/ssss_shield"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_security_key_24dp"
-            app:layout_constraintBottom_toBottomOf="@id/ssss_restore_with_key"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/ssss_restore_with_key"
-            app:tint="?vctr_content_primary"
-            tools:ignore="MissingPrefix" />
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/app_color"
+            tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/ssss_restore_with_key"
-            style="@style/Widget.Vector.TextView.HeadlineMedium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/recovery_key"
-            android:textColor="?vctr_content_primary"
-            android:textStyle="bold"
+            <ImageView
+                android:id="@+id/ssss_shield"
+                android:layout_width="@dimen/margin_25"
+                android:layout_height="@dimen/margin_25"
+                android:layout_marginStart="@dimen/layout_horizontal_margin"
+                android:importantForAccessibility="no"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_icon_back_white"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/ssss_restore_with_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_centerInParent="true"
+                android:text="@string/recovery_key2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_16"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="@dimen/margin_40"
+            android:layout_height="@dimen/margin_40"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_security_phrase_24dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ssss_shield"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginVertical="@dimen/margin_40"
+            app:tint="?vctr_content_primary"
+            app:layout_constraintTop_toBottomOf="@id/rl_title"
+            tools:ignore="MissingConstraints,MissingPrefix" />
 
         <TextView
             android:id="@+id/ssss_restore_with_key_text"
@@ -44,13 +61,63 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:textColor="?vctr_content_primary"
+            android:gravity="center_horizontal"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/textsize_13"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ssss_restore_with_key"
-            tools:text="@string/enter_secret_storage_input_key" />
+            app:layout_constraintTop_toBottomOf="@id/iv_logo"
+            tools:text="@string/enter_secret_storage_input_key2" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
+            android:id="@+id/ll_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_30"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ssss_restore_with_key_text">
+
+            <TextView
+                android:id="@+id/tv_enter"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_20"
+                android:gravity="center"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/textsize_14"
+                tools:text="@string/enter_phrase" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ssss_key_enter_til"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:errorEnabled="false"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/ssss_restore_with_passphrase_warning_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ssss_key_enter_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/passphrase_enter_passphrase2"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLines="3"
+                    android:singleLine="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!--<com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ssss_key_enter_til"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -72,7 +139,7 @@
                 android:singleLine="false"
                 tools:inputType="textMultiLine" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>-->
 
         <!--        -->
 
@@ -103,10 +170,24 @@
             app:flow_horizontalStyle="spread_inside"
             app:flow_wrapMode="chain"
             app:layout_constraintBottom_toTopOf="@id/ssss_key_reset"
-            app:layout_constraintTop_toBottomOf="@id/ssss_key_enter_til"
+            app:layout_constraintTop_toBottomOf="@id/ll_input"
             app:layout_goneMarginBottom="@dimen/layout_vertical_margin_big" />
 
-        <im.vector.app.core.ui.views.BottomSheetActionButton
+
+        <TextView
+            android:id="@+id/ssss_key_reset"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin_30"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_14"
+            android:text="@string/bad_passphrase_key_reset_all_action"
+            app:layout_constraintTop_toBottomOf="@id/ssss_key_flow"/>
+
+        <!--<im.vector.app.core.ui.views.BottomSheetActionButton
             android:id="@+id/ssss_key_reset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +198,8 @@
             app:layout_constraintTop_toBottomOf="@id/ssss_key_flow"
             app:leftIcon="@drawable/ic_alert_triangle"
             app:tint="?colorError"
-            app:titleTextColor="?vctr_content_secondary" />
+            app:titleTextColor="?vctr_content_secondary"
+            tools:layout_editor_absoluteX="0dp" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

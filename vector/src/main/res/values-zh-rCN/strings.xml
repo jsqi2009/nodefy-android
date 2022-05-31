@@ -2304,5 +2304,9 @@
     <string name="forget_phrase_to_use_recovery_key">不知道您的安全口令？您可以使用您的安全密钥。</string>
     <string name="recovery_passphrase2">安全口令</string>
     <string name="use_phrase">使用口令</string>
+    <string name="passphrase_enter_passphrase2">输入口令</string>
+    <string name="recovery_key2">安全密钥</string>
+    <string name="enter_secret_storage_input_key2">使用你的安全密钥验证此设备</string>
+
 
 </resources>

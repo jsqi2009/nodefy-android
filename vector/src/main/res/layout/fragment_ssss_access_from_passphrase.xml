@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/ssss_shield"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/margin_25"
+                android:layout_height="@dimen/margin_25"
                 android:layout_marginStart="@dimen/layout_horizontal_margin"
                 android:importantForAccessibility="no"
                 android:layout_centerVertical="true"
@@ -50,7 +50,7 @@
             android:src="@drawable/ic_security_phrase_24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginVertical="@dimen/margin_30"
+            android:layout_marginVertical="@dimen/margin_40"
             app:tint="?vctr_content_primary"
             app:layout_constraintTop_toBottomOf="@id/rl_title"
             tools:ignore="MissingConstraints,MissingPrefix" />
@@ -75,17 +75,17 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/margin_30"
             android:background="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/ssss_restore_with_passphrase_warning_text"
-            tools:ignore="MissingConstraints"
-            android:baselineAligned="false">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ssss_restore_with_passphrase_warning_text">
 
             <TextView
+                android:id="@+id/tv_enter"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_20"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color_black"
                 android:textSize="@dimen/textsize_14"
                 tools:text="@string/enter_phrase" />
 
@@ -101,13 +101,14 @@
                 app:boxBackgroundMode="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/ssss_restore_with_passphrase_warning_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ssss_passphrase_enter_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/passphrase_enter_passphrase"
+                    android:hint="@string/passphrase_enter_passphrase2"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="3"
