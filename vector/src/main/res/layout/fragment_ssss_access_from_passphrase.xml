@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ssss__root"
-    android:background="@color/line_color_2"
+    android:background="@color/verify_security_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -120,13 +120,14 @@
         <TextView
             android:id="@+id/ssss_passphrase_submit"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="@dimen/margin_30"
             android:text="@string/use_phrase"
             android:gravity="center"
             android:background="@drawable/shape_use_phrase_bg_5dp"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/use_phrase_text_color"
             app:layout_constraintTop_toBottomOf="@id/ssss_passphrase_use_key" />
 
         <TextView

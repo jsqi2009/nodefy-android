@@ -29,6 +29,11 @@
     <color name="create_account_color">#00D1FF</color>
     <color name="white">#ffffff</color>
     <color name="popup_selected_item_color">#AAAAA9</color>
+    <color name="verify_security_bg">#F6F6F6</color>
+    <color name="use_phrase_button_bg">#E0DFE4</color>
+    <color name="use_key_button_bg">#938DA5</color>
+    <color name="use_phrase_text_color">#88859A</color>
+    <color name="use_key_text_color">#5D5678</color>
 
 
 

@@ -67,7 +67,7 @@ class SharedSecuredStorageKeyFragment @Inject constructor() : VectorBaseFragment
         views.ssssKeyEnterEdittext.textChanges()
                 .skipInitialValue()
                 .onEach {
-                    views.ssssKeyEnterTil.error = null
+                    //views.ssssKeyEnterTil.error = null
                     views.ssssKeySubmit.isEnabled = it.isNotBlank()
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)
@@ -78,16 +78,18 @@ class SharedSecuredStorageKeyFragment @Inject constructor() : VectorBaseFragment
             sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
         }*/
 
+
         sharedViewModel.observeViewEvents {
             when (it) {
                 is SharedSecureStorageViewEvent.KeyInlineError -> {
-                    views.ssssKeyEnterTil.error = it.message
+                    //views.ssssKeyEnterTil.error = it.message
                 }
                 else                                           -> Unit
             }
         }
 
-        views.ssssKeySubmit.debouncedClicks { submit() }
+//        views.ssssKeySubmit.debouncedClicks { submit() }
+        views.tvKeySubmit.debouncedClicks { submit() }
 
         statusBarColor(activity!!)
         initViews()
@@ -133,6 +135,9 @@ class SharedSecuredStorageKeyFragment @Inject constructor() : VectorBaseFragment
         views.ssssKeyReset.setOnClickListener {
             sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
         }
+
+        views.ivImportFile.debouncedClicks { startImportTextFromFileIntent(requireContext(), importFileStartForActivityResult) }
+
 
     }
 }

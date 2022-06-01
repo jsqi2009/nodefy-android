@@ -2307,6 +2307,7 @@
     <string name="passphrase_enter_passphrase2">输入口令</string>
     <string name="recovery_key2">安全密钥</string>
     <string name="enter_secret_storage_input_key2">使用你的安全密钥验证此设备</string>
+    <string name="use_key">使用密钥</string>
 
 
 </resources>

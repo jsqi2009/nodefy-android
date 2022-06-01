@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ssss__root"
-    android:background="@color/line_color_2"
+    android:background="@color/verify_security_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,8 +33,8 @@
                 android:id="@+id/ssss_restore_with_key"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
                 android:text="@string/recovery_key2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16"
@@ -60,7 +60,8 @@
             style="@style/Widget.Vector.TextView.Subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:layout_marginVertical="@dimen/margin_20"
             android:gravity="center_horizontal"
             android:textColor="@color/text_color_black"
             android:textSize="@dimen/textsize_13"
@@ -72,7 +73,7 @@
         <LinearLayout
             android:id="@+id/ll_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/margin_45"
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/margin_30"
             android:background="@color/white"
@@ -90,7 +91,23 @@
                 android:textSize="@dimen/textsize_14"
                 tools:text="@string/enter_phrase" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/ssss_key_enter_edittext"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:ems="10"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingEnd="48dp"
+                android:hint="@string/use_key"
+                android:textSize="@dimen/textsize_14"
+                android:background="@null"
+                tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+
+            <!--<com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ssss_key_enter_til"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -101,7 +118,7 @@
                 app:boxBackgroundMode="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/ssss_restore_with_passphrase_warning_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -114,8 +131,33 @@
                     android:maxLines="3"
                     android:singleLine="false" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <ImageView
+                android:id="@+id/iv_import_file"
+                android:layout_width="@dimen/margin_25"
+                android:layout_height="@dimen/margin_25"
+                android:layout_marginEnd="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_10"
+                android:importantForAccessibility="no"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_import_file"
+                tools:ignore="MissingPrefix,ObsoleteLayoutParam" />
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_key_submit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_30"
+            android:text="@string/use_key"
+            android:gravity="center"
+            android:background="@drawable/shape_use_key_bg_5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/use_key_text_color"
+            app:layout_constraintTop_toBottomOf="@id/ll_input" />
 
         <!--<com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ssss_key_enter_til"
@@ -150,7 +192,8 @@
             android:layout_height="wrap_content"
             android:text="@string/use_file"
             app:icon="@drawable/ic_file"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/ssss_key_submit"
@@ -158,7 +201,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/_continue"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:visibility="gone"/>
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/ssss_key_flow"
@@ -171,7 +215,8 @@
             app:flow_wrapMode="chain"
             app:layout_constraintBottom_toTopOf="@id/ssss_key_reset"
             app:layout_constraintTop_toBottomOf="@id/ll_input"
-            app:layout_goneMarginBottom="@dimen/layout_vertical_margin_big" />
+            app:layout_goneMarginBottom="@dimen/layout_vertical_margin_big"
+            android:visibility="gone"/>
 
 
         <TextView
@@ -185,7 +230,7 @@
             android:gravity="center"
             android:textSize="@dimen/textsize_14"
             android:text="@string/bad_passphrase_key_reset_all_action"
-            app:layout_constraintTop_toBottomOf="@id/ssss_key_flow"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_key_submit"/>
 
         <!--<im.vector.app.core.ui.views.BottomSheetActionButton
             android:id="@+id/ssss_key_reset"

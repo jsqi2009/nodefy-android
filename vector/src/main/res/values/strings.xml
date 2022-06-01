@@ -3073,6 +3073,7 @@
     <string name="passphrase_enter_passphrase2">Enter Phrase</string>
     <string name="recovery_key2">Security Key</string>
     <string name="enter_secret_storage_input_key2">Use your Security Key to verify this device.</string>
+    <string name="use_key">Use Key</string>
 
 
 </resources>
