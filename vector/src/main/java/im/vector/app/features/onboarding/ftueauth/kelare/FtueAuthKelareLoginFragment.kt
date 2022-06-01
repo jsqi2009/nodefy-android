@@ -34,6 +34,7 @@ import im.vector.app.R
 import im.vector.app.core.utils.ensureProtocol
 import im.vector.app.databinding.FragmentFtueAuthKelareLoginBinding
 import im.vector.app.features.onboarding.OnboardingAction
+import im.vector.app.features.onboarding.OnboardingFlow
 import im.vector.app.features.onboarding.OnboardingViewState
 import im.vector.app.features.onboarding.ftueauth.AbstractSSOFtueAuthFragment
 import timber.log.Timber
@@ -88,7 +89,8 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
 
             }
             R.id.createAccountTv    -> {
-
+                val getStartedFlow = OnboardingFlow.SignInSignUp
+                viewModel.handle(OnboardingAction.OnGetStarted(resetLoginConfig = false, onboardingFlow = getStartedFlow))
             }
             R.id.ll_sign_in_type    -> {
                 switchSignInType()
