@@ -53,7 +53,8 @@ class SharedSecuredStorageKeyFragment @Inject constructor() : VectorBaseFragment
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        views.ssssRestoreWithKeyText.text = getString(R.string.enter_secret_storage_input_key)
+//        views.ssssRestoreWithKeyText.text = getString(R.string.enter_secret_storage_input_key)
+        views.ssssRestoreWithKeyText.text = getString(R.string.enter_secret_storage_input_key2)
 
         views.ssssKeyEnterEdittext.editorActionEvents()
                 .throttleFirst(300)

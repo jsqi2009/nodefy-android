@@ -49,7 +49,7 @@ class SharedSecuredStorageResetAllFragment @Inject constructor() :
             sharedViewModel.handle(SharedSecureStorageAction.Back)
         }
 
-        views.ssssResetOtherDevices.debouncedClicks {
+        /*views.ssssResetOtherDevices.debouncedClicks {
             withState(sharedViewModel) {
                 DeviceListBottomSheet.newInstance(it.userId, false).show(childFragmentManager, "DEV_LIST")
             }
@@ -61,6 +61,10 @@ class SharedSecuredStorageResetAllFragment @Inject constructor() :
                             .takeIf { it > 0 }
                             ?.let { resources.getQuantityString(R.plurals.secure_backup_reset_devices_you_can_verify, it, it) }
             )
+        }*/
+
+        views.ssssShield.debouncedClicks {
+            sharedViewModel.handle(SharedSecureStorageAction.Back)
         }
     }
 }
