@@ -50,11 +50,19 @@ class VerificationConclusionController @Inject constructor(
 
         when (state.conclusionState) {
             ConclusionState.SUCCESS   -> {
+
+                bottomSheetVerificationNoticeItem {
+                    id("notice")
+                    notice(
+                            host.stringProvider.getString(R.string.verification_verified).toEpoxyCharSequence()
+                    )
+                }
+
                 bottomSheetVerificationNoticeItem {
                     id("notice")
                     notice(
                             host.stringProvider.getString(
-                                    if (state.isSelfVerification) R.string.verification_conclusion_ok_self_notice
+                                    if (state.isSelfVerification) R.string.verification_conclusion_ok_self_notice2
                                     else R.string.verification_conclusion_ok_notice
                             )
                                     .toEpoxyCharSequence()
@@ -110,16 +118,17 @@ class VerificationConclusionController @Inject constructor(
 
     private fun bottomDone() {
         val host = this
-        bottomSheetDividerItem {
+        /*bottomSheetDividerItem {
             id("sep0")
-        }
+        }*/
 
         bottomSheetVerificationActionItem {
             id("done")
-            title(host.stringProvider.getString(R.string.done))
+//            title(host.stringProvider.getString(R.string.done))
+            title(host.stringProvider.getString(R.string.verify_done))
             titleColor(host.colorProvider.getColorFromAttribute(R.attr.vctr_content_primary))
-            iconRes(R.drawable.ic_arrow_right)
-            iconColor(host.colorProvider.getColorFromAttribute(R.attr.vctr_content_primary))
+//            iconRes(R.drawable.ic_arrow_right)
+//            iconColor(host.colorProvider.getColorFromAttribute(R.attr.vctr_content_primary))
             listener { host.listener?.onButtonTapped() }
         }
     }

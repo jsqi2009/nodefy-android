@@ -2314,6 +2314,10 @@
     <string name="kelare_register_sign_in_entry">登陆</string>
     <string name="error_password_not_match">密码不一致</string>
     <string name="login_set_email_submit2">提交</string>
+    <string name="verify_done">明白</string>
+    <string name="verification_conclusion_ok_self_notice2">您现在可以在此设备上阅读加密信息，其他用户将知道他们可以信任它</string>
+    <string name="verification_verified">已验证!</string>
+
 
 
 </resources>

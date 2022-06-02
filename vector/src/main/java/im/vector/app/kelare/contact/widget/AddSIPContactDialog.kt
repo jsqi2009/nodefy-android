@@ -233,7 +233,7 @@ class AddSIPContactDialog(val mContext: Context, private val mBus: AndroidBus, v
         val note = etNote!!.text.toString()
 
         val info:DialerContactInfo = DialerContactInfo()
-        info.user_id = Contants.PRIMARY_USER_ID
+        info.user_id = mSession.userID
         info.first_name = firstName
         info.last_name = lastName
         info.note = note

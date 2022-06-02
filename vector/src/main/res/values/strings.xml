@@ -3080,6 +3080,10 @@
     <string name="kelare_register_sign_in_entry">Sign in</string>
     <string name="error_password_not_match">Password does not match</string>
     <string name="login_set_email_submit2">Submit</string>
+    <string name="verify_done">Got it</string>
+    <string name="verification_conclusion_ok_self_notice2">Your can now read secure message on this device, and other users will know they can trusted it.</string>
+    <string name="verification_verified">Verified!</string>
+
 
 
 </resources>

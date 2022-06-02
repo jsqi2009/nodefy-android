@@ -57,7 +57,8 @@ class ShieldImageView @JvmOverloads constructor(
             RoomEncryptionTrustLevel.Trusted                     -> {
                 contentDescription = context.getString(R.string.a11y_trust_level_trusted)
                 setImageResource(
-                        if (borderLess) R.drawable.ic_shield_trusted_no_border
+//                        if (borderLess) R.drawable.ic_shield_trusted_no_border
+                        if (borderLess) R.drawable.ic_kelare_shield_trusted_no_border
                         else R.drawable.ic_shield_trusted
                 )
             }
