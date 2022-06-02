@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/app_color">
 
-    <androidx.core.widget.NestedScrollView
+    <!--<androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical">-->
 
             <!--<ImageView
                 style="@style/LoginLogo"
@@ -65,7 +66,6 @@
                 android:orientation="vertical"
                 android:background="@drawable/shape_kelare_login_bg_5dp"
                 android:layout_marginHorizontal="@dimen/margin_20"
-                android:padding="@dimen/margin_20"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:fitsSystemWindows="true"
@@ -75,9 +75,10 @@
                     android:id="@+id/tv_register_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Register"
+                    android:layout_marginHorizontal="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:text="@string/kelare_register_title"
                     android:gravity="center"
-                    tools:ignore="HardcodedText"
                     android:textSize="@dimen/textsize_16"
                     android:textStyle="bold"
                     android:textColor="@color/text_color_dark_gray"/>
@@ -86,6 +87,7 @@
                     android:id="@+id/loginFieldTil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_20"
                     android:layout_marginTop="@dimen/margin_10"
                     app:errorEnabled="false"
                     app:hintEnabled="false"
@@ -96,11 +98,14 @@
                         android:id="@+id/loginField"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:paddingVertical="0dp"
-                        android:inputType="textEmailAddress"
                         android:background="@drawable/shape_kelare_login_et_bg_5dp"
                         android:hint="@string/login_signin_username_hint"
-                        android:maxLines="1" />
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:paddingStart="@dimen/margin_10"
+                        android:textSize="@dimen/textsize_14"
+                        tools:ignore="RtlSymmetry" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,6 +117,7 @@
                     android:hint="@string/login_signup_password_hint"
                     app:errorEnabled="false"
                     app:hintEnabled="false"
+                    android:layout_marginHorizontal="@dimen/margin_20"
                     app:boxStrokeColor="@color/dialer_keyboard_bg_color"
                     app:errorIconDrawable="@null">
 
@@ -125,7 +131,8 @@
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:paddingEnd="48dp"
+                        android:textSize="@dimen/textsize_14"
+                        android:paddingStart="@dimen/margin_10"
                         android:background="@drawable/shape_kelare_login_et_bg_5dp"
                         tools:ignore="RtlSymmetry" />
 
@@ -139,6 +146,7 @@
                     android:hint="@string/login_signup_password_hint"
                     app:errorEnabled="false"
                     app:hintEnabled="false"
+                    android:layout_marginHorizontal="@dimen/margin_20"
                     app:boxStrokeColor="@color/dialer_keyboard_bg_color"
                     app:errorIconDrawable="@null">
 
@@ -148,11 +156,12 @@
                         android:layout_height="40dp"
                         android:paddingVertical="0dp"
                         android:ems="10"
-                        android:hint="@string/login_signup_password_hint"
+                        android:hint="@string/kelare_register_repeat_password_hint"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:paddingEnd="48dp"
+                        android:paddingStart="@dimen/margin_10"
+                        android:textSize="@dimen/textsize_14"
                         android:background="@drawable/shape_kelare_login_et_bg_5dp"
                         tools:ignore="RtlSymmetry" />
 
@@ -162,23 +171,26 @@
                     android:id="@+id/loginSubmit"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_40"
-                    android:layout_marginTop="@dimen/margin_30"
                     android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_30"
+                    android:background="@drawable/shape_kelare_login_button_bg_5dp"
                     android:gravity="center"
                     android:text="@string/auth_login"
-                    tools:enabled="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/textsize_14"
-                    android:background="@drawable/shape_kelare_login_button_bg_5dp"
+                    tools:enabled="false"
                     tools:ignore="RelativeOverlap" />
 
                 <TextView
                     android:id="@+id/tv_sign_in"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sign in"
+                    android:layout_marginBottom="@dimen/margin_25"
+                    android:layout_marginHorizontal="@dimen/margin_20"
+                    android:text="@string/kelare_register_sign_in_entry"
                     android:gravity="center"
-                    android:layout_marginTop="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_25"
                     tools:ignore="HardcodedText"
                     android:textSize="@dimen/textsize_14"
                     android:textColor="@color/create_account_color"/>
@@ -189,7 +201,7 @@
                 android:id="@+id/ll_language"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_15"
                 android:gravity="center"
                 android:layout_gravity="center">
 
@@ -273,9 +285,9 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        <!--</LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>-->
 
-</FrameLayout>
+</LinearLayout>
 

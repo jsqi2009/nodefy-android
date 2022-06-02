@@ -2308,6 +2308,12 @@
     <string name="recovery_key2">安全密钥</string>
     <string name="enter_secret_storage_input_key2">使用你的安全密钥验证此设备</string>
     <string name="use_key">使用密钥</string>
+    <string name="kelare_register_title">注册</string>
+    <string name="kelare_register_username_hint">用户名</string>
+    <string name="kelare_register_repeat_password_hint">确认密码</string>
+    <string name="kelare_register_sign_in_entry">登陆</string>
+    <string name="error_password_not_match">密码不一致</string>
+    <string name="login_set_email_submit2">提交</string>
 
 
 </resources>

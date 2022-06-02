@@ -52,6 +52,7 @@ import im.vector.app.features.MainActivityArgs
 import im.vector.app.features.analytics.accountdata.AnalyticsAccountDataViewModel
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.analytics.plan.ViewRoom
+import im.vector.app.features.crypto.recover.SetupMode
 import im.vector.app.features.disclaimer.showDisclaimerDialog
 import im.vector.app.features.matrixto.MatrixToBottomSheet
 import im.vector.app.features.matrixto.OriginOfMatrixTo
@@ -91,6 +92,7 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import org.linphone.core.Account
 import org.matrix.android.sdk.api.session.Session
+import org.matrix.android.sdk.api.session.crypto.keysbackup.KeysBackupState
 import org.matrix.android.sdk.api.session.initsync.SyncStatusService
 import org.matrix.android.sdk.api.session.permalinks.PermalinkService
 import org.matrix.android.sdk.api.session.sync.InitialSyncStrategy
@@ -545,6 +547,8 @@ class HomeActivity :
         // Force remote backup state update to update the banner if needed
         serverBackupStatusViewModel.refreshRemoteStateIfNeeded()
 
+        firstLoginToBackUp()
+
         //Dialer module
         setBaseInfo()
     }
@@ -651,6 +655,15 @@ class HomeActivity :
 
     override fun mxToBottomSheetSwitchToSpace(spaceId: String) {
         navigator.switchToSpace(this, spaceId, Navigator.PostSwitchSpaceAction.OpenRoomList)
+    }
+
+    private fun firstLoginToBackUp() {
+        Timber.e("keysBackupVersion-----${serverBackupStatusViewModel.getCurrentBackupVersion()}")
+        Timber.e("keysBackupState-----${serverBackupStatusViewModel.keysBackupState.value}")
+
+        if (serverBackupStatusViewModel.keysBackupState.value == KeysBackupState.Disabled) {
+            navigator.open4SSetup(this, SetupMode.HARD_RESET)
+        }
     }
 
     private fun setBaseInfo() {

@@ -16,12 +16,14 @@
 
 package im.vector.app.features.onboarding.ftueauth
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.autofill.HintConstants
 import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
@@ -73,6 +75,7 @@ class FtueAuthLoginFragment @Inject constructor() : AbstractSSOFtueAuthFragment<
         return FragmentLoginBinding.inflate(inflater, container, false)
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -81,10 +84,22 @@ class FtueAuthLoginFragment @Inject constructor() : AbstractSSOFtueAuthFragment<
 
         views.passwordField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                //submit()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+
+        views.repeatPasswordField.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 submit()
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
+        }
+
+        views.tvSignIn.setOnClickListener {
+           activity!!.supportFragmentManager.popBackStack()
         }
     }
 
@@ -123,6 +138,7 @@ class FtueAuthLoginFragment @Inject constructor() : AbstractSSOFtueAuthFragment<
 
         val login = views.loginField.text.toString()
         val password = views.passwordField.text.toString()
+        val repeatPassword = views.repeatPasswordField.text.toString()
 
         // This can be called by the IME action, so deal with empty cases
         var error = 0
@@ -151,6 +167,22 @@ class FtueAuthLoginFragment @Inject constructor() : AbstractSSOFtueAuthFragment<
             error++
         }
 
+        if (repeatPassword.isEmpty()) {
+            views.repeatPasswordFieldTil.error = getString(
+                    if (isSignupMode) {
+                        R.string.error_empty_field_choose_password
+                    } else {
+                        R.string.error_empty_field_your_password
+                    }
+            )
+            error++
+        }
+
+        if (repeatPassword != password) {
+            Toast.makeText(activity, R.string.error_password_not_match, Toast.LENGTH_SHORT).show()
+            error++
+        }
+
         if (error == 0) {
             viewModel.handle(OnboardingAction.LoginOrRegister(login, password, getString(R.string.login_default_session_public_name)))
         }
@@ -160,6 +192,7 @@ class FtueAuthLoginFragment @Inject constructor() : AbstractSSOFtueAuthFragment<
         views.loginSubmit.hideKeyboard()
         views.loginFieldTil.error = null
         views.passwordFieldTil.error = null
+        views.repeatPasswordFieldTil.error = null
     }
 
     private fun setupUi(state: OnboardingViewState) {
@@ -167,7 +200,8 @@ class FtueAuthLoginFragment @Inject constructor() : AbstractSSOFtueAuthFragment<
                 when (state.signMode) {
                     SignMode.Unknown            -> error("developer error")
                     SignMode.SignUp             -> R.string.login_signup_username_hint
-                    SignMode.SignIn             -> R.string.login_signin_username_hint
+                    SignMode.SignIn             -> R.string.login_signup_username_hint
+//                    SignMode.SignIn             -> R.string.login_signin_username_hint
                     SignMode.SignInWithMatrixId -> R.string.login_signin_matrix_id_hint
                 }
         )
@@ -234,7 +268,8 @@ class FtueAuthLoginFragment @Inject constructor() : AbstractSSOFtueAuthFragment<
         views.loginSubmit.text = getString(
                 when (state.signMode) {
                     SignMode.Unknown            -> error("developer error")
-                    SignMode.SignUp             -> R.string.login_signup_submit
+//                    SignMode.SignUp             -> R.string.login_signup_submit
+                    SignMode.SignUp             -> R.string.kelare_register_title
                     SignMode.SignIn,
                     SignMode.SignInWithMatrixId -> R.string.login_signin
                 }
@@ -313,4 +348,5 @@ class FtueAuthLoginFragment @Inject constructor() : AbstractSSOFtueAuthFragment<
      * Detect if password ends or starts with spaces
      */
     private fun spaceInPassword() = views.passwordField.text.toString().let { it.trim() != it }
+
 }

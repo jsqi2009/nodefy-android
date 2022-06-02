@@ -1,98 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:colorBackground">
+    android:background="@color/app_color"
+    android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView style="@style/LoginFormScrollView">
+    <!--<androidx.core.widget.NestedScrollView style="@style/LoginFormScrollView">
 
-        <LinearLayout style="@style/LoginFormContainer">
+        <LinearLayout style="@style/LoginFormContainer">-->
 
-            <ImageView
-                style="@style/LoginLogo"
-                tools:ignore="ContentDescription" />
+    <!--<ImageView
+        style="@style/LoginLogo"
+        tools:ignore="ContentDescription" />-->
 
-            <TextView
-                android:id="@+id/loginGenericTextInputFormTitle"
-                style="@style/Widget.Vector.TextView.Title"
+    <ImageView
+        android:layout_width="@dimen/margin_80"
+        android:layout_height="@dimen/margin_70"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_60"
+        android:src="@drawable/ic_icon_login"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@drawable/shape_kelare_login_bg_5dp"
+        android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/loginGenericTextInputFormNotice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/layout_vertical_margin"
+            android:gravity="start"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/text_color_dark_gray"
+            tools:text="@string/login_set_email_notice" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginGenericTextInputFormTil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_15"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            app:errorEnabled="false"
+            app:hintEnabled="false"
+            tools:hint="@string/login_set_email_optional_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginGenericTextInputFormTextInput"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_40"
+                android:imeOptions="actionDone"
+                android:paddingVertical="0dp"
+                android:maxLines="1"
+                android:textSize="@dimen/textsize_14"
+                android:paddingStart="@dimen/margin_10"
+                android:background="@drawable/shape_kelare_login_et_bg_5dp"
+                android:hint="@string/login_set_email_optional_hint"
+                tools:inputType="textEmailAddress"
+                tools:ignore="RtlSymmetry" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/loginGenericTextInputFormOtherButton"
+                style="@style/Widget.Vector.Button.Text.Login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?vctr_content_primary"
-                tools:text="@string/login_set_email_title" />
-
-            <TextView
-                android:id="@+id/loginGenericTextInputFormNotice"
-                style="@style/Widget.Vector.TextView.Body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/layout_vertical_margin"
-                android:layout_marginBottom="26dp"
-                android:gravity="start"
-                android:textColor="?vctr_content_secondary"
-                tools:text="@string/login_set_email_notice" />
-
-            <TextView
-                android:id="@+id/loginGenericTextInputFormNotice2"
-                style="@style/Widget.Vector.TextView.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:textColor="?vctr_content_secondary"
+                android:layout_gravity="start"
                 android:visibility="gone"
-                tools:text="@string/login_set_msisdn_notice2"
-                tools:visibility="visible" />
+                tools:text="@string/login_msisdn_confirm_send_again"
+                tools:visibility="gone" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/loginGenericTextInputFormTil"
+            <TextView
+                android:id="@+id/loginGenericTextInputFormSubmit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true"
-                tools:hint="@string/login_set_email_optional_hint">
+                android:layout_height="@dimen/margin_40"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_marginHorizontal="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_30"
+                android:background="@drawable/shape_kelare_login_button_bg_5dp"
+                android:enabled="false"
+                android:gravity="center"
+                android:textColor="@color/white"
+                tools:ignore="RelativeOverlap"
+                tools:text="@string/login_set_email_submit" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/loginGenericTextInputFormTextInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:maxLines="1"
-                    tools:inputType="textEmailAddress" />
+        </RelativeLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+    <TextView
+        android:id="@+id/loginGenericTextInputFormTitle"
+        style="@style/Widget.Vector.TextView.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?vctr_content_primary"
+        android:visibility="gone"
+        tools:text="@string/login_set_email_title" />
 
-                <Button
-                    android:id="@+id/loginGenericTextInputFormOtherButton"
-                    style="@style/Widget.Vector.Button.Text.Login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:visibility="gone"
-                    tools:text="@string/login_msisdn_confirm_send_again"
-                    tools:visibility="visible" />
 
-                <Button
-                    android:id="@+id/loginGenericTextInputFormSubmit"
-                    style="@style/Widget.Vector.Button.Login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="end"
-                    android:enabled="false"
-                    tools:ignore="RelativeOverlap"
-                    tools:text="@string/login_set_email_submit" />
+    <TextView
+        android:id="@+id/loginGenericTextInputFormNotice2"
+        style="@style/Widget.Vector.TextView.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:textColor="?vctr_content_secondary"
+        android:visibility="gone"
+        tools:text="@string/login_set_msisdn_notice2"
+        tools:visibility="gone" />
 
-            </RelativeLayout>
 
-        </LinearLayout>
+    <!--</LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>-->
 
-</FrameLayout>
+</LinearLayout>
 

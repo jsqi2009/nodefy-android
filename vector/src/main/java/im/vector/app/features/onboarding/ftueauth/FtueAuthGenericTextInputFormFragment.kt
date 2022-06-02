@@ -110,7 +110,8 @@ class FtueAuthGenericTextInputFormFragment @Inject constructor() : AbstractFtueA
                         getString(if (params.mandatory) R.string.login_set_email_mandatory_hint else R.string.login_set_email_optional_hint)
                 views.loginGenericTextInputFormTextInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                 views.loginGenericTextInputFormOtherButton.isVisible = false
-                views.loginGenericTextInputFormSubmit.text = getString(R.string.login_set_email_submit)
+//                views.loginGenericTextInputFormSubmit.text = getString(R.string.login_set_email_submit)
+                views.loginGenericTextInputFormSubmit.text = getString(R.string.login_set_email_submit2)
             }
             TextInputFormFragmentMode.SetMsisdn     -> {
                 views.loginGenericTextInputFormTitle.text = getString(R.string.login_set_msisdn_title)
