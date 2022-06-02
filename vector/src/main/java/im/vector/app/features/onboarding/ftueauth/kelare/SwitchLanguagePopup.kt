@@ -60,7 +60,6 @@ class SwitchLanguagePopup(context: Context, private val mBus: AndroidBus, privat
 
         mContext = context
         mSession = DialerSession(context)
-        mBus.register(this)
 
         // Disable default animation for circular reveal
         animationStyle = 0

@@ -3083,6 +3083,7 @@
     <string name="verify_done">Got it</string>
     <string name="verification_conclusion_ok_self_notice2">Your can now read secure message on this device, and other users will know they can trusted it.</string>
     <string name="verification_verified">Verified!</string>
+    <string name="kelare_please_input_valid_homeserver">Please input valid home server</string>
 
 
 

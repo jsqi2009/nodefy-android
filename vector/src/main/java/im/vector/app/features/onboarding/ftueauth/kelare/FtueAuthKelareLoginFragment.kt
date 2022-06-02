@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.text.isDigitsOnly
 import androidx.core.view.isInvisible
 import com.google.android.material.textfield.TextInputLayout
@@ -31,6 +32,7 @@ import com.labo.kaji.relativepopupwindow.RelativePopupWindow
 import com.squareup.otto.Subscribe
 import im.vector.app.BuildConfig
 import im.vector.app.R
+import im.vector.app.core.utils.TextUtils
 import im.vector.app.core.utils.ensureProtocol
 import im.vector.app.databinding.FragmentFtueAuthKelareLoginBinding
 import im.vector.app.features.onboarding.OnboardingAction
@@ -155,6 +157,12 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
     }
 
     private fun handleRegisterWithHomeServer() {
+
+        if (android.text.TextUtils.isEmpty(views.serverEt.text.toString().trim().ensureProtocol())) {
+            Toast.makeText(activity, getString(R.string.kelare_please_input_valid_homeserver), Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val getStartedFlow = OnboardingFlow.SignUp
         val serverUrl = views.serverEt.text.toString().trim().ensureProtocol()
         viewModel.handle(OnboardingAction.KelareCreateAccountWithHomeServer(serverUrl, false, getStartedFlow))
