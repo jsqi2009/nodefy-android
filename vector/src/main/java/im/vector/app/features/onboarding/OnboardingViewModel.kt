@@ -25,6 +25,7 @@ import im.vector.app.R
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.di.MavericksAssistedViewModelFactory
 import im.vector.app.core.di.hiltMavericksViewModelFactory
+import im.vector.app.core.extensions.addFragmentToBackstack
 import im.vector.app.core.extensions.configureAndStart
 import im.vector.app.core.extensions.vectorStore
 import im.vector.app.core.platform.VectorViewModel
@@ -42,6 +43,7 @@ import im.vector.app.features.login.ReAuthHelper
 import im.vector.app.features.login.ServerType
 import im.vector.app.features.login.SignMode
 import im.vector.app.features.onboarding.StartAuthenticationFlowUseCase.StartAuthenticationResult
+import im.vector.app.features.onboarding.ftueauth.FtueAuthUseCaseFragment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -162,6 +164,7 @@ class OnboardingViewModel @AssistedInject constructor(
             OnboardingAction.StopEmailValidationCheck      -> cancelWaitForEmailValidation()
             is OnboardingAction.KelareLoginWithHomeServer     -> handleKelareLoginWithHomeserver(action)
             is OnboardingAction.UpdateKelareSignMode     -> updateKelareSignMode()
+            is OnboardingAction.KelareCreateAccountWithHomeServer     -> handleKelareSplashAction(action.homeServerUrl, action.resetLoginConfig, action.onboardingFlow)
         }
     }
 
@@ -180,6 +183,21 @@ class OnboardingViewModel @AssistedInject constructor(
             null -> continueToPageAfterSplash(onboardingFlow)
             else -> startAuthenticationFlow(trigger = null, config, ServerType.Other)
         }
+    }
+
+    private fun handleKelareSplashAction(homeServerUrl: String, resetConfig: Boolean, onboardingFlow: OnboardingFlow) {
+        if (resetConfig) {
+            loginConfig = null
+        }
+        setState { copy(onboardingFlow = onboardingFlow) }
+        setState { copy(serverType = ServerType.Other) }
+
+        handle(OnboardingAction.HomeServerChange.SelectHomeServer(homeServerUrl))
+
+        /*return when (val config = loginConfig.toHomeserverConfig()) {
+            null -> continueToPageAfterSplash(onboardingFlow)
+            else -> startAuthenticationFlow(trigger = null, config, ServerType.Other)
+        }*/
     }
 
     private fun LoginConfig?.toHomeserverConfig(): HomeServerConnectionConfig? {

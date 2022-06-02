@@ -79,5 +79,7 @@ sealed interface OnboardingAction : VectorViewModelAction {
     object  UpdateKelareSignMode : OnboardingAction
     data class KelareLoginWithHomeServer(val homeServerUrl: String, val username: String,
                                       val password: String,val initialDeviceName: String) : OnboardingAction
+    data class KelareCreateAccountWithHomeServer(val homeServerUrl: String,val resetLoginConfig: Boolean,
+                                                 val onboardingFlow: OnboardingFlow) : OnboardingAction
 
 }

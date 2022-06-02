@@ -89,8 +89,8 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
 
             }
             R.id.createAccountTv    -> {
-                val getStartedFlow = OnboardingFlow.SignInSignUp
-                viewModel.handle(OnboardingAction.OnGetStarted(resetLoginConfig = false, onboardingFlow = getStartedFlow))
+                handleRegisterWithHomeServer()
+
             }
             R.id.ll_sign_in_type    -> {
                 switchSignInType()
@@ -152,6 +152,12 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
     private fun loginWithHomeServer(username: String, password: String) {
         val serverUrl = views.serverEt.text.toString().trim().ensureProtocol()
         viewModel.handle(OnboardingAction.KelareLoginWithHomeServer(serverUrl, username, password, getString(R.string.login_default_session_public_name)))
+    }
+
+    private fun handleRegisterWithHomeServer() {
+        val getStartedFlow = OnboardingFlow.SignUp
+        val serverUrl = views.serverEt.text.toString().trim().ensureProtocol()
+        viewModel.handle(OnboardingAction.KelareCreateAccountWithHomeServer(serverUrl, false, getStartedFlow))
     }
 
     override fun resetViewModel() {
