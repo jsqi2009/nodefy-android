@@ -39,14 +39,15 @@
         android:fontFamily="monospace"
         android:gravity="center_horizontal"
         android:padding="4dp"
-        android:textColor="@color/text_color_black"
-        android:textSize="@dimen/textsize_15"
+        android:textColor="@color/text_color_dark_gray"
+        android:textSize="@dimen/textsize_14"
         tools:text="HHWJ Y8DK RDR4 BQEN FQ4V M4F8 BQEN FQ4V M4A8" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?vctr_list_separator_on_surface" />
+        android:background="?vctr_list_separator_on_surface"
+        android:visibility="gone"/>
 
     <im.vector.app.core.ui.views.BottomSheetActionButton
         android:id="@+id/recoveryCopy"
@@ -56,12 +57,14 @@
         app:actionTitle="@string/action_copy"
         app:leftIcon="@drawable/ic_clipboard"
         app:rightIcon="@drawable/ic_arrow_right"
-        app:tint="?colorSecondary" />
+        app:tint="?colorSecondary"
+        android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?vctr_list_separator_on_surface" />
+        android:background="?vctr_list_separator_on_surface"
+        android:visibility="gone"/>
 
     <im.vector.app.core.ui.views.BottomSheetActionButton
         android:id="@+id/recoverySave"
@@ -71,7 +74,19 @@
         app:actionTitle="@string/keys_backup_setup_step3_save_button_title"
         app:leftIcon="@drawable/ic_download"
         app:rightIcon="@drawable/ic_arrow_right"
-        app:tint="?colorSecondary" />
+        app:tint="?colorSecondary"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_recoverySave"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_45"
+        android:layout_marginTop="@dimen/margin_15"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:gravity="center"
+        android:text="@string/keys_backup_setup_step3_save_button_title2"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_kelare_login_button_bg_5dp" />
 
     <View
         android:layout_width="match_parent"
@@ -86,11 +101,25 @@
         app:actionTitle="@string/_continue"
         app:forceStartPadding="true"
         app:rightIcon="@drawable/ic_arrow_right"
-        app:tint="?colorSecondary" />
+        app:tint="?colorSecondary"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_recoveryContinue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_45"
+        android:layout_marginTop="@dimen/margin_15"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:gravity="center"
+        android:text="@string/_continue"
+        android:textColor="@color/save_key_continue_text_color"
+        android:background="@drawable/shape_kelare_continue_button_disable_bg_5dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?vctr_list_separator_on_surface" />
+        android:background="?vctr_list_separator_on_surface"
+        android:visibility="gone"/>
 
 </LinearLayout>

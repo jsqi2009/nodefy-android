@@ -16,6 +16,7 @@
 
 package im.vector.app.features.crypto.recover
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -37,6 +38,7 @@ import im.vector.app.core.utils.toast
 import im.vector.app.databinding.FragmentBootstrapSaveKeyBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class BootstrapSaveRecoveryKeyFragment @Inject constructor(
@@ -52,9 +54,17 @@ class BootstrapSaveRecoveryKeyFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        views.recoverySave.views.bottomSheetActionClickableZone.debouncedClicks { downloadRecoveryKey() }
+//        views.recoverySave.views.bottomSheetActionClickableZone.debouncedClicks { downloadRecoveryKey() }
+        views.tvRecoverySave.debouncedClicks { downloadRecoveryKey() }
         views.recoveryCopy.views.bottomSheetActionClickableZone.debouncedClicks { shareRecoveryKey() }
         views.recoveryContinue.views.bottomSheetActionClickableZone.debouncedClicks {
+            // We do not display the final Fragment anymore
+            // TODO Do some cleanup
+            // sharedViewModel.handle(BootstrapActions.GoToCompleted)
+            sharedViewModel.handle(BootstrapActions.Completed)
+        }
+
+        views.tvRecoveryContinue.debouncedClicks {
             // We do not display the final Fragment anymore
             // TODO Do some cleanup
             // sharedViewModel.handle(BootstrapActions.GoToCompleted)
@@ -112,12 +122,25 @@ class BootstrapSaveRecoveryKeyFragment @Inject constructor(
         )
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun invalidate() = withState(sharedViewModel) { state ->
         val step = state.step
         if (step !is BootstrapStep.SaveRecoveryKey) return@withState
 
-        views.recoveryContinue.isVisible = step.isSaved
+        Timber.e("step.isSaved------${step.isSaved}")
+
+//        views.recoveryContinue.isVisible = step.isSaved
         views.bootstrapRecoveryKeyText.text = state.recoveryKeyCreationInfo?.recoveryKey?.formatRecoveryKey2()
 //        views.bootstrapRecoveryKeyText.text = state.recoveryKeyCreationInfo?.recoveryKey?.formatRecoveryKey()
+
+        if (step.isSaved) {
+            views.tvRecoveryContinue.isEnabled = true
+            views.tvRecoveryContinue.setTextColor(resources.getColor(R.color.app_color, null))
+        } else {
+            views.tvRecoveryContinue.isEnabled = false
+            views.tvRecoveryContinue.setTextColor(resources.getColor(R.color.save_key_continue_text_color, null))
+        }
+        //views.tvRecoveryContinue.isVisible = step.isSaved
+        views.bootstrapRecoveryKeyText.text = state.recoveryKeyCreationInfo?.recoveryKey?.formatRecoveryKey2()
     }
 }

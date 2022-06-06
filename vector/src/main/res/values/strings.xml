@@ -3085,6 +3085,7 @@
     <string name="verification_verified">Verified!</string>
     <string name="kelare_please_input_valid_homeserver">Please input valid home server</string>
     <string name="bootstrap_dont_reuse_pwd2">Don’t use your Nodefy account password.</string>
+    <string name="keys_backup_setup_step3_save_button_title2">Save</string>
 
 
 

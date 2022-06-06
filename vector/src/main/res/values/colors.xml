@@ -34,6 +34,9 @@
     <color name="use_key_button_bg">#938DA5</color>
     <color name="use_phrase_text_color">#88859A</color>
     <color name="use_key_text_color">#5D5678</color>
+    <color name="save_key_continue_button_disable_bg">#ff1c1b1f</color>
+    <color name="save_key_continue_bg">#FBFBFB</color>
+    <color name="save_key_continue_text_color">#9793A8</color>
 
 
 

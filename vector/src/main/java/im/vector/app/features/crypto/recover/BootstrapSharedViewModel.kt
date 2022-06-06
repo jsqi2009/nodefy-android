@@ -424,7 +424,10 @@ class BootstrapSharedViewModel @AssistedInject constructor(
                                     recoveryKeyCreationInfo = bootstrapResult.keyInfo,
                                     step = BootstrapStep.SaveRecoveryKey(
                                             // If a passphrase was used, saving key is optional
-                                            state.passphrase != null
+                                            //state.passphrase != null
+
+                                            // If a passphrase was used, make all the optional must saving key
+                                            false
                                     )
                             )
                         }
@@ -474,7 +477,7 @@ class BootstrapSharedViewModel @AssistedInject constructor(
                         )
                     }
                 } else {
-                    setState {
+                    /*setState {
                         copy(
                                 step = BootstrapStep.FirstForm(keyBackUpExist = doesKeyBackupExist),
                                 // Also reset the passphrase
@@ -483,18 +486,18 @@ class BootstrapSharedViewModel @AssistedInject constructor(
                                 // Also reset the key
                                 migrationRecoveryKey = null
                         )
-                    }
+                    }*/
                 }
             }
             is BootstrapStep.SetupPassphrase                 -> {
-                /*setState {
+                setState {
                     copy(
                             step = BootstrapStep.FirstForm(keyBackUpExist = doesKeyBackupExist),
                             // Also reset the passphrase
                             passphrase = null,
                             passphraseRepeat = null
                     )
-                }*/
+                }
             }
             is BootstrapStep.ConfirmPassphrase               -> {
                 setState {
