@@ -6,16 +6,26 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
+    <ImageView
+        android:id="@+id/iv_security_phrase"
+        android:layout_width="@dimen/margin_30"
+        android:layout_height="@dimen/margin_30"
+        android:src="@drawable/ic_security_phrase"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription,MissingConstraints" />
+
     <TextView
         android:id="@+id/bootstrapDescriptionText"
-        style="@style/Widget.Vector.TextView.Body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="@string/bootstrap_info_text_2"
-        android:textColor="?vctr_content_primary"
+        android:textColor="@color/text_color_dark_gray"
+        android:textSize="@dimen/textsize_14"
         app:layout_constraintBottom_toTopOf="@id/ssss_passphrase_enter_til"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_security_phrase" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ssss_passphrase_enter_til"
@@ -23,7 +33,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:errorEnabled="true"
+        app:errorEnabled="false"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bootstrapDescriptionText">
@@ -32,6 +43,8 @@
             android:id="@+id/ssss_passphrase_enter_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="0dp"
+            android:background="@drawable/shape_kelare_login_et_bg_5dp"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLines="3"
@@ -44,7 +57,7 @@
             android:id="@+id/ssss_passphrase_security_progress"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="@dimen/margin_5"
             android:layout_marginBottom="2dp" />
 
         <TextView
@@ -55,20 +68,22 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:text="@string/bootstrap_dont_reuse_pwd"
-            android:textColor="?vctr_content_primary"
-            app:drawableStartCompat="@drawable/ic_alert_triangle"
-            app:drawableTint="?colorError" />
+            android:gravity="center"
+            android:text="@string/bootstrap_dont_reuse_pwd2"
+            android:textColor="@color/text_color_dark_gray"
+            android:textSize="@dimen/textsize_12" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <TextView
         android:id="@+id/bootstrapSubmit"
-        style="@style/Widget.Vector.Button.Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_45"
+        android:layout_marginTop="@dimen/margin_15"
+        android:gravity="center"
         android:text="@string/_continue"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_kelare_login_button_bg_5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ssss_passphrase_enter_til" />

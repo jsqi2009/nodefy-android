@@ -80,7 +80,6 @@
                     android:text="@string/kelare_register_title"
                     android:gravity="center"
                     android:textSize="@dimen/textsize_16"
-                    android:textStyle="bold"
                     android:textColor="@color/text_color_dark_gray"/>
 
                 <com.google.android.material.textfield.TextInputLayout

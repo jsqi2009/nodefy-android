@@ -100,7 +100,7 @@ class BootstrapSaveRecoveryKeyFragment @Inject constructor(
     }
 
     private fun shareRecoveryKey() = withState(sharedViewModel) { state ->
-        val recoveryKey = state.recoveryKeyCreationInfo?.recoveryKey?.formatRecoveryKey()
+        val recoveryKey = state.recoveryKeyCreationInfo?.recoveryKey?.formatRecoveryKey2()
                 ?: return@withState
 
         startSharePlainTextIntent(
@@ -117,6 +117,7 @@ class BootstrapSaveRecoveryKeyFragment @Inject constructor(
         if (step !is BootstrapStep.SaveRecoveryKey) return@withState
 
         views.recoveryContinue.isVisible = step.isSaved
-        views.bootstrapRecoveryKeyText.text = state.recoveryKeyCreationInfo?.recoveryKey?.formatRecoveryKey()
+        views.bootstrapRecoveryKeyText.text = state.recoveryKeyCreationInfo?.recoveryKey?.formatRecoveryKey2()
+//        views.bootstrapRecoveryKeyText.text = state.recoveryKeyCreationInfo?.recoveryKey?.formatRecoveryKey()
     }
 }

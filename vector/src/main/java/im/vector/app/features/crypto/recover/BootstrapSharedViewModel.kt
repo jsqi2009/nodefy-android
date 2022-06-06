@@ -487,14 +487,14 @@ class BootstrapSharedViewModel @AssistedInject constructor(
                 }
             }
             is BootstrapStep.SetupPassphrase                 -> {
-                setState {
+                /*setState {
                     copy(
                             step = BootstrapStep.FirstForm(keyBackUpExist = doesKeyBackupExist),
                             // Also reset the passphrase
                             passphrase = null,
                             passphraseRepeat = null
                     )
-                }
+                }*/
             }
             is BootstrapStep.ConfirmPassphrase               -> {
                 setState {

@@ -18,6 +18,7 @@ package im.vector.app.features.crypto.recover
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
@@ -164,37 +165,37 @@ class BootstrapBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetBoot
                 showFragment(BootstrapSetupRecoveryKeyFragment::class)
             }
             is BootstrapStep.SetupPassphrase             -> {
-                views.bootstrapIcon.isVisible = true
+                views.bootstrapIcon.isVisible = false
                 views.bootstrapIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_security_phrase_24dp))
                 views.bootstrapTitleText.text = getString(R.string.set_a_security_phrase_title)
                 showFragment(BootstrapEnterPassphraseFragment::class)
             }
             is BootstrapStep.ConfirmPassphrase           -> {
-                views.bootstrapIcon.isVisible = true
+                views.bootstrapIcon.isVisible = false
                 views.bootstrapIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_security_phrase_24dp))
                 views.bootstrapTitleText.text = getString(R.string.set_a_security_phrase_title)
                 showFragment(BootstrapConfirmPassphraseFragment::class)
             }
             is BootstrapStep.AccountReAuth               -> {
-                views.bootstrapIcon.isVisible = true
+                views.bootstrapIcon.isVisible = false
                 views.bootstrapIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_user))
                 views.bootstrapTitleText.text = getString(R.string.re_authentication_activity_title)
                 showFragment(BootstrapReAuthFragment::class)
             }
             is BootstrapStep.Initializing                -> {
-                views.bootstrapIcon.isVisible = true
+                views.bootstrapIcon.isVisible = false
                 views.bootstrapIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_security_key_24dp))
                 views.bootstrapTitleText.text = getString(R.string.bootstrap_loading_title)
                 showFragment(BootstrapWaitingFragment::class)
             }
             is BootstrapStep.SaveRecoveryKey             -> {
-                views.bootstrapIcon.isVisible = true
+                views.bootstrapIcon.isVisible = false
                 views.bootstrapIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_security_key_24dp))
                 views.bootstrapTitleText.text = getString(R.string.bottom_sheet_save_your_recovery_key_title)
                 showFragment(BootstrapSaveRecoveryKeyFragment::class)
             }
             is BootstrapStep.DoneSuccess                 -> {
-                views.bootstrapIcon.isVisible = true
+                views.bootstrapIcon.isVisible = false
                 views.bootstrapIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_security_key_24dp))
                 views.bootstrapTitleText.text = getString(R.string.bootstrap_finish_title)
                 showFragment(BootstrapConclusionFragment::class)
@@ -214,6 +215,10 @@ class BootstrapBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetBoot
             }
         }
         super.invalidate()
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+
     }
 
     companion object {

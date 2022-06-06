@@ -25,3 +25,9 @@ fun String.formatRecoveryKey(): String {
                         .joinToString(" ")
             }
 }
+
+fun String.formatRecoveryKey2(): String {
+    return this.replace(" ", "")
+            .chunked(4)
+            .joinToString(" ")
+}

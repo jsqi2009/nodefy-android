@@ -8,13 +8,15 @@
 
     <TextView
         android:id="@+id/bootstrapDescriptionText"
-        style="@style/Widget.Vector.TextView.Body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="?vctr_content_primary"
+        android:gravity="center"
+        android:textColor="@color/text_color_dark_gray"
+        android:textSize="@dimen/textsize_14"
         app:layout_constraintBottom_toTopOf="@id/waitingProgress"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/re_authentication_activity_title" />
 
     <ProgressBar
@@ -31,7 +33,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="?colorError"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:textSize="@dimen/textsize_14"
         app:layout_constraintBottom_toTopOf="@id/buttonFlow"
         app:layout_constraintTop_toBottomOf="@id/waitingProgress"
         app:layout_constraintVertical_chainStyle="packed"

@@ -2318,6 +2318,7 @@
     <string name="verification_conclusion_ok_self_notice2">您现在可以在此设备上阅读加密信息，其他用户将知道他们可以信任它</string>
     <string name="verification_verified">已验证!</string>
     <string name="kelare_please_input_valid_homeserver">请输入有效的服务器</string>
+    <string name="bootstrap_dont_reuse_pwd2">不要使用你的Nodefy账号密码。</string>
 
 
 
