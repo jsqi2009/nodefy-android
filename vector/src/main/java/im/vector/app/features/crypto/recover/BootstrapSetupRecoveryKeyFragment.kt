@@ -46,10 +46,18 @@ class BootstrapSetupRecoveryKeyFragment @Inject constructor() :
         }
 
         // Actions when there is no key backup
-        views.bootstrapSetupSecureUseSecurityKey.views.bottomSheetActionClickableZone.debouncedClicks {
+        /*views.bootstrapSetupSecureUseSecurityKey.views.bottomSheetActionClickableZone.debouncedClicks {
             sharedViewModel.handle(BootstrapActions.Start(userWantsToEnterPassphrase = false))
         }
         views.bootstrapSetupSecureUseSecurityPassphrase.views.bottomSheetActionClickableZone.debouncedClicks {
+            sharedViewModel.handle(BootstrapActions.Start(userWantsToEnterPassphrase = true))
+        }*/
+
+        // Actions when there is no key backup
+        views.bootstrapSetupSecureUseSecurityKey.debouncedClicks {
+            sharedViewModel.handle(BootstrapActions.Start(userWantsToEnterPassphrase = false))
+        }
+        views.bootstrapSetupSecureUseSecurityPassphrase.debouncedClicks {
             sharedViewModel.handle(BootstrapActions.Start(userWantsToEnterPassphrase = true))
         }
     }
@@ -75,7 +83,14 @@ class BootstrapSetupRecoveryKeyFragment @Inject constructor() :
                 views.bootstrapSetupSecureUseSecurityKey.isVisible = true
                 views.bootstrapSetupSecureUseSecurityPassphrase.isVisible = true
                 views.bootstrapSetupSecureUseSecurityPassphraseSeparator.isVisible = true
+
+                //kelare setting
+                views.bootstrapSetupSecureText.text = getString(R.string.bottom_sheet_setup_secure_backup_subtitle)
+                views.bootstrapSetupWarningTextView.isVisible = false
             }
         }
     }
+
+
+
 }

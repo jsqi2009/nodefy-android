@@ -5,24 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="200dp"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/bootstrapSetupSecureText"
-        style="@style/Widget.Vector.TextView.Body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="@dimen/margin_20"
         android:text="@string/bottom_sheet_setup_secure_backup_subtitle"
-        android:textColor="?vctr_content_primary" />
+        android:textColor="@color/text_color_dark_gray"
+        android:textSize="@dimen/textsize_14"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/layout_vertical_margin"
-        android:background="?vctr_list_separator_on_surface" />
+        android:background="?vctr_list_separator_on_surface"
+        android:visibility="gone"/>
 
     <im.vector.app.core.ui.views.BottomSheetActionButton
         android:id="@+id/bootstrapSetupSecureSubmit"
@@ -31,9 +35,59 @@
         android:minHeight="50dp"
         app:actionTitle="@string/bottom_sheet_setup_secure_backup_submit"
         app:rightIcon="@drawable/ic_arrow_right"
-        app:tint="?colorSecondary" />
+        app:tint="?colorSecondary"
+        android:visibility="gone"/>
 
-    <im.vector.app.core.ui.views.BottomSheetActionButton
+    <LinearLayout
+        android:id="@+id/bootstrapSetupSecureUseSecurityKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:layout_marginVertical="@dimen/margin_16"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/margin_25"
+            android:layout_height="@dimen/margin_25"
+            android:src="@drawable/ic_secutity_key"
+            android:layout_gravity="center_vertical"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textsize_15"
+                android:textColor="@color/app_color"
+                android:text="@string/bottom_sheet_setup_secure_backup_security_key_title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:textSize="@dimen/textsize_12"
+                android:textColor="@color/text_color_dark_gray"
+                android:text="@string/bottom_sheet_setup_secure_backup_security_key_subtitle"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/margin_15"
+            android:layout_height="@dimen/margin_15"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_right_arrow_gray"
+            tools:ignore="ContentDescription" />
+
+
+    </LinearLayout>
+
+    <!--<im.vector.app.core.ui.views.BottomSheetActionButton
         android:id="@+id/bootstrapSetupSecureUseSecurityKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +98,7 @@
         app:leftIcon="@drawable/ic_security_key_24dp"
         app:rightIcon="@drawable/ic_arrow_right"
         app:tint="?vctr_content_primary"
-        tools:visibility="visible" />
+        tools:visibility="visible" />-->
 
     <View
         android:id="@+id/bootstrapSetupSecureUseSecurityPassphraseSeparator"
@@ -52,9 +106,64 @@
         android:layout_height="1dp"
         android:background="?vctr_list_separator_on_surface"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
-    <im.vector.app.core.ui.views.BottomSheetActionButton
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:background="@color/line_color"/>
+
+    <LinearLayout
+        android:id="@+id/bootstrapSetupSecureUseSecurityPassphrase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:layout_marginVertical="@dimen/margin_16"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/margin_25"
+            android:layout_height="@dimen/margin_25"
+            android:src="@drawable/ic_security_phrase"
+            android:layout_gravity="center_vertical"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textsize_15"
+                android:textColor="@color/app_color"
+                android:text="@string/bottom_sheet_setup_secure_backup_security_phrase_title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:textSize="@dimen/textsize_12"
+                android:textColor="@color/text_color_dark_gray"
+                android:text="@string/bottom_sheet_setup_secure_backup_security_phrase_subtitle"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/margin_15"
+            android:layout_height="@dimen/margin_15"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_right_arrow_gray"
+            tools:ignore="ContentDescription" />
+
+
+    </LinearLayout>
+
+    <!--<im.vector.app.core.ui.views.BottomSheetActionButton
         android:id="@+id/bootstrapSetupSecureUseSecurityPassphrase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,11 +175,12 @@
         app:rightIcon="@drawable/ic_arrow_right"
         app:tint="?vctr_content_primary"
         tools:visibility="visible" />
-
+-->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?vctr_list_separator_on_surface" />
+        android:background="?vctr_list_separator_on_surface"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/bootstrapSetupWarningTextView"
@@ -84,6 +194,7 @@
         android:drawablePadding="4dp"
         android:text="@string/reset_secure_backup_warning"
         android:textColor="?colorError"
-        app:drawableStartCompat="@drawable/ic_warning_badge" />
+        app:drawableStartCompat="@drawable/ic_warning_badge"
+        android:visibility="gone"/>
 
 </LinearLayout>

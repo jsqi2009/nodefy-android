@@ -27,7 +27,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="?vctr_content_primary"
-            tools:ignore="MissingPrefix" />
+            tools:ignore="MissingPrefix"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/bootstrapTitleText"
@@ -39,11 +40,11 @@
             android:ellipsize="end"
             android:textColor="?vctr_content_primary"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/bootstrapIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/bootstrapIcon"
-            app:layout_constraintTop_toTopOf="@id/bootstrapIcon"
-            tools:text="@string/bottom_sheet_setup_secure_backup_title" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            tools:text="@string/bottom_sheet_setup_secure_backup_title"
+            tools:ignore="MissingConstraints" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/bottomSheetFragmentContainer"
