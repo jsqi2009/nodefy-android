@@ -42,6 +42,8 @@ import im.vector.app.core.extensions.toMvRxBundle
 import im.vector.app.core.platform.VectorBaseBottomSheetDialogFragment
 import im.vector.app.databinding.BottomSheetBootstrapBinding
 import im.vector.app.features.auth.ReAuthActivity
+import im.vector.app.features.crypto.recover.widget.CustomKeepItSafeDialog
+import im.vector.app.kelare.message.widget.CreateXMPPGroupDialog
 import kotlinx.parcelize.Parcelize
 import org.matrix.android.sdk.api.auth.data.LoginFlowTypes
 import kotlin.reflect.KClass
@@ -97,7 +99,8 @@ class BootstrapBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetBoot
                             .show()
                 }
                 BootstrapViewEvents.RecoveryKeySaved -> {
-                    KeepItSafeDialog().show(requireActivity())
+                    //KeepItSafeDialog().show(requireActivity())
+                    CustomKeepItSafeDialog(requireActivity()).show()
                 }
                 is BootstrapViewEvents.SkipBootstrap -> {
                     promptSkip()

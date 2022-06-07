@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <ImageView
+        android:id="@+id/closeImg"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        tools:ignore="ContentDescription"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/centerRl"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/closeImg"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shap_white_bg_20dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:paddingVertical="@dimen/margin_16">
+
+        <TextView
+            android:id="@+id/bootstrapTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/keep_it_safe"
+            android:textSize="@dimen/textsize_15"
+            android:textColor="@color/text_color_black"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/margin_15"
+                android:layout_height="@dimen/margin_15"
+                android:src="@drawable/ic_check_on_gray"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="@string/bootstrap_crosssigning_print_it"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/textsize_12"
+                tools:ignore="UseCompatTextViewDrawableXml" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/margin_15"
+                android:layout_height="@dimen/margin_15"
+                android:src="@drawable/ic_check_on_gray"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="@string/bootstrap_crosssigning_save_usb"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/textsize_12"
+                tools:ignore="UseCompatTextViewDrawableXml" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/margin_15"
+                android:layout_height="@dimen/margin_15"
+                android:src="@drawable/ic_check_on_gray"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="@string/bootstrap_crosssigning_save_cloud"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/textsize_12"
+                tools:ignore="UseCompatTextViewDrawableXml" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_15"
+            android:background="@color/line_color"/>
+
+        <TextView
+            android:id="@+id/tv_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:gravity="center"
+            android:text="@string/bootstrap_crosssigning_save_usb2"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textsize_15"
+            tools:ignore="UseCompatTextViewDrawableXml" />
+
+    </LinearLayout>
+
+</RelativeLayout>

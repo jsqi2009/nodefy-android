@@ -2320,6 +2320,7 @@
     <string name="kelare_please_input_valid_homeserver">请输入有效的服务器</string>
     <string name="bootstrap_dont_reuse_pwd2">不要使用你的Nodefy账号密码。</string>
     <string name="keys_backup_setup_step3_save_button_title2">保存</string>
+    <string name="bootstrap_crosssigning_save_usb2">继续</string>
 
 
 
