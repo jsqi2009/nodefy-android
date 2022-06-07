@@ -519,7 +519,7 @@ class BootstrapSharedViewModel @AssistedInject constructor(
             }
             BootstrapStep.CheckingMigration                  -> Unit
             is BootstrapStep.FirstForm                       -> {
-                /*_viewEvents.post(
+                _viewEvents.post(
                         when (state.setupMode) {
                             SetupMode.CROSS_SIGNING_ONLY,
                             SetupMode.NORMAL -> BootstrapViewEvents.SkipBootstrap()
@@ -527,11 +527,11 @@ class BootstrapSharedViewModel @AssistedInject constructor(
                                 BootstrapViewEvents.Dismiss(success = false)
                             }
                         }
-                )*/
+                )
 
-                if (state.setupMode == SetupMode.CROSS_SIGNING_ONLY || state.setupMode == SetupMode.NORMAL) {
+                /*if (state.setupMode == SetupMode.CROSS_SIGNING_ONLY || state.setupMode == SetupMode.NORMAL) {
                     _viewEvents.post(BootstrapViewEvents.SkipBootstrap())
-                }
+                }*/
             }
             is BootstrapStep.GetBackupSecretForMigration     -> {
                 setState {

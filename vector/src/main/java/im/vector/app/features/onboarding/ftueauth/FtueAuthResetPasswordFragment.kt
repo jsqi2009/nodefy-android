@@ -45,7 +45,8 @@ import javax.inject.Inject
 class FtueAuthResetPasswordFragment @Inject constructor() : AbstractFtueAuthFragment<FragmentLoginResetPasswordBinding>() {
 
     // Show warning only once
-    private var showWarning = true
+//    private var showWarning = true
+    private var showWarning = false
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentLoginResetPasswordBinding {
         return FragmentLoginResetPasswordBinding.inflate(inflater, container, false)
