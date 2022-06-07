@@ -16,6 +16,7 @@
 
 package im.vector.app.features.crypto.quads
 
+import CloseResetPageEvent
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -29,6 +30,7 @@ import androidx.fragment.app.FragmentOnAttachListener
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.viewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.squareup.otto.Subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
 import im.vector.app.core.error.ErrorFormatter
@@ -36,6 +38,7 @@ import im.vector.app.core.extensions.replaceFragment
 import im.vector.app.core.platform.SimpleFragmentActivity
 import im.vector.app.core.platform.VectorBaseBottomSheetDialogFragment
 import im.vector.app.features.crypto.recover.SetupMode
+import im.vector.app.features.crypto.recover.widget.CloseResetEvent
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 import kotlin.reflect.KClass
@@ -174,5 +177,11 @@ class SharedSecureStorageActivity :
             setResult(Activity.RESULT_OK, Intent().apply { putExtra(EXTRA_DATA_RESET, true) })
             finish()
         }
+    }
+
+    @Subscribe
+    fun onCloseResetEvent(event: CloseResetEvent) {
+        setResult(Activity.RESULT_OK, Intent().apply { putExtra(EXTRA_DATA_RESET, true) })
+        finish()
     }
 }

@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.squareup.otto.Subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
 import im.vector.app.core.extensions.commitTransaction
@@ -36,6 +37,7 @@ import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.core.platform.VectorBaseBottomSheetDialogFragment
 import im.vector.app.databinding.BottomSheetVerificationBinding
 import im.vector.app.features.crypto.quads.SharedSecureStorageActivity
+import im.vector.app.features.crypto.recover.widget.CloseResetEvent
 import im.vector.app.features.crypto.verification.cancel.VerificationCancelFragment
 import im.vector.app.features.crypto.verification.cancel.VerificationNotMeFragment
 import im.vector.app.features.crypto.verification.choose.VerificationChooseMethodFragment
@@ -399,6 +401,12 @@ class VerificationBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetV
         }
 
         const val WAITING_SELF_VERIF_TAG: String = "WAITING_SELF_VERIF_TAG"
+    }
+
+    @Subscribe
+    fun onCloseResetEvent(event: CloseResetEvent) {
+        Timber.e("VerificationBottomSheet=--- close event")
+        dismiss()
     }
 }
 

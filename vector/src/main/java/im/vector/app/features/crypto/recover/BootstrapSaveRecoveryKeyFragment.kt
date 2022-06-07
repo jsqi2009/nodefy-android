@@ -16,6 +16,7 @@
 
 package im.vector.app.features.crypto.recover
 
+import CloseResetPageEvent
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -36,6 +37,9 @@ import im.vector.app.core.resources.ColorProvider
 import im.vector.app.core.utils.startSharePlainTextIntent
 import im.vector.app.core.utils.toast
 import im.vector.app.databinding.FragmentBootstrapSaveKeyBinding
+import im.vector.app.features.crypto.keysbackup.restore.KeysBackupRestoreActivity
+import im.vector.app.features.crypto.quads.SharedSecureStorageActivity
+import im.vector.app.features.crypto.recover.widget.CloseResetEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -69,6 +73,9 @@ class BootstrapSaveRecoveryKeyFragment @Inject constructor(
             // TODO Do some cleanup
             // sharedViewModel.handle(BootstrapActions.GoToCompleted)
             sharedViewModel.handle(BootstrapActions.Completed)
+            mBus.post(CloseResetEvent())
+
+
         }
     }
 
