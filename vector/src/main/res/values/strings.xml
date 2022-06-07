@@ -3087,6 +3087,14 @@
     <string name="bootstrap_dont_reuse_pwd2">Don’t use your Nodefy account password.</string>
     <string name="keys_backup_setup_step3_save_button_title2">Save</string>
     <string name="bootstrap_crosssigning_save_usb2">Continue</string>
+    <string name="login_reset_password_notice2">To reset your password, enter the email address linked to your account:</string>
+    <string name="login_reset_password_email_hint2">Email address</string>
+    <string name="login_reset_password_conform_password_hint">Confirm your new password</string>
+    <string name="login_reset_password_submit2">Send Reset Email</string>
+    <string name="login_reset_password_password_error">Please input or confirm new password</string>
+    <string name="login_reset_password_mail_confirmation_notice_new">An email has been sent to %1$s. Once you\'ve followed the link it contains, click below. </string>
+    <string name="login_reset_password_success_notice2">Your Nodefy account password has been reset.</string>
+    <string name="login_reset_password_success_submit2">Return to login screen</string>
 
 
 

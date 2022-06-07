@@ -203,6 +203,12 @@ class FtueAuthVariant(
             is OnboardingViewEvents.OnResetPasswordMailConfirmationSuccessDone -> {
                 // Go back to the login fragment
                 supportFragmentManager.popBackStack(FRAGMENT_LOGIN_TAG, POP_BACK_STACK_EXCLUSIVE)
+
+                activity.addFragmentToBackstack(
+                        views.loginFragmentContainer,
+                        FtueAuthKelareLoginFragment::class.java,
+                        option = commonOption
+                )
             }
             is OnboardingViewEvents.OnSendEmailSuccess                         -> {
                 // Pop the enter email Fragment

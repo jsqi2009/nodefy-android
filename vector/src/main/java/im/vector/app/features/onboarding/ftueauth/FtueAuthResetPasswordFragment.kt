@@ -17,9 +17,11 @@
 package im.vector.app.features.onboarding.ftueauth
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import im.vector.app.R
@@ -52,6 +54,10 @@ class FtueAuthResetPasswordFragment @Inject constructor() : AbstractFtueAuthFrag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSubmitButton()
+
+        views.tvSignIn.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     override fun onError(throwable: Throwable) {
@@ -100,6 +106,21 @@ class FtueAuthResetPasswordFragment @Inject constructor() : AbstractFtueAuthFrag
     private fun doSubmit() {
         val email = views.resetPasswordEmail.text.toString()
         val password = views.passwordField.text.toString()
+        val confirmPassword = views.confirmPasswordField.text.toString()
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(activity, getString(R.string.kelare_please_input_valid_homeserver), Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
+            Toast.makeText(activity, getString(R.string.login_reset_password_password_error), Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (password != confirmPassword) {
+            Toast.makeText(activity, getString(R.string.error_password_not_match), Toast.LENGTH_SHORT).show()
+            return
+        }
+
 
         viewModel.handle(OnboardingAction.ResetPassword(email, password))
     }
@@ -108,6 +129,7 @@ class FtueAuthResetPasswordFragment @Inject constructor() : AbstractFtueAuthFrag
         views.resetPasswordSubmit.hideKeyboard()
         views.resetPasswordEmailTil.error = null
         views.passwordFieldTil.error = null
+        views.conformPasswordFieldTil.error = null
     }
 
     override fun resetViewModel() {
@@ -119,6 +141,7 @@ class FtueAuthResetPasswordFragment @Inject constructor() : AbstractFtueAuthFrag
         if (state.isLoading) {
             // Ensure new password is hidden
             views.passwordField.hidePassword()
+            views.confirmPasswordField.hidePassword()
         }
     }
 }

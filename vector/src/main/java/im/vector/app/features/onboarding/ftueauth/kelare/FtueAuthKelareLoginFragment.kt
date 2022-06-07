@@ -18,6 +18,7 @@ package im.vector.app.features.onboarding.ftueauth.kelare
 
 import UpdateLanguageEvent
 import android.annotation.SuppressLint
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,7 @@ import im.vector.app.core.utils.ensureProtocol
 import im.vector.app.databinding.FragmentFtueAuthKelareLoginBinding
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingFlow
+import im.vector.app.features.onboarding.OnboardingViewEvents
 import im.vector.app.features.onboarding.OnboardingViewState
 import im.vector.app.features.onboarding.ftueauth.AbstractSSOFtueAuthFragment
 import timber.log.Timber
@@ -75,6 +77,8 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
             return@setOnEditorActionListener false
         }
 
+        views.forgotPasswordTv.paint.flags = Paint.UNDERLINE_TEXT_FLAG
+
         views.loginTv.setOnClickListener(this)
         views.forgotPasswordTv.setOnClickListener(this)
         views.createAccountTv.setOnClickListener(this)
@@ -88,11 +92,10 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
                 submit()
             }
             R.id.forgotPasswordTv    -> {
-
+                forgetPassword()
             }
             R.id.createAccountTv    -> {
                 handleRegisterWithHomeServer()
-
             }
             R.id.ll_sign_in_type    -> {
                 switchSignInType()
@@ -102,6 +105,15 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
             }
             else -> {}
         }
+    }
+
+    private fun forgetPassword() {
+        if (android.text.TextUtils.isEmpty(views.serverEt.text.toString().trim().ensureProtocol())) {
+            Toast.makeText(activity, getString(R.string.kelare_please_input_valid_homeserver), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        viewModel.handle(OnboardingAction.PostViewEvent(OnboardingViewEvents.OnForgetPasswordClicked))
     }
 
     private fun submit() {
