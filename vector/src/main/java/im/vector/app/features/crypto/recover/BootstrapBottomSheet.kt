@@ -43,6 +43,7 @@ import im.vector.app.core.platform.VectorBaseBottomSheetDialogFragment
 import im.vector.app.databinding.BottomSheetBootstrapBinding
 import im.vector.app.features.auth.ReAuthActivity
 import im.vector.app.features.crypto.recover.widget.CustomKeepItSafeDialog
+import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.message.widget.CreateXMPPGroupDialog
 import kotlinx.parcelize.Parcelize
 import org.matrix.android.sdk.api.auth.data.LoginFlowTypes
@@ -89,7 +90,10 @@ class BootstrapBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetBoot
             when (event) {
                 is BootstrapViewEvents.Dismiss       -> {
                     bottomSheetResult = if (event.success) ResultListener.RESULT_OK else ResultListener.RESULT_CANCEL
-                    dismiss()
+                    val dialerSession = DialerSession(requireActivity())
+                    if (!dialerSession.isCreateAccountLogin) {
+                        dismiss()
+                    }
                 }
                 is BootstrapViewEvents.ModalError    -> {
                     MaterialAlertDialogBuilder(requireActivity())

@@ -428,6 +428,7 @@ class HomeActivity :
 
     private fun handleOnNewSession2(event: HomeActivityViewEvents.OnNewSession) {
         // We need to ask
+        dialerSession.isCreateAccountLogin = false
         if (event.waitForIncomingRequest) {
             navigator.waitSessionVerification(this)
         } else {
@@ -662,6 +663,7 @@ class HomeActivity :
         Timber.e("keysBackupState-----${serverBackupStatusViewModel.keysBackupState.value}")
 
         if (serverBackupStatusViewModel.keysBackupState.value == KeysBackupState.Disabled) {
+            dialerSession.isCreateAccountLogin = true
             navigator.open4SSetup(this, SetupMode.HARD_RESET)
         }
     }

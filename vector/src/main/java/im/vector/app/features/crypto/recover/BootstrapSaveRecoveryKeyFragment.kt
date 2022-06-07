@@ -72,6 +72,7 @@ class BootstrapSaveRecoveryKeyFragment @Inject constructor(
             // We do not display the final Fragment anymore
             // TODO Do some cleanup
             // sharedViewModel.handle(BootstrapActions.GoToCompleted)
+            dialerSession.isCreateAccountLogin = false
             sharedViewModel.handle(BootstrapActions.Completed)
             mBus.post(CloseResetEvent())
 

@@ -34,6 +34,7 @@ class DialerSession(c: Context) {
         //Dialer
         private const val KEY_APP_HOME_SERVER = "app_home_server"
         private const val KEY_USER_ID = "user_id"
+        private const val KEY_CREATE_ACCOUNT_LOGIN = "create_account_login"
 
     }
 
@@ -118,6 +119,9 @@ class DialerSession(c: Context) {
             this.mHashStorage.put(KEY_DIALER_PHONE_NUMBER, json)
         }
 
+    var isCreateAccountLogin: Boolean
+        get() = this.mHashStorage.getBoolean(KEY_CREATE_ACCOUNT_LOGIN)
+        set(paramFlag) = this.mHashStorage.put(KEY_CREATE_ACCOUNT_LOGIN, paramFlag)
 
     /*var userInfo: UserInfo
         get() = this.getData(UserInfo::class.java, KEY_USER_INFO)
