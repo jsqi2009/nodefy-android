@@ -21,28 +21,30 @@
     <LinearLayout
         android:id="@+id/centerRl"
         android:layout_width="match_parent"
-        android:layout_below="@+id/closeImg"
         android:layout_height="wrap_content"
-        android:background="@drawable/shap_white_bg_20dp"
+        android:layout_below="@+id/closeImg"
         android:layout_centerInParent="true"
-        android:orientation="vertical"
         android:layout_marginHorizontal="@dimen/margin_20"
+        android:background="@drawable/shap_white_bg_20dp"
+        android:orientation="vertical"
         android:paddingVertical="@dimen/margin_16">
 
         <TextView
             android:id="@+id/bootstrapTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
             android:gravity="center"
             android:text="@string/keep_it_safe"
-            android:textSize="@dimen/textsize_15"
             android:textColor="@color/text_color_black"
+            android:textSize="@dimen/textsize_15"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/margin_5"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -50,7 +52,7 @@
                 android:layout_width="@dimen/margin_15"
                 android:layout_height="@dimen/margin_15"
                 android:src="@drawable/ic_check_on_gray"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/margin_5"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -74,7 +77,7 @@
                 android:layout_width="@dimen/margin_15"
                 android:layout_height="@dimen/margin_15"
                 android:src="@drawable/ic_check_on_gray"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -91,6 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/margin_5"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -98,7 +102,7 @@
                 android:layout_width="@dimen/margin_15"
                 android:layout_height="@dimen/margin_15"
                 android:src="@drawable/ic_check_on_gray"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,8 +118,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/margin_15"
-            android:background="@color/line_color"/>
+            android:layout_marginTop="@dimen/margin_20"
+            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/tv_continue"
@@ -124,7 +128,7 @@
             android:layout_marginTop="@dimen/margin_16"
             android:gravity="center"
             android:text="@string/bootstrap_crosssigning_save_usb2"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/keep_it_save_continue_color"
             android:textSize="@dimen/textsize_15"
             tools:ignore="UseCompatTextViewDrawableXml" />
 
