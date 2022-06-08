@@ -68,6 +68,11 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
 
         views.serverEt.setText("https://kelare.istory.cc:8448")
 
+        /*views.apply {
+            tvType.text  =defaultType
+            tvLanguage.text = defaultLanguage
+        }*/
+
         views.tvType.text = defaultType
         views.tvLanguage.text = defaultLanguage
         views.passwordEt.setOnEditorActionListener { _, actionId, _ ->
