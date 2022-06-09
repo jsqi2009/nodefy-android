@@ -126,6 +126,7 @@ class RoomListViewModel @AssistedInject constructor(
     companion object : MavericksViewModelFactory<RoomListViewModel, RoomListViewState> by hiltMavericksViewModelFactory()
 
     private val roomListSectionBuilder = if (appStateHandler.getCurrentRoomGroupingMethod() is RoomGroupingMethod.BySpace) {
+        Timber.e("RoomGroupingMethod---by space")
         RoomListSectionBuilderSpace(
                 session,
                 stringProvider,
@@ -139,6 +140,7 @@ class RoomListViewModel @AssistedInject constructor(
                 !vectorPreferences.prefSpacesShowAllRoomInHome()
         )
     } else {
+        Timber.e("RoomGroupingMethod---not by space")
         RoomListSectionBuilderGroup(
                 viewModelScope,
                 session,

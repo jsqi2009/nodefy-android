@@ -78,11 +78,13 @@ class RoomListSectionBuilderSpace(
         when (mode) {
             RoomListDisplayMode.PEOPLE        -> {
                 // 4 sections Invites / Fav / Dms / Low Priority
-                buildDmSections(sections, activeSpaceAwareQueries)
+//                buildDmSections(sections, activeSpaceAwareQueries)
+                buildDmAndRoomSections(sections, activeSpaceAwareQueries)
             }
             RoomListDisplayMode.ROOMS         -> {
                 // 6 sections invites / Fav / Rooms / Low Priority / Server notice / Suggested rooms
-                buildRoomsSections(sections, activeSpaceAwareQueries)
+//                buildRoomsSections(sections, activeSpaceAwareQueries)
+                buildDmAndRoomSections(sections, activeSpaceAwareQueries)
             }
             RoomListDisplayMode.FILTERED      -> {
                 // Used when searching for rooms
@@ -454,6 +456,75 @@ class RoomListSectionBuilderSpace(
                 }
             }
             RoomListViewModel.SpaceFilterStrategy.NONE                  -> this
+        }
+    }
+
+    private fun buildDmAndRoomSections(sections: MutableList<RoomsSection>,
+                                activeSpaceAwareQueries: MutableList<RoomListViewModel.ActiveSpaceQueryUpdater>) {
+        if (autoAcceptInvites.showInvites()) {
+            addSection(
+                    sections = sections,
+                    activeSpaceUpdaters = activeSpaceAwareQueries,
+                    nameRes = R.string.invitations_header,
+                    notifyOfLocalEcho = true,
+                    spaceFilterStrategy = RoomListViewModel.SpaceFilterStrategy.ALL_IF_SPACE_NULL,
+                    countRoomAsNotif = true
+            ) {
+                it.memberships = listOf(Membership.INVITE)
+                it.roomCategoryFilter = RoomCategoryFilter.ALL
+            }
+        }
+
+        addSection(
+                sections,
+                activeSpaceAwareQueries,
+                R.string.bottom_action_favourites,
+                false,
+                RoomListViewModel.SpaceFilterStrategy.ALL_IF_SPACE_NULL
+        ) {
+            it.memberships = listOf(Membership.JOIN)
+            it.roomCategoryFilter = RoomCategoryFilter.ALL
+            it.roomTagQueryFilter = RoomTagQueryFilter(true, null, null)
+        }
+
+        addSection(
+                sections,
+                activeSpaceAwareQueries,
+                R.string.bottom_action_people_x,
+                false,
+                RoomListViewModel.SpaceFilterStrategy.ALL_IF_SPACE_NULL
+        ) {
+            it.memberships = listOf(Membership.JOIN)
+            it.roomCategoryFilter = RoomCategoryFilter.ONLY_DM
+            it.roomTagQueryFilter = RoomTagQueryFilter(false, false, null)
+        }
+
+        addSection(
+                sections = sections,
+                activeSpaceUpdaters = activeSpaceAwareQueries,
+                nameRes = R.string.bottom_action_rooms,
+                notifyOfLocalEcho = false,
+                spaceFilterStrategy = if (onlyOrphansInHome) {
+                    RoomListViewModel.SpaceFilterStrategy.ORPHANS_IF_SPACE_NULL
+                } else {
+                    RoomListViewModel.SpaceFilterStrategy.ALL_IF_SPACE_NULL
+                }
+        ) {
+            it.memberships = listOf(Membership.JOIN)
+            it.roomCategoryFilter = RoomCategoryFilter.ONLY_ROOMS
+            it.roomTagQueryFilter = RoomTagQueryFilter(false, false, false)
+        }
+
+        addSection(
+                sections,
+                activeSpaceAwareQueries,
+                R.string.low_priority_header,
+                false,
+                RoomListViewModel.SpaceFilterStrategy.ALL_IF_SPACE_NULL
+        ) {
+            it.memberships = listOf(Membership.JOIN)
+            it.roomCategoryFilter = RoomCategoryFilter.ALL
+            it.roomTagQueryFilter = RoomTagQueryFilter(false, true, null)
         }
     }
 }
