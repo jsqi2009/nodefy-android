@@ -3097,5 +3097,9 @@
     <string name="login_reset_password_success_submit2">Return to login screen</string>
 
 
+    <!-- nodefy.me home -->
+    <string name="home_header_app_name">nodefy.me</string>
+
+
 
 </resources>

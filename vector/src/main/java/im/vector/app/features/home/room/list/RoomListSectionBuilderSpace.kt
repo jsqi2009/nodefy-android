@@ -78,13 +78,13 @@ class RoomListSectionBuilderSpace(
         when (mode) {
             RoomListDisplayMode.PEOPLE        -> {
                 // 4 sections Invites / Fav / Dms / Low Priority
-//                buildDmSections(sections, activeSpaceAwareQueries)
-                buildDmAndRoomSections(sections, activeSpaceAwareQueries)
+                buildDmSections(sections, activeSpaceAwareQueries)
+//                buildDmAndRoomSections(sections, activeSpaceAwareQueries)
             }
             RoomListDisplayMode.ROOMS         -> {
                 // 6 sections invites / Fav / Rooms / Low Priority / Server notice / Suggested rooms
-//                buildRoomsSections(sections, activeSpaceAwareQueries)
-                buildDmAndRoomSections(sections, activeSpaceAwareQueries)
+                buildRoomsSections(sections, activeSpaceAwareQueries)
+//                buildDmAndRoomSections(sections, activeSpaceAwareQueries)
             }
             RoomListDisplayMode.FILTERED      -> {
                 // Used when searching for rooms

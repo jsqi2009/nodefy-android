@@ -20,10 +20,60 @@
             app:layout_constraintTop_toBottomOf="@id/homeKeysBackupBanner"
             tools:visibility="visible" />
 
+        <LinearLayout
+            android:id="@+id/homeUsernameLl"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_60"
+            android:background="@color/app_color"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/homeHeaderAvatarView"
+                android:layout_width="@dimen/margin_40"
+                android:layout_height="@dimen/margin_40"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/layout_horizontal_margin"
+                android:importantForAccessibility="no"
+                android:transitionName="profile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@sample/user_round_avatars" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_15"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/homeUsernameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="user name"
+                    android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="@string/home_header_app_name"
+                    android:textColor="@color/text_color_black1"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+        </LinearLayout>
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/groupToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="?attr/actionBarSize"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -32,6 +32,7 @@ import im.vector.app.AppStateHandler
 import im.vector.app.R
 import im.vector.app.RoomGroupingMethod
 import im.vector.app.core.extensions.commitTransaction
+import im.vector.app.core.extensions.observeK
 import im.vector.app.core.extensions.toMvRxBundle
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.core.platform.VectorBaseFragment
@@ -56,14 +57,17 @@ import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.workers.signout.BannerState
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
 import im.vector.app.kelare.dialer.DialerFragment
+import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.crypto.model.DeviceInfo
 import org.matrix.android.sdk.api.session.group.model.GroupSummary
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.util.toMatrixItem
 import org.zhx.common.bgstart.library.api.PermissionLisenter
 import org.zhx.common.bgstart.library.impl.BgStart
 import javax.inject.Inject
 
 class HomeDetailFragment @Inject constructor(
+        private val session: Session,
         private val avatarRenderer: AvatarRenderer,
         private val colorProvider: ColorProvider,
         private val alertManager: PopupAlertManager,
@@ -99,7 +103,6 @@ class HomeDetailFragment @Inject constructor(
                 return true
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -192,6 +195,8 @@ class HomeDetailFragment @Inject constructor(
                     invalidateOptionsMenu()
                 }
 
+
+        initHomeHeaderUserInfo()
         //dialer module
         checkPermission()
     }
@@ -526,6 +531,20 @@ class HomeDetailFragment @Inject constructor(
             }
         }
         return this
+    }
+
+    private fun initHomeHeaderUserInfo() {
+        session.userService().getUserLive(session.myUserId).observeK(viewLifecycleOwner) { optionalUser ->
+            val user = optionalUser?.getOrNull()
+            if (user != null) {
+                avatarRenderer.render(user.toMatrixItem(), views.homeHeaderAvatarView)
+                views.homeUsernameTv.text = user.displayName
+            }
+        }
+
+        views.homeUsernameLl.setOnClickListener {
+            navigator.openSettings(requireActivity())
+        }
     }
 
     private fun checkPermission() {

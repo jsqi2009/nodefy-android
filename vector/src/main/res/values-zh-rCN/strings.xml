@@ -2331,7 +2331,8 @@
     <string name="login_reset_password_success_submit2">返回登录页面</string>
 
 
-
+    <!-- nodefy.me home -->
+    <string name="home_header_app_name">nodefy.me</string>
 
 
 
