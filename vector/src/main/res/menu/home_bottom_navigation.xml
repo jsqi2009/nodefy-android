@@ -13,11 +13,18 @@
         android:icon="@drawable/ic_home_bottom_group"
         android:title="@string/bottom_action_rooms" />
 
-    <item
+    <!--<item
         android:id="@+id/bottom_action_notification"
         android:enabled="true"
         android:icon="@drawable/ic_settings_root_notification"
         android:title="@string/bottom_action_notification"
+        android:visible="false" />-->
+
+    <item
+        android:id="@+id/bottom_action_space"
+        android:enabled="true"
+        android:icon="@drawable/bottom_nav_space_selector"
+        android:title="@string/bottom_action_space"
         android:visible="false" />
 
     <item

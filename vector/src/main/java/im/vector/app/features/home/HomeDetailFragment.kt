@@ -53,6 +53,7 @@ import im.vector.app.features.popup.VerificationVectorAlert
 import im.vector.app.features.settings.VectorLocale
 import im.vector.app.features.settings.VectorPreferences
 import im.vector.app.features.settings.VectorSettingsActivity.Companion.EXTRA_DIRECT_ACCESS_SECURITY_PRIVACY_MANAGE_SESSIONS
+import im.vector.app.features.spaces.SpaceListFragment
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.workers.signout.BannerState
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
@@ -131,7 +132,7 @@ class HomeDetailFragment @Inject constructor(
 
         withState(viewModel) {
             // Update the navigation view if needed (for when we restore the tabs)
-            views.bottomNavigationView.selectedItemId = it.currentTab.toMenuId()
+            views.bottomNavigationView.selectedItemId = it.currentTab.toMenuId() as Int
         }
 
         viewModel.onEach(HomeDetailViewState::roomGroupingMethod) { roomGroupingMethod ->
@@ -215,7 +216,7 @@ class HomeDetailFragment @Inject constructor(
     override fun onResume() {
         super.onResume()
         // update notification tab if needed
-        updateTabVisibilitySafely(R.id.bottom_action_notification, vectorPreferences.labAddNotificationTab())
+//        updateTabVisibilitySafely(R.id.bottom_action_notification, vectorPreferences.labAddNotificationTab())
         callManager.checkForProtocolsSupportIfNeeded()
 
         // Current space/group is not live so at least refresh toolbar on resume
@@ -348,13 +349,14 @@ class HomeDetailFragment @Inject constructor(
     }
 
     private fun setupBottomNavigationView() {
-        views.bottomNavigationView.menu.findItem(R.id.bottom_action_notification).isVisible = vectorPreferences.labAddNotificationTab()
+//        views.bottomNavigationView.menu.findItem(R.id.bottom_action_notification).isVisible = vectorPreferences.labAddNotificationTab()
         views.bottomNavigationView.setOnItemSelectedListener {
             val tab = when (it.itemId) {
                 R.id.bottom_action_people       -> HomeTab.RoomList(RoomListDisplayMode.PEOPLE)
                 R.id.bottom_action_rooms        -> HomeTab.RoomList(RoomListDisplayMode.ROOMS)
-                R.id.bottom_action_notification -> HomeTab.RoomList(RoomListDisplayMode.NOTIFICATIONS)
+//                R.id.bottom_action_notification -> HomeTab.RoomList(RoomListDisplayMode.NOTIFICATIONS)
                 R.id.bottom_action_dialer       -> HomeTab.DialerFragment
+                R.id.bottom_action_space       -> HomeTab.SpaceList
                 else                            -> HomeTab.DialPad
             }
             viewModel.handle(HomeDetailAction.SwitchTab(tab))
@@ -374,7 +376,7 @@ class HomeDetailFragment @Inject constructor(
     }
 
     private fun updateUIForTab(tab: HomeTab) {
-        views.bottomNavigationView.menu.findItem(tab.toMenuId()).isChecked = true
+        views.bottomNavigationView.menu.findItem(tab.toMenuId() as Int).isChecked = true
         views.groupToolbarTitleView.setText(tab.titleRes)
         updateSelectedFragment(tab)
         invalidateOptionsMenu()
@@ -413,6 +415,9 @@ class HomeDetailFragment @Inject constructor(
                     is HomeTab.DialerFragment  -> {
                         add(R.id.roomListContainer, createDialerFragment(), fragmentTag)
                     }
+                    is HomeTab.SpaceList  -> {
+                        add(R.id.roomListContainer, createSpaceListFragment(), fragmentTag)
+                    }
                 }
             } else {
                 if (tab is HomeTab.DialPad) {
@@ -438,6 +443,16 @@ class HomeDetailFragment @Inject constructor(
     private fun createDialerFragment(): Fragment {
         val fragment = childFragmentManager.fragmentFactory.instantiate(vectorBaseActivity.classLoader, DialerFragment::class.java.name)
         return (fragment as DialerFragment).apply {
+            arguments = Bundle().apply {
+
+            }
+            //applyCallback()
+        }
+    }
+
+    private fun createSpaceListFragment(): Fragment {
+        val fragment = childFragmentManager.fragmentFactory.instantiate(vectorBaseActivity.classLoader, SpaceListFragment::class.java.name)
+        return (fragment as SpaceListFragment).apply {
             arguments = Bundle().apply {
 
             }
@@ -474,7 +489,7 @@ class HomeDetailFragment @Inject constructor(
 //        Timber.v(it.toString())
         views.bottomNavigationView.getOrCreateBadge(R.id.bottom_action_people).render(it.notificationCountPeople, it.notificationHighlightPeople)
         views.bottomNavigationView.getOrCreateBadge(R.id.bottom_action_rooms).render(it.notificationCountRooms, it.notificationHighlightRooms)
-        views.bottomNavigationView.getOrCreateBadge(R.id.bottom_action_notification).render(it.notificationCountCatchup, it.notificationHighlightCatchup)
+//        views.bottomNavigationView.getOrCreateBadge(R.id.bottom_action_notification).render(it.notificationCountCatchup, it.notificationHighlightCatchup)
         views.syncStateView.render(
                 it.syncState,
                 it.incrementalSyncStatus,
@@ -500,10 +515,12 @@ class HomeDetailFragment @Inject constructor(
     private fun HomeTab.toMenuId() = when (this) {
         is HomeTab.DialPad  -> R.id.bottom_action_dial_pad
         is HomeTab.DialerFragment  -> R.id.bottom_action_dialer
+        is HomeTab.SpaceList  -> R.id.bottom_action_space
         is HomeTab.RoomList -> when (displayMode) {
             RoomListDisplayMode.PEOPLE -> R.id.bottom_action_people
             RoomListDisplayMode.ROOMS  -> R.id.bottom_action_rooms
-            else                       -> R.id.bottom_action_notification
+            else -> {}
+//            else                       -> R.id.bottom_action_notification
         }
     }
 
