@@ -197,6 +197,7 @@ class HomeDetailFragment @Inject constructor(
                 }
 
 
+        views.groupToolbar.visibility = View.GONE
         initHomeHeaderUserInfo()
         //dialer module
         checkPermission()
@@ -390,6 +391,8 @@ class HomeDetailFragment @Inject constructor(
         } else {
             views.groupToolbar.visibility = View.VISIBLE
         }
+
+        views.groupToolbar.visibility = View.GONE
     }
 
     private fun HomeTab.toFragmentTag() = "FRAGMENT_TAG_$this"

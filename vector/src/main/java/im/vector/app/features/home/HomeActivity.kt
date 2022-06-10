@@ -293,6 +293,8 @@ class HomeActivity :
         homeActivityViewModel.handle(HomeActivityViewActions.ViewStarted)
 
         statusBarColor(this)
+        //close the Drawer swipe open
+//        views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
     private fun handleShowAnalyticsOptIn() {
