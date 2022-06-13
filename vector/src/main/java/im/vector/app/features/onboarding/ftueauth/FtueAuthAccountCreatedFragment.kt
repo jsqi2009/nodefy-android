@@ -60,8 +60,9 @@ class FtueAuthAccountCreatedFragment @Inject constructor(
 
         if (!hasPlayedConfetti && !canPersonalize && requireContext().isAnimationEnabled()) {
             hasPlayedConfetti = true
-            views.viewKonfetti.isVisible = true
-            views.viewKonfetti.play()
+//            views.viewKonfetti.isVisible = true
+            views.viewKonfetti.isVisible = false
+//            views.viewKonfetti.play()
         }
     }
 
