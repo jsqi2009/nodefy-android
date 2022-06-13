@@ -2331,6 +2331,11 @@
     <string name="login_reset_password_success_submit2">返回登录页面</string>
 
 
+    <string name="bottom_action_dialer">拨号</string>
+    <string name="bottom_action_space">空间</string>
+    <string name="bottom_action_contact">联系人</string>
+    <string name="bottom_action_home">主页</string>
+
     <!-- nodefy.me home -->
     <string name="home_header_app_name">nodefy.me</string>
 

@@ -413,6 +413,7 @@
     <string name="bottom_action_dialer">Dialer</string>
     <string name="bottom_action_space">Spaces</string>
     <string name="bottom_action_contact">Contact</string>
+    <string name="bottom_action_home">Home</string>
 
     <!-- Home screen -->
     <string name="home_filter_placeholder_home">Filter room names</string>
