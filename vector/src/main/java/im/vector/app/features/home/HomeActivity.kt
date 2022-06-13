@@ -102,8 +102,11 @@ import org.matrix.android.sdk.api.util.MatrixItem
 import timber.log.Timber
 import javax.inject.Inject
 import android.R.attr.action
+import android.os.Handler
 import androidx.viewpager.widget.ViewPager
 import im.vector.app.features.spaces.SpaceListFragment
+import java.util.Timer
+import java.util.TimerTask
 
 @Parcelize
 data class HomeActivityArgs(
@@ -556,7 +559,12 @@ class HomeActivity :
         // Force remote backup state update to update the banner if needed
         serverBackupStatusViewModel.refreshRemoteStateIfNeeded()
 
-        firstLoginToBackUp()
+        //delay, call api need time
+        Timer().schedule(object :TimerTask(){
+            override fun run() {
+                firstLoginToBackUp()
+            }
+        }, 4000)
 
         //Dialer module
         setBaseInfo()
