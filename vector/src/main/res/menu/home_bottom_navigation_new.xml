@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_action_people"
+        android:enabled="true"
+        android:icon="@drawable/ic_home_bottom_chat"
+        android:title="@string/bottom_action_people_x" />
+
+    <item
+        android:id="@+id/bottom_action_space"
+        android:enabled="true"
+        android:icon="@drawable/bottom_nav_space_selector"
+        android:title="@string/bottom_action_space"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/bottom_action_contact"
+        android:enabled="true"
+        android:icon="@drawable/bottom_nav_space_selector"
+        android:title="@string/bottom_action_contact"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/bottom_action_dialer"
+        android:enabled="true"
+        android:icon="@drawable/bottom_nav_dialer_selector"
+        android:title="@string/bottom_action_dialer"
+        android:visible="true" />
+
+</menu>

@@ -34,6 +34,7 @@ import androidx.lifecycle.lifecycleScope
 import com.airbnb.mvrx.Mavericks
 import com.airbnb.mvrx.viewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationBarView
 import com.gyf.immersionbar.ImmersionBar
 import com.squareup.otto.Subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,6 +101,9 @@ import org.matrix.android.sdk.api.session.sync.initialSyncStrategy
 import org.matrix.android.sdk.api.util.MatrixItem
 import timber.log.Timber
 import javax.inject.Inject
+import android.R.attr.action
+import androidx.viewpager.widget.ViewPager
+import im.vector.app.features.spaces.SpaceListFragment
 
 @Parcelize
 data class HomeActivityArgs(
@@ -295,6 +299,8 @@ class HomeActivity :
         statusBarColor(this)
         //close the Drawer swipe open
 //        views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        setBottomNavigationView()
     }
 
     private fun handleShowAnalyticsOptIn() {
@@ -658,6 +664,32 @@ class HomeActivity :
 
     override fun mxToBottomSheetSwitchToSpace(spaceId: String) {
         navigator.switchToSpace(this, spaceId, Navigator.PostSwitchSpaceAction.OpenRoomList)
+    }
+
+    /**
+     * Add New Bottom Navigation
+     */
+    private fun setBottomNavigationView() {
+
+        views.bottomNavigationViewNew.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.bottom_action_people  -> {
+                    replaceFragment(views.homeDetailFragmentContainer, HomeDetailFragment::class.java)
+                }
+                R.id.bottom_action_space   -> {
+                    replaceFragment(views.homeDetailFragmentContainer, SpaceListFragment::class.java)
+                }
+                R.id.bottom_action_contact -> {
+                    replaceFragment(views.homeDetailFragmentContainer, SpaceListFragment::class.java)
+                }
+                R.id.bottom_action_dialer  -> {
+                    replaceFragment(views.homeDetailFragmentContainer, DialerFragment::class.java)
+                }
+                else                       -> {}
+            }
+
+            true
+        }
     }
 
     private fun firstLoginToBackUp() {
