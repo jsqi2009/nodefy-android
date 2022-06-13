@@ -165,6 +165,7 @@ class OnboardingViewModel @AssistedInject constructor(
             is OnboardingAction.KelareLoginWithHomeServer     -> handleKelareLoginWithHomeserver(action)
             is OnboardingAction.UpdateKelareSignMode     -> updateKelareSignMode()
             is OnboardingAction.KelareCreateAccountWithHomeServer     -> handleKelareSplashAction(action.homeServerUrl, action.resetLoginConfig, action.onboardingFlow)
+            is OnboardingAction.KelareForgetPassword     -> handleKelareForgetPassword(action)
         }
     }
 
@@ -682,6 +683,42 @@ class OnboardingViewModel @AssistedInject constructor(
         rememberHomeServer(homeServerConnectionConfig.homeServerUri.toString())
 
         handKelareleLogin(action)
+    }
+
+    /**
+     * handle Kelare Forget Password with home server
+     */
+    private fun handleKelareForgetPassword(action: OnboardingAction.KelareForgetPassword) {
+        val homeServerConnectionConfig = homeServerConnectionConfigFactory.create(action.homeServerUrl)
+        if (homeServerConnectionConfig == null) {
+            // This is invalid
+            _viewEvents.post(OnboardingViewEvents.Failure(Throwable("Unable to create a HomeServerConnectionConfig")))
+        } else {
+            setState {
+                copy(
+                        serverType = ServerType.Other
+                )
+            }
+            currentHomeServerConnectionConfig = homeServerConnectionConfig
+            currentJob = viewModelScope.launch {
+                setState { copy(isLoading = true) }
+                runCatching { startAuthenticationFlowUseCase.execute(homeServerConnectionConfig) }.fold(
+                        onSuccess = { kelareForgetPassword(homeServerConnectionConfig) },
+                        onFailure = { _viewEvents.post(OnboardingViewEvents.Failure(it)) }
+                )
+                setState { copy(isLoading = false) }
+            }
+            Timber.e("home server: ${homeServerConnectionConfig.homeServerUri}")
+        }
+    }
+
+    /**
+     * kelare forget password
+     */
+    private fun kelareForgetPassword(homeServerConnectionConfig: HomeServerConnectionConfig) {
+        rememberHomeServer(homeServerConnectionConfig.homeServerUri.toString())
+
+        _viewEvents.post(OnboardingViewEvents.OnForgetPasswordClicked)
     }
 
     private fun startAuthenticationFlow(

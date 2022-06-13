@@ -81,5 +81,6 @@ sealed interface OnboardingAction : VectorViewModelAction {
                                       val password: String,val initialDeviceName: String) : OnboardingAction
     data class KelareCreateAccountWithHomeServer(val homeServerUrl: String,val resetLoginConfig: Boolean,
                                                  val onboardingFlow: OnboardingFlow) : OnboardingAction
+    data class KelareForgetPassword(val homeServerUrl: String) : OnboardingAction
 
 }

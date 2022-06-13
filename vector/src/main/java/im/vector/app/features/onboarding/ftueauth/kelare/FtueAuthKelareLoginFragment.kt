@@ -117,8 +117,8 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
             Toast.makeText(activity, getString(R.string.kelare_please_input_valid_homeserver), Toast.LENGTH_SHORT).show()
             return
         }
-
-        viewModel.handle(OnboardingAction.PostViewEvent(OnboardingViewEvents.OnForgetPasswordClicked))
+        val serverUrl = views.serverEt.text.toString().trim().ensureProtocol()
+        viewModel.handle(OnboardingAction.KelareForgetPassword(serverUrl))
     }
 
     private fun submit() {
