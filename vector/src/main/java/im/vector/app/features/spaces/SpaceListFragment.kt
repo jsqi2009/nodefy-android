@@ -39,6 +39,7 @@ import im.vector.app.features.home.event.BackFromSpaceDetailsEvent
 import im.vector.app.features.home.event.ToSpaceDetailsEvent
 import org.matrix.android.sdk.api.session.group.model.GroupSummary
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
+import timber.log.Timber
 import javax.inject.Inject
 
 class SpaceListFragment @Inject constructor(
@@ -167,6 +168,7 @@ class SpaceListFragment @Inject constructor(
      */
     private fun sendToSpaceDetailsEvent(spaceSummary: RoomSummary?) {
         if (spaceSummary != null) {
+            Timber.e("jump to space details-----from space list")
             mBus.post(ToSpaceDetailsEvent(spaceSummary))
         }
     }
