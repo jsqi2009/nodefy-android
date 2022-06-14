@@ -5,7 +5,7 @@
         android:id="@+id/bottom_action_people"
         android:enabled="true"
         android:icon="@drawable/bottom_nav_home_selector"
-        android:title="@string/bottom_action_people_x" />
+        android:title="@string/bottom_action_home" />
 
     <item
         android:id="@+id/bottom_action_space"

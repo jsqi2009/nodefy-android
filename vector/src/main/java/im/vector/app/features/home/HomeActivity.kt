@@ -104,6 +104,7 @@ import javax.inject.Inject
 import android.R.attr.action
 import android.os.Handler
 import androidx.viewpager.widget.ViewPager
+import im.vector.app.features.home.contact.HomeContactFragment
 import im.vector.app.features.spaces.SpaceListFragment
 import java.util.Timer
 import java.util.TimerTask
@@ -685,10 +686,11 @@ class HomeActivity :
                     replaceFragment(views.homeDetailFragmentContainer, HomeDetailFragment::class.java)
                 }
                 R.id.bottom_action_space   -> {
-                    replaceFragment(views.homeDetailFragmentContainer, SpaceListFragment::class.java)
+//                    replaceFragment(views.homeDetailFragmentContainer, SpaceListFragment::class.java)
+                    replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)
                 }
                 R.id.bottom_action_contact -> {
-                    replaceFragment(views.homeDetailFragmentContainer, SpaceListFragment::class.java)
+                    replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)
                 }
                 R.id.bottom_action_dialer  -> {
                     replaceFragment(views.homeDetailFragmentContainer, DialerFragment::class.java)
