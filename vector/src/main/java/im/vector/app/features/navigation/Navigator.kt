@@ -180,4 +180,6 @@ interface Navigator {
             screenCaptureIntent: Intent,
             activityResultLauncher: ActivityResultLauncher<Intent>
     )
+
+    fun openHomeSpaceDetails(context: Context, roomId: String, displayName: String, name: String)
 }

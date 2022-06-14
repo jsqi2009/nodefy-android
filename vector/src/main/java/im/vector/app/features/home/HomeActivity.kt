@@ -105,6 +105,7 @@ import android.R.attr.action
 import android.os.Handler
 import androidx.viewpager.widget.ViewPager
 import im.vector.app.features.home.contact.HomeContactFragment
+import im.vector.app.features.home.event.ToSpaceDetailsEvent
 import im.vector.app.features.spaces.SpaceListFragment
 import java.util.Timer
 import java.util.TimerTask
@@ -675,6 +676,12 @@ class HomeActivity :
         navigator.switchToSpace(this, spaceId, Navigator.PostSwitchSpaceAction.OpenRoomList)
     }
 
+    @Subscribe
+    fun jumpToSpaceDetailPage(event: ToSpaceDetailsEvent) {
+        val spaceSummary = event.spaceSummary
+        navigator.openHomeSpaceDetails(this, spaceSummary!!.roomId, spaceSummary.displayName, spaceSummary.name)
+    }
+
     /**
      * Add New Bottom Navigation
      */
@@ -686,8 +693,8 @@ class HomeActivity :
                     replaceFragment(views.homeDetailFragmentContainer, HomeDetailFragment::class.java)
                 }
                 R.id.bottom_action_space   -> {
-//                    replaceFragment(views.homeDetailFragmentContainer, SpaceListFragment::class.java)
-                    replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)
+                    replaceFragment(views.homeDetailFragmentContainer, SpaceListFragment::class.java)
+//                    replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)
                 }
                 R.id.bottom_action_contact -> {
                     replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)

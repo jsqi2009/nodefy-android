@@ -27,6 +27,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
+import com.squareup.otto.Subscribe
 import im.vector.app.core.extensions.cleanup
 import im.vector.app.core.extensions.configureWith
 import im.vector.app.core.platform.StateView
@@ -34,6 +35,8 @@ import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.databinding.FragmentGroupListBinding
 import im.vector.app.features.home.HomeActivitySharedAction
 import im.vector.app.features.home.HomeSharedActionViewModel
+import im.vector.app.features.home.event.BackFromSpaceDetailsEvent
+import im.vector.app.features.home.event.ToSpaceDetailsEvent
 import org.matrix.android.sdk.api.session.group.model.GroupSummary
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import javax.inject.Inject
@@ -131,6 +134,8 @@ class SpaceListFragment @Inject constructor(
 
     override fun onSpaceSelected(spaceSummary: RoomSummary?) {
         viewModel.handle(SpaceListAction.SelectSpace(spaceSummary))
+
+        sendToSpaceDetailsEvent(spaceSummary)
     }
 
     override fun onSpaceInviteSelected(spaceSummary: RoomSummary) {
@@ -156,4 +161,19 @@ class SpaceListFragment @Inject constructor(
     override fun sendFeedBack() {
         sharedActionViewModel.post(HomeActivitySharedAction.SendSpaceFeedBack)
     }
+
+    /**
+     * jump to home space details page
+     */
+    private fun sendToSpaceDetailsEvent(spaceSummary: RoomSummary?) {
+        if (spaceSummary != null) {
+            mBus.post(ToSpaceDetailsEvent(spaceSummary))
+        }
+    }
+
+    @Subscribe
+    fun switchToHomeEvent(event: BackFromSpaceDetailsEvent) {
+        viewModel.handle(SpaceListAction.SelectSpace(null))
+    }
+
 }

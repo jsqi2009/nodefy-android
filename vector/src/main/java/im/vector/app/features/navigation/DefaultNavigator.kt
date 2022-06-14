@@ -63,6 +63,8 @@ import im.vector.app.features.home.room.filtered.FilteredRoomsActivity
 import im.vector.app.features.home.room.threads.ThreadsActivity
 import im.vector.app.features.home.room.threads.arguments.ThreadListArgs
 import im.vector.app.features.home.room.threads.arguments.ThreadTimelineArgs
+import im.vector.app.features.home.spacedetails.HomeSpaceDetailsActivity
+import im.vector.app.features.home.spacedetails.HomeSpaceDetailsArgs
 import im.vector.app.features.invite.InviteUsersToRoomActivity
 import im.vector.app.features.location.LocationData
 import im.vector.app.features.location.LocationSharingActivity
@@ -108,6 +110,7 @@ import org.matrix.android.sdk.api.session.crypto.verification.IncomingSasVerific
 import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.api.session.getRoomSummary
 import org.matrix.android.sdk.api.session.permalinks.PermalinkData
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import org.matrix.android.sdk.api.session.room.model.roomdirectory.PublicRoom
 import org.matrix.android.sdk.api.session.terms.TermsService
 import org.matrix.android.sdk.api.session.widgets.model.Widget
@@ -632,5 +635,16 @@ class DefaultNavigator @Inject constructor(
     override fun openScreenSharingPermissionDialog(screenCaptureIntent: Intent,
                                                    activityResultLauncher: ActivityResultLauncher<Intent>) {
         activityResultLauncher.launch(screenCaptureIntent)
+    }
+
+    /**
+     * qijs add
+     */
+    override fun openHomeSpaceDetails(context: Context, roomId: String, displayName: String, name: String) {
+        val intent = HomeSpaceDetailsActivity.getIntent(
+                context,
+                HomeSpaceDetailsArgs(roomId = roomId, displayName = displayName, name = name)
+        )
+        context.startActivity(intent)
     }
 }
