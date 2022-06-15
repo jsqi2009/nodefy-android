@@ -26,10 +26,13 @@ import im.vector.app.R
 import im.vector.app.core.epoxy.ClickListener
 import im.vector.app.core.epoxy.onClick
 import im.vector.app.databinding.ItemRoomCategoryBinding
+import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.themes.ThemeUtils
+import im.vector.app.kelare.content.AndroidBus
 
 class SectionHeaderAdapter constructor(
         roomsSectionData: RoomsSectionData,
+        mBus: AndroidBus,
         private val onClickAction: ClickListener
 ) : RecyclerView.Adapter<SectionHeaderAdapter.VH>() {
 
@@ -45,6 +48,7 @@ class SectionHeaderAdapter constructor(
             val isCollapsable: Boolean = false
     )
 
+    private val eventBus: AndroidBus = mBus
     var roomsSectionData: RoomsSectionData = roomsSectionData
         private set
 
@@ -69,7 +73,7 @@ class SectionHeaderAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(roomsSectionData)
+        holder.bind(roomsSectionData, eventBus)
     }
 
     override fun getItemCount(): Int = if (roomsSectionData.isHidden) 0 else 1
@@ -83,7 +87,7 @@ class SectionHeaderAdapter constructor(
             binding.root.onClick(onClickAction)
         }
 
-        fun bind(roomsSectionData: RoomsSectionData) {
+        fun bind(roomsSectionData: RoomsSectionData, mBus: AndroidBus) {
             binding.roomCategoryTitleView.text = roomsSectionData.name
             val tintColor = ThemeUtils.getColor(binding.root.context, R.attr.vctr_content_secondary)
             val collapsableArrowDrawable: Drawable? = if (roomsSectionData.isCollapsable) {
@@ -96,8 +100,12 @@ class SectionHeaderAdapter constructor(
             }
             binding.root.isClickable = roomsSectionData.isCollapsable
             binding.roomCategoryCounterView.setCompoundDrawablesWithIntrinsicBounds(null, null, collapsableArrowDrawable, null)
-            binding.roomCategoryCounterView.text = roomsSectionData.itemCount.takeIf { it > 0 }?.toString().orEmpty()
+            //binding.roomCategoryCounterView.text = roomsSectionData.itemCount.takeIf { it > 0 }?.toString().orEmpty()
             binding.roomCategoryUnreadCounterBadgeView.render(UnreadCounterBadgeView.State(roomsSectionData.notificationCount, roomsSectionData.isHighlighted))
+
+            binding.roomAddImageView.setOnClickListener {
+                mBus.post(CreateGroupRoomEvent(roomsSectionData.name))
+            }
         }
 
         companion object {

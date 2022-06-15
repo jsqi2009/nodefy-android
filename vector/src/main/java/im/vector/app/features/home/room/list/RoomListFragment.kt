@@ -35,6 +35,7 @@ import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.squareup.otto.Subscribe
 import im.vector.app.R
 import im.vector.app.core.epoxy.LayoutManagerStateRestorer
 import im.vector.app.core.extensions.cleanup
@@ -46,6 +47,7 @@ import im.vector.app.databinding.FragmentRoomListBinding
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.analytics.plan.ViewRoom
 import im.vector.app.features.home.RoomListDisplayMode
+import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.room.filtered.FilteredRoomFooterItem
 import im.vector.app.features.home.room.list.actions.RoomListQuickActionsBottomSheet
 import im.vector.app.features.home.room.list.actions.RoomListQuickActionsSharedAction
@@ -286,7 +288,7 @@ class RoomListFragment @Inject constructor(
         val concatAdapter = ConcatAdapter()
 
         roomListViewModel.sections.forEachIndexed { index, section ->
-            val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName)) {
+            val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName), mBus) {
                 if (adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable) {
                     roomListViewModel.handle(RoomListAction.ToggleSection(section))
                 }
@@ -554,5 +556,15 @@ class RoomListFragment @Inject constructor(
     override fun onRejectRoomInvitation(room: RoomSummary) {
         notificationDrawerManager.updateEvents { it.clearMemberShipNotificationForRoom(room.roomId) }
         roomListViewModel.handle(RoomListAction.RejectInvitation(room))
+    }
+
+    @Subscribe
+    fun onCreateGroupRoomEvent(event: CreateGroupRoomEvent) {
+        if (event.roomType.lowercase() == "group") {
+            fabOpenRoomDirectory()
+        } else {
+            fabCreateDirectChat()
+        }
+
     }
 }
