@@ -105,6 +105,7 @@ import android.R.attr.action
 import android.os.Handler
 import androidx.viewpager.widget.ViewPager
 import im.vector.app.features.home.contact.HomeContactFragment
+import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.event.ToSpaceDetailsEvent
 import im.vector.app.features.spaces.SpaceListFragment
 import java.util.Timer
@@ -680,6 +681,15 @@ class HomeActivity :
     fun jumpToSpaceDetailPage(event: ToSpaceDetailsEvent) {
         val spaceSummary = event.spaceSummary
         navigator.openHomeSpaceDetails(this, spaceSummary!!.roomId, spaceSummary.displayName, spaceSummary.name)
+    }
+
+    @Subscribe
+    fun onCreateGroupRoomEvent(event: CreateGroupRoomEvent) {
+        if (event.roomType.lowercase() == "group") {
+            navigator.openRoomDirectory(this, "")
+        } else {
+            navigator.openCreateDirectRoom(this)
+        }
     }
 
     /**

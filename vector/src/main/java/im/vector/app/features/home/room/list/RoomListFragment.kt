@@ -210,9 +210,9 @@ class RoomListFragment @Inject constructor(
 
     private fun setupCreateRoomButton() {
         when (roomListParams.displayMode) {
-            RoomListDisplayMode.NOTIFICATIONS -> views.createChatFabMenu.isVisible = true
-            RoomListDisplayMode.PEOPLE        -> views.createChatRoomButton.isVisible = true
-            RoomListDisplayMode.ROOMS         -> views.createGroupRoomButton.isVisible = true
+            RoomListDisplayMode.NOTIFICATIONS -> views.createChatFabMenu.isVisible = false
+            RoomListDisplayMode.PEOPLE        -> views.createChatRoomButton.isVisible = false
+            RoomListDisplayMode.ROOMS         -> views.createGroupRoomButton.isVisible = false
             else                              -> Unit // No button in this mode
         }
 
@@ -401,9 +401,12 @@ class RoomListFragment @Inject constructor(
     private val showFabRunnable = Runnable {
         if (isAdded) {
             when (roomListParams.displayMode) {
-                RoomListDisplayMode.NOTIFICATIONS -> views.createChatFabMenu.show()
-                RoomListDisplayMode.PEOPLE        -> views.createChatRoomButton.show()
-                RoomListDisplayMode.ROOMS         -> views.createGroupRoomButton.show()
+//                RoomListDisplayMode.NOTIFICATIONS -> views.createChatFabMenu.show()
+                RoomListDisplayMode.NOTIFICATIONS -> views.createChatFabMenu.hide()
+//                RoomListDisplayMode.PEOPLE        -> views.createChatRoomButton.show()
+                RoomListDisplayMode.PEOPLE        -> views.createChatRoomButton.hide()
+//                RoomListDisplayMode.ROOMS         -> views.createGroupRoomButton.show()
+                RoomListDisplayMode.ROOMS         -> views.createGroupRoomButton.hide()
                 else                              -> Unit
             }
         }
@@ -556,15 +559,5 @@ class RoomListFragment @Inject constructor(
     override fun onRejectRoomInvitation(room: RoomSummary) {
         notificationDrawerManager.updateEvents { it.clearMemberShipNotificationForRoom(room.roomId) }
         roomListViewModel.handle(RoomListAction.RejectInvitation(room))
-    }
-
-    @Subscribe
-    fun onCreateGroupRoomEvent(event: CreateGroupRoomEvent) {
-        if (event.roomType.lowercase() == "group") {
-            fabOpenRoomDirectory()
-        } else {
-            fabCreateDirectChat()
-        }
-
     }
 }
