@@ -24,13 +24,17 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.OnModelBuildFinishedListener
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
@@ -55,6 +59,7 @@ import im.vector.app.features.home.room.list.actions.RoomListQuickActionsSharedA
 import im.vector.app.features.home.room.list.widget.NotifsFabMenuView
 import im.vector.app.features.matrixto.OriginOfMatrixTo
 import im.vector.app.features.notifications.NotificationDrawerManager
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -65,6 +70,8 @@ import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import org.matrix.android.sdk.api.session.room.model.SpaceChildInfo
 import org.matrix.android.sdk.api.session.room.model.tag.RoomTag
 import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
+import timber.log.Timber
+import java.sql.Time
 import javax.inject.Inject
 
 @Parcelize
@@ -299,7 +306,13 @@ class RoomListFragment @Inject constructor(
                             pagedControllerFactory.createRoomSummaryPagedController()
                                     .also { controller ->
                                         section.livePages.observe(viewLifecycleOwner) { pl ->
-                                            controller.submitList(pl)
+//                                            controller.submitList(pl)
+                                            Timber.e("live page list----${pl}")
+                                            if (section.sectionName.lowercase() == "public") {
+                                                controller.submitList(null)
+                                            } else {
+                                                controller.submitList(pl)
+                                            }
                                             sectionAdapter.updateSection {
                                                 it.copy(
                                                         isHidden = pl.isEmpty(),
@@ -328,6 +341,7 @@ class RoomListFragment @Inject constructor(
                             pagedControllerFactory.createSuggestedRoomListController()
                                     .also { controller ->
                                         section.liveSuggested.observe(viewLifecycleOwner) { info ->
+                                            Timber.e("live suggest list----${info.toString()}")
                                             controller.setData(info)
                                             sectionAdapter.updateSection {
                                                 it.copy(
@@ -349,6 +363,7 @@ class RoomListFragment @Inject constructor(
                             pagedControllerFactory.createRoomSummaryListController()
                                     .also { controller ->
                                         section.liveList?.observe(viewLifecycleOwner) { list ->
+                                            Timber.e("live list----${list.toString()}")
                                             controller.setData(list)
                                             sectionAdapter.updateSection {
                                                 it.copy(

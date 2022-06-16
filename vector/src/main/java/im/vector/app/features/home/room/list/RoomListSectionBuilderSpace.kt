@@ -476,6 +476,22 @@ class RoomListSectionBuilderSpace(
         }
 
         addSection(
+                sections = sections,
+                activeSpaceUpdaters = activeSpaceAwareQueries,
+                nameRes = R.string.bottom_action_rooms_public,
+                notifyOfLocalEcho = false,
+                spaceFilterStrategy = if (onlyOrphansInHome) {
+                    RoomListViewModel.SpaceFilterStrategy.ORPHANS_IF_SPACE_NULL
+                } else {
+                    RoomListViewModel.SpaceFilterStrategy.ALL_IF_SPACE_NULL
+                }
+        ) {
+            it.memberships = listOf(Membership.JOIN)
+            it.roomCategoryFilter = RoomCategoryFilter.ONLY_ROOMS
+            it.roomTagQueryFilter = RoomTagQueryFilter(false, false, false)
+        }
+
+        addSection(
                 sections,
                 activeSpaceAwareQueries,
                 R.string.bottom_action_favourites,

@@ -18,6 +18,7 @@ package im.vector.app.features.home.room.list
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -89,7 +90,8 @@ class SectionHeaderAdapter constructor(
 
         fun bind(roomsSectionData: RoomsSectionData, mBus: AndroidBus) {
             binding.roomCategoryTitleView.text = roomsSectionData.name
-            val tintColor = ThemeUtils.getColor(binding.root.context, R.attr.vctr_content_secondary)
+            //val tintColor = ThemeUtils.getColor(binding.root.context, R.attr.vctr_content_secondary)
+            val tintColor = binding.root.context.getColor(R.color.keep_it_save_continue_color)
             val collapsableArrowDrawable: Drawable? = if (roomsSectionData.isCollapsable) {
                 val expandedArrowDrawableRes = if (roomsSectionData.isExpanded) R.drawable.ic_expand_more else R.drawable.ic_expand_less
                 ContextCompat.getDrawable(binding.root.context, expandedArrowDrawableRes)?.also {
@@ -102,6 +104,18 @@ class SectionHeaderAdapter constructor(
             binding.roomCategoryCounterView.setCompoundDrawablesWithIntrinsicBounds(null, null, collapsableArrowDrawable, null)
             //binding.roomCategoryCounterView.text = roomsSectionData.itemCount.takeIf { it > 0 }?.toString().orEmpty()
             binding.roomCategoryUnreadCounterBadgeView.render(UnreadCounterBadgeView.State(roomsSectionData.notificationCount, roomsSectionData.isHighlighted))
+
+            if (roomsSectionData.name.lowercase() == "group") {
+                binding.typeImageView.setImageResource(R.drawable.ic_group_section_icon)
+            } else if (roomsSectionData.name.lowercase() == "public"){
+                binding.typeImageView.setImageResource(R.drawable.ic_public_group)
+            } else {
+                binding.typeImageView.setImageResource(R.drawable.ic_message_section_icon)
+            }
+
+            if (roomsSectionData.name.lowercase() == "public") {
+                binding.roomAddImageView.visibility = View.GONE
+            }
 
             binding.roomAddImageView.setOnClickListener {
                 mBus.post(CreateGroupRoomEvent(roomsSectionData.name))

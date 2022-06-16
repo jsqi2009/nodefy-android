@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toStartOf="@id/roomCategoryUnreadCounterBadgeView"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/roomCategoryCounterView"
+        app:layout_constraintStart_toEndOf="@id/typeImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth="wrap_content_constrained"
         tools:text="@string/room_participants_header_direct_chats" />
@@ -79,14 +79,25 @@
         android:drawablePadding="2dp"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:textColor="?vctr_content_secondary"
-        app:drawableTint="?vctr_content_secondary"
+        android:textColor="@color/keep_it_save_continue_color"
+        app:drawableTint="@color/keep_it_save_continue_color"
         app:layout_constraintBottom_toBottomOf="@id/roomCategoryTitleView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/roomCategoryTitleView"
         app:layout_constraintWidth="wrap_content_constrained"
         tools:drawableEnd="@drawable/ic_expand_more"
         tools:text="" />
+
+    <ImageView
+        android:id="@+id/typeImageView"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"
+        android:layout_marginStart="@dimen/margin_5"
+        android:src="@drawable/ic_group_section_icon"
+        app:layout_constraintBottom_toBottomOf="@id/roomCategoryTitleView"
+        app:layout_constraintTop_toTopOf="@id/roomCategoryTitleView"
+        app:layout_constraintStart_toEndOf="@+id/roomCategoryCounterView"
+        tools:ignore="ContentDescription" />
 
    <!-- <im.vector.app.features.home.room.list.UnreadCounterBadgeView
         android:id="@+id/roomCategoryUnreadCounterBadgeView"
