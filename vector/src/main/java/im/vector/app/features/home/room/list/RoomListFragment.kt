@@ -16,7 +16,10 @@
 
 package im.vector.app.features.home.room.list
 
+import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
@@ -24,22 +27,19 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.map
+import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.OnModelBuildFinishedListener
-import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.squareup.otto.Subscribe
 import im.vector.app.R
 import im.vector.app.core.epoxy.LayoutManagerStateRestorer
 import im.vector.app.core.extensions.cleanup
@@ -51,7 +51,6 @@ import im.vector.app.databinding.FragmentRoomListBinding
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.analytics.plan.ViewRoom
 import im.vector.app.features.home.RoomListDisplayMode
-import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.room.filtered.FilteredRoomFooterItem
 import im.vector.app.features.home.room.list.actions.RoomListQuickActionsBottomSheet
 import im.vector.app.features.home.room.list.actions.RoomListQuickActionsSharedAction
@@ -59,7 +58,6 @@ import im.vector.app.features.home.room.list.actions.RoomListQuickActionsSharedA
 import im.vector.app.features.home.room.list.widget.NotifsFabMenuView
 import im.vector.app.features.matrixto.OriginOfMatrixTo
 import im.vector.app.features.notifications.NotificationDrawerManager
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -71,7 +69,7 @@ import org.matrix.android.sdk.api.session.room.model.SpaceChildInfo
 import org.matrix.android.sdk.api.session.room.model.tag.RoomTag
 import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
 import timber.log.Timber
-import java.sql.Time
+import java.util.concurrent.Executor
 import javax.inject.Inject
 
 @Parcelize
@@ -307,9 +305,20 @@ class RoomListFragment @Inject constructor(
                                     .also { controller ->
                                         section.livePages.observe(viewLifecycleOwner) { pl ->
 //                                            controller.submitList(pl)
+                                            val items : ArrayList<RoomSummary> = ArrayList()
+                                            pl.snapshot().forEach {
+                                                if (it.name.isEmpty() && it.displayName.contains("#piblic")) {
+                                                    items.add(it)
+                                                    return@forEach
+                                                }
+                                            }
+                                            var publicList: PagedList<RoomSummary>? = null
+                                            if (items.isNotEmpty()) {
+                                                publicList = generatePublicRoomList(items)
+                                            }
                                             Timber.e("live page list----${pl}")
                                             if (section.sectionName.lowercase() == "public") {
-                                                controller.submitList(null)
+                                                controller.submitList(publicList)
                                             } else {
                                                 controller.submitList(pl)
                                             }
@@ -574,5 +583,32 @@ class RoomListFragment @Inject constructor(
     override fun onRejectRoomInvitation(room: RoomSummary) {
         notificationDrawerManager.updateEvents { it.clearMemberShipNotificationForRoom(room.roomId) }
         roomListViewModel.handle(RoomListAction.RejectInvitation(room))
+    }
+
+    private fun generatePublicRoomList(mList: ArrayList<RoomSummary>): PagedList<RoomSummary> {
+        val config = PagedList.Config.Builder()
+                .setPageSize(mList.size)
+                .setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(mList.size)
+                .build()
+
+        return PagedList.Builder(ListDataSource(mList), config)
+                .setNotifyExecutor(UiThreadExecutor())
+                .setFetchExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                .build()
+    }
+
+    class UiThreadExecutor: Executor {
+        private val handler = Handler (Looper.getMainLooper ())
+        override fun execute (command: Runnable) {
+            handler.post (command)
+        }
+    }
+    class ListDataSource (private val items: List<RoomSummary>): PageKeyedDataSource<Int, RoomSummary>() {
+        override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, RoomSummary>) {
+            callback.onResult (items, 0, items.size)
+        }
+        override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, RoomSummary>) {}
+        override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, RoomSummary>) {}
     }
 }
