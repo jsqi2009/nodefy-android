@@ -106,15 +106,28 @@ class SectionHeaderAdapter constructor(
             //binding.roomCategoryCounterView.text = roomsSectionData.itemCount.takeIf { it > 0 }?.toString().orEmpty()
             binding.roomCategoryUnreadCounterBadgeView.render(UnreadCounterBadgeView.State(roomsSectionData.notificationCount, roomsSectionData.isHighlighted))
 
-            if (roomsSectionData.name.lowercase() == "group") {
-                binding.typeImageView.setImageResource(R.drawable.ic_group_section_icon)
-            } else if (roomsSectionData.name.lowercase() == "public"){
+            //public   favorite     direct messages   group   low priority
+            if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms_public).lowercase()) {
                 binding.typeImageView.setImageResource(R.drawable.ic_public_group)
-            } else {
+            } else if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_favourites).lowercase()){
+                binding.typeImageView.setImageResource(R.drawable.ic_favorite)
+            }else if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_people_x).lowercase()){
+                binding.typeImageView.setImageResource(R.drawable.ic_message_section_icon)
+            }else if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms2).lowercase()){
+                binding.typeImageView.setImageResource(R.drawable.ic_group_section_icon)
+            } else if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.low_priority_header).lowercase()){
+                binding.typeImageView.setImageResource(R.drawable.ic_low_priority)
+            }else {
                 binding.typeImageView.setImageResource(R.drawable.ic_message_section_icon)
             }
 
-            if (roomsSectionData.name.lowercase() == "public") {
+            if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms_public).lowercase()) {
+                binding.roomCategoryCounterView.visibility = View.INVISIBLE
+            }
+
+            if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms_public).lowercase()
+                    || roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_favourites).lowercase()
+                    || roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.low_priority_header).lowercase()) {
                 binding.roomAddImageView.visibility = View.GONE
             }
 
@@ -123,7 +136,7 @@ class SectionHeaderAdapter constructor(
             }
 
             binding.roomCategoryTitleView.setOnClickListener {
-                if (roomsSectionData.name.lowercase() == "public") {
+                if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms_public).lowercase()) {
                     mBus.post(ToPublicDetailsEvent())
                 }
             }

@@ -57,6 +57,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_10"
+        android:paddingEnd="@dimen/margin_20"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
@@ -68,7 +69,8 @@
         app:layout_constraintStart_toEndOf="@id/typeImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth="wrap_content_constrained"
-        tools:text="@string/room_participants_header_direct_chats" />
+        tools:text="@string/room_participants_header_direct_chats"
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         android:id="@+id/roomCategoryCounterView"

@@ -99,6 +99,7 @@ class RoomListFragment @Inject constructor(
     private val roomListParams: RoomListParams by args()
     private val roomListViewModel: RoomListViewModel by fragmentViewModel()
     private lateinit var stateRestorer: LayoutManagerStateRestorer
+    private var publicRoom: RoomSummary? = null
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentRoomListBinding {
         return FragmentRoomListBinding.inflate(inflater, container, false)
@@ -311,20 +312,11 @@ class RoomListFragment @Inject constructor(
                                     .also { controller ->
                                         section.livePages.observe(viewLifecycleOwner) { pl ->
 //                                            controller.submitList(pl)
-                                            val items : ArrayList<RoomSummary> = ArrayList()
-                                            pl.snapshot().forEach {
-                                                if (it.name.isEmpty() && it.displayName.contains("#piblic")) {
-                                                    items.add(it)
-                                                    return@forEach
-                                                }
-                                            }
-                                            var publicList: PagedList<RoomSummary>? = null
-                                            if (items.isNotEmpty()) {
-                                                publicList = generatePublicRoomList(items)
-                                            }
                                             Timber.e("live page list----${pl}")
-                                            if (section.sectionName.lowercase() == "public") {
-                                                controller.submitList(publicList)
+                                            var publicList = fetchPublicRoom(pl)
+                                            if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase()) {
+//                                                controller.submitList(fetchPublicRoom(pl))
+                                                controller.submitList(null)
                                             } else {
                                                 controller.submitList(pl)
                                             }
@@ -594,9 +586,23 @@ class RoomListFragment @Inject constructor(
         roomListViewModel.handle(RoomListAction.RejectInvitation(room))
     }
 
-    private var publicRoom: RoomSummary? = null
+    private fun fetchPublicRoom(pl: PagedList<RoomSummary>) : PagedList<RoomSummary>?{
+        var publicList: PagedList<RoomSummary>? = null
+        val items : ArrayList<RoomSummary> = ArrayList()
+        pl.snapshot().forEach {
+            if (it.name.isEmpty() && it.displayName.contains("#piblic")) {
+                items.add(it)
+                return@forEach
+            }
+        }
+        if (items.isNotEmpty()) {
+            publicList = generatePublicRoomList(items)
+        }
+        return publicList
+    }
+
     private fun generatePublicRoomList(mList: ArrayList<RoomSummary>): PagedList<RoomSummary> {
-        publicRoom = mList[0]
+        publicRoom = mList.first()
         val config = PagedList.Config.Builder()
                 .setPageSize(mList.size)
                 .setEnablePlaceholders(false)
@@ -609,12 +615,17 @@ class RoomListFragment @Inject constructor(
                 .build()
     }
 
+    //public   favorite     direct messages   group   low priority
     private fun checkIfHidePublic(pl: PagedList<RoomSummary>, sectionName: String): Boolean{
-        var flag: Boolean
+        var flag = false
         if (roomListParams.isHome) {
             flag = pl.isEmpty()
+            if (sectionName.lowercase() == getString(R.string.bottom_action_people_x).lowercase()
+                    || sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
+                flag = false
+            }
         } else {
-            if (sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase(Locale.ROOT)) {
+            if (sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase()) {
                 flag = true
             } else {
                 flag = pl.isEmpty()
