@@ -100,6 +100,7 @@ class RoomListFragment @Inject constructor(
     private val roomListViewModel: RoomListViewModel by fragmentViewModel()
     private lateinit var stateRestorer: LayoutManagerStateRestorer
     private var publicRoom: RoomSummary? = null
+    private val publicKey = "#piblic"
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentRoomListBinding {
         return FragmentRoomListBinding.inflate(inflater, container, false)
@@ -313,10 +314,13 @@ class RoomListFragment @Inject constructor(
                                         section.livePages.observe(viewLifecycleOwner) { pl ->
 //                                            controller.submitList(pl)
                                             Timber.e("live page list----${pl}")
-                                            var publicList = fetchPublicRoom(pl)
                                             if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase()) {
 //                                                controller.submitList(fetchPublicRoom(pl))
+                                                var publicList = fetchPublicRoom(pl)
                                                 controller.submitList(null)
+                                            } else if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
+                                                var groupList = filterPublicRoom(pl)
+                                                controller.submitList(groupList)
                                             } else {
                                                 controller.submitList(pl)
                                             }
@@ -590,7 +594,7 @@ class RoomListFragment @Inject constructor(
         var publicList: PagedList<RoomSummary>? = null
         val items : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
-            if (it.name.isEmpty() && it.displayName.contains("#piblic")) {
+            if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
                 items.add(it)
                 return@forEach
             }
@@ -601,8 +605,37 @@ class RoomListFragment @Inject constructor(
         return publicList
     }
 
+    private fun filterPublicRoom(pl: PagedList<RoomSummary>) : PagedList<RoomSummary>?{
+        var publicList: PagedList<RoomSummary>? = null
+        val items : ArrayList<RoomSummary> = ArrayList()
+        pl.snapshot().forEach {
+            if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
+
+            } else {
+                items.add(it)
+            }
+        }
+        if (items.isNotEmpty()) {
+            publicList = generateGroupRoomList(items)
+        }
+        return publicList
+    }
+
     private fun generatePublicRoomList(mList: ArrayList<RoomSummary>): PagedList<RoomSummary> {
         publicRoom = mList.first()
+        val config = PagedList.Config.Builder()
+                .setPageSize(mList.size)
+                .setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(mList.size)
+                .build()
+
+        return PagedList.Builder(ListDataSource(mList), config)
+                .setNotifyExecutor(UiThreadExecutor())
+                .setFetchExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                .build()
+    }
+
+    private fun generateGroupRoomList(mList: ArrayList<RoomSummary>): PagedList<RoomSummary> {
         val config = PagedList.Config.Builder()
                 .setPageSize(mList.size)
                 .setEnablePlaceholders(false)
