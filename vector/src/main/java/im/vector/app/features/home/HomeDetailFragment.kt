@@ -409,7 +409,7 @@ class HomeDetailFragment @Inject constructor(
             if (fragmentToShow == null) {
                 when (tab) {
                     is HomeTab.RoomList -> {
-                        val params = RoomListParams(tab.displayMode)
+                        val params = RoomListParams(tab.displayMode, true)
                         add(R.id.roomListContainer, RoomListFragment::class.java, params.toMvRxBundle(), fragmentTag)
                     }
                     is HomeTab.DialPad  -> {

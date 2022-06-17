@@ -69,12 +69,14 @@ import org.matrix.android.sdk.api.session.room.model.SpaceChildInfo
 import org.matrix.android.sdk.api.session.room.model.tag.RoomTag
 import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
 import timber.log.Timber
+import java.util.Locale
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
 @Parcelize
 data class RoomListParams(
-        val displayMode: RoomListDisplayMode
+        val displayMode: RoomListDisplayMode,
+        val isHome: Boolean = true,
 ) : Parcelable
 
 class RoomListFragment @Inject constructor(
@@ -324,7 +326,8 @@ class RoomListFragment @Inject constructor(
                                             }
                                             sectionAdapter.updateSection {
                                                 it.copy(
-                                                        isHidden = pl.isEmpty(),
+//                                                        isHidden = pl.isEmpty(),
+                                                        isHidden = checkIfHidePublic(pl, section.sectionName),
                                                         isLoading = false
                                                 )
                                             }
@@ -596,6 +599,20 @@ class RoomListFragment @Inject constructor(
                 .setNotifyExecutor(UiThreadExecutor())
                 .setFetchExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
                 .build()
+    }
+
+    private fun checkIfHidePublic(pl: PagedList<RoomSummary>, sectionName: String): Boolean{
+        var flag: Boolean
+        if (roomListParams.isHome) {
+            flag = pl.isEmpty()
+        } else {
+            if (sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase(Locale.ROOT)) {
+                flag = true
+            } else {
+                flag = pl.isEmpty()
+            }
+        }
+        return flag
     }
 
     class UiThreadExecutor: Executor {

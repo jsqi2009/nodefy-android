@@ -47,7 +47,7 @@ class FilteredRoomsActivity : VectorBaseActivity<ActivityFilteredRoomsBinding>()
         setupToolbar(views.filteredRoomsToolbar)
                 .allowBack()
         if (isFirstCreation()) {
-            val params = RoomListParams(RoomListDisplayMode.FILTERED)
+            val params = RoomListParams(displayMode = RoomListDisplayMode.FILTERED)
             replaceFragment(views.filteredRoomsFragmentContainer, RoomListFragment::class.java, params, FRAGMENT_TAG)
         }
         views.filteredRoomsSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

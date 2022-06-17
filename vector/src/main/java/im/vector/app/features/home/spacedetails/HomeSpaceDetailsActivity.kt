@@ -81,7 +81,7 @@ class HomeSpaceDetailsActivity  : VectorBaseActivity<ActivityHomeSpaceDetailsBin
         setupToolbar(views.filteredRoomsToolbar)
                 .allowBack()
         if (isFirstCreation()) {
-            val params = RoomListParams(RoomListDisplayMode.PEOPLE)
+            val params = RoomListParams(RoomListDisplayMode.PEOPLE, false)
             replaceFragment(views.spaceRoomsFragmentContainer, RoomListFragment::class.java, params, FRAGMENT_TAG)
         }
         views.filteredRoomsSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
