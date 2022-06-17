@@ -40,6 +40,7 @@ import com.airbnb.mvrx.args
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.squareup.otto.Subscribe
 import im.vector.app.R
 import im.vector.app.core.epoxy.LayoutManagerStateRestorer
 import im.vector.app.core.extensions.cleanup
@@ -51,11 +52,14 @@ import im.vector.app.databinding.FragmentRoomListBinding
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.analytics.plan.ViewRoom
 import im.vector.app.features.home.RoomListDisplayMode
+import im.vector.app.features.home.event.ToPublicDetailsEvent
 import im.vector.app.features.home.room.filtered.FilteredRoomFooterItem
 import im.vector.app.features.home.room.list.actions.RoomListQuickActionsBottomSheet
 import im.vector.app.features.home.room.list.actions.RoomListQuickActionsSharedAction
 import im.vector.app.features.home.room.list.actions.RoomListQuickActionsSharedActionViewModel
+import im.vector.app.features.home.room.list.widget.ListDataSource
 import im.vector.app.features.home.room.list.widget.NotifsFabMenuView
+import im.vector.app.features.home.room.list.widget.UiThreadExecutor
 import im.vector.app.features.matrixto.OriginOfMatrixTo
 import im.vector.app.features.notifications.NotificationDrawerManager
 import kotlinx.coroutines.flow.filter
@@ -555,6 +559,8 @@ class RoomListFragment @Inject constructor(
     // RoomSummaryController.Callback **************************************************************
 
     override fun onRoomClicked(room: RoomSummary) {
+        Timber.e("roomID-----${room.roomId}")
+
         roomListViewModel.handle(RoomListAction.SelectRoom(room))
     }
 
@@ -588,7 +594,9 @@ class RoomListFragment @Inject constructor(
         roomListViewModel.handle(RoomListAction.RejectInvitation(room))
     }
 
+    private var publicRoom: RoomSummary? = null
     private fun generatePublicRoomList(mList: ArrayList<RoomSummary>): PagedList<RoomSummary> {
+        publicRoom = mList[0]
         val config = PagedList.Config.Builder()
                 .setPageSize(mList.size)
                 .setEnablePlaceholders(false)
@@ -615,17 +623,13 @@ class RoomListFragment @Inject constructor(
         return flag
     }
 
-    class UiThreadExecutor: Executor {
-        private val handler = Handler (Looper.getMainLooper ())
-        override fun execute (command: Runnable) {
-            handler.post (command)
+    @Subscribe
+    fun onPublicDetailsEvent(event: ToPublicDetailsEvent) {
+        if (publicRoom != null) {
+            roomListViewModel.handle(RoomListAction.SelectRoom(publicRoom!!))
         }
     }
-    class ListDataSource (private val items: List<RoomSummary>): PageKeyedDataSource<Int, RoomSummary>() {
-        override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, RoomSummary>) {
-            callback.onResult (items, 0, items.size)
-        }
-        override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, RoomSummary>) {}
-        override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, RoomSummary>) {}
-    }
+
+
+
 }

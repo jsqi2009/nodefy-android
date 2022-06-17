@@ -28,6 +28,7 @@ import im.vector.app.core.epoxy.ClickListener
 import im.vector.app.core.epoxy.onClick
 import im.vector.app.databinding.ItemRoomCategoryBinding
 import im.vector.app.features.home.event.CreateGroupRoomEvent
+import im.vector.app.features.home.event.ToPublicDetailsEvent
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.kelare.content.AndroidBus
 
@@ -119,6 +120,12 @@ class SectionHeaderAdapter constructor(
 
             binding.roomAddImageView.setOnClickListener {
                 mBus.post(CreateGroupRoomEvent(roomsSectionData.name))
+            }
+
+            binding.roomCategoryTitleView.setOnClickListener {
+                if (roomsSectionData.name.lowercase() == "public") {
+                    mBus.post(ToPublicDetailsEvent())
+                }
             }
         }
 
