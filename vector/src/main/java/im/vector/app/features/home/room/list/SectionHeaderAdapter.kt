@@ -140,6 +140,22 @@ class SectionHeaderAdapter constructor(
                     mBus.post(ToPublicDetailsEvent())
                 }
             }
+
+            if (roomsSectionData.itemCount == 0) {
+                if (roomsSectionData.isExpanded) {
+                    if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_people_x).lowercase()) {
+                        binding.roomNoDataTips.text = binding.root.context.getString(R.string.home_no_conversations)
+                        binding.roomNoDataTips.visibility = View.VISIBLE
+                    } else if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms2).lowercase()) {
+                        binding.roomNoDataTips.text = binding.root.context.getString(R.string.home_no_groups)
+                        binding.roomNoDataTips.visibility = View.VISIBLE
+                    }
+                } else {
+                    binding.roomNoDataTips.visibility = View.GONE
+                }
+            } else {
+                binding.roomNoDataTips.visibility = View.GONE
+            }
         }
 
         companion object {

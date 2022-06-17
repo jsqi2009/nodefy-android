@@ -3104,6 +3104,8 @@
     <string name="home_header_app_name">nodefy.me</string>
     <string name="bottom_action_rooms2">Group</string>
     <string name="bottom_action_rooms_public">Public</string>
+    <string name="home_no_conversations">No conversations</string>
+    <string name="home_no_groups">No groups</string>
 
 
 </resources>
