@@ -133,12 +133,12 @@ class SpaceSummaryController @Inject constructor(
                     }
                 }
 
-        /*homeSpaceSummaryItem {
+        homeSpaceSummaryItem {
             id("space_home")
             selected(selected is RoomGroupingMethod.BySpace && selected.space() == null)
             countState(UnreadCounterBadgeView.State(homeCount.totalCount, homeCount.isHighlight))
             listener { host.callback?.onSpaceSelected(null) }
-        }*/
+        }
 
         rootSpaces
                 ?.filter { it.membership != Membership.INVITE }

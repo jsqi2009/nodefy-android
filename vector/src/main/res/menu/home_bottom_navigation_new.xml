@@ -19,7 +19,7 @@
         android:enabled="true"
         android:icon="@drawable/bottom_nav_contact_selector"
         android:title="@string/bottom_action_contact"
-        android:visible="true" />
+        android:visible="false" />
 
     <item
         android:id="@+id/bottom_action_dialer"
