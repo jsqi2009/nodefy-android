@@ -304,7 +304,7 @@ class HomeActivity :
 
         statusBarColor(this)
         //close the Drawer swipe open
-        views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+//        views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         setBottomNavigationView()
     }
@@ -680,7 +680,7 @@ class HomeActivity :
     @Subscribe
     fun jumpToSpaceDetailPage(event: ToSpaceDetailsEvent) {
         val spaceSummary = event.spaceSummary
-        navigator.openHomeSpaceDetails(this, spaceSummary!!.roomId, spaceSummary.displayName, spaceSummary.name)
+        //navigator.openHomeSpaceDetails(this, spaceSummary!!.roomId, spaceSummary.displayName, spaceSummary.name)
     }
 
     @Subscribe
