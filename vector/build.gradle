@@ -289,6 +289,7 @@ android {
 
         checkDependencies true
         abortOnError true
+        checkReleaseBuilds false
     }
 
     compileOptions {
