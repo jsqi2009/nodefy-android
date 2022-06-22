@@ -7,10 +7,71 @@
     android:layout_height="match_parent"
     android:background="?android:colorBackground">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_70"
+        android:paddingTop="@dimen/margin_10"
+        android:orientation="horizontal"
+        android:background="@color/app_color"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_40"
+            android:layout_weight="1"
+            android:background="@drawable/shape_space_search"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:orientation="horizontal"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            tools:ignore="UselessParent">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_home_search"
+                tools:ignore="ContentDescription" />
+
+            <EditText
+                android:id="@+id/homeSearchText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/text_color_black"
+                android:inputType="none"
+                android:background="@null"
+                tools:ignore="LabelFor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeSearchView"
+            android:layout_width="@dimen/margin_40"
+            android:layout_height="@dimen/margin_40"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:gravity="center"
+            android:background="@drawable/shape_space_search">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_home_compass"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roomListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_70"
         android:overScrollMode="always"
         tools:itemCount="5"
         tools:listitem="@layout/item_room" />

@@ -21,6 +21,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Parcelable
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -161,6 +163,8 @@ class RoomListFragment @Inject constructor(
                         (it.contentEpoxyController as? RoomSummaryPagedController)?.roomChangeMembershipStates = ms
                     }
         }
+
+        views.homeSearchText.addTextChangedListener(textWatcher)
     }
 
     private fun refreshCollapseStates() {
@@ -261,6 +265,7 @@ class RoomListFragment @Inject constructor(
     }
 
     fun filterRoomsWith(filter: String) {
+        Timber.e("search terms----$filter")
         // Scroll the list to top
         views.roomListView.scrollToPosition(0)
 
@@ -671,6 +676,19 @@ class RoomListFragment @Inject constructor(
     fun onPublicDetailsEvent(event: ToPublicDetailsEvent) {
         if (publicRoom != null) {
             roomListViewModel.handle(RoomListAction.SelectRoom(publicRoom!!))
+        }
+    }
+
+    private val textWatcher: TextWatcher =  object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
+        override fun afterTextChanged(s: Editable?) {
+//            filterRoomsWith(s.toString())
+//            pagedControllerFactory.createRoomSummaryPagedController().requestModelBuild()
         }
     }
 

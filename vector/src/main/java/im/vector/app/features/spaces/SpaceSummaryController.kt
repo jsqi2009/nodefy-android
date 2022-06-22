@@ -125,9 +125,9 @@ class SpaceSummaryController @Inject constructor(
                                  expandedStates: Map<String, Boolean>,
                                  homeCount: RoomAggregateNotificationCount) {
         val host = this
-        spaceBetaHeaderItem {
+        /*spaceBetaHeaderItem {
             id("beta_header")
-        }
+        }*/
 
         // show invites on top
         summaries
