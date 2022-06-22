@@ -19,39 +19,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/margin_5"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="nodefy."
-            android:gravity="center"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_20"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="me"
-            android:gravity="center"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_20"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
         android:orientation="vertical"
         android:background="@drawable/shape_kelare_login_bg_5dp"
         android:layout_marginHorizontal="@dimen/margin_20"
-        android:padding="@dimen/margin_20"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:fitsSystemWindows="true"
@@ -60,7 +31,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_20"
+            android:text="@string/nodefy_login_sign_in"
             android:gravity="center"
             tools:ignore="HardcodedText"
             android:textColor="@color/text_color_black"
@@ -70,13 +43,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign in with"
+                android:text="@string/nodefy_login_sign_in_with"
                 android:gravity="center"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/text_color_black1"
@@ -99,7 +73,7 @@
                     android:layout_weight="1"
                     android:layout_height="40dp"
                     android:layout_marginStart="@dimen/margin_5"
-                    android:hint="User name"
+                    android:hint="@string/nodefy_login_sign_in_with_username"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/textsize_14"
                     android:textColor="@color/black"
@@ -123,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
             android:paddingHorizontal="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="@dimen/margin_10"
             android:ems="10"
             android:imeOptions="actionDone"
@@ -130,7 +105,7 @@
             android:maxLines="1"
             android:paddingEnd="48dp"
             android:textSize="@dimen/textsize_14"
-            android:hint="URL (e.g.https://matrix.org)"
+            android:hint="@string/nodefy_login_sign_in_homeserver_hint"
             android:background="@drawable/shape_kelare_login_et_bg_5dp"
             tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
 
@@ -139,13 +114,14 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
             android:paddingHorizontal="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="@dimen/margin_10"
             android:ems="10"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
             android:paddingEnd="48dp"
-            android:hint="User name"
+            android:hint="@string/nodefy_login_sign_in_with_username"
             android:textSize="@dimen/textsize_14"
             android:background="@drawable/shape_kelare_login_et_bg_5dp"
             tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
@@ -155,13 +131,14 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
             android:paddingHorizontal="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="@dimen/margin_10"
             android:ems="10"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLines="1"
             android:paddingEnd="48dp"
-            android:hint="Password"
+            android:hint="@string/nodefy_login_sign_in_password"
             android:textSize="@dimen/textsize_14"
             android:background="@drawable/shape_kelare_login_et_bg_5dp"
             tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
@@ -171,7 +148,8 @@
             android:id="@+id/forgotPasswordTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forgot password?"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:text="@string/nodefy_login_sign_in_forget_password"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_20"
             tools:ignore="HardcodedText"
@@ -182,7 +160,8 @@
             android:id="@+id/loginTv"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
-            android:text="Log in"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:text="@string/nodefy_login_sign_in_login"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_15"
             android:background="@drawable/shape_kelare_login_button_bg_5dp"
@@ -194,7 +173,9 @@
             android:id="@+id/createAccountTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create account"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:text="@string/nodefy_login_sign_in_create_account"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_20"
             tools:ignore="HardcodedText"

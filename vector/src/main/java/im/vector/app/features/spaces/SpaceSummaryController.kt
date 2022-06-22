@@ -47,11 +47,23 @@ class SpaceSummaryController @Inject constructor(
 
     var callback: Callback? = null
     private var viewState: SpaceListViewState? = null
+    private var terms: String = ""
 
     private val subSpaceComparator: Comparator<SpaceChildInfo> = compareBy<SpaceChildInfo> { it.order }.thenBy { it.childRoomId }
 
     fun update(viewState: SpaceListViewState) {
         this.viewState = viewState
+        requestModelBuild()
+    }
+
+    fun filter(viewState: SpaceListViewState, key: String) {
+        this.viewState = viewState
+        terms = if (key.isNullOrEmpty()) {
+            ""
+        } else {
+            key
+        }
+
         requestModelBuild()
     }
 
@@ -141,7 +153,8 @@ class SpaceSummaryController @Inject constructor(
         }
 
         rootSpaces
-                ?.filter { it.membership != Membership.INVITE }
+//                ?.filter { it.membership != Membership.INVITE }
+                ?.filter { it.membership != Membership.INVITE && it.name.contains(terms) }
                 ?.forEach { roomSummary ->
                     val isSelected = selected is RoomGroupingMethod.BySpace && roomSummary.roomId == selected.space()?.roomId
                     // does it have children?

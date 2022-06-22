@@ -2330,6 +2330,15 @@
     <string name="login_reset_password_success_notice2">你的密码已重置。</string>
     <string name="login_reset_password_success_submit2">返回登录页面</string>
 
+    <!-- nodefy.me login -->
+    <string name="nodefy_login_sign_in">登录</string>
+    <string name="nodefy_login_sign_in_with">登录，使用</string>
+    <string name="nodefy_login_sign_in_with_username">用户名</string>
+    <string name="nodefy_login_sign_in_homeserver_hint">URL (例如https://matrixi.org)</string>
+    <string name="nodefy_login_sign_in_password">密码</string>
+    <string name="nodefy_login_sign_in_forget_password">忘记密码？</string>
+    <string name="nodefy_login_sign_in_login">登录</string>
+    <string name="nodefy_login_sign_in_create_account">创建账号</string>
 
     <string name="bottom_action_dialer">拨号</string>
     <string name="bottom_action_space">空间</string>
@@ -2341,6 +2350,7 @@
     <string name="bottom_action_rooms2">群组</string>
     <string name="bottom_action_rooms_public">公开</string>
 
-
+    <!-- nodefy.me space -->
+    <string name="space_title">空间</string>
 
 </resources>

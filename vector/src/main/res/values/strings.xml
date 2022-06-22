@@ -3099,6 +3099,15 @@
     <string name="login_reset_password_success_notice2">Your Nodefy account password has been reset.</string>
     <string name="login_reset_password_success_submit2">Return to login screen</string>
 
+    <!-- nodefy.me login -->
+    <string name="nodefy_login_sign_in">Sign In</string>
+    <string name="nodefy_login_sign_in_with">Sign in with</string>
+    <string name="nodefy_login_sign_in_with_username">User name</string>
+    <string name="nodefy_login_sign_in_homeserver_hint">URL (e.g.https://matrixi.org)</string>
+    <string name="nodefy_login_sign_in_password">Password</string>
+    <string name="nodefy_login_sign_in_forget_password">Forget password？</string>
+    <string name="nodefy_login_sign_in_login">Log in</string>
+    <string name="nodefy_login_sign_in_create_account">Create account</string>
 
     <!-- nodefy.me home -->
     <string name="home_header_app_name">nodefy.me</string>
@@ -3107,5 +3116,7 @@
     <string name="home_no_conversations">No conversations</string>
     <string name="home_no_groups">No groups</string>
 
+    <!-- nodefy.me space -->
+    <string name="space_title">Spaces</string>
 
 </resources>

@@ -17,6 +17,8 @@
 package im.vector.app.features.spaces
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
@@ -115,6 +117,8 @@ class SpaceListFragment @Inject constructor(
                 is SpaceListViewEvents.OpenSpaceInvite  -> sharedActionViewModel.post(HomeActivitySharedAction.OpenSpaceInvite(it.id))
             }
         }
+
+        views.searchText.addTextChangedListener(searchTextWatcher)
     }
 
     override fun onDestroyView() {
@@ -177,5 +181,25 @@ class SpaceListFragment @Inject constructor(
     fun switchToHomeEvent(event: BackFromSpaceDetailsEvent) {
         viewModel.handle(SpaceListAction.SelectSpace(null))
     }
+
+    private fun filterSpaceList(terms: String) {
+        withState(viewModel) { state ->
+            spaceController.filter(state, terms)
+        }
+    }
+
+    private val searchTextWatcher: TextWatcher =  object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
+        override fun afterTextChanged(s: Editable?) {
+            filterSpaceList(s.toString())
+        }
+    }
+
+
 
 }

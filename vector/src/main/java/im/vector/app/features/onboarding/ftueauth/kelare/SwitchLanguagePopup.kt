@@ -16,7 +16,6 @@
 
 package im.vector.app.features.onboarding.ftueauth.kelare
 
-import UpdateLanguageEvent
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context

@@ -16,7 +16,6 @@
 
 package im.vector.app.features.onboarding.ftueauth.kelare
 
-import UpdateLanguageEvent
 import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.os.Bundle
@@ -24,26 +23,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.text.isDigitsOnly
-import androidx.core.view.isInvisible
-import com.google.android.material.textfield.TextInputLayout
 import com.labo.kaji.relativepopupwindow.RelativePopupWindow
 import com.squareup.otto.Subscribe
-import im.vector.app.BuildConfig
 import im.vector.app.R
-import im.vector.app.core.utils.TextUtils
 import im.vector.app.core.utils.ensureProtocol
 import im.vector.app.databinding.FragmentFtueAuthKelareLoginBinding
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingFlow
-import im.vector.app.features.onboarding.OnboardingViewEvents
 import im.vector.app.features.onboarding.OnboardingViewState
 import im.vector.app.features.onboarding.ftueauth.AbstractSSOFtueAuthFragment
-import timber.log.Timber
-import javax.inject.Inject
-
 
 class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthKelareLoginBinding>(), View.OnClickListener {
 
