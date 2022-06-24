@@ -32,7 +32,7 @@ import im.vector.app.features.home.event.ToPublicDetailsEvent
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.kelare.content.AndroidBus
 
-class SectionHeaderAdapter constructor(
+class SectionHeaderAdapter(
         roomsSectionData: RoomsSectionData,
         mBus: AndroidBus,
         private val onClickAction: ClickListener
@@ -47,7 +47,7 @@ class SectionHeaderAdapter constructor(
             val isHidden: Boolean = true,
             // This will be false until real data has been submitted once
             val isLoading: Boolean = true,
-            val isCollapsable: Boolean = false
+            val isCollapsable: Boolean = true
     )
 
     private val eventBus: AndroidBus = mBus
@@ -60,6 +60,10 @@ class SectionHeaderAdapter constructor(
             roomsSectionData = newRoomsSectionData
             notifyDataSetChanged()
         }
+    }
+
+    fun updateSectionData(block: (RoomsSectionData) -> RoomsSectionData) {
+        notifyDataSetChanged()
     }
 
     init {
@@ -123,6 +127,8 @@ class SectionHeaderAdapter constructor(
 
             if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms_public).lowercase()) {
                 binding.roomCategoryCounterView.visibility = View.INVISIBLE
+            } else {
+                binding.roomCategoryCounterView.visibility = View.VISIBLE
             }
 
             if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms_public).lowercase()

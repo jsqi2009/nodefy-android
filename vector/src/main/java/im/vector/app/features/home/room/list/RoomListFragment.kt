@@ -18,8 +18,6 @@ package im.vector.app.features.home.room.list
 
 import android.os.AsyncTask
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
@@ -31,7 +29,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +51,7 @@ import im.vector.app.databinding.FragmentRoomListBinding
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.analytics.plan.ViewRoom
 import im.vector.app.features.home.RoomListDisplayMode
+import im.vector.app.features.home.event.RoomClickEvent
 import im.vector.app.features.home.event.ToPublicDetailsEvent
 import im.vector.app.features.home.room.filtered.FilteredRoomFooterItem
 import im.vector.app.features.home.room.list.actions.RoomListQuickActionsBottomSheet
@@ -75,8 +73,6 @@ import org.matrix.android.sdk.api.session.room.model.SpaceChildInfo
 import org.matrix.android.sdk.api.session.room.model.tag.RoomTag
 import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
 import timber.log.Timber
-import java.util.Locale
-import java.util.concurrent.Executor
 import javax.inject.Inject
 
 @Parcelize
@@ -103,6 +99,7 @@ class RoomListFragment @Inject constructor(
     private lateinit var stateRestorer: LayoutManagerStateRestorer
     private var publicRoom: RoomSummary? = null
     private val publicKey = "#piblic"
+    private var terms: String = ""
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentRoomListBinding {
         return FragmentRoomListBinding.inflate(inflater, container, false)
@@ -165,14 +162,26 @@ class RoomListFragment @Inject constructor(
         }
 
         views.homeSearchText.addTextChangedListener(textWatcher)
+        views.homeSearchView.setOnClickListener {
+            navigator.openRoomDirectory(requireActivity(), "")
+            //navigator.openRoomsFiltering(requireActivity())
+        }
+        if (roomListParams.isHome) {
+            views.searchLayout.visibility = View.VISIBLE
+        } else {
+            views.searchLayout.visibility = View.GONE
+        }
     }
 
     private fun refreshCollapseStates() {
         val sectionsCount = adapterInfosList.count { !it.sectionHeaderAdapter.roomsSectionData.isHidden }
+        Timber.e("sectionsCount----$sectionsCount")
         roomListViewModel.sections.forEachIndexed { index, roomsSection ->
             val actualBlock = adapterInfosList[index]
             val isRoomSectionCollapsable = sectionsCount > 1
             val isRoomSectionExpanded = roomsSection.isExpanded.value.orTrue()
+            Timber.e("isRoomSectionCollapsable----$isRoomSectionCollapsable")
+            Timber.e("isRoomSectionExpanded----$isRoomSectionExpanded")
             if (actualBlock.section.isExpanded && !isRoomSectionExpanded) {
                 // mark controller as collapsed
                 actualBlock.contentEpoxyController.setCollapsed(true)
@@ -184,7 +193,8 @@ class RoomListFragment @Inject constructor(
             actualBlock.sectionHeaderAdapter.updateSection {
                 it.copy(
                         isExpanded = isRoomSectionExpanded,
-                        isCollapsable = isRoomSectionCollapsable
+//                        isCollapsable = isRoomSectionCollapsable
+                        isCollapsable =true
                 )
             }
 
@@ -194,6 +204,8 @@ class RoomListFragment @Inject constructor(
             }
         }
     }
+
+
 
     override fun showFailure(throwable: Throwable) {
         showErrorInSnackbar(throwable)
@@ -307,6 +319,7 @@ class RoomListFragment @Inject constructor(
 
         roomListViewModel.sections.forEachIndexed { index, section ->
             val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName), mBus) {
+                Timber.e("isCollapsable-----${adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable}")
                 if (adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable) {
                     roomListViewModel.handle(RoomListAction.ToggleSection(section))
                 }
@@ -324,10 +337,12 @@ class RoomListFragment @Inject constructor(
                                                 var publicList = fetchPublicRoom(pl)
                                                 controller.submitList(null)
                                             } else if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
-                                                var groupList = filterPublicRoom(pl)
+                                                val groupList = filterPublicRoom(pl)
                                                 controller.submitList(groupList)
                                             } else {
-                                                controller.submitList(pl)
+                                                val groupList2 = filterDirectRoom(pl)
+                                                controller.submitList(groupList2)
+//                                                controller.submitList(pl)
                                             }
                                             sectionAdapter.updateSection {
                                                 it.copy(
@@ -616,7 +631,21 @@ class RoomListFragment @Inject constructor(
         pl.snapshot().forEach {
             if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
 
-            } else {
+            } else if (it.displayName.contains(terms)) {
+                items.add(it)
+            }
+        }
+        if (items.isNotEmpty()) {
+            publicList = generateGroupRoomList(items)
+        }
+        return publicList
+    }
+
+    private fun filterDirectRoom(pl: PagedList<RoomSummary>) : PagedList<RoomSummary>?{
+        var publicList: PagedList<RoomSummary>? = null
+        val items : ArrayList<RoomSummary> = ArrayList()
+        pl.snapshot().forEach {
+            if (it.displayName.contains(terms)) {
                 items.add(it)
             }
         }
@@ -687,11 +716,183 @@ class RoomListFragment @Inject constructor(
 
         }
         override fun afterTextChanged(s: Editable?) {
-//            filterRoomsWith(s.toString())
-//            pagedControllerFactory.createRoomSummaryPagedController().requestModelBuild()
+            terms = s.toString()
+            if (s.toString().isEmpty()) {
+                terms = ""
+            }
+            filterRecyclerView()
+            /*setupRecyclerView()*/
         }
     }
 
+    private fun filterRooms(pl: PagedList<RoomSummary>, terms: String) : PagedList<RoomSummary>?{
+        var publicList: PagedList<RoomSummary>? = null
+        val items : ArrayList<RoomSummary> = ArrayList()
+        pl.snapshot().forEach {
+            if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
 
+            } else if (it.displayName.contains(terms)) {
+                items.add(it)
+            }
+        }
+        if (items.isNotEmpty()) {
+            publicList = generateGroupRoomList(items)
+        }
+        return publicList
+    }
+
+
+    private fun filterRecyclerView() {
+
+        modelBuildListener = null
+        views.roomListView.cleanup()
+        footerController.listener = null
+        // TODO Cleanup listener on the ConcatAdapter's adapters?
+        stateRestorer.clear()
+        views.createChatFabMenu.listener = null
+        concatAdapter = null
+
+        val layoutManager = LinearLayoutManager(context)
+        stateRestorer = LayoutManagerStateRestorer(layoutManager).register()
+        views.roomListView.layoutManager = layoutManager
+        views.roomListView.itemAnimator = RoomListAnimator()
+        layoutManager.recycleChildrenOnDetach = true
+
+        modelBuildListener = OnModelBuildFinishedListener { it.dispatchTo(stateRestorer) }
+
+        val filterConcatAdapter = ConcatAdapter()
+
+        roomListViewModel.sections.forEachIndexed { index, section ->
+            val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName), mBus) {
+                if (adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable) {
+                    roomListViewModel.handle(RoomListAction.ToggleSection(section))
+                }
+            }
+            val contentAdapter =
+                    when {
+                        section.livePages != null     -> {
+                            pagedControllerFactory.createRoomSummaryPagedController()
+                                    .also { controller ->
+                                        section.livePages.observe(viewLifecycleOwner) { pl ->
+//                                            controller.submitList(pl)
+                                            Timber.e("live page list----${pl}")
+                                            if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase()) {
+//                                                controller.submitList(fetchPublicRoom(pl))
+                                                var publicList = fetchPublicRoom(pl)
+                                                controller.submitList(null)
+                                            } else if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
+                                                val groupList = filterPublicRoom(pl)
+                                                controller.submitList(groupList)
+                                            } else {
+                                                val groupList2 = filterDirectRoom(pl)
+                                                controller.submitList(groupList2)
+//                                                controller.submitList(pl)
+                                            }
+                                            sectionAdapter.updateSection {
+                                                it.copy(
+//                                                        isHidden = pl.isEmpty(),
+                                                        isHidden = checkIfHidePublic(pl, section.sectionName),
+                                                        isLoading = false
+                                                )
+                                            }
+                                            sectionAdapter.updateSectionData{
+                                                it.copy(
+//                                                        isHidden = pl.isEmpty(),
+                                                        isCollapsable = terms.isNotEmpty(),
+                                                        isLoading = false
+                                                )
+                                            }
+                                            refreshCollapseStates()
+                                            checkEmptyState()
+                                        }
+                                        observeItemCount(section, sectionAdapter)
+                                        section.notificationCount.observe(viewLifecycleOwner) { counts ->
+                                            sectionAdapter.updateSection {
+                                                it.copy(
+                                                        notificationCount = counts.totalCount,
+                                                        isHighlighted = counts.isHighlight,
+                                                )
+                                            }
+                                        }
+                                        section.isExpanded.observe(viewLifecycleOwner) { _ ->
+                                            refreshCollapseStates()
+                                        }
+                                        controller.listener = this
+                                    }
+                        }
+                        section.liveSuggested != null -> {
+                            pagedControllerFactory.createSuggestedRoomListController()
+                                    .also { controller ->
+                                        section.liveSuggested.observe(viewLifecycleOwner) { info ->
+                                            Timber.e("live suggest list----${info.toString()}")
+                                            controller.setData(info)
+                                            sectionAdapter.updateSection {
+                                                it.copy(
+                                                        isHidden = info.rooms.isEmpty(),
+                                                        isLoading = false
+                                                )
+                                            }
+                                            refreshCollapseStates()
+                                            checkEmptyState()
+                                        }
+                                        observeItemCount(section, sectionAdapter)
+                                        section.isExpanded.observe(viewLifecycleOwner) { _ ->
+                                            refreshCollapseStates()
+                                        }
+                                        controller.listener = this
+                                    }
+                        }
+                        else                          -> {
+                            pagedControllerFactory.createRoomSummaryListController()
+                                    .also { controller ->
+                                        section.liveList?.observe(viewLifecycleOwner) { list ->
+                                            Timber.e("live list----${list.toString()}")
+                                            controller.setData(list)
+                                            sectionAdapter.updateSection {
+                                                it.copy(
+                                                        isHidden = list.isEmpty(),
+                                                        isLoading = false,
+                                                )
+                                            }
+                                            refreshCollapseStates()
+                                            checkEmptyState()
+                                        }
+                                        observeItemCount(section, sectionAdapter)
+                                        section.notificationCount.observe(viewLifecycleOwner) { counts ->
+                                            sectionAdapter.updateSection {
+                                                it.copy(
+                                                        notificationCount = counts.totalCount,
+                                                        isHighlighted = counts.isHighlight
+                                                )
+                                            }
+                                        }
+                                        section.isExpanded.observe(viewLifecycleOwner) { _ ->
+                                            refreshCollapseStates()
+                                        }
+                                        controller.listener = this
+                                    }
+                        }
+                    }
+            filterConcatAdapter.addAdapter(sectionAdapter)
+            filterConcatAdapter.addAdapter(contentAdapter.adapter)
+
+            contentAdapter.requestModelBuild()
+        }
+
+        // Add the footer controller
+        footerController.listener = this
+        filterConcatAdapter.addAdapter(footerController.adapter)
+
+        this.concatAdapter = filterConcatAdapter
+        views.roomListView.adapter = filterConcatAdapter
+
+    }
+
+    @Subscribe
+    fun onRoomClickEvent(event: RoomClickEvent) {
+        Timber.e("filter roomID------${event.spaceSummary!!.roomId}")
+
+        roomListViewModel.handle(RoomListAction.SelectRoom(event.spaceSummary!!))
+    }
 
 }

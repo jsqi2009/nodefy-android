@@ -8,59 +8,69 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_120"
-        android:orientation="vertical"
-        android:background="@color/app_color">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_40"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            android:layout_marginTop="@dimen/margin_10"
-            android:gravity="center_vertical"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_18"
-            android:text="@string/space_title"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/searchLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_40"
-            android:background="@drawable/shape_space_search"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            android:layout_marginTop="@dimen/margin_10"
-            android:orientation="horizontal"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
-            tools:ignore="UselessParent">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_20"
+            android:orientation="vertical"
+            android:background="@color/app_color">
 
-            <androidx.constraintlayout.utils.widget.ImageFilterView
-                android:layout_width="@dimen/margin_20"
-                android:layout_height="@dimen/margin_20"
-                android:layout_marginHorizontal="@dimen/margin_8"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_home_search"/>
-            <EditText
-                android:id="@+id/searchText"
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="10dp"
+                android:layout_height="@dimen/margin_40"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_10"
                 android:gravity="center_vertical"
-                android:textColor="@color/text_color_black"
-                android:inputType="none"
-                android:background="@null"
-                tools:ignore="LabelFor" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_18"
+                android:text="@string/space_title"/>
+
+            <LinearLayout
+                android:id="@+id/searchLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_30"
+                android:background="@drawable/shape_space_search"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_10"
+                android:orientation="horizontal"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
+                tools:ignore="UselessParent">
+
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="@dimen/margin_20"
+                    android:layout_height="@dimen/margin_20"
+                    android:layout_marginHorizontal="@dimen/margin_8"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_home_search"/>
+                <EditText
+                    android:id="@+id/searchText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/textsize_14"
+                    android:inputType="none"
+                    android:background="@null"
+                    tools:ignore="LabelFor" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groupListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="always"
+            tools:listitem="@layout/item_group" />
+
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/groupListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_120"
-        android:overScrollMode="always"
-        tools:listitem="@layout/item_group" />
+
 
 </im.vector.app.core.platform.StateView>
