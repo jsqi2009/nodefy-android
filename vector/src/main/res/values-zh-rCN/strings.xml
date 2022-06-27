@@ -2349,6 +2349,8 @@
     <string name="home_header_app_name">nodefy.me</string>
     <string name="bottom_action_rooms2">群组</string>
     <string name="bottom_action_rooms_public">公开</string>
+    <string name="home_create_group">创建群组</string>
+    <string name="home_join_group">加入群组</string>
 
     <!-- nodefy.me space -->
     <string name="space_title">空间</string>

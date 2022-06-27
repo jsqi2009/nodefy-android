@@ -3115,6 +3115,8 @@
     <string name="bottom_action_rooms_public">Public</string>
     <string name="home_no_conversations">No conversations</string>
     <string name="home_no_groups">No groups</string>
+    <string name="home_create_group">Create group</string>
+    <string name="home_join_group">Join group</string>
 
     <!-- nodefy.me space -->
     <string name="space_title">Spaces</string>

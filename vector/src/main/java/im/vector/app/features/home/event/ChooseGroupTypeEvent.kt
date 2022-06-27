@@ -16,10 +16,12 @@
 
 package im.vector.app.features.home.event
 
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
+
 /**
  * author : Jason
- *  date   : 2022/6/15 15:24
+ *  date   : 2022/6/14 15:24
  *  desc   :
  */
-class CreateGroupRoomEvent(var roomType: String, var isHome: Boolean) {
+class ChooseGroupTypeEvent (var type: Int) {   // type=1 create group     type=2 join group
 }

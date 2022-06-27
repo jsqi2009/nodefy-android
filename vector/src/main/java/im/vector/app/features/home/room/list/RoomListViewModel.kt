@@ -56,7 +56,7 @@ import timber.log.Timber
 
 class RoomListViewModel @AssistedInject constructor(
         @Assisted initialState: RoomListViewState,
-        private val session: Session,
+        val session: Session,
         stringProvider: StringProvider,
         appStateHandler: AppStateHandler,
         vectorPreferences: VectorPreferences,

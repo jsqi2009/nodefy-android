@@ -105,8 +105,10 @@ import android.R.attr.action
 import android.os.Handler
 import androidx.viewpager.widget.ViewPager
 import im.vector.app.features.home.contact.HomeContactFragment
+import im.vector.app.features.home.event.ChooseGroupTypeEvent
 import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.event.ToSpaceDetailsEvent
+import im.vector.app.features.home.room.list.widget.ChooseCreateGroupTypeDialog
 import im.vector.app.features.spaces.SpaceListFragment
 import java.util.Timer
 import java.util.TimerTask
@@ -686,9 +688,22 @@ class HomeActivity :
     @Subscribe
     fun onCreateGroupRoomEvent(event: CreateGroupRoomEvent) {
         if (event.roomType.lowercase() == "group") {
-            navigator.openRoomDirectory(this, "")
+            if (event.isHome) {
+                ChooseCreateGroupTypeDialog(this, mBus).show()
+            } else {
+                navigator.openRoomDirectory(this, "")
+            }
         } else {
             navigator.openCreateDirectRoom(this)
+        }
+    }
+
+    @Subscribe
+    fun homeCreateGroup(event: ChooseGroupTypeEvent) {
+        if (event.type == 1) {
+
+        } else {
+            navigator.openRoomDirectory(this, "")
         }
     }
 

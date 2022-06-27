@@ -27,6 +27,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
@@ -47,6 +48,7 @@ import im.vector.app.core.platform.OnBackPressed
 import im.vector.app.core.platform.StateView
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.core.resources.UserPreferencesProvider
+import im.vector.app.core.services.VectorSyncService
 import im.vector.app.databinding.FragmentRoomListBinding
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.analytics.plan.ViewRoom
@@ -62,16 +64,21 @@ import im.vector.app.features.home.room.list.widget.NotifsFabMenuView
 import im.vector.app.features.home.room.list.widget.UiThreadExecutor
 import im.vector.app.features.matrixto.OriginOfMatrixTo
 import im.vector.app.features.notifications.NotificationDrawerManager
+import im.vector.app.features.session.coroutineScope
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import org.matrix.android.sdk.api.Matrix
 import org.matrix.android.sdk.api.extensions.orTrue
+import org.matrix.android.sdk.api.session.initsync.SyncStatusService
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import org.matrix.android.sdk.api.session.room.model.SpaceChildInfo
 import org.matrix.android.sdk.api.session.room.model.tag.RoomTag
 import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
+import org.matrix.android.sdk.api.session.sync.job.SyncService
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -318,7 +325,7 @@ class RoomListFragment @Inject constructor(
         val concatAdapter = ConcatAdapter()
 
         roomListViewModel.sections.forEachIndexed { index, section ->
-            val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName), mBus) {
+            val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName), mBus, roomListParams.isHome) {
                 Timber.e("isCollapsable-----${adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable}")
                 if (adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable) {
                     roomListViewModel.handle(RoomListAction.ToggleSection(section))
@@ -721,7 +728,15 @@ class RoomListFragment @Inject constructor(
                 terms = ""
             }
             filterRecyclerView()
+
+            /*roomListViewModel.session.syncStatusService().getSyncStatusLive()
+                    .asFlow()
+                    .filterIsInstance<SyncStatusService.Status.IncrementalSyncIdle>()
+                    .launchIn(roomListViewModel.session.coroutineScope)*/
+//            filterRecyclerView()
             /*setupRecyclerView()*/
+
+
         }
     }
 
@@ -763,7 +778,7 @@ class RoomListFragment @Inject constructor(
         val filterConcatAdapter = ConcatAdapter()
 
         roomListViewModel.sections.forEachIndexed { index, section ->
-            val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName), mBus) {
+            val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName), mBus, roomListParams.isHome) {
                 if (adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable) {
                     roomListViewModel.handle(RoomListAction.ToggleSection(section))
                 }
@@ -891,6 +906,8 @@ class RoomListFragment @Inject constructor(
     @Subscribe
     fun onRoomClickEvent(event: RoomClickEvent) {
         Timber.e("filter roomID------${event.spaceSummary!!.roomId}")
+
+
 
         roomListViewModel.handle(RoomListAction.SelectRoom(event.spaceSummary!!))
     }

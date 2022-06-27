@@ -35,6 +35,7 @@ import im.vector.app.kelare.content.AndroidBus
 class SectionHeaderAdapter(
         roomsSectionData: RoomsSectionData,
         mBus: AndroidBus,
+        isHome: Boolean,
         private val onClickAction: ClickListener
 ) : RecyclerView.Adapter<SectionHeaderAdapter.VH>() {
 
@@ -51,6 +52,7 @@ class SectionHeaderAdapter(
     )
 
     private val eventBus: AndroidBus = mBus
+    private val isHomePage = isHome
     var roomsSectionData: RoomsSectionData = roomsSectionData
         private set
 
@@ -79,7 +81,7 @@ class SectionHeaderAdapter(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(roomsSectionData, eventBus)
+        holder.bind(roomsSectionData, eventBus, isHomePage)
     }
 
     override fun getItemCount(): Int = if (roomsSectionData.isHidden) 0 else 1
@@ -93,7 +95,7 @@ class SectionHeaderAdapter(
             binding.root.onClick(onClickAction)
         }
 
-        fun bind(roomsSectionData: RoomsSectionData, mBus: AndroidBus) {
+        fun bind(roomsSectionData: RoomsSectionData, mBus: AndroidBus, isHome: Boolean) {
             binding.roomCategoryTitleView.text = roomsSectionData.name
             //val tintColor = ThemeUtils.getColor(binding.root.context, R.attr.vctr_content_secondary)
             val tintColor = binding.root.context.getColor(R.color.keep_it_save_continue_color)
@@ -138,7 +140,7 @@ class SectionHeaderAdapter(
             }
 
             binding.roomAddImageView.setOnClickListener {
-                mBus.post(CreateGroupRoomEvent(roomsSectionData.name))
+                mBus.post(CreateGroupRoomEvent(roomsSectionData.name, isHome))
             }
 
             binding.roomCategoryTitleView.setOnClickListener {
