@@ -27,7 +27,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
@@ -44,11 +43,11 @@ import com.squareup.otto.Subscribe
 import im.vector.app.R
 import im.vector.app.core.epoxy.LayoutManagerStateRestorer
 import im.vector.app.core.extensions.cleanup
+import im.vector.app.core.extensions.startSyncing
 import im.vector.app.core.platform.OnBackPressed
 import im.vector.app.core.platform.StateView
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.core.resources.UserPreferencesProvider
-import im.vector.app.core.services.VectorSyncService
 import im.vector.app.databinding.FragmentRoomListBinding
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.analytics.plan.ViewRoom
@@ -64,21 +63,16 @@ import im.vector.app.features.home.room.list.widget.NotifsFabMenuView
 import im.vector.app.features.home.room.list.widget.UiThreadExecutor
 import im.vector.app.features.matrixto.OriginOfMatrixTo
 import im.vector.app.features.notifications.NotificationDrawerManager
-import im.vector.app.features.session.coroutineScope
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import org.matrix.android.sdk.api.Matrix
 import org.matrix.android.sdk.api.extensions.orTrue
-import org.matrix.android.sdk.api.session.initsync.SyncStatusService
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import org.matrix.android.sdk.api.session.room.model.SpaceChildInfo
 import org.matrix.android.sdk.api.session.room.model.tag.RoomTag
 import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
-import org.matrix.android.sdk.api.session.sync.job.SyncService
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -134,6 +128,7 @@ class RoomListFragment @Inject constructor(
             RoomListDisplayMode.ROOMS  -> MobileScreen.ScreenName.Rooms
             else                       -> null
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -200,8 +195,7 @@ class RoomListFragment @Inject constructor(
             actualBlock.sectionHeaderAdapter.updateSection {
                 it.copy(
                         isExpanded = isRoomSectionExpanded,
-//                        isCollapsable = isRoomSectionCollapsable
-                        isCollapsable =true
+                        isCollapsable = isRoomSectionCollapsable
                 )
             }
 
@@ -326,7 +320,6 @@ class RoomListFragment @Inject constructor(
 
         roomListViewModel.sections.forEachIndexed { index, section ->
             val sectionAdapter = SectionHeaderAdapter(SectionHeaderAdapter.RoomsSectionData(section.sectionName), mBus, roomListParams.isHome) {
-                Timber.e("isCollapsable-----${adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable}")
                 if (adapterInfosList[index].sectionHeaderAdapter.roomsSectionData.isCollapsable) {
                     roomListViewModel.handle(RoomListAction.ToggleSection(section))
                 }
@@ -343,7 +336,7 @@ class RoomListFragment @Inject constructor(
 //                                                controller.submitList(fetchPublicRoom(pl))
                                                 var publicList = fetchPublicRoom(pl)
                                                 controller.submitList(null)
-                                            } else if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
+                                            } else if (section.sectionName == "GROUP" || section.sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
                                                 val groupList = filterPublicRoom(pl)
                                                 controller.submitList(groupList)
                                             } else {
@@ -635,15 +628,22 @@ class RoomListFragment @Inject constructor(
     private fun filterPublicRoom(pl: PagedList<RoomSummary>) : PagedList<RoomSummary>?{
         var publicList: PagedList<RoomSummary>? = null
         val items : ArrayList<RoomSummary> = ArrayList()
+        val items2 : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
             if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
 
-            } else if (it.displayName.contains(terms)) {
+            } else {
                 items.add(it)
             }
         }
-        if (items.isNotEmpty()) {
-            publicList = generateGroupRoomList(items)
+        items.forEach { itemRoom ->
+            if (itemRoom.displayName.contains(terms)) {
+                items2.add(itemRoom)
+            }
+        }
+
+        if (items2.isNotEmpty()) {
+            publicList = generateGroupRoomList(items2)
         }
         return publicList
     }
@@ -720,14 +720,20 @@ class RoomListFragment @Inject constructor(
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-        override fun afterTextChanged(s: Editable?) {
             terms = s.toString()
             if (s.toString().isEmpty()) {
                 terms = ""
             }
-            filterRecyclerView()
+            filterRoomsWith(terms)
+            roomListViewModel.session.stopSync()
+            roomListViewModel.session.startSync(false)
+
+
+        }
+        override fun afterTextChanged(s: Editable?) {
+
+
+            //filterRecyclerView()
 
             /*roomListViewModel.session.syncStatusService().getSyncStatusLive()
                     .asFlow()
@@ -739,6 +745,7 @@ class RoomListFragment @Inject constructor(
 
         }
     }
+
 
     private fun filterRooms(pl: PagedList<RoomSummary>, terms: String) : PagedList<RoomSummary>?{
         var publicList: PagedList<RoomSummary>? = null

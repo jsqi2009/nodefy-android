@@ -521,7 +521,8 @@ class RoomListSectionBuilderSpace(
                 nameRes = R.string.bottom_action_rooms2,
                 notifyOfLocalEcho = false,
                 spaceFilterStrategy = if (onlyOrphansInHome) {
-                    RoomListViewModel.SpaceFilterStrategy.ORPHANS_IF_SPACE_NULL
+//                    RoomListViewModel.SpaceFilterStrategy.ORPHANS_IF_SPACE_NULL
+                    RoomListViewModel.SpaceFilterStrategy.ALL_IF_SPACE_NULL
                 } else {
                     RoomListViewModel.SpaceFilterStrategy.ALL_IF_SPACE_NULL
                 }
