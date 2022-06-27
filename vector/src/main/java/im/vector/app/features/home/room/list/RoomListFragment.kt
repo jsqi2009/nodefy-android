@@ -177,13 +177,10 @@ class RoomListFragment @Inject constructor(
 
     private fun refreshCollapseStates() {
         val sectionsCount = adapterInfosList.count { !it.sectionHeaderAdapter.roomsSectionData.isHidden }
-        Timber.e("sectionsCount----$sectionsCount")
         roomListViewModel.sections.forEachIndexed { index, roomsSection ->
             val actualBlock = adapterInfosList[index]
             val isRoomSectionCollapsable = sectionsCount > 1
             val isRoomSectionExpanded = roomsSection.isExpanded.value.orTrue()
-            Timber.e("isRoomSectionCollapsable----$isRoomSectionCollapsable")
-            Timber.e("isRoomSectionExpanded----$isRoomSectionExpanded")
             if (actualBlock.section.isExpanded && !isRoomSectionExpanded) {
                 // mark controller as collapsed
                 actualBlock.contentEpoxyController.setCollapsed(true)
