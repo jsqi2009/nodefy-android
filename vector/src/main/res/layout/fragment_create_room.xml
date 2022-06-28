@@ -45,7 +45,7 @@
                 android:textStyle="bold"
                 android:text="@string/home_group_type_title" />
 
-            <EditText
+            <TextView
                 android:id="@+id/groupType"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_50"
@@ -55,11 +55,10 @@
                 android:gravity="center_vertical"
                 android:background="@drawable/shape_group_type_bg"
                 android:hint="@string/home_group_type_title"
+                android:text="Nodefy"
                 android:textSize="@dimen/textsize_14"
                 android:textColor="@color/black"
-                android:inputType="none"
-                android:enabled="false"
-                tools:ignore="LabelFor" />
+                tools:ignore="HardcodedText,LabelFor" />
 
         </LinearLayout>
 
@@ -77,8 +76,7 @@
 
     <include
         android:id="@+id/waiting_view"
-        layout="@layout/merge_overlay_waiting_view"
-        android:visibility="gone"/>
+        layout="@layout/merge_overlay_waiting_view"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

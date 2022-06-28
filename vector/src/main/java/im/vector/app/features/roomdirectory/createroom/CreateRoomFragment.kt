@@ -262,7 +262,7 @@ class CreateRoomFragment @Inject constructor(
         views.groupType.setText("Nodefy")
 
         views.groupType.setOnClickListener {
-            Toast.makeText(requireActivity(), "Clicked group type Nodefy",Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Clicked group type Nodefy",Toast.LENGTH_SHORT).show()
         }
     }
 }
