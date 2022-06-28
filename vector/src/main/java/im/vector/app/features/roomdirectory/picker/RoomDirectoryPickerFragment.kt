@@ -36,6 +36,7 @@ import im.vector.app.features.roomdirectory.RoomDirectoryServer
 import im.vector.app.features.roomdirectory.RoomDirectorySharedAction
 import im.vector.app.features.roomdirectory.RoomDirectorySharedActionViewModel
 import im.vector.app.features.roomdirectory.RoomDirectoryViewModel
+import im.vector.app.features.roomdirectory.event.SwitchRoomDirectoryEvent
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -87,7 +88,7 @@ class RoomDirectoryPickerFragment @Inject constructor(private val roomDirectoryP
     override fun onRoomDirectoryClicked(roomDirectoryData: RoomDirectoryData) {
         Timber.v("onRoomDirectoryClicked: $roomDirectoryData")
         viewModel.handle(RoomDirectoryAction.SetRoomDirectoryData(roomDirectoryData))
-
+        mBus.post(SwitchRoomDirectoryEvent(roomDirectoryData))
         sharedActionViewModel.post(RoomDirectorySharedAction.Back)
     }
 

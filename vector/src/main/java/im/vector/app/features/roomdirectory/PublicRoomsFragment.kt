@@ -16,6 +16,7 @@
 
 package im.vector.app.features.roomdirectory
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +26,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
+import com.squareup.otto.Subscribe
 import im.vector.app.R
 import im.vector.app.core.extensions.cleanup
 import im.vector.app.core.extensions.configureWith
@@ -36,6 +38,7 @@ import im.vector.app.databinding.FragmentPublicRoomsBinding
 import im.vector.app.features.analytics.plan.ViewRoom
 import im.vector.app.features.permalink.NavigationInterceptor
 import im.vector.app.features.permalink.PermalinkHandler
+import im.vector.app.features.roomdirectory.event.SwitchRoomDirectoryEvent
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -64,7 +67,7 @@ class PublicRoomsFragment @Inject constructor(
         return FragmentPublicRoomsBinding.inflate(inflater, container, false)
     }
 
-    override fun getMenuRes() = R.menu.menu_room_directory
+//    override fun getMenuRes() = R.menu.menu_room_directory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,6 +92,8 @@ class PublicRoomsFragment @Inject constructor(
         viewModel.observeViewEvents {
             handleViewEvents(it)
         }
+
+        initView()
     }
 
     private fun handleViewEvents(viewEvents: RoomDirectoryViewEvents) {
@@ -169,6 +174,7 @@ class PublicRoomsFragment @Inject constructor(
 
     private var initialValueSet = false
 
+    @SuppressLint("SetTextI18n")
     override fun invalidate() = withState(viewModel) { state ->
         if (!initialValueSet) {
             initialValueSet = true
@@ -180,5 +186,34 @@ class PublicRoomsFragment @Inject constructor(
 
         // Populate list with Epoxy
         publicRoomsController.setData(state)
+
+        if (state.roomDirectoryData.homeServer.isNullOrEmpty()) {
+            views.networkTypeView.text = session.myUserId.split(":")[1] + " " + getString(R.string.home_network_type)
+        } else {
+            views.networkTypeView.text = state.roomDirectoryData.homeServer + " " + getString(R.string.home_network_type)
+        }
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun initView() {
+
+        views.networkTypeView.text = session.myUserId.split(":")[1] + " " +  getString(R.string.home_network_type)
+
+        views.createNewGroupView.debouncedClicks {
+            sharedActionViewModel.post(RoomDirectorySharedAction.CreateRoom)
+        }
+
+        views.switchNetwork.debouncedClicks {
+            sharedActionViewModel.post(RoomDirectorySharedAction.ChangeProtocol)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Subscribe
+    fun onRoomDirectoryEvent(event: SwitchRoomDirectoryEvent) {
+        Timber.e("selected room directory---> ${event.roomDirectoryData}")
+
+    }
+
+
 }

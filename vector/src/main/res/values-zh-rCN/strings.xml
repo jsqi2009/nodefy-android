@@ -2357,4 +2357,10 @@
     <string name="space_title">空间</string>
     <string name="space_search_hint">搜索空间</string>
 
+    <!-- nodefy  home create group -->
+    <string name="room_directory_search_hint2">名称或ID</string>
+    <string name="home_create_a_new_group">创建新的群组</string>
+    <string name="home_network_type">网络</string>
+    <string name="home_switch_network">切换</string>
+
 </resources>

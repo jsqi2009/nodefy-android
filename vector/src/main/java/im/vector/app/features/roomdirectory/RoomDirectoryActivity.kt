@@ -19,6 +19,7 @@ package im.vector.app.features.roomdirectory
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.mvrx.viewModel
 import com.airbnb.mvrx.withState
@@ -52,6 +53,7 @@ class RoomDirectoryActivity : VectorBaseActivity<ActivitySimpleBinding>(), Matri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         analyticsScreenName = MobileScreen.ScreenName.RoomDirectory
         sharedActionViewModel = viewModelProvider.get(RoomDirectorySharedActionViewModel::class.java)
 

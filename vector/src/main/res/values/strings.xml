@@ -3123,4 +3123,10 @@
     <string name="space_title">Spaces</string>
     <string name="space_search_hint">Search spaces</string>
 
+    <!-- nodefy  home create group -->
+    <string name="room_directory_search_hint2">Name or ID</string>
+    <string name="home_create_a_new_group">Create a new group</string>
+    <string name="home_network_type">Network</string>
+    <string name="home_switch_network">Switch</string>
+
 </resources>
