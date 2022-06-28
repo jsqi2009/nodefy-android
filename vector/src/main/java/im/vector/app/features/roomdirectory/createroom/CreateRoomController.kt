@@ -16,6 +16,7 @@
 
 package im.vector.app.features.roomdirectory.createroom
 
+import android.view.View
 import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -51,13 +52,13 @@ class CreateRoomController @Inject constructor(
 
     private fun buildForm(viewState: CreateRoomViewState, enableFormElement: Boolean) {
         val host = this
-        formEditableAvatarItem {
+        /*formEditableAvatarItem {
             id("avatar")
             enabled(enableFormElement)
             imageUri(viewState.avatarUri)
             clickListener { host.listener?.onAvatarChange() }
             deleteListener { host.listener?.onAvatarDelete() }
-        }
+        }*/
         settingsSectionTitleItem {
             id("nameSection")
             titleResId(R.string.create_room_name_section)

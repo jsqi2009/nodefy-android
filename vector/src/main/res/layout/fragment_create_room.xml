@@ -24,6 +24,45 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <LinearLayout
+            android:id="@+id/groupTypeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                style="@style/Widget.Vector.TextView.HeadlineMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?vctr_header_background"
+                android:paddingStart="@dimen/layout_horizontal_margin"
+                android:paddingTop="@dimen/layout_vertical_margin"
+                android:paddingEnd="@dimen/layout_horizontal_margin"
+                android:paddingBottom="@dimen/layout_vertical_margin"
+                android:textColor="?vctr_content_primary"
+                android:textStyle="bold"
+                android:text="@string/home_group_type_title" />
+
+            <EditText
+                android:id="@+id/groupType"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_50"
+                android:layout_marginVertical="@dimen/margin_5"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:gravity="center_vertical"
+                android:background="@drawable/shape_group_type_bg"
+                android:hint="@string/home_group_type_title"
+                android:textSize="@dimen/textsize_14"
+                android:textColor="@color/black"
+                android:inputType="none"
+                android:enabled="false"
+                tools:ignore="LabelFor" />
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/createRoomForm"
             android:layout_width="0dp"
@@ -31,14 +70,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+            app:layout_constraintTop_toBottomOf="@id/groupTypeLayout"
             tools:listitem="@layout/item_form_switch" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/waiting_view"
-        layout="@layout/merge_overlay_waiting_view" />
+        layout="@layout/merge_overlay_waiting_view"
+        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

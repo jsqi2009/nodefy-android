@@ -16,12 +16,14 @@
 
 package im.vector.app.features.roomdirectory.createroom
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.mvrx.Loading
@@ -98,6 +100,8 @@ class CreateRoomFragment @Inject constructor(
                 is CreateRoomViewEvents.Failure -> showFailure(it.throwable)
             }
         }
+
+        initGroupView()
     }
 
     private fun setupRoomJoinRuleSharedActionViewModel() {
@@ -250,6 +254,15 @@ class CreateRoomFragment @Inject constructor(
             } else {
                 createRoomController.setData(state)
             }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initGroupView() {
+        views.groupType.setText("Nodefy")
+
+        views.groupType.setOnClickListener {
+            Toast.makeText(requireActivity(), "Clicked group type Nodefy",Toast.LENGTH_SHORT).show()
         }
     }
 }

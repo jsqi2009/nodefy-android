@@ -174,7 +174,6 @@ class PublicRoomsFragment @Inject constructor(
 
     private var initialValueSet = false
 
-    @SuppressLint("SetTextI18n")
     override fun invalidate() = withState(viewModel) { state ->
         if (!initialValueSet) {
             initialValueSet = true
@@ -187,11 +186,7 @@ class PublicRoomsFragment @Inject constructor(
         // Populate list with Epoxy
         publicRoomsController.setData(state)
 
-        if (state.roomDirectoryData.homeServer.isNullOrEmpty()) {
-            views.networkTypeView.text = session.myUserId.split(":")[1] + " " + getString(R.string.home_network_type)
-        } else {
-            views.networkTypeView.text = state.roomDirectoryData.homeServer + " " + getString(R.string.home_network_type)
-        }
+        refreshNetworkType(state)
     }
 
     @SuppressLint("SetTextI18n")
@@ -209,10 +204,12 @@ class PublicRoomsFragment @Inject constructor(
     }
 
     @SuppressLint("SetTextI18n")
-    @Subscribe
-    fun onRoomDirectoryEvent(event: SwitchRoomDirectoryEvent) {
-        Timber.e("selected room directory---> ${event.roomDirectoryData}")
-
+    private fun refreshNetworkType(state: PublicRoomsViewState) {
+        if (state.roomDirectoryData.homeServer.isNullOrEmpty()) {
+            views.networkTypeView.text = session.myUserId.split(":")[1] + " " + getString(R.string.home_network_type)
+        } else {
+            views.networkTypeView.text = state.roomDirectoryData.homeServer + " " + getString(R.string.home_network_type)
+        }
     }
 
 

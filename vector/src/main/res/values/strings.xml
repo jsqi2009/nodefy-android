@@ -3128,5 +3128,6 @@
     <string name="home_create_a_new_group">Create a new group</string>
     <string name="home_network_type">Network</string>
     <string name="home_switch_network">Switch</string>
+    <string name="home_group_type_title">Group Type</string>
 
 </resources>

@@ -39,6 +39,8 @@
     <color name="save_key_continue_text_color">#9793A8</color>
     <color name="keep_it_save_continue_color">#3572CA</color>
     <color name="create_group_bg_color">#F5F5F5</color>
+    <color name="create_new_group_type_title_color">#F5F6FA</color>
+    <color name="create_new_group_type_name_color">#E3E8EE</color>
 
 
 

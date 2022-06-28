@@ -701,7 +701,7 @@ class HomeActivity :
     @Subscribe
     fun homeCreateGroup(event: ChooseGroupTypeEvent) {
         if (event.type == 1) {
-
+            navigator.openCreateRoom(this, "")
         } else {
             navigator.openRoomDirectory(this, "")
         }

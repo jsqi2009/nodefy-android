@@ -88,7 +88,7 @@ class RoomDirectoryPickerFragment @Inject constructor(private val roomDirectoryP
     override fun onRoomDirectoryClicked(roomDirectoryData: RoomDirectoryData) {
         Timber.v("onRoomDirectoryClicked: $roomDirectoryData")
         viewModel.handle(RoomDirectoryAction.SetRoomDirectoryData(roomDirectoryData))
-        mBus.post(SwitchRoomDirectoryEvent(roomDirectoryData))
+
         sharedActionViewModel.post(RoomDirectorySharedAction.Back)
     }
 
