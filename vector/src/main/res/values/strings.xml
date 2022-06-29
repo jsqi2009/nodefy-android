@@ -3130,4 +3130,6 @@
     <string name="home_switch_network">Switch</string>
     <string name="home_group_type_title">Group Type</string>
 
+    <string name="preference_root_sign_out">Sign out</string>
+
 </resources>

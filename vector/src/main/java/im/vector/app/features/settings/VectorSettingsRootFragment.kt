@@ -17,9 +17,11 @@
 package im.vector.app.features.settings
 
 import android.os.Bundle
+import android.widget.Toast
 import im.vector.app.R
 import im.vector.app.core.preference.VectorPreference
 import im.vector.app.features.analytics.plan.MobileScreen
+import im.vector.app.features.workers.signout.SignOutUiWorker
 import javax.inject.Inject
 
 class VectorSettingsRootFragment @Inject constructor() : VectorSettingsBaseFragment() {
@@ -34,6 +36,7 @@ class VectorSettingsRootFragment @Inject constructor() : VectorSettingsBaseFragm
 
     override fun bindPref() {
         tintIcons()
+        init()
     }
 
     private fun tintIcons() {
@@ -41,4 +44,12 @@ class VectorSettingsRootFragment @Inject constructor() : VectorSettingsBaseFragm
             (preferenceScreen.getPreference(i) as? VectorPreference)?.let { it.tintIcon = true }
         }
     }
+
+    private fun init() {
+        findPreference<VectorPreference>("key_sign_out")!!.setOnPreferenceClickListener {
+            SignOutUiWorker(requireActivity()).perform()
+            return@setOnPreferenceClickListener false
+        }
+    }
+
 }
