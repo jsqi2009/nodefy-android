@@ -92,7 +92,7 @@ class CreateRoomFragment @Inject constructor(
         setupWaitingView()
         setupRecyclerView()
         setupToolbar(views.createRoomToolbar)
-                .setTitle(if (args.isSpace) R.string.create_new_space else R.string.create_new_room)
+                .setTitle(if (args.isSpace) R.string.create_new_space else R.string.create_new_room2)
                 .allowBack(useCross = true)
         viewModel.observeViewEvents {
             when (it) {
@@ -259,10 +259,10 @@ class CreateRoomFragment @Inject constructor(
 
     @SuppressLint("SetTextI18n")
     private fun initGroupView() {
-        views.groupType.setText("Nodefy")
+        views.groupType.text = "Nodefy"
 
         views.groupType.setOnClickListener {
-            Toast.makeText(activity, "Clicked group type Nodefy",Toast.LENGTH_SHORT).show()
+//            Toast.makeText(activity, "Clicked group type Nodefy",Toast.LENGTH_SHORT).show()
         }
     }
 }

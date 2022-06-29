@@ -60,7 +60,7 @@
         android:id="@+id/open_matrix_apps"
         android:title="@string/room_add_matrix_apps"
         app:actionLayout="@layout/custom_action_item_layout_badge"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/dev_tools"

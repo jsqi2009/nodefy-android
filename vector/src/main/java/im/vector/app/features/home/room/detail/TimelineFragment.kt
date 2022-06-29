@@ -1072,6 +1072,9 @@ class TimelineFragment @Inject constructor(
             it.isVisible = timelineViewModel.isMenuItemVisible(it.itemId)
         }
 
+        //hide the open matrix app
+        menu.findItem(R.id.open_matrix_apps).isVisible = false
+
         withState(timelineViewModel) { state ->
             // Set the visual state of the call buttons (voice/video) to enabled/disabled according to user permissions
             val hasCallInRoom = callManager.getCallsByRoomId(state.roomId).isNotEmpty() || state.jitsiState.hasJoined

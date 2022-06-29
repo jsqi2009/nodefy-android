@@ -62,7 +62,7 @@ class SettingSipAccountAdapter(private val mContext: Activity) : AbstractBaseRec
             holder.iv_enable_offline.visibility = View.GONE
             holder.iv_enable_online.visibility = View.GONE
         }
-        holder.tv_accountname.text = info.display_as
+        holder.tv_accountname.text = info.account_name
 
         /*if (position == 0) {
             holder.lineView.visibility = View.GONE

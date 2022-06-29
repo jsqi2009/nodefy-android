@@ -47,7 +47,7 @@ class SipContactAdapter(private val mContext: Activity, private val mOnItemClick
         val holder = holder as ViewHolder
         val info = getDataList()!![position]
 
-        holder.tvUsername.text = info.last_name + " " + info.first_name
+        holder.tvUsername.text = info.first_name + " " + info.last_name
 
         holder.ivAvatar.setImageDrawable(
             AvatarGenerator.AvatarBuilder(context)

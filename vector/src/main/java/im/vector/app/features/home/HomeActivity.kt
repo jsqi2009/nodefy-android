@@ -772,9 +772,16 @@ class HomeActivity :
     @Subscribe
     fun onDialerAccountEvent(event: DialerAccountInfoResponseEvent) {
         if (event.isSuccess) {
-            accountList = event.model!!.sip_accounts!!
-            dialerSession.accountListInfo = event.model!!.sip_accounts!!
-            Timber.e("account info: ${event.model!!.sip_accounts}")
+            //accountList = event.model!!.sip_accounts!!
+            //dialerSession.accountListInfo = event.model!!.sip_accounts!!
+            accountList.clear()
+            event.model!!.sip_accounts!!.forEach {
+                if (it.extension.accountName != null) {
+                    accountList.add(it)
+                }
+            }
+            dialerSession.accountListInfo = accountList
+            Timber.e("account info: $accountList")
 
             filterSIPAccount()
             filterXMPPAccount()

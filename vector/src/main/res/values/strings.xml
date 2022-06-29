@@ -3129,6 +3129,7 @@
     <string name="home_network_type">Network</string>
     <string name="home_switch_network">Switch</string>
     <string name="home_group_type_title">Group Type</string>
+    <string name="create_new_room2">Create New Group</string>
 
     <string name="preference_root_sign_out">Sign out</string>
 
