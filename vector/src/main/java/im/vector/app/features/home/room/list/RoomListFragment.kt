@@ -166,7 +166,7 @@ class RoomListFragment @Inject constructor(
 
         views.homeSearchText.addTextChangedListener(textWatcher)
         views.homeSearchView.setOnClickListener {
-            navigator.openRoomDirectory(requireActivity(), "")
+            navigator.openRoomDirectory(requireActivity(), views.homeSearchText.text.toString())
             //navigator.openRoomsFiltering(requireActivity())
         }
         if (roomListParams.isHome) {
@@ -922,8 +922,6 @@ class RoomListFragment @Inject constructor(
     @Subscribe
     fun onRoomClickEvent(event: RoomClickEvent) {
         Timber.e("filter roomID------${event.spaceSummary!!.roomId}")
-
-
 
         roomListViewModel.handle(RoomListAction.SelectRoom(event.spaceSummary!!))
     }

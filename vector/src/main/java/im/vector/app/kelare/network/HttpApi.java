@@ -100,4 +100,7 @@ public interface HttpApi {
     @HTTP(method = "DELETE", path = "_matrix/client/r0/dialer_contacts", hasBody = true)
     Call<JsonObject> deleteDialerContact(@HeaderMap Map<String, String> headerMap, @Body DeleteDialerContact info);
 
+    @GET("_matrix/client/r0/public_room")
+    Call<JsonObject> getPublicRoomInfo();
+
 }
