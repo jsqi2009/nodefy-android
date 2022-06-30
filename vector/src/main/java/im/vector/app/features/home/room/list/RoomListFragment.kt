@@ -635,7 +635,13 @@ class RoomListFragment @Inject constructor(
         }
         items.forEach { itemRoom ->
             if (itemRoom.displayName.contains(terms)) {
-                items2.add(itemRoom)
+                if (roomListParams.isHome) {
+                    if (itemRoom.flattenParentIds.isEmpty()) {
+                        items2.add(itemRoom)
+                    }
+                } else {
+                    items2.add(itemRoom)
+                }
             }
         }
 
