@@ -56,7 +56,7 @@ class LegalsController @Inject constructor(
             titleResId(R.string.legals_application_title)
         }
 
-        buildPolicies("el", elementLegals.getData())
+        buildPolicies2("el", elementLegals.getData())
     }
 
     private fun buildHomeserverSection(data: LegalsState) {
@@ -121,6 +121,29 @@ class LegalsController @Inject constructor(
         }
     }
 
+    private fun buildPolicies2(tag: String, policies: List<ServerPolicy>) {
+        val host = this
+
+        policies.forEachIndexed { index, policy ->
+            discoveryPolicyItem {
+                id(tag + policy.url + index)
+                name(policy.name)
+                if (index == 0 || index == 2) {
+                    url("https://nodefy.me/privacy-policy")
+                } else {
+                    url("https://nodefy.me/privacy-policy")
+                }
+                clickListener {
+                    if (index == 0 || index == 2) {
+                        host.listener?.openNodefyPolicy("https://nodefy.me/privacy-policy")
+                    } else {
+                        host.listener?.openNodefyPolicy("https://nodefy.me/privacy-policy")
+                    }
+                }
+            }
+        }
+    }
+
     private fun buildThirdPartyNotices() {
         val host = this
         settingsSectionTitleItem {
@@ -148,5 +171,6 @@ class LegalsController @Inject constructor(
         fun openPolicy(policy: ServerPolicy)
         fun openThirdPartyNotice()
         fun openThirdPartyNoticeGplay()
+        fun openNodefyPolicy(policy: String)
     }
 }

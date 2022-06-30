@@ -626,7 +626,7 @@ class RoomListFragment @Inject constructor(
     private fun filterPublicRoom(pl: PagedList<RoomSummary>) : PagedList<RoomSummary>?{
         var publicList: PagedList<RoomSummary>? = null
         val items : ArrayList<RoomSummary> = ArrayList()
-        val items2 : ArrayList<RoomSummary> = ArrayList()
+        val resultList : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
             if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
 
@@ -637,21 +637,22 @@ class RoomListFragment @Inject constructor(
         items.forEach { itemRoom ->
             if (itemRoom.displayName.contains(terms)) {
                 if (roomListParams.isHome) {
+                    //filter space room and rot room
                     if (itemRoom.flattenParentIds.isEmpty() && !itemRoom.displayName.contains(Contants.SkypeBotRoomName)
                             && !itemRoom.displayName.contains(Contants.SlackBotRoomName)
                             && !itemRoom.displayName.contains(Contants.WhatsAppBotRoomName)
                             && !itemRoom.displayName.contains(Contants.TelegramBotRoomName)) {
 
-                        items2.add(itemRoom)
+                        resultList.add(itemRoom)
                     }
                 } else {
-                    items2.add(itemRoom)
+                    resultList.add(itemRoom)
                 }
             }
         }
 
-        if (items2.isNotEmpty()) {
-            publicList = generateGroupRoomList(items2)
+        if (resultList.isNotEmpty()) {
+            publicList = generateGroupRoomList(resultList)
         }
         return publicList
     }

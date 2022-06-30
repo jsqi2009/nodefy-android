@@ -104,4 +104,8 @@ class LegalsFragment @Inject constructor(
             openOssLicensesMenuActivity(requireActivity())
         }
     }
+
+    override fun openNodefyPolicy(policy: String) {
+        openUrl(policy)
+    }
 }
