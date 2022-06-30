@@ -63,6 +63,7 @@ import im.vector.app.features.home.room.list.widget.NotifsFabMenuView
 import im.vector.app.features.home.room.list.widget.UiThreadExecutor
 import im.vector.app.features.matrixto.OriginOfMatrixTo
 import im.vector.app.features.notifications.NotificationDrawerManager
+import im.vector.app.kelare.content.Contants
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -636,7 +637,11 @@ class RoomListFragment @Inject constructor(
         items.forEach { itemRoom ->
             if (itemRoom.displayName.contains(terms)) {
                 if (roomListParams.isHome) {
-                    if (itemRoom.flattenParentIds.isEmpty()) {
+                    if (itemRoom.flattenParentIds.isEmpty() && !itemRoom.displayName.contains(Contants.SkypeBotRoomName)
+                            && !itemRoom.displayName.contains(Contants.SlackBotRoomName)
+                            && !itemRoom.displayName.contains(Contants.WhatsAppBotRoomName)
+                            && !itemRoom.displayName.contains(Contants.TelegramBotRoomName)) {
+
                         items2.add(itemRoom)
                     }
                 } else {

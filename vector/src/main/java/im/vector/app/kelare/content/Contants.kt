@@ -29,6 +29,29 @@ object Contants {
     const val Account2_Pwd = "P@55word1!"
 
 
+    //机器人房间名字
+    const val SkypeBotRoomName = "Skype-Bot-Room-GmQHk5QBe5RFVL"
+    const val WhatsAppBotRoomName = "WhatsApp-Bot-Room-GmQHk5QBe5RFVL"
+    const val TelegramBotRoomName = "Telegram-Bot-Room-GmQHk5QBe5RFVL"
+    const val SlackBotRoomName = "Slack-Bot-Room-GmQHk5QBe5RFVL"
+
+    //机器人ID
+    const val SkypeBotID = "skype_bot_room_id"
+    const val WhatsAppBotID = "whatsapp_bot_room_id"
+    const val TelegramBotID = "telegram_bot_room_id"
+    const val SlackBotID = "slack_bot_room_id"
+
+    //机器人名字
+    const val SkypeBotName = "skypebridgebot"
+    const val WhatsAppBotName = "_slackpuppet_bot"
+    const val TelegramBotName = "whatsappbot"
+    const val SlackBotName = "telegrambot"
+
+    //第三方账号用户前缀
+    const val SkypeUserIDPrefix = "@skype-"
+    const val WhatsAppUserIDPrefix = "@_slackpuppet_"
+    const val TelegramUserIDPrefix = "@whatsapp_"
+    const val SlackUserIDPrefix = "@telegram_"
 
 
 
