@@ -50,7 +50,7 @@ class VectorSettingsHelpAboutFragment @Inject constructor(
         findPreference<VectorPreference>(VectorPreferences.SETTINGS_HELP_PREFERENCE_KEY)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             if (firstThrottler.canHandle() is FirstThrottler.CanHandlerResult.Yes) {
-                openUrlInChromeCustomTab(requireContext(), null, VectorSettingsUrls.HELP)
+                openUrlInChromeCustomTab(requireContext(), null, VectorSettingsUrls.NODEFY_HELP)
             }
             false
         }

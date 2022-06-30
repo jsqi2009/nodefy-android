@@ -23,4 +23,9 @@ object VectorSettingsUrls {
     const val PRIVACY_POLICY = "https://element.io/privacy"
     const val DISCLAIMER_URL = "https://element.io/previously-riot"
     const val THIRD_PARTY_LICENSES = "file:///android_asset/open_source_licenses.html"
+
+    const val NODEFY_HELP = "https://devops.corona.network/jira/secure/Dashboard.jspa"
+    const val NODEFY_CORYRIGHT = "https://nodefy.me"
+    const val NODEFY_TERMS = "https://nodefy.me/terms-of-service"
+    const val NODEFY_PRIVACY = "https://nodefy.me/privacy-policy"
 }

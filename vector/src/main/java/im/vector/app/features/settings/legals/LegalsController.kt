@@ -32,6 +32,7 @@ import im.vector.app.features.discovery.ServerPolicy
 import im.vector.app.features.discovery.discoveryPolicyItem
 import im.vector.app.features.discovery.settingsInfoItem
 import im.vector.app.features.discovery.settingsSectionTitleItem
+import im.vector.app.features.settings.VectorSettingsUrls
 import javax.inject.Inject
 
 class LegalsController @Inject constructor(
@@ -128,16 +129,28 @@ class LegalsController @Inject constructor(
             discoveryPolicyItem {
                 id(tag + policy.url + index)
                 name(policy.name)
-                if (index == 0 || index == 2) {
-                    url("https://nodefy.me/privacy-policy")
-                } else {
-                    url("https://nodefy.me/privacy-policy")
+                when (index) {
+                    0    -> {
+                        url(VectorSettingsUrls.NODEFY_CORYRIGHT)
+                    }
+                    1    -> {
+                        url(VectorSettingsUrls.NODEFY_TERMS)
+                    }
+                    else -> {
+                        url(VectorSettingsUrls.NODEFY_PRIVACY)
+                    }
                 }
                 clickListener {
-                    if (index == 0 || index == 2) {
-                        host.listener?.openNodefyPolicy("https://nodefy.me/privacy-policy")
-                    } else {
-                        host.listener?.openNodefyPolicy("https://nodefy.me/privacy-policy")
+                    when (index) {
+                        0    -> {
+                            host.listener?.openNodefyPolicy(VectorSettingsUrls.NODEFY_CORYRIGHT)
+                        }
+                        1    -> {
+                            host.listener?.openNodefyPolicy(VectorSettingsUrls.NODEFY_TERMS)
+                        }
+                        else -> {
+                            host.listener?.openNodefyPolicy(VectorSettingsUrls.NODEFY_PRIVACY)
+                        }
                     }
                 }
             }
