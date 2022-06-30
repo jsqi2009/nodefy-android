@@ -3118,6 +3118,7 @@
     <string name="home_create_group">Create group</string>
     <string name="home_join_group">Join group</string>
     <string name="home_search_hint">Search groups/direct messages</string>
+    <string name="user_directory_search_hint_nodefy">Search by name or ID</string>
 
     <!-- nodefy.me space -->
     <string name="space_title">Spaces</string>

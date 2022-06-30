@@ -2352,6 +2352,7 @@
     <string name="home_create_group">创建群组</string>
     <string name="home_join_group">加入群组</string>
     <string name="home_search_hint">搜索群组或联系人</string>
+    <string name="user_directory_search_hint_nodefy">按名称或ID搜索</string>
 
     <!-- nodefy.me space -->
     <string name="space_title">空间</string>

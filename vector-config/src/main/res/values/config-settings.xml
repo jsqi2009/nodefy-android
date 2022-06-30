@@ -18,7 +18,7 @@
     <bool name="settings_root_advanced_visible">true</bool>
     <bool name="settings_root_help_about_visible">true</bool>
     <bool name="settings_root_legals_visible">true</bool>
-    <bool name="settings_root_sign_out_visible">false</bool>
+    <bool name="settings_root_sign_out_visible">true</bool>
 
     <!-- Level 1: General -->
 
