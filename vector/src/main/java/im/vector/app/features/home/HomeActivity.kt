@@ -110,6 +110,7 @@ import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.event.ToSpaceDetailsEvent
 import im.vector.app.features.home.room.list.widget.ChooseCreateGroupTypeDialog
 import im.vector.app.features.spaces.SpaceListFragment
+import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
 import java.util.Timer
 import java.util.TimerTask
 
@@ -759,13 +760,29 @@ class HomeActivity :
 
         HttpClient.init(this, mBus)
 
+        getPublicRoom()
         getDialerAccounts()
+    }
+
+    private fun getPublicRoom() {
+        try {
+            HttpClient.getPublicRoomInfo()
+        } catch (e: Exception) {
+        }
     }
 
     private fun getDialerAccounts() {
         try {
             HttpClient.getDialerAccountInfo(this, dialerSession.userID)
         } catch (e: Exception) {
+        }
+    }
+
+    @Subscribe
+    fun onPublicRoomEvent(event: GetPublicRoomResponseEvent) {
+        if (event.isSuccess) {
+            dialerSession.publicRoomID = event.model!!.public_room!!.room_id!!
+            Timber.e("public room ID------${dialerSession.publicRoomID}")
         }
     }
 

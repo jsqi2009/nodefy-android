@@ -100,7 +100,7 @@ class RoomListFragment @Inject constructor(
     private val roomListViewModel: RoomListViewModel by fragmentViewModel()
     private lateinit var stateRestorer: LayoutManagerStateRestorer
     private var publicRoom: RoomSummary? = null
-    private val publicKey = "#piblic"
+    //private val publicKey = "#piblic"
     private var terms: String = ""
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentRoomListBinding {
@@ -612,7 +612,8 @@ class RoomListFragment @Inject constructor(
         var publicList: PagedList<RoomSummary>? = null
         val items : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
-            if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
+            //if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
+            if (it.roomId == dialerSession.publicRoomID) {
                 items.add(it)
                 return@forEach
             }
@@ -628,7 +629,7 @@ class RoomListFragment @Inject constructor(
         val items : ArrayList<RoomSummary> = ArrayList()
         val resultList : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
-            if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
+            if (it.roomId == dialerSession.publicRoomID) {
 
             } else {
                 items.add(it)
@@ -760,7 +761,7 @@ class RoomListFragment @Inject constructor(
         var publicList: PagedList<RoomSummary>? = null
         val items : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
-            if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
+            if (it.roomId == dialerSession.publicRoomID) {
 
             } else if (it.displayName.contains(terms)) {
                 items.add(it)

@@ -8,5 +8,6 @@ import im.vector.app.kelare.network.response.BResponse
  * @author jsqi
  */
 class GetPublicRoomResponse: BResponse() {
-    var data: PublicRoomInfo = PublicRoomInfo()
+
+    var public_room: PublicRoomInfo? = PublicRoomInfo()
 }
