@@ -93,23 +93,6 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/serverEt"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_40"
-            android:paddingHorizontal="@dimen/margin_10"
-            android:layout_marginHorizontal="@dimen/margin_20"
-            android:layout_marginTop="@dimen/margin_10"
-            android:ems="10"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingEnd="48dp"
-            android:textSize="@dimen/textsize_14"
-            android:hint="@string/nodefy_login_sign_in_homeserver_hint"
-            android:background="@drawable/shape_kelare_login_et_bg_5dp"
-            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
-
-        <EditText
             android:id="@+id/userNameEt"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
@@ -143,6 +126,22 @@
             android:background="@drawable/shape_kelare_login_et_bg_5dp"
             tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
 
+        <EditText
+            android:id="@+id/serverEt"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_40"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_10"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingEnd="48dp"
+            android:textSize="@dimen/textsize_14"
+            android:hint="@string/nodefy_login_sign_in_homeserver_hint"
+            android:background="@drawable/shape_kelare_login_et_bg_5dp"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
 
         <TextView
             android:id="@+id/forgotPasswordTv"
