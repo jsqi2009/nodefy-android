@@ -48,7 +48,7 @@ class SectionHeaderAdapter(
             val isHidden: Boolean = true,
             // This will be false until real data has been submitted once
             val isLoading: Boolean = true,
-            val isCollapsable: Boolean = false
+            val isCollapsable: Boolean = true
     )
 
     private val eventBus: AndroidBus = mBus

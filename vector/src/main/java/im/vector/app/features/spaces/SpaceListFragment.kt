@@ -200,6 +200,12 @@ class SpaceListFragment @Inject constructor(
         }
     }
 
+    /*override fun onResume() {
+        super.onResume()
+        Timber.e("space list fragment-----onResume")
+        viewModel.handle(SpaceListAction.SelectSpace(null))
+    }*/
+
 
 
 }

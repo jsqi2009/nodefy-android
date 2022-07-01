@@ -100,7 +100,6 @@ class RoomListFragment @Inject constructor(
     private val roomListViewModel: RoomListViewModel by fragmentViewModel()
     private lateinit var stateRestorer: LayoutManagerStateRestorer
     private var publicRoom: RoomSummary? = null
-    //private val publicKey = "#piblic"
     private var terms: String = ""
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentRoomListBinding {
@@ -334,7 +333,7 @@ class RoomListFragment @Inject constructor(
 //                                                controller.submitList(fetchPublicRoom(pl))
                                                 var publicList = fetchPublicRoom(pl)
                                                 controller.submitList(null)
-                                            } else if (section.sectionName == "GROUP" || section.sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
+                                            } else if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
                                                 val groupList = filterPublicRoom(pl)
                                                 controller.submitList(groupList)
                                             } else {
