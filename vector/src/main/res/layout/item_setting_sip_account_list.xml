@@ -25,7 +25,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="15dp"
-            android:src="@drawable/icon_xmpp_offline"
+            android:src="@drawable/ic_icon_sip_off"
             tools:ignore="ContentDescription"
             android:visibility="gone"/>
 
@@ -34,7 +34,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_connect_failure"
+            android:src="@drawable/ic_icon_sip_red"
             tools:ignore="ContentDescription"
             android:visibility="gone"/>
 

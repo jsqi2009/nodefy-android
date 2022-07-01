@@ -78,13 +78,13 @@ class SipContactFragment : VectorBaseFragment<FragmentSipContactBinding>(), Recy
 
     @SuppressLint("UseRequireInsteadOfGet")
     private fun getDialerContact() {
-        showLoadingDialog()
+        //showLoadingDialog()
         HttpClient.getDialerContact(activity!!, dialerSession.userID)
     }
 
     @Subscribe
     fun onGetContactEvent(event: GetContactResponseEvent) {
-        hideLoadingDialog()
+        //hideLoadingDialog()
         if (event.isSuccess) {
             Timber.e("info: ${event.model!!.data}")
 

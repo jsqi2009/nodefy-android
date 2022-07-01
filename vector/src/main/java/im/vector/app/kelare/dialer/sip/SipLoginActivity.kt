@@ -65,6 +65,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
     private var encryptList = arrayListOf("NONE", "SRTP", "ZRTP", "DLTS")
     private var isSave = false
     private var isUpload = false
+    private var loginSuccessFlag = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,8 +137,16 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                 finish()
             }
             R.id.tv_save -> {
-                isSave = true
-                updateServerAccount(false)
+                if (index == "1") {
+                    if (!loginSuccessFlag) {
+                        saveServerAccount(false)
+                    } else {
+                        finish()
+                    }
+                } else {
+                    isSave = true
+                    updateServerAccount(false)
+                }
             }
             R.id.ll_advanced -> {
                 accountAdvanced()
@@ -159,6 +168,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
             } else if (state == RegistrationState.Ok) {
                 Timber.e("[Account] Login success")
                 views.tvConnectStatus.text = "Registered"
+                loginSuccessFlag = true
                 //Toast.makeText(this@SipLoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
                 saveServerAccount(true)
             }
@@ -183,7 +193,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         views.sbEnable.isChecked = isEnable
         views.sbDefault.isChecked = isDefault
 
-        if (accountInfo.enabled) {
+        if (accountInfo.enabled && accountInfo.extension.isConnected) {
             views.tvConnectStatus.text = "Registered"
             views.tvConnectStatus.setTextColor(resources.getColor(R.color.green, null))
         } else {
@@ -289,6 +299,10 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                 views.tvConnectStatus.text = "Not Registered"
                 views.tvConnectStatus.setTextColor(resources.getColor(R.color.red, null))
             }
+
+            if (index == "1") {
+                views.tvSave.visibility = View.VISIBLE
+            }
         }
 
         // Finally we need the Core to be started for the registration to happen (it could have been started before)
@@ -345,15 +359,21 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         saveAccountInfo.sip_accounts!!.add(accountInfo)
         saveAccountInfo.primary_user_id = dialerSession.userID
 
-        showLoadingDialog()
-        HttpClient.saveDialerAccountInfo(this, saveAccountInfo)
+        try {
+            showLoadingDialog()
+            HttpClient.saveDialerAccountInfo(this, saveAccountInfo)
+        } catch (e: Exception) {
+        }
     }
 
     @Subscribe
     fun onSaveAccountEvent(event: SaveAccountInfoResponseEvent) {
-        hideLoadingDialog()
-        if (event.isSuccess) {
-            finish()
+        try {
+            hideLoadingDialog()
+            if (event.isSuccess) {
+                finish()
+            }
+        } catch (e: Exception) {
         }
     }
 
@@ -364,17 +384,23 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         updateAccountInfo.sip_account = accountInfo
         updateAccountInfo.primary_user_id = dialerSession.userID
 
-        showLoadingDialog()
-        HttpClient.updateDialerAccountInfo(this, updateAccountInfo)
+        try {
+            showLoadingDialog()
+            HttpClient.updateDialerAccountInfo(this, updateAccountInfo)
+        } catch (e: Exception) {
+        }
     }
 
     @Subscribe
     fun onUpdateAccountEvent(event: UpdateAccountInfoResponseEvent) {
-        hideLoadingDialog()
-        if (event.isSuccess) {
-            if (isSave) {
-                finish()
+        try {
+            hideLoadingDialog()
+            if (event.isSuccess) {
+                if (isSave) {
+                    finish()
+                }
             }
+        } catch (e: Exception) {
         }
     }
 

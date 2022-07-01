@@ -68,10 +68,12 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
     override fun onResume() {
         super.onResume()
 
-        accountList = dialerSession.accountListInfo!!
+        /*accountList = dialerSession.accountListInfo!!
         Timber.e("account info: ${accountList}")
         renderSipAccount()
-        renderXMPPAccount()
+        renderXMPPAccount()*/
+
+        getDialerAccounts()
     }
 
     @SuppressLint("SetTextI18n")
@@ -122,6 +124,34 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
         xmppAccountAdapter = SettingXMPPAccountAdapter(this)
         views.recyclerXmppAccount.adapter = xmppAccountAdapter
         views.recyclerXmppAccount.addItemDecoration(itemDecoration)
+    }
+
+    private fun getDialerAccounts() {
+        try {
+            showLoadingDialog()
+            HttpClient.getDialerAccountInfo(this, dialerSession.userID)
+        } catch (e: Exception) {
+            hideLoadingDialog()
+        }
+    }
+
+    @Subscribe
+    fun onDialerAccountEvent(event: DialerAccountInfoResponseEvent) {
+        hideLoadingDialog()
+        if (event.isSuccess) {
+            accountList.clear()
+            event.model!!.sip_accounts!!.forEach {
+                if (it.extension.accountName != null) {
+                    accountList.add(it)
+                }
+            }
+            dialerSession.accountListInfo = accountList
+            Timber.e("account info: $accountList")
+
+            renderSipAccount()
+            renderXMPPAccount()
+        } else {
+        }
     }
 
     private fun renderSipAccount() {
@@ -267,38 +297,6 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
         hideLoadingDialog()
         if (event.isSuccess) {
             getDialerAccounts()
-        }
-    }
-
-    private fun getDialerAccounts() {
-        try {
-            showLoadingDialog()
-            HttpClient.getDialerAccountInfo(this, dialerSession.userID)
-        } catch (e: Exception) {
-            hideLoadingDialog()
-        }
-    }
-
-    @Subscribe
-    fun onDialerAccountEvent(event: DialerAccountInfoResponseEvent) {
-        hideLoadingDialog()
-        if (event.isSuccess) {
-            /*accountList = event.model!!.sip_accounts!!
-            dialerSession.accountListInfo = event.model!!.sip_accounts!!
-            Timber.e("account info: ${event.model!!.sip_accounts}")*/
-
-            accountList.clear()
-            event.model!!.sip_accounts!!.forEach {
-                if (it.extension.accountName != null) {
-                    accountList.add(it)
-                }
-            }
-            dialerSession.accountListInfo = accountList
-            Timber.e("account info: $accountList")
-
-            renderSipAccount()
-            renderXMPPAccount()
-        } else {
         }
     }
 
