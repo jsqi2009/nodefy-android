@@ -593,11 +593,11 @@ class TimelineFragment @Inject constructor(
         }
         when (chatEffect) {
             ChatEffect.CONFETTI -> {
-                views.viewKonfetti.isVisible = true
+                views.viewKonfetti.isVisible = false
                 views.viewKonfetti.play()
             }
             ChatEffect.SNOWFALL -> {
-                views.viewSnowFall.isVisible = true
+                views.viewSnowFall.isVisible = false
                 views.viewSnowFall.restartFalling()
             }
         }
@@ -607,7 +607,7 @@ class TimelineFragment @Inject constructor(
         TransitionManager.beginDelayedTransition(views.rootConstraintLayout)
         views.viewSnowFall.isVisible = false
         // when gone the effect is a bit buggy
-        views.viewKonfetti.isInvisible = true
+        views.viewKonfetti.isInvisible = false
     }
 
     override fun onImageReady(uri: Uri?) {

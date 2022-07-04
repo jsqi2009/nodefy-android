@@ -48,7 +48,8 @@
 
     <im.vector.app.core.preference.VectorPreferenceCategory
         android:key="SETTINGS_RAGE_SHAKE_CATEGORY_KEY"
-        android:title="@string/settings_rageshake">
+        android:title="@string/settings_rageshake"
+        app:isPreferenceVisible="false">
 
         <im.vector.app.core.preference.VectorSwitchPreference
             android:defaultValue="true"
@@ -66,7 +67,9 @@
 
     </im.vector.app.core.preference.VectorPreferenceCategory>
 
-    <im.vector.app.core.preference.VectorPreferenceCategory android:title="@string/settings_notifications">
+    <im.vector.app.core.preference.VectorPreferenceCategory
+        android:title="@string/settings_notifications"
+        app:isPreferenceVisible="false">
 
         <im.vector.app.core.preference.VectorPreference
             android:persistent="false"
@@ -81,7 +84,8 @@
 
     <im.vector.app.core.preference.VectorPreferenceCategory
         android:dependency="SETTINGS_DEVELOPER_MODE_PREFERENCE_KEY"
-        android:title="@string/settings_dev_tools">
+        android:title="@string/settings_dev_tools"
+        app:isPreferenceVisible="false">
 
         <im.vector.app.core.preference.VectorPreference
             android:persistent="false"
