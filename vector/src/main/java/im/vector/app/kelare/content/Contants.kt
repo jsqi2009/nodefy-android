@@ -42,16 +42,16 @@ object Contants {
     const val SlackBotID = "slack_bot_room_id"
 
     //机器人名字
-    const val SkypeBotName = "skypebridgebot"
-    const val WhatsAppBotName = "_slackpuppet_bot"
-    const val TelegramBotName = "whatsappbot"
-    const val SlackBotName = "telegrambot"
+    const val SkypeBotName = "@skypebridgebot"
+    const val WhatsAppBotName = "@whatsappbot"
+    const val TelegramBotName = "@telegrambot"
+    const val SlackBotName = "@_slackpuppet_bot"
 
     //第三方账号用户前缀
     const val SkypeUserIDPrefix = "@skype-"
-    const val WhatsAppUserIDPrefix = "@_slackpuppet_"
-    const val TelegramUserIDPrefix = "@whatsapp_"
-    const val SlackUserIDPrefix = "@telegram_"
+    const val WhatsAppUserIDPrefix = "@whatsapp_"
+    const val TelegramUserIDPrefix = "@telegram_"
+    const val SlackUserIDPrefix = "@_slackpuppet_"
 
 
 

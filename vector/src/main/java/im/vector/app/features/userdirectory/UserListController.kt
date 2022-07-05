@@ -31,6 +31,7 @@ import im.vector.app.core.resources.StringProvider
 import im.vector.app.core.ui.list.genericPillItem
 import im.vector.app.features.displayname.getBestName
 import im.vector.app.features.home.AvatarRenderer
+import im.vector.app.kelare.content.Contants
 import im.vector.lib.core.utils.epoxy.charsequence.toEpoxyCharSequence
 import me.gujun.android.span.span
 import org.matrix.android.sdk.api.session.Session
@@ -230,8 +231,14 @@ class UserListController @Inject constructor(private val session: Session,
 
     private fun buildKnownUsers(currentState: UserListViewState, selectedUsers: List<String>) {
         val host = this
+        val homeServer = session.myUserId.split(":")[1]
         currentState.knownUsers()
-                ?.filter { it.userId != session.myUserId }
+//                ?.filter { it.userId != session.myUserId }
+                ?.filter { it.userId != session.myUserId && it.userId.contains(homeServer)
+                        && !it.userId.contains(Contants.TelegramBotName) && !it.userId.contains(Contants.SkypeBotName)
+                        && !it.userId.contains(Contants.WhatsAppBotName) && !it.userId.contains(Contants.SlackBotName)
+                        && !it.userId.contains(Contants.SkypeUserIDPrefix) && !it.userId.contains(Contants.WhatsAppUserIDPrefix)
+                        && !it.userId.contains(Contants.TelegramUserIDPrefix) && !it.userId.contains(Contants.SlackUserIDPrefix)}
                 ?.let { userList ->
                     userListHeaderItem {
                         id("known_header")
