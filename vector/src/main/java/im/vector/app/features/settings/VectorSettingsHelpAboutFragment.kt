@@ -16,6 +16,7 @@
 
 package im.vector.app.features.settings
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.preference.Preference
 import im.vector.app.BuildConfig
@@ -27,6 +28,7 @@ import im.vector.app.core.utils.copyToClipboard
 import im.vector.app.core.utils.openAppSettingsPage
 import im.vector.app.core.utils.openUrlInChromeCustomTab
 import im.vector.app.features.analytics.plan.MobileScreen
+import im.vector.app.features.settings.feedback.FeedbackActivity
 import im.vector.app.features.version.VersionProvider
 import org.matrix.android.sdk.api.Matrix
 import javax.inject.Inject
@@ -50,7 +52,10 @@ class VectorSettingsHelpAboutFragment @Inject constructor(
         findPreference<VectorPreference>(VectorPreferences.SETTINGS_HELP_PREFERENCE_KEY)!!
                 .onPreferenceClickListener = Preference.OnPreferenceClickListener {
             if (firstThrottler.canHandle() is FirstThrottler.CanHandlerResult.Yes) {
-                openUrlInChromeCustomTab(requireContext(), null, VectorSettingsUrls.NODEFY_HELP)
+                //openUrlInChromeCustomTab(requireContext(), null, VectorSettingsUrls.NODEFY_HELP)
+
+                val intent = Intent(activity, FeedbackActivity::class.java)
+                startActivity(intent)
             }
             false
         }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Title</title>
+
+    <script
+      type="text/javascript"
+      src="https://devops.corona.network/jira/s/d41d8cd98f00b204e9800998ecf8427e-CDN/jxko1c/813011/1am8j4d/2.2.4.7/_/download/batch/com.atlassian.plugins.jquery:jquery/com.atlassian.plugins.jquery:jquery.js?collectorId=db1d33fa"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://devops.corona.network/jira/s/dfc0d7e75bdad3ff014df955f76ff90a-T/jxko1c/813011/1am8j4d/4.0.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=db1d33fa"
+    ></script>
+  </head>
+  <body>
+    <button id="myCustomTrigger" style="opacity: 0">Feedback Button</button>
+
+    <script type="text/javascript">
+      window.ATL_JQ_PAGE_PROPS = {
+        triggerFunction: function (showCollectorDialog) {
+          //Requires that jQuery is available!
+          jQuery("#myCustomTrigger").click(function (e) {
+            e.preventDefault();
+            showCollectorDialog();
+          });
+        },
+      };
+
+      var interval1 = setInterval(() => {
+        jQuery("#myCustomTrigger").click();
+
+        var $dev = jQuery("#myCustomTrigger");
+        console.log("check", $dev);
+        if ($dev) {
+          $dev.click();
+          clearInterval(interval1);
+        }
+      }, 100);
+
+      function sos() {
+        jQuery("#myCustomTrigger").click();
+        var $dev = jQuery("#myCustomTrigger");
+        console.log("check", $dev);
+        if ($dev) {
+          $dev.click();
+        }
+
+        var $dev = document.querySelector("div.atlwdg-popup");
+        if ($dev) {
+          $dev.style.width = "auto";
+        }
+
+        var interval99 = setInterval(() => {
+          var $iframe = document.querySelectorAll("iframe");
+          if ($iframe.length == 0) {
+            clearInterval(interval99);
+
+            jsToOcFunction1();
+          }
+        }, 100);
+      }
+
+      function jsToOcFunction1() {
+        window.webkit.messageHandlers.cancelAction.postMessage({});
+        //window.android.getJs("参数");
+      }
+
+      var interval = setInterval(() => {
+        var $dev = document.querySelector("div.atlwdg-popup");
+        if ($dev) {
+          $dev.style.width = "auto";
+          clearInterval(interval);
+        }
+      }, 100);
+
+      var a = document.getElementsByClassName("cancel")[0];
+      a.setAttribute("onclick", function () {
+        console.log("sb");
+        window.androidBridge.getJs("参数");
+      });
+    </script>
+  </body>
+</html>

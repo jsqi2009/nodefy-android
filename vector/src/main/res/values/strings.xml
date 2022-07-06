@@ -3133,5 +3133,6 @@
     <string name="create_new_room2">Create New Group</string>
 
     <string name="preference_root_sign_out">Sign out</string>
+    <string name="report_issue">Report an issue</string>
 
 </resources>

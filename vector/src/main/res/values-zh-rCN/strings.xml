@@ -2367,5 +2367,6 @@
     <string name="create_new_room2">创建新群组</string>
 
     <string name="preference_root_sign_out">登出</string>
+    <string name="report_issue">问题反馈</string>
 
 </resources>
