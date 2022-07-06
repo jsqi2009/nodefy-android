@@ -63,8 +63,7 @@
       }
 
       function jsToOcFunction1() {
-        window.webkit.messageHandlers.cancelAction.postMessage({});
-        //window.android.getJs("参数");
+        window.androidBridge.jsAndroid()
       }
 
       var interval = setInterval(() => {

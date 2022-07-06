@@ -17,10 +17,14 @@
 package im.vector.app.features.settings.feedback
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.webkit.JavascriptInterface
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
@@ -43,7 +47,7 @@ class FeedbackActivity : VectorBaseActivity<ActivityFeedbackBinding>(){
         initView()
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     private fun initView() {
 
         views.rlBack.setOnClickListener {
@@ -61,13 +65,25 @@ class FeedbackActivity : VectorBaseActivity<ActivityFeedbackBinding>(){
         views.webView.settings.databaseEnabled = true
         views.webView.fitsSystemWindows = true
 
-        views.webView.addJavascriptInterface(this, "bridge")
+        views.webView.addJavascriptInterface(object : Object(){
+            @JavascriptInterface
+            fun jsAndroid(){
+                this@FeedbackActivity.finish()
+            }
+        },"androidBridge")
+
+        views.webView.webViewClient = object : WebViewClient(){
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                callJS()
+            }
+        }
 
         views.webView.loadUrl(localUrl)
     }
 
-    @JavascriptInterface
-    fun nativeMethod(content: String) {
-        Timber.e("js value------$content")
+    @SuppressLint("SetJavaScriptEnabled")
+    fun callJS() {
+        views.webView.loadUrl("javascript:sos()")
     }
 }
