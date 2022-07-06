@@ -38,15 +38,18 @@ class PresenceStateImageView @JvmOverloads constructor(
 
         when (userPresence?.presence) {
             PresenceEnum.ONLINE      -> {
-                setImageResource(R.drawable.ic_presence_online)
+//                setImageResource(R.drawable.ic_presence_online)
+                setImageResource(R.drawable.ic_nodefy_online)
                 contentDescription = context.getString(R.string.a11y_presence_online)
             }
             PresenceEnum.UNAVAILABLE -> {
-                setImageResource(R.drawable.ic_presence_offline)
+//                setImageResource(R.drawable.ic_presence_offline)
+                setImageResource(R.drawable.ic_nodefy_offline)
                 contentDescription = context.getString(R.string.a11y_presence_unavailable)
             }
             PresenceEnum.OFFLINE     -> {
-                setImageResource(R.drawable.ic_presence_offline)
+//                setImageResource(R.drawable.ic_presence_offline)
+                setImageResource(R.drawable.ic_nodefy_offline)
                 contentDescription = context.getString(R.string.a11y_presence_offline)
             }
             null                     -> Unit

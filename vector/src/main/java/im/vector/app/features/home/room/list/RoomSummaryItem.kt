@@ -86,7 +86,6 @@ abstract class RoomSummaryItem : VectorEpoxyModel<RoomSummaryItem.Holder>() {
         holder.typingView.setTextOrHide(typingMessage)
         holder.lastEventView.isInvisible = holder.typingView.isVisible
         holder.roomAvatarPresenceImageView.render(showPresence, userPresence)
-        holder.roomAvatarPresenceImageView.isVisible = false
     }
 
     override fun unbind(holder: Holder) {
