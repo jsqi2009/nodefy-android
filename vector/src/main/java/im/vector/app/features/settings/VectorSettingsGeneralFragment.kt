@@ -25,6 +25,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
@@ -55,6 +57,7 @@ import im.vector.app.features.MainActivityArgs
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.discovery.DiscoverySettingsFragment
 import im.vector.app.features.navigation.SettingsActivityPayload
+import im.vector.app.features.usercode.UserCodeActivity
 import im.vector.app.features.workers.signout.SignOutUiWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -109,6 +112,10 @@ class VectorSettingsGeneralFragment @Inject constructor(
 
     private val mContactPhonebookCountryPreference by lazy {
         findPreference<VectorPreference>(VectorPreferences.SETTINGS_CONTACTS_PHONEBOOK_COUNTRY_PREFERENCE_KEY)!!
+    }
+
+    private val mQRCode by lazy {
+        findPreference<VectorPreference>(VectorPreferences.SETTINGS_QR_CODE_PREFERENCE_KEY)!!
     }
 
     private val integrationServiceListener = object : IntegrationManagerService.Listener {
@@ -287,6 +294,14 @@ class VectorSettingsGeneralFragment @Inject constructor(
             }
 
             false
+        }
+
+        // qr code
+        mQRCode.let {
+            it.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                startActivity(UserCodeActivity.newIntent(requireContext(), session.myUserId))
+                false
+            }
         }
     }
 

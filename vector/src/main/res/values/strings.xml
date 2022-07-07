@@ -3134,5 +3134,6 @@
 
     <string name="preference_root_sign_out">Sign out</string>
     <string name="report_issue">Report an issue</string>
+    <string name="settings_qr_code">QR Code</string>
 
 </resources>

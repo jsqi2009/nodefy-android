@@ -2368,5 +2368,6 @@
 
     <string name="preference_root_sign_out">登出</string>
     <string name="report_issue">问题反馈</string>
+    <string name="settings_qr_code">二维码</string>
 
 </resources>

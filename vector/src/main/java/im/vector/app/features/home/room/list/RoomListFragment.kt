@@ -733,7 +733,7 @@ class RoomListFragment @Inject constructor(
             if (s.toString().isEmpty()) {
                 terms = ""
             }
-            //filterRoomsWith(terms)
+            filterRoomsWith(terms)
             roomListViewModel.session.stopSync()
             roomListViewModel.session.startSync(false)
         }

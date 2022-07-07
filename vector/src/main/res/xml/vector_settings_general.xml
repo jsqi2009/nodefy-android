@@ -17,6 +17,11 @@
             android:title="@string/settings_display_name" />
 
         <im.vector.app.core.preference.VectorPreference
+            android:key="SETTINGS_QR_CODE_PREFERENCE_KEY"
+            android:persistent="false"
+            android:title="@string/settings_qr_code" />
+
+        <im.vector.app.core.preference.VectorPreference
             android:key="SETTINGS_CHANGE_PASSWORD_PREFERENCE_KEY"
             android:summary="@string/change_password_summary"
             android:title="@string/settings_password" />
@@ -25,7 +30,6 @@
             android:key="SETTINGS_EMAILS_AND_PHONE_NUMBERS_PREFERENCE_KEY"
             android:summary="@string/settings_emails_and_phone_numbers_summary"
             android:title="@string/settings_emails_and_phone_numbers_title"
-            app:isPreferenceVisible="false"
             app:fragment="im.vector.app.features.settings.threepids.ThreePidsSettingsFragment" />
 
         <im.vector.app.core.preference.VectorPreference

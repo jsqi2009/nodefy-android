@@ -162,7 +162,7 @@ class ThreePidsSettingsController @Inject constructor(
             is ThreePidsSettingsUiState.AddingPhoneNumber -> Unit
         }
 
-        settingsSectionTitleItem {
+        /*settingsSectionTitleItem {
             id("msisdn")
             title(host.stringProvider.getString(R.string.settings_phone_numbers))
         }
@@ -223,7 +223,7 @@ class ThreePidsSettingsController @Inject constructor(
                     cancelOnClick { host.interactionListener?.cancelAdding() }
                 }
             }
-        }
+        }*/
     }
 
     private fun buildThreePid(idPrefix: String, threePid: ThreePid) {
