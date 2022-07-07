@@ -79,8 +79,8 @@ abstract class RoomSummaryItem : VectorEpoxyModel<RoomSummaryItem.Holder>() {
         holder.draftView.isVisible = hasDraft
         avatarRenderer.render(matrixItem, holder.avatarImageView)
         holder.roomAvatarDecorationImageView.render(encryptionTrustLevel)
-        holder.roomAvatarPublicDecorationImageView.isVisible = izPublic
-//        holder.roomAvatarPublicDecorationImageView.isVisible = true
+//        holder.roomAvatarPublicDecorationImageView.isVisible = izPublic
+        holder.roomAvatarPublicDecorationImageView.isVisible = true
         holder.roomAvatarFailSendingImageView.isVisible = hasFailedSending
         renderSelection(holder, showSelected)
         holder.typingView.setTextOrHide(typingMessage)

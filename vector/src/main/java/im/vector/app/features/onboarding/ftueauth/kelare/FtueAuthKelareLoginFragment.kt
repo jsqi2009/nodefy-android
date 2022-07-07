@@ -55,7 +55,11 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
     @SuppressLint("SetTextI18n")
     private fun setupViews() {
 
-        views.serverEt.setText("https://kelare.istory.cc:8448")
+        if (dialerSession.homeServer.isNotEmpty()) {
+            views.serverEt.setText(dialerSession.homeServer)
+        } else {
+            views.serverEt.setText("")
+        }
 
         /*views.apply {
             tvType.text  =defaultType
@@ -112,8 +116,8 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
 
     private fun submit() {
 
-        val userName = views.userNameEt.text.toString()
-        val password = views.passwordEt.text.toString()
+        val userName = views.userNameEt.text.toString().trim()
+        val password = views.passwordEt.text.toString().trim()
 
         // This can be called by the IME action, so deal with empty cases
         var error = 0
