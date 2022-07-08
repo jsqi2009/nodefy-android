@@ -128,7 +128,6 @@ class RoomListFragment @Inject constructor(
             RoomListDisplayMode.ROOMS  -> MobileScreen.ScreenName.Rooms
             else                       -> null
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -202,9 +201,6 @@ class RoomListFragment @Inject constructor(
             }
         }
     }
-
-
-
     override fun showFailure(throwable: Throwable) {
         showErrorInSnackbar(throwable)
     }

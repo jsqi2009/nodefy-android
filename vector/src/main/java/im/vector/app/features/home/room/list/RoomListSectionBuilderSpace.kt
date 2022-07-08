@@ -513,7 +513,6 @@ class RoomListSectionBuilderSpace(
             it.memberships = listOf(Membership.JOIN)
             it.roomCategoryFilter = RoomCategoryFilter.ONLY_DM
             it.roomTagQueryFilter = RoomTagQueryFilter(false, false, null)
-//            it.roomTagQueryFilter = RoomTagQueryFilter(false, false, null)
         }
 
         addSection(
