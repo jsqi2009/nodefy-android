@@ -69,4 +69,11 @@
         android:enabled="true"
         app:isPreferenceVisible="@bool/settings_root_sign_out_visible" />
 
+    <im.vector.app.core.preference.VectorPreference
+        android:key="SETTINGS_DEACTIVATE_ACCOUNT_KEY"
+        android:icon="@drawable/ic_deactivate"
+        android:persistent="false"
+        android:title="@string/settings_deactivate_my_account"
+        app:fragment="im.vector.app.features.settings.account.deactivation.DeactivateAccountFragment" />
+
 </androidx.preference.PreferenceScreen>

@@ -31,6 +31,7 @@ import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityVectorSettingsBinding
 import im.vector.app.features.discovery.DiscoverySettingsFragment
 import im.vector.app.features.navigation.SettingsActivityPayload
+import im.vector.app.features.settings.account.deactivation.DeactivateAccountFragment
 import im.vector.app.features.settings.devices.VectorSettingsDevicesFragment
 import im.vector.app.features.settings.notifications.VectorSettingsNotificationPreferenceFragment
 import im.vector.app.features.settings.threepids.ThreePidsSettingsFragment
@@ -87,6 +88,8 @@ class VectorSettingsActivity : VectorBaseActivity<ActivityVectorSettingsBinding>
                     requestHighlightPreferenceKeyOnResume(VectorPreferences.SETTINGS_ENABLE_THIS_DEVICE_PREFERENCE_KEY)
                     replaceFragment(views.vectorSettingsPage, VectorSettingsNotificationPreferenceFragment::class.java, null, FRAGMENT_TAG)
                 }
+                SettingsActivityPayload.DeactivateAccount               ->
+                    replaceFragment(views.vectorSettingsPage, DeactivateAccountFragment::class.java, null, FRAGMENT_TAG)
                 is SettingsActivityPayload.DiscoverySettings          -> {
                     replaceFragment(views.vectorSettingsPage, DiscoverySettingsFragment::class.java, payload, FRAGMENT_TAG)
                 }
@@ -172,6 +175,7 @@ class VectorSettingsActivity : VectorBaseActivity<ActivityVectorSettingsBinding>
             EXTRA_DIRECT_ACCESS_GENERAL                          -> SettingsActivityPayload.General
             EXTRA_DIRECT_ACCESS_NOTIFICATIONS                    -> SettingsActivityPayload.Notifications
             EXTRA_DIRECT_ACCESS_DISCOVERY_SETTINGS               -> SettingsActivityPayload.DiscoverySettings()
+            EXTRA_DIRECT_ACCESS_DEACTIVATE_ACCOUNT               -> SettingsActivityPayload.DeactivateAccount
             else                                                 -> {
                 Timber.w("Unknown directAccess: $directAccess defaulting to Root")
                 SettingsActivityPayload.Root
@@ -189,6 +193,7 @@ class VectorSettingsActivity : VectorBaseActivity<ActivityVectorSettingsBinding>
         const val EXTRA_DIRECT_ACCESS_GENERAL = 4
         const val EXTRA_DIRECT_ACCESS_NOTIFICATIONS = 5
         const val EXTRA_DIRECT_ACCESS_DISCOVERY_SETTINGS = 6
+        const val EXTRA_DIRECT_ACCESS_DEACTIVATE_ACCOUNT = 7
 
         private const val FRAGMENT_TAG = "VectorSettingsPreferencesFragment"
     }

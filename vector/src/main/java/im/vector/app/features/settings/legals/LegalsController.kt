@@ -131,10 +131,10 @@ class LegalsController @Inject constructor(
                 name(policy.name)
                 when (index) {
                     0    -> {
-                        url(VectorSettingsUrls.NODEFY_CORYRIGHT)
+                        url(VectorSettingsUrls.NODEFY_TERMS)
                     }
                     1    -> {
-                        url(VectorSettingsUrls.NODEFY_TERMS)
+                        url(VectorSettingsUrls.NODEFY_PRIVACY)
                     }
                     else -> {
                         url(VectorSettingsUrls.NODEFY_PRIVACY)
@@ -143,10 +143,10 @@ class LegalsController @Inject constructor(
                 clickListener {
                     when (index) {
                         0    -> {
-                            host.listener?.openNodefyPolicy(VectorSettingsUrls.NODEFY_CORYRIGHT)
+                            host.listener?.openNodefyPolicy(VectorSettingsUrls.NODEFY_TERMS)
                         }
                         1    -> {
-                            host.listener?.openNodefyPolicy(VectorSettingsUrls.NODEFY_TERMS)
+                            host.listener?.openNodefyPolicy(VectorSettingsUrls.NODEFY_PRIVACY)
                         }
                         else -> {
                             host.listener?.openNodefyPolicy(VectorSettingsUrls.NODEFY_PRIVACY)
