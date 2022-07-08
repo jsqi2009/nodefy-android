@@ -137,7 +137,6 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
-            android:paddingEnd="48dp"
             android:textSize="@dimen/textsize_14"
             android:hint="@string/nodefy_login_sign_in_homeserver_hint"
             android:background="@drawable/shape_kelare_login_et_bg_5dp"

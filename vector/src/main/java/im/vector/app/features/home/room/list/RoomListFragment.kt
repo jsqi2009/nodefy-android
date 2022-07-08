@@ -612,9 +612,11 @@ class RoomListFragment @Inject constructor(
         val items : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
             //if (it.name.isEmpty() && it.displayName.contains(publicKey)) {
-            if (it.roomId == dialerSession.publicRoomID) {
-                items.add(it)
-                return@forEach
+            if (it != null && it.roomId.isNotEmpty()) {
+                if (it.roomId == dialerSession.publicRoomID) {
+                    items.add(it)
+                    return@forEach
+                }
             }
         }
         if (items.isNotEmpty()) {
@@ -628,10 +630,12 @@ class RoomListFragment @Inject constructor(
         val items : ArrayList<RoomSummary> = ArrayList()
         val resultList : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
-            if (it.roomId == dialerSession.publicRoomID) {
+            if (it != null && it.roomId.isNotEmpty()) {
+                if (it.roomId == dialerSession.publicRoomID) {
 
-            } else {
-                items.add(it)
+                } else {
+                    items.add(it)
+                }
             }
         }
         items.forEach { itemRoom ->

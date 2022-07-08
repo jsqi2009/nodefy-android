@@ -31,6 +31,7 @@ import im.vector.app.kelare.network.response.SaveContactInfoResponse
 import im.vector.app.kelare.network.response.UpdateAccountInfoResponse
 import im.vector.app.kelare.network.response.UpdateContactInfoResponse
 import im.vector.app.kelare.utils.APPUtil
+import im.vector.app.kelare.utils.UserAgentUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -163,7 +164,8 @@ object HttpClient {
     private fun getHeaders(context: Context): HashMap<String, String> {
         var headerMap: HashMap<String, String> = HashMap<String, String>()
         headerMap.put("Authorization", "Bearer " + mSession!!.accessToken)
-        headerMap.put("User-Agent", APPUtil.getUserAgent(context))
+        headerMap.put("User-Agent", UserAgentUtil.userAgent(context))
+        //headerMap.put("User-Agent", APPUtil.getUserAgent(context))
 
         return headerMap
     }
