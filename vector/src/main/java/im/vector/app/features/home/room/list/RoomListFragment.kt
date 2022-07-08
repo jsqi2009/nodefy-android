@@ -710,6 +710,9 @@ class RoomListFragment @Inject constructor(
         } else {
             if (sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase()) {
                 flag = true
+            } else if (sectionName.lowercase() == getString(R.string.bottom_action_people_x).lowercase()
+                    || sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
+                flag = false
             } else {
                 flag = pl.isEmpty()
             }
