@@ -72,8 +72,8 @@ class RoomDirectoryActivity : VectorBaseActivity<ActivitySimpleBinding>(), Matri
                                 addFragmentToBackstack(
                                         views.simpleFragmentContainer,
                                         CreateRoomFragment::class.java,
-                                        //CreateRoomArgs(it.currentFilter)
-                                        CreateRoomArgs("")
+                                        CreateRoomArgs(it.currentFilter)
+//                                        CreateRoomArgs("")
                                 )
                             }
                         }
