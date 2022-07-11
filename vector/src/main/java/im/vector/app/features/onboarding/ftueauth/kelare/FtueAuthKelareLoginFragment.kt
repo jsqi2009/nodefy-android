@@ -116,7 +116,7 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
 
     private fun submit() {
 
-        val userName = views.userNameEt.text.toString().trim()
+        val userName = views.userNameEt.text.toString().trimEnd()
         val password = views.passwordEt.text.toString().trim()
 
         // This can be called by the IME action, so deal with empty cases

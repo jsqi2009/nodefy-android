@@ -107,7 +107,7 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
 
     private fun getRegisterSIPUser() {
         dialerSession.accountListInfo!!.forEach {
-            if (it.type_value!!.toLowerCase(Locale.ROOT) == "sip" && it.enabled) {
+            if (it.type_value!!.lowercase() == "sip" && it.enabled && it.extension.isConnected) {
                 accountList.add(it)
             }
         }

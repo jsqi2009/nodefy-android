@@ -215,105 +215,109 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
     @SuppressLint("SetTextI18n")
     private fun loginAccount(){
 
-        val accountName = views.etAccount.text.toString()
-        val username = views.etUsername.text.toString()
-        val password = views.etPassword.text.toString()
-        val domain = views.etDomain.text.toString()
-        val proxy = accountInfo.extension.outProxy
+        try {
+            val accountName = views.etAccount.text.toString()
+            val username = views.etUsername.text.toString()
+            val password = views.etPassword.text.toString()
+            val domain = views.etDomain.text.toString().replace(" ", "")
+            val proxy = accountInfo.extension.outProxy!!.replace(" ", "")
 
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(accountName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(domain)) {
-            return
-        }
-
-        var transportType: TransportType? = null
-        var mediaEncryption: MediaEncryption? = null
-        for (index in transportList.indices) {
-            if (accountInfo.extension.sipTransport!!.toUpperCase(Locale.ROOT) == transportList[index]) {
-                transportType = TransportType.fromInt(index)
+            if (TextUtils.isEmpty(username) || TextUtils.isEmpty(accountName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(domain)) {
+                return
             }
-        }
 
-        for (index in encryptList.indices) {
-            if (accountInfo.extension.encryptMedia!!.toUpperCase(Locale.ROOT) == encryptList[index]) {
-                mediaEncryption = MediaEncryption.fromInt(index)
+            var transportType: TransportType? = null
+            var mediaEncryption: MediaEncryption? = null
+            for (index in transportList.indices) {
+                if (accountInfo.extension.sipTransport!!.toUpperCase(Locale.ROOT) == transportList[index]) {
+                    transportType = TransportType.fromInt(index)
+                }
             }
-        }
 
-        val authInfo = Factory.instance().createAuthInfo(username, null, password, null, null, domain, null)
-        val accountParams = core.createAccountParams()
+            for (index in encryptList.indices) {
+                if (accountInfo.extension.encryptMedia!!.toUpperCase(Locale.ROOT) == encryptList[index]) {
+                    mediaEncryption = MediaEncryption.fromInt(index)
+                }
+            }
 
-        // A SIP account is identified by an identity address that we can construct from the username and domain
-        val identity = Factory.instance().createAddress("sip:$username@$domain")
-        accountParams.identityAddress = identity
-        // Ensure push notification is enabled for this account
-        accountParams.pushNotificationAllowed = true
-        accountParams.registerEnabled = true
+            val authInfo = Factory.instance().createAuthInfo(username, null, password, null, null, domain, null)
+            val accountParams = core.createAccountParams()
 
-        // We also need to configure where the proxy server is located
-        //val address = Factory.instance().createAddress("sip:${proxy}")
-        var address: Address? = null
-        if (TextUtils.isEmpty(proxy)) {
-            address = Factory.instance().createAddress("sip:${domain}")
-        } else {
-            address = Factory.instance().createAddress("sip:${proxy}")
-        }
+            // A SIP account is identified by an identity address that we can construct from the username and domain
+            val identity = Factory.instance().createAddress("sip:$username@$domain")
+            accountParams.identityAddress = identity
+            // Ensure push notification is enabled for this account
+            accountParams.pushNotificationAllowed = true
+            accountParams.registerEnabled = true
 
-        // We use the Address object to easily set the transport protocol
-        address?.transport = transportType
-        accountParams.serverAddress = address
-        core.mediaEncryption = mediaEncryption
-
-        // Now that our AccountParams is configured, we can create the Account object
-        val account: Account = core.createAccount(accountParams)
-
-        // Now let's add our objects to the Core
-        core.addAuthInfo(authInfo)
-        core.addAccount(account)
-
-        // Asks the CaptureTextureView to resize to match the captured video's size ratio
-        //core.config.setBool("video", "auto_resize_preview_to_keep_ratio", true)
-
-        core.defaultProxyConfig = this.core.createProxyConfig()
-
-        // Also set the newly added account as default
-        if (accountInfo.is_default) {
-            core.defaultAccount = account
-        }
-
-        // To be notified of the connection status of our account, we need to add the listener to the Core
-        core.addListener(loginCoreListener)
-        // We can also register a callback on the Account object
-        account.addListener { _, state, message ->
-            // There is a Log helper in org.linphone.core.tools package
-            Timber.e("[Account] Registration state changed, $state + '---' + $message")
-            if (state.toInt() == 2) {
-                views.tvConnectStatus.text = "Registered"
-                views.tvConnectStatus.setTextColor(resources.getColor(R.color.green, null))
-            } else if (state.toInt() == 4) {
-                views.tvConnectStatus.text = "Registered Failure"
-                views.tvConnectStatus.setTextColor(resources.getColor(R.color.red, null))
-            } else if (state.toInt() == 1) {
-                views.tvConnectStatus.text = "Registering"
-                views.tvConnectStatus.setTextColor(resources.getColor(R.color.red, null))
+            // We also need to configure where the proxy server is located
+            //val address = Factory.instance().createAddress("sip:${proxy}")
+            var address: Address? = null
+            if (TextUtils.isEmpty(proxy)) {
+                address = Factory.instance().createAddress("sip:${domain}")
             } else {
-                views.tvConnectStatus.text = "Not Registered"
-                views.tvConnectStatus.setTextColor(resources.getColor(R.color.red, null))
+                address = Factory.instance().createAddress("sip:${proxy}")
             }
 
-            if (index == "1") {
-                views.tvSave.visibility = View.VISIBLE
+            // We use the Address object to easily set the transport protocol
+            address?.transport = transportType
+            accountParams.serverAddress = address
+            core.mediaEncryption = mediaEncryption
+
+            // Now that our AccountParams is configured, we can create the Account object
+            val account: Account = core.createAccount(accountParams)
+
+            // Now let's add our objects to the Core
+            core.addAuthInfo(authInfo)
+            core.addAccount(account)
+
+            // Asks the CaptureTextureView to resize to match the captured video's size ratio
+            //core.config.setBool("video", "auto_resize_preview_to_keep_ratio", true)
+
+            core.defaultProxyConfig = this.core.createProxyConfig()
+
+            // Also set the newly added account as default
+            if (accountInfo.is_default) {
+                core.defaultAccount = account
             }
+
+            // To be notified of the connection status of our account, we need to add the listener to the Core
+            core.addListener(loginCoreListener)
+            // We can also register a callback on the Account object
+            account.addListener { _, state, message ->
+                // There is a Log helper in org.linphone.core.tools package
+                Timber.e("[Account] Registration state changed, $state + '---' + $message")
+                if (state.toInt() == 2) {
+                    views.tvConnectStatus.text = "Registered"
+                    views.tvConnectStatus.setTextColor(resources.getColor(R.color.green, null))
+                } else if (state.toInt() == 4) {
+                    views.tvConnectStatus.text = "Registered Failure"
+                    views.tvConnectStatus.setTextColor(resources.getColor(R.color.red, null))
+                } else if (state.toInt() == 1) {
+                    views.tvConnectStatus.text = "Registering"
+                    views.tvConnectStatus.setTextColor(resources.getColor(R.color.red, null))
+                } else {
+//                    views.tvConnectStatus.text = "Not Registered"
+                    views.tvConnectStatus.text = "Registering"
+                    views.tvConnectStatus.setTextColor(resources.getColor(R.color.red, null))
+                }
+
+                if (index == "1") {
+                    views.tvSave.visibility = View.VISIBLE
+                }
+            }
+
+            // Finally we need the Core to be started for the registration to happen (it could have been started before)
+            core.start()
+
+            // We will need the RECORD_AUDIO permission for video call
+            if (packageManager.checkPermission(Manifest.permission.RECORD_AUDIO, packageName) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), 0)
+                return
+            }
+        } catch (e: Exception) {
+
         }
-
-        // Finally we need the Core to be started for the registration to happen (it could have been started before)
-        core.start()
-
-        // We will need the RECORD_AUDIO permission for video call
-        if (packageManager.checkPermission(Manifest.permission.RECORD_AUDIO, packageName) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), 0)
-            return
-        }
-
     }
 
     private fun accountAdvanced() {
@@ -328,7 +332,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
     private fun setAdvancedInfo() {
 
         advancedInfo.authName = accountInfo.extension.authName
-        advancedInfo.outProxy = accountInfo.extension.outProxy
+        advancedInfo.outProxy = accountInfo.extension.outProxy!!.replace(" ", "")
         advancedInfo.incomingCalls = accountInfo.extension.incomingCalls
         advancedInfo.refreshInterval = accountInfo.extension.refreshInterval
         advancedInfo.interval = accountInfo.extension.interval
@@ -412,15 +416,15 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         accountInfo.display_as = views.etDisplay.text.toString()
         accountInfo.username = views.etUsername.text.toString()
         accountInfo.password = views.etPassword.text.toString()
-        accountInfo.domain = views.etDomain.text.toString()
+        accountInfo.domain = views.etDomain.text.toString().replace(" ", "")
         accountInfo.voice_mail = views.etVoice.text.toString()
 
         accountInfo.extension.accountName = views.etAccount.text.toString()
         accountInfo.extension.username = views.etUsername.text.toString()
-        accountInfo.extension.domain = views.etDomain.text.toString()
+        accountInfo.extension.domain = views.etDomain.text.toString().replace(" ", "")
         accountInfo.extension.password = views.etPassword.text.toString()
         accountInfo.extension.enable = isEnable
-        accountInfo.extension.outProxy = advancedInfo.outProxy
+        accountInfo.extension.outProxy = advancedInfo.outProxy!!.replace(" ", "")
         accountInfo.extension.authName = advancedInfo.authName
         accountInfo.extension.incomingCalls = advancedInfo.incomingCalls
         accountInfo.extension.refreshInterval = advancedInfo.refreshInterval

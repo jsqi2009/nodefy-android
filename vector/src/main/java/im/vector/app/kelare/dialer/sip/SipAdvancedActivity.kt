@@ -176,7 +176,7 @@ class SipAdvancedActivity : VectorBaseActivity<ActivitySipAdvancedBinding>(), Vi
 
     private fun updateData() {
         advancedInfo.authName = views.etAuthName.text.toString()
-        advancedInfo.outProxy = views.etProxy.text.toString()
+        advancedInfo.outProxy = views.etProxy.text.toString().replace(" ", "")
         advancedInfo.incomingCalls = isIncoming
         advancedInfo.refreshInterval = views.etRefreshInterval.text.toString()
         advancedInfo.interval = views.etInterval.text.toString()
