@@ -219,6 +219,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
             val accountName = views.etAccount.text.toString()
             val username = views.etUsername.text.toString()
             val password = views.etPassword.text.toString()
+            val displayName = views.etDisplay.text.toString()
             var domain = ""
             var proxy = ""
             if (views.etDomain.text.toString().isEmpty()) {
@@ -232,7 +233,8 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                 proxy = accountInfo.extension.outProxy!!.replace(" ", "")
             }
 
-            if (TextUtils.isEmpty(username) || TextUtils.isEmpty(accountName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(domain)) {
+            if (TextUtils.isEmpty(username) || TextUtils.isEmpty(accountName) || TextUtils.isEmpty(password)
+                    || TextUtils.isEmpty(domain) || TextUtils.isEmpty(displayName)) {
                 return
             }
 
@@ -342,6 +344,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
     private fun setAdvancedInfo() {
 
         advancedInfo.authName = accountInfo.extension.authName
+        advancedInfo.displayAs = accountInfo.extension.displayAs
         if (accountInfo.extension.outProxy.isNullOrEmpty()) {
             advancedInfo.outProxy = accountInfo.extension.outProxy
         } else {
@@ -434,6 +437,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         accountInfo.voice_mail = views.etVoice.text.toString()
 
         accountInfo.extension.accountName = views.etAccount.text.toString()
+        accountInfo.extension.displayAs = views.etDisplay.text.toString()
         accountInfo.extension.username = views.etUsername.text.toString()
         accountInfo.extension.domain = views.etDomain.text.toString().replace(" ", "")
         accountInfo.extension.password = views.etPassword.text.toString()
