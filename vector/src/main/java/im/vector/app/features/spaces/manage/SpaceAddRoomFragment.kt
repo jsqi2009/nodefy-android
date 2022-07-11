@@ -16,6 +16,7 @@
 
 package im.vector.app.features.spaces.manage
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -25,6 +26,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
@@ -37,6 +39,9 @@ import im.vector.app.core.extensions.cleanup
 import im.vector.app.core.platform.OnBackPressed
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.databinding.FragmentSpaceAddRoomsBinding
+import im.vector.app.features.home.room.list.widget.ListDataSource
+import im.vector.app.features.home.room.list.widget.UiThreadExecutor
+import im.vector.app.kelare.content.Contants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
@@ -191,7 +196,9 @@ class SpaceAddRoomFragment @Inject constructor(
             spaceEpoxyController.boundaryChange(it)
         }
         viewModel.spaceUpdatableLivePageResult.livePagedList.observe(viewLifecycleOwner) {
-            spaceEpoxyController.submitList(it)
+            //spaceEpoxyController.submitList(it)
+            val roomList = filterDMSection(it)
+            spaceEpoxyController.submitList(roomList)
         }
         listenItemCount(viewModel.spaceCountFlow) { spaceEpoxyController.totalSize = it }
     }
@@ -204,7 +211,9 @@ class SpaceAddRoomFragment @Inject constructor(
             roomEpoxyController.boundaryChange(it)
         }
         viewModel.roomUpdatableLivePageResult.livePagedList.observe(viewLifecycleOwner) {
-            roomEpoxyController.submitList(it)
+            //roomEpoxyController.submitList(it)
+            val roomList = filterRoomSection(it)
+            roomEpoxyController.submitList(roomList)
         }
         listenItemCount(viewModel.roomCountFlow) { roomEpoxyController.totalSize = it }
         views.roomList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -241,5 +250,50 @@ class SpaceAddRoomFragment @Inject constructor(
 
     override fun onItemSelected(roomSummary: RoomSummary) {
         viewModel.handle(SpaceAddRoomActions.ToggleSelection(roomSummary))
+    }
+
+    private fun filterDMSection(pl: PagedList<RoomSummary>) : PagedList<RoomSummary>?{
+        var dmRoomList: PagedList<RoomSummary>? = null
+        val items : ArrayList<RoomSummary> = ArrayList()
+        pl.snapshot().forEach {
+            if (!it.displayName.contains(Contants.SkypeBotName) && !it.displayName.contains(Contants.WhatsAppBotName)
+                    && !it.displayName.contains(Contants.TelegramBotName) && !it.displayName.contains(Contants.SlackBotName)
+                    && !it.displayName.contains(Contants.SkypeUserIDPrefix) && !it.displayName.contains(Contants.WhatsAppUserIDPrefix)
+                    && !it.displayName.contains(Contants.TelegramUserIDPrefix) && !it.displayName.contains(Contants.SlackUserIDPrefix)) {
+                items.add(it)
+            }
+        }
+        if (items.isNotEmpty()) {
+            dmRoomList = generateRoomList(items)
+        }
+        return dmRoomList
+    }
+
+    private fun filterRoomSection(pl: PagedList<RoomSummary>) : PagedList<RoomSummary>?{
+        var roomList: PagedList<RoomSummary>? = null
+        val items : ArrayList<RoomSummary> = ArrayList()
+        pl.snapshot().forEach {
+            if (!it.displayName.contains(Contants.SkypeBotRoomName) && !it.displayName.contains(Contants.SlackBotRoomName)
+                    && !it.displayName.contains(Contants.WhatsAppBotRoomName) && !it.displayName.contains(Contants.TelegramBotRoomName)) {
+                items.add(it)
+            }
+        }
+        if (items.isNotEmpty()) {
+            roomList = generateRoomList(items)
+        }
+        return roomList
+    }
+
+    private fun generateRoomList(mList: ArrayList<RoomSummary>): PagedList<RoomSummary> {
+        val config = PagedList.Config.Builder()
+                .setPageSize(mList.size)
+                .setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(mList.size)
+                .build()
+
+        return PagedList.Builder(ListDataSource(mList), config)
+                .setNotifyExecutor(UiThreadExecutor())
+                .setFetchExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                .build()
     }
 }

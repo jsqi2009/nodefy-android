@@ -219,8 +219,18 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
             val accountName = views.etAccount.text.toString()
             val username = views.etUsername.text.toString()
             val password = views.etPassword.text.toString()
-            val domain = views.etDomain.text.toString().replace(" ", "")
-            val proxy = accountInfo.extension.outProxy!!.replace(" ", "")
+            var domain = ""
+            var proxy = ""
+            if (views.etDomain.text.toString().isEmpty()) {
+                domain = ""
+            } else {
+                domain = views.etDomain.text.toString().replace(" ", "")
+            }
+            if (accountInfo.extension.outProxy.isNullOrEmpty()) {
+                proxy = ""
+            } else {
+                proxy = accountInfo.extension.outProxy!!.replace(" ", "")
+            }
 
             if (TextUtils.isEmpty(username) || TextUtils.isEmpty(accountName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(domain)) {
                 return
@@ -332,7 +342,11 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
     private fun setAdvancedInfo() {
 
         advancedInfo.authName = accountInfo.extension.authName
-        advancedInfo.outProxy = accountInfo.extension.outProxy!!.replace(" ", "")
+        if (accountInfo.extension.outProxy.isNullOrEmpty()) {
+            advancedInfo.outProxy = accountInfo.extension.outProxy
+        } else {
+            advancedInfo.outProxy = accountInfo.extension.outProxy!!.replace(" ", "")
+        }
         advancedInfo.incomingCalls = accountInfo.extension.incomingCalls
         advancedInfo.refreshInterval = accountInfo.extension.refreshInterval
         advancedInfo.interval = accountInfo.extension.interval
@@ -424,7 +438,11 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         accountInfo.extension.domain = views.etDomain.text.toString().replace(" ", "")
         accountInfo.extension.password = views.etPassword.text.toString()
         accountInfo.extension.enable = isEnable
-        accountInfo.extension.outProxy = advancedInfo.outProxy!!.replace(" ", "")
+        if (advancedInfo.outProxy.isNullOrEmpty()) {
+            accountInfo.extension.outProxy = advancedInfo.outProxy
+        } else {
+            accountInfo.extension.outProxy = advancedInfo.outProxy!!.replace(" ", "")
+        }
         accountInfo.extension.authName = advancedInfo.authName
         accountInfo.extension.incomingCalls = advancedInfo.incomingCalls
         accountInfo.extension.refreshInterval = advancedInfo.refreshInterval

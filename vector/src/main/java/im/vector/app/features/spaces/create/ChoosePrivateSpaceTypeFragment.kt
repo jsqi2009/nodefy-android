@@ -46,7 +46,9 @@ class ChoosePrivateSpaceTypeFragment @Inject constructor(
         }
 
         views.teammatesButton.onClick {
-            sharedViewModel.handle(CreateSpaceAction.SetSpaceTopology(SpaceTopology.MeAndTeammates))
+            //sharedViewModel.handle(CreateSpaceAction.SetSpaceTopology(SpaceTopology.MeAndTeammates))
+
+            sharedViewModel.handle(CreateSpaceAction.NextFromAdd3pid)
         }
 
         sharedViewModel.onEach { state ->

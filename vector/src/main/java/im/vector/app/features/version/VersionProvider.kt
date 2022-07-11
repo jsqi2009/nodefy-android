@@ -51,4 +51,10 @@ class VersionProvider @Inject constructor(private val versionCodeProvider: Versi
 
         return result
     }
+
+    fun getVersion2(longFormat: Boolean, useBuildNumber: Boolean): String {
+        var result = "${BuildConfig.VERSION_NAME}"
+
+        return result
+    }
 }

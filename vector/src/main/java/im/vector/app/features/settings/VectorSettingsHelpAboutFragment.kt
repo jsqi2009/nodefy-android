@@ -70,11 +70,12 @@ class VectorSettingsHelpAboutFragment @Inject constructor(
         // application version
         findPreference<VectorPreference>(VectorPreferences.SETTINGS_VERSION_PREFERENCE_KEY)!!.let {
             it.summary = buildString {
-                append(versionProvider.getVersion(longFormat = false, useBuildNumber = true))
-                if (BuildConfig.DEBUG) {
+//                append(versionProvider.getVersion(longFormat = false, useBuildNumber = true))
+                append(versionProvider.getVersion2(longFormat = false, useBuildNumber = true))
+                /*if (BuildConfig.DEBUG) {
                     append(" ")
                     append(BuildConfig.GIT_BRANCH_NAME)
-                }
+                }*/
             }
 
             it.setOnPreferenceClickListener { pref ->
