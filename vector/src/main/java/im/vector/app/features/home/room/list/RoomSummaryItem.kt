@@ -63,6 +63,8 @@ abstract class RoomSummaryItem : VectorEpoxyModel<RoomSummaryItem.Holder>() {
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash) var itemLongClickListener: View.OnLongClickListener? = null
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash) var itemClickListener: ClickListener? = null
     @EpoxyAttribute var showSelected: Boolean = false
+    @EpoxyAttribute open var isEmptyDMRoom: Boolean = false
+    @EpoxyAttribute lateinit var emptyRoomName: String
 
     override fun bind(holder: Holder) {
         super.bind(holder)
@@ -71,7 +73,8 @@ abstract class RoomSummaryItem : VectorEpoxyModel<RoomSummaryItem.Holder>() {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             itemLongClickListener?.onLongClick(it) ?: false
         }
-        holder.titleView.text = matrixItem.getBestName()
+        //holder.titleView.text = matrixItem.getBestName()
+        renderTitle(holder, isEmptyDMRoom)
         holder.lastEventTimeView.text = lastEventTime
         holder.lastEventView.text = lastFormattedEvent.charSequence
         holder.unreadCounterBadgeView.render(UnreadCounterBadgeView.State(unreadNotificationCount, showHighlighted))
@@ -104,6 +107,14 @@ abstract class RoomSummaryItem : VectorEpoxyModel<RoomSummaryItem.Holder>() {
         } else {
             holder.avatarCheckedImageView.visibility = View.GONE
             avatarRenderer.render(matrixItem, holder.avatarImageView)
+        }
+    }
+
+    private fun renderTitle(holder: Holder, isEmpty: Boolean) {
+        if (isEmptyDMRoom) {
+            holder.titleView.text = emptyRoomName
+        } else {
+            holder.titleView.text = matrixItem.getBestName()
         }
     }
 

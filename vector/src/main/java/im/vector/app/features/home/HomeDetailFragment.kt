@@ -200,7 +200,7 @@ class HomeDetailFragment @Inject constructor(
         views.groupToolbar.visibility = View.GONE
         initHomeHeaderUserInfo()
         //dialer module
-        checkPermission()
+        //checkPermission()
     }
 
     private fun handleCallStarted() {

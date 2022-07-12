@@ -570,7 +570,7 @@ class HomeActivity :
             override fun run() {
                 firstLoginToBackUp()
             }
-        }, 4000)
+        }, 5000)
 
         //Dialer module
         setBaseInfo()

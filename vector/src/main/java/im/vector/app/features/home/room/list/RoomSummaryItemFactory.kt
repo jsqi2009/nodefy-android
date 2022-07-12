@@ -119,6 +119,18 @@ class RoomSummaryItemFactory @Inject constructor(private val displayableEventFor
             latestEventTime = dateFormatter.format(latestEvent.root.originServerTs, DateFormatKind.ROOM_LIST)
         }
         val typingMessage = typingHelper.getTypingMessage(roomSummary.typingUsers)
+
+        var emptyRoomName = ""
+        if (roomSummary.isDirect) {
+            if (roomSummary.joinedMembersCount == 1) {
+                emptyRoomName = roomSummary.directUserId!!.split(":")[0].replace("@", "") + " (Left)"
+            }
+        }
+        var isEmptyRoom = false
+        if (roomSummary.isDirect && roomSummary.otherMemberIds.isEmpty() && roomSummary.joinedMembersCount == 1) {
+            isEmptyRoom = true
+        }
+
         return RoomSummaryItem_()
                 .id(roomSummary.roomId)
                 .avatarRenderer(avatarRenderer)
@@ -137,6 +149,8 @@ class RoomSummaryItemFactory @Inject constructor(private val displayableEventFor
                 .unreadNotificationCount(unreadCount)
                 .hasUnreadMessage(roomSummary.hasUnreadMessages)
                 .hasDraft(roomSummary.userDrafts.isNotEmpty())
+                .isEmptyDMRoom(isEmptyRoom)
+                .emptyRoomName(emptyRoomName)
                 .itemLongClickListener { _ ->
                     onLongClick?.invoke(roomSummary) ?: false
                 }
