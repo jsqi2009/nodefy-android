@@ -110,7 +110,8 @@ class SectionHeaderAdapter(
             binding.root.isClickable = roomsSectionData.isCollapsable
             binding.roomCategoryCounterView.setCompoundDrawablesWithIntrinsicBounds(null, null, collapsableArrowDrawable, null)
             //binding.roomCategoryCounterView.text = roomsSectionData.itemCount.takeIf { it > 0 }?.toString().orEmpty()
-            binding.roomCategoryUnreadCounterBadgeView.render(UnreadCounterBadgeView.State(roomsSectionData.notificationCount, roomsSectionData.isHighlighted))
+            //binding.roomCategoryUnreadCounterBadgeView.render(UnreadCounterBadgeView.State(roomsSectionData.notificationCount, roomsSectionData.isHighlighted))
+            binding.roomCategoryUnreadCounterBadgeView.render(UnreadCounterBadgeView.State(roomsSectionData.notificationCount, true))
 
             //public   favorite     direct messages   group   low priority
             if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms_public).lowercase()) {

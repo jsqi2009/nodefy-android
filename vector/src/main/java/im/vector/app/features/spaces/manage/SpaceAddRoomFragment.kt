@@ -49,6 +49,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import reactivecircus.flowbinding.appcompat.queryTextChanges
+import timber.log.Timber
 import javax.inject.Inject
 
 class SpaceAddRoomFragment @Inject constructor(
@@ -196,9 +197,9 @@ class SpaceAddRoomFragment @Inject constructor(
             spaceEpoxyController.boundaryChange(it)
         }
         viewModel.spaceUpdatableLivePageResult.livePagedList.observe(viewLifecycleOwner) {
-            //spaceEpoxyController.submitList(it)
-            val roomList = filterDMSection(it)
-            spaceEpoxyController.submitList(roomList)
+            Timber.e("space list----${it}")
+            spaceEpoxyController.submitList(it)
+
         }
         listenItemCount(viewModel.spaceCountFlow) { spaceEpoxyController.totalSize = it }
     }
@@ -212,6 +213,7 @@ class SpaceAddRoomFragment @Inject constructor(
         }
         viewModel.roomUpdatableLivePageResult.livePagedList.observe(viewLifecycleOwner) {
             //roomEpoxyController.submitList(it)
+            Timber.e("space room list----${it}")
             val roomList = filterRoomSection(it)
             roomEpoxyController.submitList(roomList)
         }
@@ -228,7 +230,10 @@ class SpaceAddRoomFragment @Inject constructor(
             dmEpoxyController.boundaryChange(it)
         }
         viewModel.dmUpdatableLivePageResult.livePagedList.observe(viewLifecycleOwner) {
-            dmEpoxyController.submitList(it)
+            //dmEpoxyController.submitList(it)
+            Timber.e("space DM list----${it}")
+            val roomList = filterDMSection(it)
+            dmEpoxyController.submitList(roomList)
         }
         listenItemCount(viewModel.dmCountFlow) { dmEpoxyController.totalSize = it }
     }
@@ -256,11 +261,13 @@ class SpaceAddRoomFragment @Inject constructor(
         var dmRoomList: PagedList<RoomSummary>? = null
         val items : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
-            if (!it.displayName.contains(Contants.SkypeBotName) && !it.displayName.contains(Contants.WhatsAppBotName)
-                    && !it.displayName.contains(Contants.TelegramBotName) && !it.displayName.contains(Contants.SlackBotName)
-                    && !it.displayName.contains(Contants.SkypeUserIDPrefix) && !it.displayName.contains(Contants.WhatsAppUserIDPrefix)
-                    && !it.displayName.contains(Contants.TelegramUserIDPrefix) && !it.displayName.contains(Contants.SlackUserIDPrefix)) {
-                items.add(it)
+            if (it != null) {
+                if (!it.displayName.contains(Contants.SkypeBotName) && !it.displayName.contains(Contants.WhatsAppBotName)
+                        && !it.displayName.contains(Contants.TelegramBotName) && !it.displayName.contains(Contants.SlackBotName)
+                        && !it.displayName.contains(Contants.SkypeUserIDPrefix) && !it.displayName.contains(Contants.WhatsAppUserIDPrefix)
+                        && !it.displayName.contains(Contants.TelegramUserIDPrefix) && !it.displayName.contains(Contants.SlackUserIDPrefix)) {
+                    items.add(it)
+                }
             }
         }
         if (items.isNotEmpty()) {
@@ -273,9 +280,11 @@ class SpaceAddRoomFragment @Inject constructor(
         var roomList: PagedList<RoomSummary>? = null
         val items : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
-            if (!it.displayName.contains(Contants.SkypeBotRoomName) && !it.displayName.contains(Contants.SlackBotRoomName)
-                    && !it.displayName.contains(Contants.WhatsAppBotRoomName) && !it.displayName.contains(Contants.TelegramBotRoomName)) {
-                items.add(it)
+            if (it != null) {
+                if (!it.displayName.contains(Contants.SkypeBotRoomName) && !it.displayName.contains(Contants.SlackBotRoomName)
+                        && !it.displayName.contains(Contants.WhatsAppBotRoomName) && !it.displayName.contains(Contants.TelegramBotRoomName)) {
+                    items.add(it)
+                }
             }
         }
         if (items.isNotEmpty()) {
