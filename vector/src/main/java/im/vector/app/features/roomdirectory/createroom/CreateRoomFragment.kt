@@ -26,6 +26,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.args
@@ -141,6 +142,11 @@ class CreateRoomFragment @Inject constructor(
             createSpaceController.listener = this
         } else {
             views.createRoomForm.configureWith(createRoomController)
+            /*views.createRoomForm.layoutManager = object : LinearLayoutManager(context){
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }*/
             createRoomController.listener = this
         }
     }
