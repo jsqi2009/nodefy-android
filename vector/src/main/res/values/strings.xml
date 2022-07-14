@@ -3133,6 +3133,11 @@
     <string name="space_add_existing_rooms_only2">Add existing groups</string>
     <string name="create_spaces_room_public_header_desc2">We’ll create groups for them. You can add more later too.</string>
     <string name="create_spaces_room_private_header_desc2">Let’s create a group for each of them. You can add more later too, including already existing ones.</string>
+    <string name="this_space_has_no_rooms2">This space has no groups</string>
+    <string name="this_space_has_no_rooms_not_admin2">Some groups may be hidden because they’re private and you need an invite.\nYou don’t have permission to add groups.</string>
+    <string name="this_space_has_no_rooms_admin2">Some groups may be hidden because they’re private and you need an invite.</string>
+    <string name="space_add_existing_rooms2">Add existing groups and space</string>
+
 
 
 

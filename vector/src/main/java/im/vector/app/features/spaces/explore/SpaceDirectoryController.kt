@@ -111,15 +111,15 @@ class SpaceDirectoryController @Inject constructor(
             if (flattenChildInfo.isEmpty()) {
                 genericEmptyWithActionItem {
                     id("empty_res")
-                    title(host.stringProvider.getString(R.string.this_space_has_no_rooms))
+                    title(host.stringProvider.getString(R.string.this_space_has_no_rooms2))
                     iconRes(R.drawable.ic_empty_icon_room)
                     iconTint(host.colorProvider.getColorFromAttribute(R.attr.vctr_reaction_background_on))
                     apply {
                         if (data?.canAddRooms == true) {
-                            description(host.stringProvider.getString(R.string.this_space_has_no_rooms_admin))
+                            description(host.stringProvider.getString(R.string.this_space_has_no_rooms_admin2))
                             buttonAction(
                                     Action(
-                                            title = host.stringProvider.getString(R.string.space_add_existing_rooms),
+                                            title = host.stringProvider.getString(R.string.space_add_existing_rooms2),
                                             listener = object : ClickListener {
                                                 override fun invoke(p1: View) {
                                                     host.listener?.addExistingRooms(data.spaceId)
@@ -127,7 +127,7 @@ class SpaceDirectoryController @Inject constructor(
                                             }
                                     ))
                         } else {
-                            description(host.stringProvider.getString(R.string.this_space_has_no_rooms_not_admin))
+                            description(host.stringProvider.getString(R.string.this_space_has_no_rooms_not_admin2))
                         }
                     }
                 }

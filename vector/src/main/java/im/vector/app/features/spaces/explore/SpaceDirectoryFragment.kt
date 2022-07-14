@@ -165,11 +165,11 @@ class SpaceDirectoryFragment @Inject constructor(
 
         if (currentParentId == null) {
             // it's the root
-            toolbar?.setTitle(R.string.space_explore_activity_title)
+            toolbar?.setTitle(R.string.space_explore_activity_title2)
         } else {
             toolbar?.title = state.currentRootSummary?.name
                     ?: state.currentRootSummary?.canonicalAlias
-                            ?: getString(R.string.space_explore_activity_title)
+                            ?: getString(R.string.space_explore_activity_title2)
         }
 
         spaceCardRenderer.render(state.currentRootSummary, emptyList(), this, views.spaceCard, showDescription = false)

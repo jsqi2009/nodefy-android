@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/spaceAddRoom"
-        android:title="@string/space_add_existing_rooms"
+        android:title="@string/space_add_existing_rooms2"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/spaceCreateRoom"
-        android:title="@string/create_new_room"
+        android:title="@string/create_new_room2"
         app:iconTint="?colorSecondary"
         app:showAsAction="never" />
 

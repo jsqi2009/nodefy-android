@@ -24,7 +24,7 @@
         android:id="@+id/createRooms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:actionTitle="@string/create_new_room"
+        app:actionTitle="@string/create_new_room2"
         app:leftIcon="@drawable/ic_fab_add"
         app:tint="?vctr_content_primary"
         app:titleTextColor="?vctr_content_primary"
@@ -34,7 +34,7 @@
         android:id="@+id/addRooms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:actionTitle="@string/space_add_existing_rooms_only"
+        app:actionTitle="@string/space_add_existing_rooms_only2"
         app:leftIcon="@drawable/ic_fab_add"
         app:tint="?vctr_content_primary"
         app:titleTextColor="?vctr_content_primary"
@@ -49,6 +49,7 @@
         app:leftIcon="@drawable/ic_fab_add"
         app:tint="?vctr_content_primary"
         app:titleTextColor="?vctr_content_primary"
-        tools:actionDescription="" />
+        tools:actionDescription=""
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -2367,6 +2367,13 @@
     <string name="space_add_existing_rooms_only2">添加现有群组</string>
     <string name="create_spaces_room_public_header_desc2">我们将会为此创建群组。你也可以在稍后增加更多。</string>
     <string name="create_spaces_room_private_header_desc2">让我们为每个主题创建一个群组。你也可以稍后再进行增加，包括现有群组。</string>
+    <string name="this_space_has_no_rooms2">此空间没有群组</string>
+    <string name="this_space_has_no_rooms_admin2">有些群组可能被隐藏，因为其为私有群组，你需要得到邀请。</string>
+    <string name="this_space_has_no_rooms_not_admin2">有些群组可能被隐藏，因为其为私有群组，你需要得到邀请。
+\n你没有权限添加群组。</string>
+    <string name="space_add_existing_rooms2">添加现有群组和空间</string>
+
+
 
 
 
