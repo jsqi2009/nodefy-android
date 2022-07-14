@@ -2359,6 +2359,12 @@
     <string name="space_search_hint">搜索空间</string>
     <string name="space_explore_activity_title2">探索群组</string>
     <string name="space_add_child_title2">添加群组</string>
+    <string name="space_settings_manage_rooms2">管理群组</string>
+    <string name="space_manage_rooms_and_spaces2">管理群组和空间</string>
+    <string name="leave_specific_ones2">离开特定群组和空间…</string>
+    <string name="dont_leave_any2">不要离开任何群组和空间</string>
+    <string name="leave_all_rooms_and_spaces2">离开所有群组和空间</string>
+    <string name="space_add_existing_rooms_only2">添加现有群组</string>
 
     <!-- nodefy  home create group -->
     <string name="room_directory_search_hint2">名称或ID</string>

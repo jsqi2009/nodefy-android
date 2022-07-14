@@ -120,8 +120,8 @@ class SpaceAddRoomFragment @Inject constructor(
         viewModel.onEach(SpaceAddRoomsState::onlyShowSpaces) {
             spaceEpoxyController.disabled = !it
             roomEpoxyController.disabled = it
-            views.createNewRoom.text = if (it) getString(R.string.create_space) else getString(R.string.create_new_room)
-            toolbar?.setTitle(if (it) R.string.space_add_existing_spaces else R.string.space_add_existing_rooms_only)
+            views.createNewRoom.text = if (it) getString(R.string.create_space) else getString(R.string.create_new_room2)
+            toolbar?.setTitle(if (it) R.string.space_add_existing_spaces else R.string.space_add_existing_rooms_only2)
         }
 
         views.createNewRoom.debouncedClicks {

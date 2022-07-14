@@ -140,7 +140,7 @@ class SpaceSettingsController @Inject constructor(
 
         buildProfileAction(
                 id = "manage_rooms",
-                title = stringProvider.getString(R.string.space_settings_manage_rooms),
+                title = stringProvider.getString(R.string.space_settings_manage_rooms2),
                 // subtitle = data.getJoinRuleWording(stringProvider),
                 divider = true,
                 editable = data.actionPermissions.canAddChildren,

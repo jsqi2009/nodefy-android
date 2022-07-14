@@ -68,7 +68,7 @@ class SpaceManageRoomsFragment @Inject constructor(
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbar(views.addRoomToSpaceToolbar)
-                .setTitle(R.string.space_manage_rooms_and_spaces)
+                .setTitle(R.string.space_manage_rooms_and_spaces2)
                 .allowBack()
 
         views.createNewRoom.isVisible = false

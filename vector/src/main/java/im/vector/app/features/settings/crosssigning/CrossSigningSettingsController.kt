@@ -47,7 +47,8 @@ class CrossSigningSettingsController @Inject constructor(
             data.xSigningKeyCanSign        -> {
                 genericItem {
                     id("can")
-                    titleIconResourceId(R.drawable.ic_shield_trusted)
+//                    titleIconResourceId(R.drawable.ic_shield_trusted)
+                    titleIconResourceId(R.drawable.ic_shield_trusted_nodefy)
                     title(host.stringProvider.getString(R.string.encryption_information_dg_xsigning_complete).toEpoxyCharSequence())
                 }
                 genericButtonItem {
@@ -61,7 +62,8 @@ class CrossSigningSettingsController @Inject constructor(
             data.xSigningKeysAreTrusted    -> {
                 genericItem {
                     id("trusted")
-                    titleIconResourceId(R.drawable.ic_shield_custom)
+//                    titleIconResourceId(R.drawable.ic_shield_custom)
+                    titleIconResourceId(R.drawable.ic_shield_custom_nodefy)
                     title(host.stringProvider.getString(R.string.encryption_information_dg_xsigning_trusted).toEpoxyCharSequence())
                 }
                 genericButtonItem {

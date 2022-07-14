@@ -337,11 +337,13 @@ class VectorSettingsSecurityPrivacyFragment @Inject constructor(
 
         when {
             xSigningKeyCanSign        -> {
-                mCrossSigningStatePreference.setIcon(R.drawable.ic_shield_trusted)
+//                mCrossSigningStatePreference.setIcon(R.drawable.ic_shield_trusted)
+                mCrossSigningStatePreference.setIcon(R.drawable.ic_shield_trusted_nodefy)
                 mCrossSigningStatePreference.summary = getString(R.string.encryption_information_dg_xsigning_complete)
             }
             xSigningKeysAreTrusted    -> {
-                mCrossSigningStatePreference.setIcon(R.drawable.ic_shield_custom)
+//                mCrossSigningStatePreference.setIcon(R.drawable.ic_shield_custom)
+                mCrossSigningStatePreference.setIcon(R.drawable.ic_shield_custom_nodefy)
                 mCrossSigningStatePreference.summary = getString(R.string.encryption_information_dg_xsigning_trusted)
             }
             xSigningIsEnableInAccount -> {

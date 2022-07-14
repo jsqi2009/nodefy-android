@@ -3125,6 +3125,12 @@
     <string name="space_search_hint">Search spaces</string>
     <string name="space_explore_activity_title2">Explore groups</string>
     <string name="space_add_child_title2">Add groups</string>
+    <string name="space_settings_manage_rooms2">Manage groups</string>
+    <string name="space_manage_rooms_and_spaces2">Manage groups and spaces</string>
+    <string name="leave_all_rooms_and_spaces2">Leave all groups and spaces</string>
+    <string name="dont_leave_any2">Don’t leave any groups and spaces</string>
+    <string name="leave_specific_ones2">Leave specific groups and spaces…</string>
+    <string name="space_add_existing_rooms_only2">Add existing groups</string>
 
     <!-- nodefy  home create group -->
     <string name="room_directory_search_hint2">Name or ID</string>

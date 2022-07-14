@@ -32,7 +32,7 @@
             android:id="@+id/leave_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/leave_all_rooms_and_spaces"
+            android:text="@string/leave_all_rooms_and_spaces2"
             tools:checked="true" />
 
         <RadioButton
@@ -40,14 +40,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minWidth="180dp"
-            android:text="@string/dont_leave_any" />
+            android:text="@string/dont_leave_any2" />
 
         <RadioButton
             android:id="@+id/leave_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minWidth="180dp"
-            android:text="@string/leave_specific_ones" />
+            android:text="@string/leave_specific_ones2" />
 
     </RadioGroup>
 

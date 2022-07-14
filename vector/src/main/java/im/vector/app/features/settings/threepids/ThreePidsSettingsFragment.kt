@@ -105,7 +105,7 @@ class ThreePidsSettingsFragment @Inject constructor(
 
     override fun onResume() {
         super.onResume()
-        (activity as? AppCompatActivity)?.supportActionBar?.setTitle(R.string.settings_emails_and_phone_numbers_title)
+        (activity as? AppCompatActivity)?.supportActionBar?.setTitle(R.string.settings_emails_and_phone_numbers_title2)
     }
 
     override fun invalidate() = withState(viewModel) { state ->

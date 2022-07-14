@@ -170,7 +170,11 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                 views.tvConnectStatus.text = "Registered"
                 loginSuccessFlag = true
                 //Toast.makeText(this@SipLoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
-                saveServerAccount(true)
+                if (index == "2") {
+                    updateServerAccount(true)
+                } else {
+                    saveServerAccount(true)
+                }
             }
         }
     }
