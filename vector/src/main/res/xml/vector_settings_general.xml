@@ -28,8 +28,8 @@
 
         <im.vector.app.core.preference.VectorPreference
             android:key="SETTINGS_EMAILS_AND_PHONE_NUMBERS_PREFERENCE_KEY"
-            android:summary="@string/settings_emails_and_phone_numbers_summary"
-            android:title="@string/settings_emails_and_phone_numbers_title"
+            android:summary="@string/settings_emails_and_phone_numbers_summary2"
+            android:title="@string/settings_emails_and_phone_numbers_title2"
             app:fragment="im.vector.app.features.settings.threepids.ThreePidsSettingsFragment" />
 
         <im.vector.app.core.preference.VectorPreference

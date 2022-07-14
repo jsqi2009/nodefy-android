@@ -2357,6 +2357,8 @@
     <!-- nodefy.me space -->
     <string name="space_title">空间</string>
     <string name="space_search_hint">搜索空间</string>
+    <string name="space_explore_activity_title2">探索群组</string>
+    <string name="space_add_child_title2">添加群组</string>
 
     <!-- nodefy  home create group -->
     <string name="room_directory_search_hint2">名称或ID</string>
@@ -2369,5 +2371,8 @@
     <string name="preference_root_sign_out">登出</string>
     <string name="report_issue">问题反馈</string>
     <string name="settings_qr_code">二维码</string>
+
+    <string name="settings_emails_and_phone_numbers_title2">电子邮件</string>
+    <string name="settings_emails_and_phone_numbers_summary2">管理链接到你的Nodefy账号的电子邮件</string>
 
 </resources>

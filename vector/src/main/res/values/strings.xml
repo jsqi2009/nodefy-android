@@ -3123,6 +3123,8 @@
     <!-- nodefy.me space -->
     <string name="space_title">Spaces</string>
     <string name="space_search_hint">Search spaces</string>
+    <string name="space_explore_activity_title2">Explore groups</string>
+    <string name="space_add_child_title2">Add groups</string>
 
     <!-- nodefy  home create group -->
     <string name="room_directory_search_hint2">Name or ID</string>
@@ -3135,5 +3137,8 @@
     <string name="preference_root_sign_out">Sign out</string>
     <string name="report_issue">Report an issue</string>
     <string name="settings_qr_code">QR Code</string>
+
+    <string name="settings_emails_and_phone_numbers_title2">Emails</string>
+    <string name="settings_emails_and_phone_numbers_summary2">Manage emails linked to your Nodefy account</string>
 
 </resources>

@@ -298,7 +298,7 @@ class HomeActivity :
         }
         homeActivityViewModel.onEach { renderState(it) }
 
-        shortcutsHandler.observeRoomsAndBuildShortcuts(lifecycleScope)
+        //shortcutsHandler.observeRoomsAndBuildShortcuts(lifecycleScope)
 
         if (isFirstCreation()) {
             handleIntent(intent)

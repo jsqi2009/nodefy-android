@@ -118,6 +118,11 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
          * set statusbar color
          */
         statusBarColor(this)
+        // Also clear the dynamic shortcuts
+        try {
+            shortcutsHandler.clearShortcuts()
+        } catch (e: Exception) {
+        }
     }
 
     private fun clearNotifications() {
