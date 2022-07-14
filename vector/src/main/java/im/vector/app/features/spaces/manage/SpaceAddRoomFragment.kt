@@ -205,7 +205,8 @@ class SpaceAddRoomFragment @Inject constructor(
     }
 
     private fun setupRoomSection() {
-        roomEpoxyController.sectionName = getString(R.string.rooms_header)
+//        roomEpoxyController.sectionName = getString(R.string.rooms_header)
+        roomEpoxyController.sectionName = getString(R.string.bottom_action_rooms2)
         roomEpoxyController.listener = this
 
         viewModel.roomUpdatableLivePageResult.liveBoundaries.observe(viewLifecycleOwner) {
@@ -224,7 +225,8 @@ class SpaceAddRoomFragment @Inject constructor(
 
     private fun setupDmSection() {
         // This controller can be disabled depending on the space type (public or not)
-        dmEpoxyController.sectionName = getString(R.string.direct_chats_header)
+//        dmEpoxyController.sectionName = getString(R.string.direct_chats_header)
+        dmEpoxyController.sectionName = getString(R.string.room_participants_header_direct_chats)
         dmEpoxyController.listener = this
         viewModel.dmUpdatableLivePageResult.liveBoundaries.observe(viewLifecycleOwner) {
             dmEpoxyController.boundaryChange(it)

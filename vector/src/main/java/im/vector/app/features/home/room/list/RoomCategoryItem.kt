@@ -16,7 +16,9 @@
 
 package im.vector.app.features.home.room.list
 
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -51,6 +53,18 @@ abstract class RoomCategoryItem : VectorEpoxyModel<RoomCategoryItem.Holder>() {
         holder.counterView.text = itemCount.takeIf { it > 0 }?.toString().orEmpty()
         holder.counterView.setCompoundDrawablesWithIntrinsicBounds(null, null, expandedArrowDrawable, null)
         holder.rootView.onClick(listener)
+
+        holder.roomAddView.visibility = View.GONE
+        holder.noDataTips.visibility = View.GONE
+        holder.counterView.visibility = View.GONE
+        if (title.lowercase() == "GROUP".lowercase() || title.lowercase() == "群组") {
+            holder.typeImageView.setImageResource(R.drawable.ic_group_section_icon)
+        }else if (title.lowercase() == "Direct Messages".lowercase() || title.lowercase() == "私聊消息") {
+            holder.typeImageView.setImageResource(R.drawable.ic_message_section_icon)
+        } else {
+            holder.typeImageView.visibility = View.GONE
+        }
+
     }
 
     class Holder : VectorEpoxyHolder() {
@@ -58,5 +72,9 @@ abstract class RoomCategoryItem : VectorEpoxyModel<RoomCategoryItem.Holder>() {
         val titleView by bind<TextView>(R.id.roomCategoryTitleView)
         val counterView by bind<TextView>(R.id.roomCategoryCounterView)
         val rootView by bind<ViewGroup>(R.id.roomCategoryRootView)
+
+        val roomAddView by bind<ImageView>(R.id.roomAddImageView)
+        val typeImageView by bind<ImageView>(R.id.typeImageView)
+        val noDataTips by bind<TextView>(R.id.roomNoDataTips)
     }
 }

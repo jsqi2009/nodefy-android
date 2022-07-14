@@ -130,7 +130,8 @@ class SpaceSettingsMenuBottomSheet : VectorBaseBottomSheetDialogFragment<BottomS
 
         views.invitePeople.isVisible = state.canInvite || state.spaceSummary?.isPublic.orFalse()
         views.addRooms.isVisible = state.canAddChild
-        views.addSpaces.isVisible = state.canAddChild
+//        views.addSpaces.isVisible = state.canAddChild
+        views.addSpaces.isVisible = false
     }
 
     companion object {
