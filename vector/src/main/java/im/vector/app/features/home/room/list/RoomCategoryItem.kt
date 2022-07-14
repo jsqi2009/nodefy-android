@@ -56,7 +56,6 @@ abstract class RoomCategoryItem : VectorEpoxyModel<RoomCategoryItem.Holder>() {
 
         holder.roomAddView.visibility = View.GONE
         holder.noDataTips.visibility = View.GONE
-        holder.counterView.visibility = View.GONE
         if (title.lowercase() == "GROUP".lowercase() || title.lowercase() == "群组") {
             holder.typeImageView.setImageResource(R.drawable.ic_group_section_icon)
         }else if (title.lowercase() == "Direct Messages".lowercase() || title.lowercase() == "私聊消息") {

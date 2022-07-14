@@ -56,9 +56,9 @@ class SpaceDefaultRoomEpoxyController @Inject constructor(
             text(
                     host.stringProvider.getString(
                             if (data?.spaceType == SpaceType.Public) {
-                                R.string.create_spaces_room_public_header_desc
+                                R.string.create_spaces_room_public_header_desc2
                             } else {
-                                R.string.create_spaces_room_private_header_desc
+                                R.string.create_spaces_room_private_header_desc2
                             }
                     ).toEpoxyCharSequence()
             )
@@ -70,7 +70,7 @@ class SpaceDefaultRoomEpoxyController @Inject constructor(
             id("roomName1")
             enabled(true)
             value(firstRoomName)
-            hint(host.stringProvider.getString(R.string.create_room_name_section))
+            hint(host.stringProvider.getString(R.string.create_room_name_section2))
             endIconMode(TextInputLayout.END_ICON_CLEAR_TEXT)
             onTextChange { text ->
                 host.listener?.onNameChange(0, text)
@@ -82,7 +82,7 @@ class SpaceDefaultRoomEpoxyController @Inject constructor(
             id("roomName2")
             enabled(true)
             value(secondRoomName)
-            hint(host.stringProvider.getString(R.string.create_room_name_section))
+            hint(host.stringProvider.getString(R.string.create_room_name_section2))
             endIconMode(TextInputLayout.END_ICON_CLEAR_TEXT)
             onTextChange { text ->
                 host.listener?.onNameChange(1, text)
@@ -94,7 +94,7 @@ class SpaceDefaultRoomEpoxyController @Inject constructor(
             id("roomName3")
             enabled(true)
             value(thirdRoomName)
-            hint(host.stringProvider.getString(R.string.create_room_name_section))
+            hint(host.stringProvider.getString(R.string.create_room_name_section2))
             endIconMode(TextInputLayout.END_ICON_CLEAR_TEXT)
             onTextChange { text ->
                 host.listener?.onNameChange(2, text)

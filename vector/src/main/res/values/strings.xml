@@ -3131,6 +3131,10 @@
     <string name="dont_leave_any2">Don’t leave any groups and spaces</string>
     <string name="leave_specific_ones2">Leave specific groups and spaces…</string>
     <string name="space_add_existing_rooms_only2">Add existing groups</string>
+    <string name="create_spaces_room_public_header_desc2">We’ll create groups for them. You can add more later too.</string>
+    <string name="create_spaces_room_private_header_desc2">Let’s create a group for each of them. You can add more later too, including already existing ones.</string>
+
+
 
     <!-- nodefy  home create group -->
     <string name="room_directory_search_hint2">Name or ID</string>
@@ -3139,6 +3143,10 @@
     <string name="home_switch_network">Switch</string>
     <string name="home_group_type_title">Group Type</string>
     <string name="create_new_room2">Create New Group</string>
+    <string name="create_room_name_section2">"Group name"</string>
+    <string name="create_room_topic_section2">"Group topic (optional)"</string>
+    <string name="create_room_settings_section2">"Group settings"</string>
+    <string name="room_settings_room_access_title2">Group access</string>
 
     <string name="preference_root_sign_out">Sign out</string>
     <string name="report_issue">Report an issue</string>

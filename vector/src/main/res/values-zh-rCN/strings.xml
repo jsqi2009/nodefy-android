@@ -2365,6 +2365,10 @@
     <string name="dont_leave_any2">不要离开任何群组和空间</string>
     <string name="leave_all_rooms_and_spaces2">离开所有群组和空间</string>
     <string name="space_add_existing_rooms_only2">添加现有群组</string>
+    <string name="create_spaces_room_public_header_desc2">我们将会为此创建群组。你也可以在稍后增加更多。</string>
+    <string name="create_spaces_room_private_header_desc2">让我们为每个主题创建一个群组。你也可以稍后再进行增加，包括现有群组。</string>
+
+
 
     <!-- nodefy  home create group -->
     <string name="room_directory_search_hint2">名称或ID</string>
@@ -2373,6 +2377,10 @@
     <string name="home_switch_network">切换</string>
     <string name="home_group_type_title">群组类型</string>
     <string name="create_new_room2">创建新群组</string>
+    <string name="create_room_settings_section2">群组设置</string>
+    <string name="create_room_topic_section2">群组话题（可选）</string>
+    <string name="create_room_name_section2">群组名称</string>
+    <string name="room_settings_room_access_title2">群组访问权限</string>
 
     <string name="preference_root_sign_out">登出</string>
     <string name="report_issue">问题反馈</string>

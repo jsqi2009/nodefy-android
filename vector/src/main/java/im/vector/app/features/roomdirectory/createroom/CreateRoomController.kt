@@ -61,7 +61,7 @@ class CreateRoomController @Inject constructor(
         }*/
         settingsSectionTitleItem {
             id("nameSection")
-            titleResId(R.string.create_room_name_section)
+            titleResId(R.string.create_room_name_section2)
         }
         formEditTextItem {
             id("name")
@@ -75,7 +75,7 @@ class CreateRoomController @Inject constructor(
         }
         settingsSectionTitleItem {
             id("topicSection")
-            titleResId(R.string.create_room_topic_section)
+            titleResId(R.string.create_room_topic_section2)
         }
         formEditTextItem {
             id("topic")
@@ -91,7 +91,7 @@ class CreateRoomController @Inject constructor(
 
         settingsSectionTitleItem {
             id("visibility")
-            titleResId(R.string.room_settings_room_access_title)
+            titleResId(R.string.room_settings_room_access_title2)
         }
 
         when (viewState.roomJoinRules) {
@@ -132,7 +132,7 @@ class CreateRoomController @Inject constructor(
 
         settingsSectionTitleItem {
             id("settingsSection")
-            titleResId(R.string.create_room_settings_section)
+            titleResId(R.string.create_room_settings_section2)
         }
 
         if (viewState.roomJoinRules == RoomJoinRules.PUBLIC) {
