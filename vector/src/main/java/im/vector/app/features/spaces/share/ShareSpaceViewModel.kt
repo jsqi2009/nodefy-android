@@ -82,7 +82,10 @@ class ShareSpaceViewModel @AssistedInject constructor(
                     session.permalinkService().createRoomPermalink(initialState.spaceId)
                 }
                 if (permalink != null) {
-                    _viewEvents.post(ShareSpaceViewEvents.ShowInviteByLink(permalink, roomSummary?.name ?: ""))
+//                    _viewEvents.post(ShareSpaceViewEvents.ShowInviteByLink(permalink, roomSummary?.name ?: ""))
+                    val serverArray = session.sessionParams.homeServerUrlBase.split(":")
+                    val server =  serverArray[0] + ":" + serverArray[1] + "/#/"
+                    _viewEvents.post(ShareSpaceViewEvents.ShowInviteByLink(server, roomSummary?.name ?: ""))
                 }
             }
             ShareSpaceAction.InviteByMxId -> {

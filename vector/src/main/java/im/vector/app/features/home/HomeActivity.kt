@@ -753,6 +753,7 @@ class HomeActivity :
         Timber.e("userID-----$userID")
         Timber.e("token-----$accessToken")
         Timber.e("homeServer-----$homeServer")
+        Timber.e("homeServerHost-----${session.sessionParams.homeServerHost}")
 
         dialerSession.homeServer = homeServer
         dialerSession.userID = userID

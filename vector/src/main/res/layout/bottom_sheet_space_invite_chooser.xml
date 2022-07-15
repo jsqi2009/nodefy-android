@@ -38,6 +38,6 @@
         app:icon="@drawable/ic_invite_people"
         app:iconTint="?vctr_content_secondary"
         app:subTitle="@string/invite_just_to_this_room_desc"
-        app:title="@string/invite_just_to_this_room" />
+        app:title="@string/invite_just_to_this_room2" />
 
 </LinearLayout>

@@ -3137,7 +3137,8 @@
     <string name="this_space_has_no_rooms_not_admin2">Some groups may be hidden because they’re private and you need an invite.\nYou don’t have permission to add groups.</string>
     <string name="this_space_has_no_rooms_admin2">Some groups may be hidden because they’re private and you need an invite.</string>
     <string name="space_add_existing_rooms2">Add existing groups and space</string>
-
+    <string name="invite_by_username_or_mail2">Invite by username</string>
+    <string name="invite_just_to_this_room2">Just to this group</string>
 
 
 

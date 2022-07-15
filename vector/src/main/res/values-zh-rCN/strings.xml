@@ -2372,7 +2372,8 @@
     <string name="this_space_has_no_rooms_not_admin2">有些群组可能被隐藏，因为其为私有群组，你需要得到邀请。
 \n你没有权限添加群组。</string>
     <string name="space_add_existing_rooms2">添加现有群组和空间</string>
-
+    <string name="invite_by_username_or_mail2">通过用户名邀请</string>
+    <string name="invite_just_to_this_room2">刚到此群组</string>
 
 
 
