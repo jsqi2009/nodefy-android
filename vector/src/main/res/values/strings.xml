@@ -3161,4 +3161,9 @@
     <string name="settings_emails_and_phone_numbers_title2">Emails</string>
     <string name="settings_emails_and_phone_numbers_summary2">Manage emails linked to your Nodefy account</string>
 
+
+    <!-- nodefy directory activity  -->
+    <string name="select_room_directory2">Select a group directory</string>
+    <string name="directory_server_all_rooms_on_server2">All groups on %s server</string>
+
 </resources>

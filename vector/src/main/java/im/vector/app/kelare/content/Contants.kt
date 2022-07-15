@@ -28,6 +28,8 @@ object Contants {
     const val Account3_Pwd = "7cU3rjjJjb4EXqwFqTHBvLzAjy7A3s"
     const val Account2_Pwd = "P@55word1!"
 
+    //gitter.im server
+    const val SERVER_GITTER = "gitter.im"
 
     //机器人房间名字
     const val SkypeBotRoomName = "Skype-Bot-Room-GmQHk5QBe5RFVL"

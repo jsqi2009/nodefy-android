@@ -62,7 +62,7 @@ class RoomDirectoryPickerFragment @Inject constructor(private val roomDirectoryP
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbar(views.toolbar)
-                .setTitle(R.string.select_room_directory)
+                .setTitle(R.string.select_room_directory2)
                 .allowBack()
 
         sharedActionViewModel = activityViewModelProvider.get(RoomDirectorySharedActionViewModel::class.java)

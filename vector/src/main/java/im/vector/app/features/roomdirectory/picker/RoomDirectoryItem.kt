@@ -73,6 +73,11 @@ abstract class RoomDirectoryItem : VectorEpoxyModel<RoomDirectoryItem.Holder>() 
         holder.nameView.text = directoryName
         holder.descriptionView.setTextOrHide(directoryDescription)
         holder.checkedView.isVisible = checked
+
+        holder.avatarView.isVisible = false
+        if (directoryDescription.isNullOrEmpty()) {
+            holder.nameView.isVisible = false
+        }
     }
 
     class Holder : VectorEpoxyHolder() {

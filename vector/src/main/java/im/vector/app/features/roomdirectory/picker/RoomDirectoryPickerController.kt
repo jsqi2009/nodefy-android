@@ -41,6 +41,7 @@ import im.vector.app.features.discovery.settingsInformationItem
 import im.vector.app.features.form.formEditTextItem
 import im.vector.app.features.roomdirectory.RoomDirectoryData
 import im.vector.app.features.roomdirectory.RoomDirectoryServer
+import im.vector.app.kelare.content.Contants
 import org.matrix.android.sdk.api.failure.Failure
 import javax.inject.Inject
 import javax.net.ssl.HttpsURLConnection
@@ -61,7 +62,11 @@ class RoomDirectoryPickerController @Inject constructor(
         when (val asyncThirdPartyProtocol = data.asyncThirdPartyRequest) {
             is Success -> {
                 data.directories.join(
-                        each = { _, roomDirectoryServer -> buildDirectory(roomDirectoryServer) },
+                        each = { _, roomDirectoryServer ->
+                            if (roomDirectoryServer.serverName != Contants.SERVER_GITTER) {
+                                buildDirectory(roomDirectoryServer)
+                            }
+                        },
                         between = { idx, _ -> buildDivider(idx) }
                 )
                 buildForm(data)
@@ -135,7 +140,7 @@ class RoomDirectoryPickerController @Inject constructor(
             }
             when (data.addServerAsync) {
                 Uninitialized,
-                is Fail    -> settingsContinueCancelItem {
+                is Fail -> settingsContinueCancelItem {
                     id("continueCancel")
                     continueText(host.stringProvider.getString(R.string.ok))
                     canContinue(data.enteredServer.isNotEmpty())
@@ -191,15 +196,17 @@ class RoomDirectoryPickerController @Inject constructor(
             roomDirectoryItem {
                 id("server_${roomDirectoryServer}_proto_$roomDirectoryData")
                 directoryName(
-                        if (roomDirectoryData.includeAllNetworks) {
-                            host.stringProvider.getString(R.string.directory_server_all_rooms_on_server, roomDirectoryServer.serverName)
+                        roomDirectoryServer.serverName
+                        /*if (roomDirectoryData.includeAllNetworks) {
+                            host.stringProvider.getString(R.string.directory_server_all_rooms_on_server2, roomDirectoryServer.serverName)
                         } else {
                             roomDirectoryData.displayName
-                        }
+                        }*/
                 )
                 if (roomDirectoryData.displayName == RoomDirectoryData.MATRIX_PROTOCOL_NAME && !roomDirectoryData.includeAllNetworks) {
                     directoryDescription(
-                            host.stringProvider.getString(R.string.directory_server_native_rooms, roomDirectoryServer.serverName)
+//                            host.stringProvider.getString(R.string.directory_server_native_rooms, roomDirectoryServer.serverName)
+                            host.stringProvider.getString(R.string.directory_server_all_rooms_on_server2, roomDirectoryServer.serverName)
                     )
                 }
                 directoryAvatarUrl(roomDirectoryData.avatarUrl)
