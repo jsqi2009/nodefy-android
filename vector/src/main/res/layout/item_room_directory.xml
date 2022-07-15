@@ -60,7 +60,7 @@
         android:ellipsize="end"
         android:lines="1"
         android:maxLines="2"
-        android:textColor="?vctr_content_primary"
+        android:textColor="?vctr_content_secondary"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/itemRoomDirectoryChecked"
