@@ -47,7 +47,7 @@ class LegalsController @Inject constructor(
     override fun buildModels(data: LegalsState) {
         buildAppSection()
         buildHomeserverSection(data)
-        buildIdentityServerSection(data)
+        //buildIdentityServerSection(data)
         buildThirdPartyNotices()
     }
 
@@ -85,9 +85,9 @@ class LegalsController @Inject constructor(
 
         when (serverAndPolicies) {
             Uninitialized,
-            is Loading -> loadingItem {
+            /*is Loading -> loadingItem {
                 id("loading_$tag")
-            }
+            }*/
             is Success -> {
                 val policies = serverAndPolicies()?.policies
                 if (policies.isNullOrEmpty()) {

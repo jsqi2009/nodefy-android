@@ -46,8 +46,10 @@ class JoinConferenceView @JvmOverloads constructor(
         super.onAttachedToWindow()
         views = ViewJoinConferenceBinding.bind(this)
         views?.joinConferenceButton?.setOnClickListener { onJoinClicked?.invoke() }
-        val colorFrom = ContextCompat.getColor(context, R.color.palette_element_green)
-        val colorTo = ContextCompat.getColor(context, R.color.join_conference_animated_color)
+//        val colorFrom = ContextCompat.getColor(context, R.color.palette_element_green)
+//        val colorTo = ContextCompat.getColor(context, R.color.join_conference_animated_color)
+        val colorFrom = ContextCompat.getColor(context, R.color.app_color)
+        val colorTo = ContextCompat.getColor(context, R.color.app_color)
         // Animate button color to highlight
         backgroundAnimator = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo).apply {
             repeatMode = ValueAnimator.REVERSE

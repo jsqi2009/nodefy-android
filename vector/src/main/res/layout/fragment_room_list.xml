@@ -78,10 +78,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/roomListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:overScrollMode="always"
             tools:itemCount="5"
             tools:listitem="@layout/item_room" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color_black"/>
 
     </LinearLayout>
 

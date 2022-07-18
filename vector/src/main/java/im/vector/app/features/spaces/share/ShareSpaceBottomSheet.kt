@@ -67,6 +67,8 @@ class ShareSpaceBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetSpa
 
         views.inviteByLinkButton.isVisible = state.canShareLink
         views.inviteByMxidButton.isVisible = state.canInviteByMxId
+
+        views.inviteByLinkButton.isVisible = false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
