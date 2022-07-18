@@ -62,6 +62,7 @@ import im.vector.app.features.media.AttachmentData
 import im.vector.app.features.media.ImageContentRenderer
 import im.vector.app.features.media.VideoContentRenderer
 import im.vector.app.features.settings.VectorPreferences
+import im.vector.app.kelare.content.Contants
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.events.model.EventType
 import org.matrix.android.sdk.api.session.events.model.toModel
@@ -333,6 +334,7 @@ class TimelineEventController @Inject constructor(
                 .addWhenLoading(Timeline.Direction.FORWARDS)
 
         val timelineModels = getModels()
+        Timber.e("chat messages list----> ${timelineModels.toString()}")
         add(timelineModels)
         if (hasReachedInvite && hasUTD) {
             return
@@ -350,7 +352,10 @@ class TimelineEventController @Inject constructor(
 // Timeline.LISTENER ***************************************************************************
 
     override fun onTimelineUpdated(snapshot: List<TimelineEvent>) {
-        submitSnapshot(snapshot)
+        //submitSnapshot(snapshot)
+
+        val list = filterBotMessage(snapshot)
+        submitSnapshot(list)
     }
 
     private fun submitSnapshot(newSnapshot: List<TimelineEvent>) {
@@ -639,4 +644,15 @@ class TimelineEventController @Inject constructor(
             return isCacheable && partialState.highlightedEventId != eventId
         }
     }
+
+    private fun filterBotMessage(timeList: List<TimelineEvent>):List<TimelineEvent> {
+        val resultList: ArrayList<TimelineEvent> = ArrayList()
+        timeList.forEach {
+            if (!it.senderInfo.userId.contains(Contants.SkypeBotName)) {
+                resultList.add(it)
+            }
+        }
+        return resultList
+    }
+
 }

@@ -324,7 +324,7 @@ class RoomListFragment @Inject constructor(
                                     .also { controller ->
                                         section.livePages.observe(viewLifecycleOwner) { pl ->
 //                                            controller.submitList(pl)
-                                            Timber.e("live page list----${pl}")
+                                            //Timber.e("live page list----${pl}")
                                             if (section.sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase()) {
 //                                                controller.submitList(fetchPublicRoom(pl))
                                                 var publicList = fetchPublicRoom(pl)
