@@ -109,7 +109,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                     formatAccountInfo(false)
                     loginAccount()
                     if (index == "2") {
-                        updateServerAccount(false)
+                        //updateServerAccount(false)
                     }
                 } else {
                     unregisterSipAccount()
@@ -145,7 +145,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                     }
                 } else {
                     isSave = true
-                    updateServerAccount(false)
+                    updateServerAccount(loginSuccessFlag)
                 }
             }
             R.id.ll_advanced -> {
@@ -464,6 +464,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         accountInfo.extension.rtpVideoPortStart = advancedInfo.rtpVideoPortStart
         accountInfo.extension.rtpVideoPortEnd = advancedInfo.rtpVideoPortEnd
         accountInfo.extension.tlsEnable = advancedInfo.tlsEnable
+        accountInfo.extension.isConnected = isConnected
     }
 
     private fun validateAccountInfo():Boolean {

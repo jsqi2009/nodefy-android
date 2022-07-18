@@ -9,9 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:gravity="center_vertical"
-    android:paddingHorizontal="@dimen/layout_horizontal_margin"
-    android:paddingVertical="8dp">
+    android:gravity="center_vertical">
 
     <!--<TextView
         android:id="@+id/roomCategoryTitleView"
@@ -51,12 +49,19 @@
         tools:drawableEnd="@drawable/ic_expand_more"
         tools:text="14" />-->
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/dialer_keyboard_bg_color"/>
+
     <TextView
         android:id="@+id/roomCategoryTitleView"
         style="@style/Widget.Vector.TextView.Subtitle.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_10"
+        android:paddingVertical="@dimen/margin_10"
         android:paddingEnd="@dimen/margin_20"
         android:ellipsize="end"
         android:gravity="center_vertical"
@@ -78,6 +83,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/margin_16"
         android:drawablePadding="2dp"
         android:gravity="center_vertical"
         android:maxLines="1"
@@ -138,6 +144,7 @@
         android:id="@+id/roomAddImageView"
         android:layout_width="@dimen/margin_20"
         android:layout_height="@dimen/margin_20"
+        android:layout_marginEnd="@dimen/margin_16"
         android:src="@drawable/ic_home_add_black"
         app:layout_constraintBottom_toBottomOf="@id/roomCategoryTitleView"
         app:layout_constraintTop_toTopOf="@id/roomCategoryTitleView"
@@ -149,6 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/margin_10"
+        android:layout_marginStart="@dimen/margin_16"
         android:paddingBottom="@dimen/margin_10"
         android:text="@string/home_no_conversations"
         android:textColor="@color/text_color_black1"
