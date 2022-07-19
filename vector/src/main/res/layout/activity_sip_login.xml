@@ -392,6 +392,8 @@
                     android:text=""
                     android:textColor="@color/text_color_dark_gray"
                     android:textSize="15sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:textAlignment="textEnd"
                     tools:ignore="LabelFor,RtlCompat,TextFields" />
 
