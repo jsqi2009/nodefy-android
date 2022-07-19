@@ -75,7 +75,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         if (index == "2") {
             accountInfo = intent.getSerializableExtra("account") as DialerAccountInfo
             isUpload = accountInfo.is_upload
-            if (accountInfo.extension.encryptMedia!!.toLowerCase(Locale.ROOT) == "never") {
+            if (accountInfo.extension.encryptMedia!!.lowercase() == "never") {
                 accountInfo.extension.encryptMedia = "NONE"
             }
         }
@@ -115,6 +115,10 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                     unregisterSipAccount()
                     views.tvConnectStatus.text = "Not Registered"
                     views.tvConnectStatus.setTextColor(resources.getColor(R.color.red, null))
+                    loginSuccessFlag = false
+                    if (index == "2") {
+                        updateServerAccount(false)
+                    }
                 }
 
                 resetViewStatus()
@@ -220,10 +224,10 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
     private fun loginAccount(){
 
         try {
-            val accountName = views.etAccount.text.toString()
-            val username = views.etUsername.text.toString()
-            val password = views.etPassword.text.toString()
-            val displayName = views.etDisplay.text.toString()
+            val accountName = views.etAccount.text.toString().trim().trimEnd()
+            val username = views.etUsername.text.toString().trim().trimEnd()
+            val password = views.etPassword.text.toString().trim().trimEnd()
+            val displayName = views.etDisplay.text.toString().trim().trimEnd()
             var domain = ""
             var proxy = ""
             if (views.etDomain.text.toString().isEmpty()) {
@@ -397,6 +401,8 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
             hideLoadingDialog()
             if (event.isSuccess) {
                 finish()
+            } else {
+                Toast.makeText(this, event.model!!.error, Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
         }
@@ -424,6 +430,8 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                 if (isSave) {
                     finish()
                 }
+            } else {
+                Toast.makeText(this, event.model!!.error, Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
         }
@@ -431,20 +439,20 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
 
     private fun formatAccountInfo(isConnected: Boolean) {
         accountInfo.type_value = "sip"
-        accountInfo.account_name = views.etAccount.text.toString()
+        accountInfo.account_name = views.etAccount.text.toString().trim().trimEnd()
         accountInfo.enabled = isEnable
         accountInfo.is_default = isDefault
-        accountInfo.display_as = views.etDisplay.text.toString()
-        accountInfo.username = views.etUsername.text.toString()
-        accountInfo.password = views.etPassword.text.toString()
+        accountInfo.display_as = views.etDisplay.text.toString().trim().trimEnd()
+        accountInfo.username = views.etUsername.text.toString().trim().trimEnd()
+        accountInfo.password = views.etPassword.text.toString().trim().trimEnd()
         accountInfo.domain = views.etDomain.text.toString().replace(" ", "")
-        accountInfo.voice_mail = views.etVoice.text.toString()
+        accountInfo.voice_mail = views.etVoice.text.toString().trim().trimEnd()
 
-        accountInfo.extension.accountName = views.etAccount.text.toString()
-        accountInfo.extension.displayAs = views.etDisplay.text.toString()
-        accountInfo.extension.username = views.etUsername.text.toString()
+        accountInfo.extension.accountName = views.etAccount.text.toString().trim().trimEnd()
+        accountInfo.extension.displayAs = views.etDisplay.text.toString().trim().trimEnd()
+        accountInfo.extension.username = views.etUsername.text.toString().trim().trimEnd()
         accountInfo.extension.domain = views.etDomain.text.toString().replace(" ", "")
-        accountInfo.extension.password = views.etPassword.text.toString()
+        accountInfo.extension.password = views.etPassword.text.toString().trim().trimEnd()
         accountInfo.extension.enable = isEnable
         if (advancedInfo.outProxy.isNullOrEmpty()) {
             accountInfo.extension.outProxy = advancedInfo.outProxy
@@ -533,10 +541,10 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         }
 
         when {
-            accountInfo.account_name != views.etAccount.text.toString() -> {
+            accountInfo.account_name != views.etAccount.text.toString().trim().trimEnd() -> {
                 return true
             }
-            accountInfo.display_as != views.etDisplay.text.toString() -> {
+            accountInfo.display_as != views.etDisplay.text.toString().trim().trimEnd() -> {
                 return true
             }
             accountInfo.is_default != isDefault -> {
@@ -545,19 +553,19 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
             accountInfo.enabled != isEnable -> {
                 return true
             }
-            accountInfo.display_as != views.etDisplay.text.toString() -> {
+            accountInfo.display_as != views.etDisplay.text.toString().trim().trimEnd() -> {
                 return true
             }
-            accountInfo.username != views.etUsername.text.toString() -> {
+            accountInfo.username != views.etUsername.text.toString().trim().trimEnd() -> {
                 return true
             }
-            accountInfo.password != views.etPassword.text.toString() -> {
+            accountInfo.password != views.etPassword.text.toString().trim().trimEnd() -> {
                 return true
             }
-            accountInfo.domain != views.etDomain.text.toString() -> {
+            accountInfo.domain != views.etDomain.text.toString().trim().trimEnd() -> {
                 return true
             }
-            accountInfo.voice_mail != views.etVoice.text.toString() -> {
+            accountInfo.voice_mail != views.etVoice.text.toString().trim().trimEnd() -> {
                 return true
             }
             accountInfo.extension.outProxy != advancedInfo.outProxy -> {

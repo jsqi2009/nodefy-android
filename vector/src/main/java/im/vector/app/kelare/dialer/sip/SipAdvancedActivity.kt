@@ -182,16 +182,16 @@ class SipAdvancedActivity : VectorBaseActivity<ActivitySipAdvancedBinding>(), Vi
             advancedInfo.outProxy = views.etProxy.text.toString().replace(" ", "")
         }
         advancedInfo.incomingCalls = isIncoming
-        advancedInfo.refreshInterval = views.etRefreshInterval.text.toString()
-        advancedInfo.interval = views.etInterval.text.toString()
-        advancedInfo.sipTransport = views.tvSipTransport.text.toString()
-        advancedInfo.encryptMedia = views.tvEncryptMedia.text.toString()
-        advancedInfo.sipPortStart = views.etRangeStart.text.toString()
-        advancedInfo.sipPortEnd = views.etRangeEnd.text.toString()
-        advancedInfo.rtpAudioPortStart = views.etAudioStart.text.toString()
-        advancedInfo.rtpAudioPortEnd = views.etAudioEnd.text.toString()
-        advancedInfo.rtpVideoPortStart = views.etVideoStart.text.toString()
-        advancedInfo.rtpVideoPortEnd = views.etVideoEnd.text.toString()
+        advancedInfo.refreshInterval = views.etRefreshInterval.text.toString().trim().trimEnd()
+        advancedInfo.interval = views.etInterval.text.toString().trim().trimEnd()
+        advancedInfo.sipTransport = views.tvSipTransport.text.toString().trim().trimEnd()
+        advancedInfo.encryptMedia = views.tvEncryptMedia.text.toString().trim().trimEnd()
+        advancedInfo.sipPortStart = views.etRangeStart.text.toString().trim().trimEnd()
+        advancedInfo.sipPortEnd = views.etRangeEnd.text.toString().trim().trimEnd()
+        advancedInfo.rtpAudioPortStart = views.etAudioStart.text.toString().trim().trimEnd()
+        advancedInfo.rtpAudioPortEnd = views.etAudioEnd.text.toString().trim().trimEnd()
+        advancedInfo.rtpVideoPortStart = views.etVideoStart.text.toString().trim().trimEnd()
+        advancedInfo.rtpVideoPortEnd = views.etVideoEnd.text.toString().trim().trimEnd()
         advancedInfo.tlsEnable = isTls
     }
 
