@@ -65,6 +65,7 @@ abstract class RoomSummaryItem : VectorEpoxyModel<RoomSummaryItem.Holder>() {
     @EpoxyAttribute var showSelected: Boolean = false
     @EpoxyAttribute open var isEmptyDMRoom: Boolean = false
     @EpoxyAttribute lateinit var emptyRoomName: String
+    @EpoxyAttribute open var isBotMessage: Boolean = false
 
     override fun bind(holder: Holder) {
         super.bind(holder)
@@ -89,6 +90,8 @@ abstract class RoomSummaryItem : VectorEpoxyModel<RoomSummaryItem.Holder>() {
         holder.typingView.setTextOrHide(typingMessage)
         holder.lastEventView.isInvisible = holder.typingView.isVisible
         holder.roomAvatarPresenceImageView.render(showPresence, userPresence)
+
+        renderLastEventView(holder, isBotMessage)
     }
 
     override fun unbind(holder: Holder) {
@@ -115,6 +118,14 @@ abstract class RoomSummaryItem : VectorEpoxyModel<RoomSummaryItem.Holder>() {
             holder.titleView.text = emptyRoomName
         } else {
             holder.titleView.text = matrixItem.getBestName()
+        }
+    }
+
+    private fun renderLastEventView(holder: Holder, isBot: Boolean) {
+        if (isBot) {
+            holder.lastEventView.visibility = View.INVISIBLE
+        } else {
+            holder.lastEventView.visibility = View.VISIBLE
         }
     }
 

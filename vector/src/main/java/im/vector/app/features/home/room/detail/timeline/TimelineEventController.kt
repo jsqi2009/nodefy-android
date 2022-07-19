@@ -648,7 +648,8 @@ class TimelineEventController @Inject constructor(
     private fun filterBotMessage(timeList: List<TimelineEvent>):List<TimelineEvent> {
         val resultList: ArrayList<TimelineEvent> = ArrayList()
         timeList.forEach {
-            if (!it.senderInfo.userId.contains(Contants.SkypeBotName)) {
+            if (!it.senderInfo.userId.contains(Contants.SkypeBotName) && !it.senderInfo.userId.contains(Contants.WhatsAppBotName)
+                    && !it.senderInfo.userId.contains(Contants.TelegramBotName) && !it.senderInfo.userId.contains(Contants.SlackBotName)) {
                 resultList.add(it)
             }
         }

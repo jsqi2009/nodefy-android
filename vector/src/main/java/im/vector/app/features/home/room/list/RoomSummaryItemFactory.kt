@@ -28,6 +28,7 @@ import im.vector.app.core.resources.StringProvider
 import im.vector.app.features.home.AvatarRenderer
 import im.vector.app.features.home.room.detail.timeline.format.DisplayableEventFormatter
 import im.vector.app.features.home.room.typing.TypingHelper
+import im.vector.app.kelare.content.Contants
 import im.vector.lib.core.utils.epoxy.charsequence.toEpoxyCharSequence
 import org.matrix.android.sdk.api.session.room.members.ChangeMembershipState
 import org.matrix.android.sdk.api.session.room.model.Membership
@@ -114,9 +115,15 @@ class RoomSummaryItemFactory @Inject constructor(private val displayableEventFor
         var latestFormattedEvent: CharSequence = ""
         var latestEventTime = ""
         val latestEvent = roomSummary.latestPreviewableEvent
+        var isBotMessage = false
         if (latestEvent != null) {
             latestFormattedEvent = displayableEventFormatter.format(latestEvent, roomSummary.isDirect, roomSummary.isDirect.not())
             latestEventTime = dateFormatter.format(latestEvent.root.originServerTs, DateFormatKind.ROOM_LIST)
+
+            if (latestEvent.senderInfo.userId.contains(Contants.SkypeBotName) || latestEvent.senderInfo.userId.contains(Contants.WhatsAppBotName)
+                    || latestEvent.senderInfo.userId.contains(Contants.TelegramBotName) || latestEvent.senderInfo.userId.contains(Contants.SlackBotName)) {
+                isBotMessage = true
+            }
         }
         val typingMessage = typingHelper.getTypingMessage(roomSummary.typingUsers)
 
@@ -151,6 +158,7 @@ class RoomSummaryItemFactory @Inject constructor(private val displayableEventFor
                 .hasDraft(roomSummary.userDrafts.isNotEmpty())
                 .isEmptyDMRoom(isEmptyRoom)
                 .emptyRoomName(emptyRoomName)
+                .isBotMessage(isBotMessage)
                 .itemLongClickListener { _ ->
                     onLongClick?.invoke(roomSummary) ?: false
                 }
