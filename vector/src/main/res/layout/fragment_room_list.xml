@@ -15,7 +15,7 @@
         <LinearLayout
             android:id="@+id/searchLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:paddingVertical="@dimen/margin_15"
             android:orientation="horizontal"
             android:background="@color/app_color"

@@ -23,7 +23,7 @@
         <LinearLayout
             android:id="@+id/homeUsernameLl"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_80"
+            android:layout_height="@dimen/margin_70"
             android:background="@color/app_color"
             android:orientation="horizontal"
             android:visibility="visible">
