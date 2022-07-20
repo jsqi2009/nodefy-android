@@ -28,30 +28,34 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.labo.kaji.relativepopupwindow.RelativePopupWindow
 import im.vector.app.R
+import im.vector.app.kelare.adapter.LanguageAdapter
 import im.vector.app.kelare.adapter.RecyclerItemClickListener
 import im.vector.app.kelare.adapter.SignInTypeAdapter
 import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.DialerSession
+import im.vector.app.kelare.message.widget.BottomDeleteDialog
 import im.vector.app.kelare.utils.UIUtils
+import java.util.Locale
 
 /**
  * author : Jason
  *  date   : 2022/5/27 14:15
  *  desc   :
  */
-class SwitchLanguagePopup(context: Context, private val mBus: AndroidBus, private val selectedType: String, private val typeList: ArrayList<String>) : RelativePopupWindow(context),
+class SwitchLanguagePopup(context: Context, private val mBus: AndroidBus, private val selectedType: String,
+                          private val typeList: ArrayList<Locale>, private val languageSelected: OnLanguageSelected,) : RelativePopupWindow(context),
         RecyclerItemClickListener {
 
 
     private var mSession: DialerSession? = null
     private var mContext:Context? = null
-    private lateinit var mAdapter: SignInTypeAdapter
+    private lateinit var mAdapter: LanguageAdapter
     private var mListView: RecyclerView? = null
 
     init {
         @SuppressLint("InflateParams")
         contentView = LayoutInflater.from(context).inflate(R.layout.popup_sign_in_type_list, null)
-        width = UIUtils.dip2px(context, 150)
+        width = UIUtils.dip2px(context, 120)
         height = ViewGroup.LayoutParams.WRAP_CONTENT
         isFocusable = true
         isOutsideTouchable = true
@@ -70,7 +74,7 @@ class SwitchLanguagePopup(context: Context, private val mBus: AndroidBus, privat
     private fun initView(view: View) {
         mListView = view.findViewById(R.id.mListView)
 
-        mAdapter = SignInTypeAdapter(mContext as Activity, selectedType, this)
+        mAdapter = LanguageAdapter(mContext as Activity, selectedType, this)
         mListView!!.adapter = mAdapter
         mListView!!.layoutManager = LinearLayoutManager(mContext)
         mListView!!.setHasFixedSize(true)
@@ -81,8 +85,13 @@ class SwitchLanguagePopup(context: Context, private val mBus: AndroidBus, privat
     }
 
     override fun onRecyclerViewItemClick(view: View, position: Int) {
-        mBus.post(UpdateLanguageEvent(typeList[position]))
+        languageSelected.onClick(typeList[position])
+        //mBus.post(UpdateLanguageEvent(typeList[position]))
         dismiss()
+    }
+
+    interface OnLanguageSelected {
+        fun onClick(item: Locale)
     }
 
 }

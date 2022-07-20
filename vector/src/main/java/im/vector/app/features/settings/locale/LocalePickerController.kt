@@ -31,6 +31,8 @@ import im.vector.app.core.resources.StringProvider
 import im.vector.app.core.utils.safeCapitalize
 import im.vector.app.features.settings.VectorLocale
 import im.vector.app.features.settings.VectorPreferences
+import im.vector.app.kelare.content.Contants
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 
@@ -78,7 +80,9 @@ class LocalePickerController @Inject constructor(
                     }
                 } else {
                     list()
-                            .filter { it.toString() != data.currentLocale.toString() }
+                            //.filter { it.toString() != data.currentLocale.toString() }
+                            .filter { it.getDisplayCountry(it).lowercase() == Contants.LANGUAGE_COUNTRY_CHINA.lowercase()
+                                    || it.getDisplayCountry(it).lowercase() == Contants.LANGUAGE_COUNTRY_US.lowercase() }
                             .forEach { locale ->
                                 localeItem {
                                     id(locale.toString())

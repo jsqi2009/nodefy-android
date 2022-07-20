@@ -27,14 +27,19 @@ import android.widget.Toast
 import com.labo.kaji.relativepopupwindow.RelativePopupWindow
 import com.squareup.otto.Subscribe
 import im.vector.app.R
+import im.vector.app.core.extensions.restart
 import im.vector.app.core.utils.ensureProtocol
 import im.vector.app.databinding.FragmentFtueAuthKelareLoginBinding
 import im.vector.app.features.onboarding.OnboardingAction
 import im.vector.app.features.onboarding.OnboardingFlow
 import im.vector.app.features.onboarding.OnboardingViewState
 import im.vector.app.features.onboarding.ftueauth.AbstractSSOFtueAuthFragment
+import im.vector.app.features.settings.VectorLocale
+import im.vector.app.kelare.content.Contants
+import timber.log.Timber
+import java.util.Locale
 
-class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthKelareLoginBinding>(), View.OnClickListener {
+class FtueAuthKelareLoginFragment : AbstractSSOFtueAuthFragment<FragmentFtueAuthKelareLoginBinding>(), View.OnClickListener, SwitchLanguagePopup.OnLanguageSelected {
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentFtueAuthKelareLoginBinding {
         return FragmentFtueAuthKelareLoginBinding.inflate(inflater, container, false)
@@ -43,6 +48,8 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
     private val languageList = arrayListOf("English(US)", "中文")
     private val defaultType = "User name"
     private val defaultLanguage = languageList.first()
+    private var allSupportedLocales: ArrayList<Locale> = ArrayList()
+    private var supportedLocales: ArrayList<Locale> = ArrayList()
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +61,7 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
 
     @SuppressLint("SetTextI18n")
     private fun setupViews() {
-
+        getSupportLanguage()
         if (dialerSession.homeServer.isNotEmpty()) {
             views.serverEt.setText(dialerSession.homeServer)
         } else {
@@ -67,7 +74,7 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
         }*/
 
         views.tvType.text = defaultType
-        views.tvLanguage.text = defaultLanguage
+        views.tvLanguage.text = VectorLocale.applicationLocale.getDisplayLanguage(VectorLocale.applicationLocale)
         views.passwordEt.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 return@setOnEditorActionListener true
@@ -148,7 +155,7 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
     @SuppressLint("UseRequireInsteadOfGet", "UseCompatLoadingForDrawables")
     private fun switchLanguage() {
         views.ivLanguageArrow.setImageDrawable(resources.getDrawable(R.drawable.ic_icon_up_arrow_white, null))
-        val languagePopup = SwitchLanguagePopup(activity!!, mBus, views.tvLanguage.text.toString(), languageList)
+        val languagePopup = SwitchLanguagePopup(activity!!, mBus, views.tvLanguage.text.toString(), supportedLocales, this)
         languagePopup!!.showOnAnchor(views.llLanguage, RelativePopupWindow.VerticalPosition.ABOVE,
                 RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, 0, 5,true)
         languagePopup.setOnDismissListener {
@@ -185,4 +192,35 @@ class FtueAuthKelareLoginFragment: AbstractSSOFtueAuthFragment<FragmentFtueAuthK
     override fun updateWithState(state: OnboardingViewState) {
 
     }
+
+    private fun getSupportLanguage() {
+        allSupportedLocales = KelareLocalUtil.getApplicationLocales(requireActivity())
+        allSupportedLocales.forEach {
+            if (it.getDisplayCountry(it).lowercase() == Contants.LANGUAGE_COUNTRY_CHINA.lowercase()
+                    || it.getDisplayCountry(it).lowercase() == Contants.LANGUAGE_COUNTRY_US.lowercase()) {
+
+                supportedLocales.add(it)
+
+                Timber.e("language------${it.getDisplayLanguage(it)}")
+                Timber.e("country------${it.getDisplayCountry(it)}")
+            }
+        }
+    }
+
+    override fun onClick(item: Locale) {
+        views.tvLanguage.text = item.getDisplayLanguage(item)
+        Timber.e("selected language------${item.getDisplayLanguage(item)}")
+        handleSelectLocale(item)
+    }
+
+    /**
+     * switch language
+     */
+    private fun handleSelectLocale(selectedLocal: Locale) {
+        VectorLocale.saveApplicationLocale(selectedLocal)
+        KelareLocalUtil.applyToApplicationContext(requireActivity())
+        requireActivity().restart()
+    }
+
+
 }

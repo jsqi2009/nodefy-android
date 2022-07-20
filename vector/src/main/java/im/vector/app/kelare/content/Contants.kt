@@ -28,6 +28,13 @@ object Contants {
     const val Account3_Pwd = "7cU3rjjJjb4EXqwFqTHBvLzAjy7A3s"
     const val Account2_Pwd = "P@55word1!"
 
+
+    const val LANGUAGE_ENGLISH = "English"
+    const val LANGUAGE_CHINA = "中文"
+
+    const val LANGUAGE_COUNTRY_US = "United States"
+    const val LANGUAGE_COUNTRY_CHINA = "中国"
+
     //gitter.im server
     const val SERVER_GITTER = "gitter.im"
 
