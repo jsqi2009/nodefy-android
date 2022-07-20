@@ -73,7 +73,38 @@ class StartCallActionsHandler(
                             )
                     )
                 } else {
-                    safeStartCall(isVideoCall)
+                    //safeStartCall(isVideoCall)
+
+                    if (state.isDm()) {
+                        safeStartCall(isVideoCall)
+                    } else {
+                        if (!state.isAllowedToManageWidgets) {
+                            // You do not have permission to start a conference call in this room
+                            showDialogWithMessage(
+                                    fragment.getString(
+                                            if (state.isDm()) {
+                                                R.string.no_permissions_to_start_conf_call_in_direct_room
+                                            } else {
+                                                R.string.no_permissions_to_start_conf_call
+                                            }
+                                    )
+                            )
+                        } else {
+                            if (state.hasActiveJitsiWidget()) {
+                                // A conference is already in progress, return
+                            } else {
+                                MaterialAlertDialogBuilder(fragment.requireContext())
+                                        .setTitle(if (isVideoCall) R.string.video_meeting else R.string.audio_meeting)
+                                        .setMessage(R.string.audio_video_meeting_description)
+                                        .setPositiveButton(fragment.getString(R.string.create)) { _, _ ->
+                                            // create the widget, then navigate to it..
+                                            timelineViewModel.handle(RoomDetailAction.AddJitsiWidget(isVideoCall))
+                                        }
+                                        .setNegativeButton(fragment.getString(R.string.action_cancel), null)
+                                        .show()
+                            }
+                        }
+                    }
                 }
             }
             else -> {
