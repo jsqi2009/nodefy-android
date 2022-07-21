@@ -711,7 +711,7 @@ class NotificationUtils @Inject constructor(
                                         matrixId: String): Notification {
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
-        val smallIcon = R.drawable.ic_status_bar
+        val smallIcon = R.drawable.nodefy_logo
 
         val channelID = if (inviteNotifiableEvent.noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
 
@@ -785,7 +785,7 @@ class NotificationUtils @Inject constructor(
                                      matrixId: String): Notification {
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
-        val smallIcon = R.drawable.ic_status_bar
+        val smallIcon = R.drawable.nodefy_logo
 
         val channelID = if (simpleNotifiableEvent.noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
 
@@ -897,7 +897,7 @@ class NotificationUtils @Inject constructor(
                                      noisy: Boolean,
                                      lastMessageTimestamp: Long): Notification {
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
-        val smallIcon = R.drawable.ic_status_bar
+        val smallIcon = R.drawable.nodefy_logo
 
         return NotificationCompat.Builder(context, if (noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID)
                 .setOnlyAlertOnce(true)
@@ -986,8 +986,9 @@ class NotificationUtils @Inject constructor(
                 NotificationCompat.Builder(context, NOISY_NOTIFICATION_CHANNEL_ID)
                         .setContentTitle(stringProvider.getString(R.string.app_name))
                         .setContentText(stringProvider.getString(R.string.settings_troubleshoot_test_push_notification_content))
-                        .setSmallIcon(R.drawable.ic_status_bar)
-                        .setLargeIcon(getBitmap(context, R.drawable.element_logo_green))
+                        .setSmallIcon(R.drawable.nodefy_logo)
+                        .setLargeIcon(getBitmap(context, R.drawable.nodefy_logo))
+//                        .setLargeIcon(getBitmap(context, R.drawable.element_logo_green))
                         .setColor(ContextCompat.getColor(context, R.color.notification_accent_color))
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setCategory(NotificationCompat.CATEGORY_STATUS)
