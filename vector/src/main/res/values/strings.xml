@@ -3188,7 +3188,10 @@
     <string name="room_alias_publish_to_directory2">Publish this group to the public in %1$s\'s group directory?</string>
     <string name="room_alias_local_address_subtitle2">Set addresses for this group so users can find this group through your homeserver (%1$s)</string>
     <string name="room_alias_local_address_empty2">This group has no local addresses</string>
-
+    <string name="room_permissions_notice2">"Select the roles required to change various parts of the group"</string>
+    <string name="room_permissions_notice_read_only2">"You don't have permission to update the roles required to change various parts of the group"</string>
+    <string name="room_permissions_change_room_avatar2">Change group avatar</string>
+    <string name="room_permissions_change_room_name2">Change group name</string>
 
 
 </resources>

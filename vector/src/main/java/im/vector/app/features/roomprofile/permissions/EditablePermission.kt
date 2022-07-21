@@ -38,7 +38,7 @@ sealed class EditablePermission(@StringRes val labelResId: Int, @StringRes val s
 
     class ChangeRoomAvatar : EventTypeEditablePermission(
             EventType.STATE_ROOM_AVATAR,
-            R.string.room_permissions_change_room_avatar,
+            R.string.room_permissions_change_room_avatar2,
             R.string.room_permissions_change_space_avatar
     )
 
@@ -61,7 +61,7 @@ sealed class EditablePermission(@StringRes val labelResId: Int, @StringRes val s
 
     class ChangeRoomName : EventTypeEditablePermission(
             EventType.STATE_ROOM_NAME,
-            R.string.room_permissions_change_room_name,
+            R.string.room_permissions_change_room_name2,
             R.string.room_permissions_change_space_name
     )
 

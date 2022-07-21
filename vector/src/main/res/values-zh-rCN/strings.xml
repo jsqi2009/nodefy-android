@@ -2425,6 +2425,10 @@
     <string name="room_alias_publish_to_directory2">是否将此群组发布至 %1$s 的群组目录中？</string>
     <string name="room_alias_local_address_subtitle2">为此群组设置地址以便用户通过你的主服务器（%1$s）找到此群组</string>
     <string name="room_alias_local_address_empty2">此群组没有本地地址</string>
+    <string name="room_permissions_notice2">选择更改群组各个部分所需的角色</string>
+    <string name="room_permissions_notice_read_only2">你没有权限更新更改群组多个部分所需角色</string>
+    <string name="room_permissions_change_room_avatar2">更改群组头像</string>
+    <string name="room_permissions_change_room_name2">更改群组名称</string>
 
 
 </resources>

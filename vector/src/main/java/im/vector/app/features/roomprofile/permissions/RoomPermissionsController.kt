@@ -135,9 +135,9 @@ class RoomPermissionsController @Inject constructor(
             helperText(
                     host.stringProvider.getString(
                             if (editable) {
-                                if (isSpace) R.string.space_permissions_notice else R.string.room_permissions_notice
+                                if (isSpace) R.string.space_permissions_notice else R.string.room_permissions_notice2
                             } else {
-                                if (isSpace) R.string.space_permissions_notice_read_only else R.string.room_permissions_notice_read_only
+                                if (isSpace) R.string.space_permissions_notice_read_only else R.string.room_permissions_notice_read_only2
                             }
                     )
             )
