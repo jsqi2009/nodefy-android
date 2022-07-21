@@ -19,6 +19,11 @@
             tools:summary="1.2.3" />
 
         <im.vector.app.core.preference.VectorPreference
+            android:key="SETTINGS_HOMESERVER_VERSION_PREFERENCE_KEY"
+            android:title="@string/settings_homeserver_version"
+            tools:summary="1.9.3" />
+
+        <im.vector.app.core.preference.VectorPreference
             android:key="SETTINGS_SDK_VERSION_PREFERENCE_KEY"
             android:title="@string/settings_sdk_version"
             tools:summary="4.5.6" />

@@ -112,7 +112,7 @@ class RoomSettingsController @Inject constructor(
         }
         buildProfileAction(
                 id = "historyReadability",
-                title = stringProvider.getString(R.string.room_settings_room_read_history_rules_pref_title),
+                title = stringProvider.getString(R.string.room_settings_room_read_history_rules_pref_title2),
                 subtitle = roomHistoryVisibilityFormatter.getSetting(data.newHistoryVisibility ?: data.currentHistoryVisibility),
                 divider = true,
                 editable = data.actionPermissions.canChangeHistoryVisibility,
@@ -121,7 +121,7 @@ class RoomSettingsController @Inject constructor(
 
         buildProfileAction(
                 id = "joinRule",
-                title = stringProvider.getString(R.string.room_settings_room_access_title),
+                title = stringProvider.getString(R.string.room_settings_room_access_title2),
                 subtitle = data.getJoinRuleWording(stringProvider),
                 divider = true,
                 editable = data.actionPermissions.canChangeJoinRule,

@@ -108,14 +108,14 @@ class RoomProfileController @Inject constructor(
                 data.recommendedRoomVersion != null) {
             genericFooterItem {
                 id("version_warning")
-                text(host.stringProvider.getString(R.string.room_using_unstable_room_version, roomVersion).toEpoxyCharSequence())
+                text(host.stringProvider.getString(R.string.room_using_unstable_room_version2, roomVersion).toEpoxyCharSequence())
                 textColor(host.colorProvider.getColorFromAttribute(R.attr.colorError))
                 centered(false)
             }
 
             genericPositiveButtonItem {
                 id("migrate_button")
-                text(host.stringProvider.getString(R.string.room_upgrade_to_recommended_version))
+                text(host.stringProvider.getString(R.string.room_upgrade_to_recommended_version2))
                 buttonClickAction { host.callback?.doMigrateToVersion(data.recommendedRoomVersion) }
             }
         }
@@ -125,7 +125,7 @@ class RoomProfileController @Inject constructor(
             if (roomSummary.roomEncryptionAlgorithm is RoomEncryptionAlgorithm.SupportedAlgorithm) {
                 stringProvider.getString(
                         if (roomSummary.isDirect) R.string.direct_room_profile_encrypted_subtitle
-                        else R.string.room_profile_encrypted_subtitle
+                        else R.string.room_profile_encrypted_subtitle2
                 )
             } else {
                 encryptionMisconfigured = true
@@ -142,7 +142,7 @@ class RoomProfileController @Inject constructor(
         } else {
             stringProvider.getString(
                     if (roomSummary.isDirect) R.string.direct_room_profile_not_encrypted_subtitle
-                    else R.string.room_profile_not_encrypted_subtitle
+                    else R.string.room_profile_not_encrypted_subtitle2
             )
         }
         genericFooterItem {
@@ -183,7 +183,7 @@ class RoomProfileController @Inject constructor(
                         if (roomSummary.isDirect) {
                             R.string.direct_room_profile_section_more_settings
                         } else {
-                            R.string.room_profile_section_more_settings
+                            R.string.room_profile_section_more_settings2
                         }
                 ),
                 icon = R.drawable.ic_room_profile_settings,
@@ -234,7 +234,7 @@ class RoomProfileController @Inject constructor(
                         if (roomSummary.isDirect) {
                             R.string.direct_room_profile_section_more_leave
                         } else {
-                            R.string.room_profile_section_more_leave
+                            R.string.room_profile_section_more_leave2
                         }
                 ),
                 divider = false,
@@ -249,8 +249,8 @@ class RoomProfileController @Inject constructor(
 
         buildProfileAction(
                 id = "alias",
-                title = stringProvider.getString(R.string.room_settings_alias_title),
-                subtitle = stringProvider.getString(R.string.room_settings_alias_subtitle),
+                title = stringProvider.getString(R.string.room_settings_alias_title2),
+                subtitle = stringProvider.getString(R.string.room_settings_alias_subtitle2),
                 divider = true,
                 editable = true,
                 action = { callback?.onRoomAliasesClicked() }
@@ -258,8 +258,8 @@ class RoomProfileController @Inject constructor(
 
         buildProfileAction(
                 id = "permissions",
-                title = stringProvider.getString(R.string.room_settings_permissions_title),
-                subtitle = stringProvider.getString(R.string.room_settings_permissions_subtitle),
+                title = stringProvider.getString(R.string.room_settings_permissions_title2),
+                subtitle = stringProvider.getString(R.string.room_settings_permissions_subtitle2),
                 divider = vectorPreferences.developerMode(),
                 editable = true,
                 action = { callback?.onRoomPermissionsClicked() }

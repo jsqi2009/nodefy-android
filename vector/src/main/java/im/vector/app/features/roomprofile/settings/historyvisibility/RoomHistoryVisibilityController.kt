@@ -30,7 +30,7 @@ class RoomHistoryVisibilityController @Inject constructor(
 
     override fun getTitle() = stringProvider.getString(R.string.room_settings_room_read_history_rules_pref_dialog_title)
 
-    override fun getSubTitle() = stringProvider.getString(R.string.room_settings_room_read_history_dialog_subtitle)
+    override fun getSubTitle() = stringProvider.getString(R.string.room_settings_room_read_history_dialog_subtitle2)
 
     override fun getActions(state: RoomHistoryVisibilityState): List<RoomHistoryVisibilityRadioAction> {
         return listOf(

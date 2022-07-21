@@ -50,7 +50,7 @@ class RoomJoinRuleAdvancedController @Inject constructor(
 
         genericFooterItem {
             id("header")
-            text(host.stringProvider.getString(R.string.room_settings_room_access_title).toEpoxyCharSequence())
+            text(host.stringProvider.getString(R.string.room_settings_room_access_title2).toEpoxyCharSequence())
             centered(false)
             style(ItemStyle.TITLE)
             textColor(host.colorProvider.getColorFromAttribute(R.attr.vctr_content_primary))
@@ -58,7 +58,7 @@ class RoomJoinRuleAdvancedController @Inject constructor(
 
         genericFooterItem {
             id("desc")
-            text(host.stringProvider.getString(R.string.decide_who_can_find_and_join).toEpoxyCharSequence())
+            text(host.stringProvider.getString(R.string.decide_who_can_find_and_join2).toEpoxyCharSequence())
             centered(false)
         }
 
@@ -92,7 +92,7 @@ class RoomJoinRuleAdvancedController @Inject constructor(
         // Public
         RoomJoinRuleRadioAction(
                 roomJoinRule = RoomJoinRules.PUBLIC,
-                description = stringProvider.getString(R.string.room_settings_room_access_public_description),
+                description = stringProvider.getString(R.string.room_settings_room_access_public_description2),
                 title = stringProvider.getString(R.string.room_settings_room_access_public_title),
                 isSelected = state.currentRoomJoinRules == RoomJoinRules.PUBLIC
         ).toRadioBottomSheetItem().let {

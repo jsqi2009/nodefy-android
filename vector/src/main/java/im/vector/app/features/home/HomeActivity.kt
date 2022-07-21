@@ -784,6 +784,7 @@ class HomeActivity :
         if (event.isSuccess) {
             dialerSession.publicRoomID = event.model!!.public_room!!.room_id!!
             Timber.e("public room ID------${dialerSession.publicRoomID}")
+            Contants.Public_Room_ID = dialerSession.publicRoomID
         }
     }
 

@@ -3166,4 +3166,29 @@
     <string name="select_room_directory2">Select a group directory</string>
     <string name="directory_server_all_rooms_on_server2">All groups on %s server</string>
 
+
+    <string name="settings_homeserver_version">Homeserver Version</string>
+
+    <string name="room_using_unstable_room_version2">This room is running room version %s, which this homeserver has marked as unstable.</string>
+    <string name="room_upgrade_to_recommended_version2">Upgrade to the recommended room version</string>
+    <string name="room_profile_encrypted_subtitle2">Messages in this group are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.</string>
+    <string name="room_profile_not_encrypted_subtitle2">Messages in this group are not end-to-end encrypted.</string>
+    <string name="room_profile_section_more_settings2">Group settings</string>
+    <string name="room_profile_section_more_leave2">Leave Group</string>
+    <string name="room_settings_alias_title2">Group addresses</string>
+    <string name="room_settings_alias_subtitle2">See and managed addresses of this group, and its visibility in the group directory.</string>
+    <string name="room_settings_permissions_title2">Group permissions</string>
+    <string name="room_settings_permissions_subtitle2">View and update the roles required to change various parts of the group.</string>
+    <string name="room_settings_name_hint2">Group Name</string>
+    <string name="room_settings_room_read_history_rules_pref_title2">Group History Readability</string>
+    <string name="room_settings_room_read_history_dialog_subtitle2">Changes to who can read history will only apply to future messages in this group. The visibility of existing history will be unchanged.</string>
+    <string name="decide_who_can_find_and_join2">Decide who can find and join this group.</string>
+    <string name="room_settings_room_access_public_description2">Anyone can find and join</string>
+    <string name="room_alias_published_alias_subtitle2">Published addresses can be used by anyone on any server to join your group. To publish an address, it needs to be set as a local address first.</string>
+    <string name="room_alias_publish_to_directory2">Publish this group to the public in %1$s\'s group directory?</string>
+    <string name="room_alias_local_address_subtitle2">Set addresses for this group so users can find this group through your homeserver (%1$s)</string>
+    <string name="room_alias_local_address_empty2">This group has no local addresses</string>
+
+
+
 </resources>

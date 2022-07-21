@@ -2402,4 +2402,29 @@
     <string name="select_room_directory2">选择一个群组目录</string>
     <string name="directory_server_all_rooms_on_server2">%s 服务器上的所有群组</string>
 
+    <string name="settings_homeserver_version">Homeserver版本</string>
+
+    <string name="room_using_unstable_room_version2">这个群组运行群组版本 %s，此主服务器已将其标记为不稳定。</string>
+    <string name="room_upgrade_to_recommended_version2">升级到推荐的群组版本</string>
+    <string name="room_profile_encrypted_subtitle2">该群组的消息已被端对端加密。
+\n
+\n你的消息受加密保护，并且只有你和消息接收者拥有唯一解密密钥。</string>
+    <string name="room_profile_not_encrypted_subtitle2">此群组的消息未经端对端加密。</string>
+    <string name="room_profile_section_more_settings2">群组设置</string>
+    <string name="room_profile_section_more_leave2">离开群组</string>
+    <string name="room_settings_alias_subtitle2">查看和管理此群组的地址，以及它在群组目录中的可见性。</string>
+    <string name="room_settings_alias_title2">群组地址</string>
+    <string name="room_settings_permissions_subtitle2">需要查看和更新角色以更改群组多个部分。</string>
+    <string name="room_settings_permissions_title2">群组权限</string>
+    <string name="room_settings_name_hint2">群组名称</string>
+    <string name="room_settings_room_read_history_rules_pref_title2">群组历史可见性</string>
+    <string name="room_settings_room_read_history_dialog_subtitle2">改成谁都可以阅读历史只会应用于此群组未来的消息。已经存在的历史消息的可见性将不会改变。</string>
+    <string name="decide_who_can_find_and_join2">决定谁能找到并加入这个群组。</string>
+    <string name="room_settings_room_access_public_description2">任何人都能找到并加入</string>
+    <string name="room_alias_published_alias_subtitle2">发布的地址可以被任何服务器上的任何人用来加入你的群组。要发布一个地址，它必须先被设为一个本地地址。</string>
+    <string name="room_alias_publish_to_directory2">是否将此群组发布至 %1$s 的群组目录中？</string>
+    <string name="room_alias_local_address_subtitle2">为此群组设置地址以便用户通过你的主服务器（%1$s）找到此群组</string>
+    <string name="room_alias_local_address_empty2">此群组没有本地地址</string>
+
+
 </resources>

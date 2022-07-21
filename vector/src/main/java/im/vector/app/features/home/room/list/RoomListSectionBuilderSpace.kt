@@ -21,6 +21,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import androidx.paging.PagedList
 import com.airbnb.mvrx.Async
 import im.vector.app.AppStateHandler
@@ -29,6 +30,7 @@ import im.vector.app.core.resources.StringProvider
 import im.vector.app.features.home.RoomListDisplayMode
 import im.vector.app.features.invite.AutoAcceptInvites
 import im.vector.app.features.invite.showInvites
+import im.vector.app.kelare.content.Contants
 import im.vector.app.space
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -97,6 +97,11 @@ class VectorSettingsHelpAboutFragment @Inject constructor(
         // olm version
         findPreference<VectorPreference>(VectorPreferences.SETTINGS_OLM_VERSION_PREFERENCE_KEY)!!
                 .summary = session.cryptoService().getCryptoVersion(requireContext(), false)
+
+        // homeserver version
+        findPreference<VectorPreference>(VectorPreferences.SETTINGS_HOMESERVER_VERSION_PREFERENCE_KEY)!!.let {
+            it.summary = "1.9.3"
+        }
     }
 
     companion object {

@@ -84,7 +84,7 @@ class RoomAliasController @Inject constructor(
             is Success    -> {
                 formSwitchItem {
                     id("roomVisibility")
-                    title(host.stringProvider.getString(R.string.room_alias_publish_to_directory, data.homeServerName))
+                    title(host.stringProvider.getString(R.string.room_alias_publish_to_directory2, data.homeServerName))
                     switchChecked(data.roomDirectoryVisibility() == RoomDirectoryVisibility.PUBLIC)
                     listener {
                         if (it) {
@@ -117,7 +117,7 @@ class RoomAliasController @Inject constructor(
         )
         settingsInfoItem {
             id("publishedInfo")
-            helperTextResId(R.string.room_alias_published_alias_subtitle)
+            helperTextResId(R.string.room_alias_published_alias_subtitle2)
         }
 
         data.canonicalAlias
@@ -199,7 +199,7 @@ class RoomAliasController @Inject constructor(
         )
         settingsInfoItem {
             id("localInfo")
-            helperText(host.stringProvider.getString(R.string.room_alias_local_address_subtitle, data.homeServerName))
+            helperText(host.stringProvider.getString(R.string.room_alias_local_address_subtitle2, data.homeServerName))
         }
 
         when (val localAliases = data.localAliases) {
@@ -213,7 +213,7 @@ class RoomAliasController @Inject constructor(
                 if (localAliases().isEmpty()) {
                     settingsInfoItem {
                         id("locEmpty")
-                        helperTextResId(R.string.room_alias_local_address_empty)
+                        helperTextResId(R.string.room_alias_local_address_empty2)
                     }
                 } else {
                     localAliases().forEachIndexed { idx, localAlias ->
