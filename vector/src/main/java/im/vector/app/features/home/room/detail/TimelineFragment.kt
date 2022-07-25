@@ -1075,6 +1075,7 @@ class TimelineFragment @Inject constructor(
         //hide the open matrix app
         menu.findItem(R.id.open_matrix_apps).isVisible = false
         menu.findItem(R.id.search).isVisible = false
+        menu.findItem(R.id.voice_call).isVisible = true
 
         withState(timelineViewModel) { state ->
             // Set the visual state of the call buttons (voice/video) to enabled/disabled according to user permissions

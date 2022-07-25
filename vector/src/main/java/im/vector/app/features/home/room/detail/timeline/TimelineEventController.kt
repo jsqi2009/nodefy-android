@@ -334,7 +334,7 @@ class TimelineEventController @Inject constructor(
                 .addWhenLoading(Timeline.Direction.FORWARDS)
 
         val timelineModels = getModels()
-        Timber.e("chat messages list----> ${timelineModels.toString()}")
+        //Timber.e("chat messages list----> ${timelineModels.toString()}")
         add(timelineModels)
         if (hasReachedInvite && hasUTD) {
             return
@@ -647,6 +647,7 @@ class TimelineEventController @Inject constructor(
 
     private fun filterBotMessage(timeList: List<TimelineEvent>):List<TimelineEvent> {
         val resultList: ArrayList<TimelineEvent> = ArrayList()
+        Timber.e("TimelineEvent----$timeList")
         timeList.forEach {
             if (!it.senderInfo.userId.contains(Contants.SkypeBotName) && !it.senderInfo.userId.contains(Contants.WhatsAppBotName)
                     && !it.senderInfo.userId.contains(Contants.TelegramBotName) && !it.senderInfo.userId.contains(Contants.SlackBotName)) {
