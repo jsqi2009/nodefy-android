@@ -18,17 +18,21 @@ package im.vector.app.features.roomprofile.uploads.links
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import im.vector.app.R
 import im.vector.app.kelare.adapter.AbstractBaseRecyclerAdapter
 import im.vector.app.kelare.adapter.RecyclerItemClickListener
+import org.apache.commons.lang3.StringUtils
+import java.util.regex.Pattern
 
 class RoomLinkAdapter(private val mContext: Activity, private val mOnItemClickListener: RecyclerItemClickListener) : AbstractBaseRecyclerAdapter<String>(mContext){
+
+    private val regexStr = "(((https|http)?://)?([a-z0-9]+[.])|(www.))" + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -41,6 +45,27 @@ class RoomLinkAdapter(private val mContext: Activity, private val mOnItemClickLi
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val holder = holder as ViewHolder
         val info = getDataList()!![position]
+
+        var url = judgeString(info)
+        var allUrl: String = info
+        var charSequence: CharSequence
+        /*if (url != null) {
+            if (url.isNotEmpty()) {
+                url.forEach {
+                    if (StringUtils.isNotBlank(it)) {
+                        val str = "<font color='#0099cc'> <a href=\"$it\">$it</a></font>"
+                        allUrl = allUrl.replace(it!!, str)
+                    }
+                }
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    charSequence = Html.fromHtml(allUrl, Html.FROM_HTML_MODE_LEGACY)
+                } else {
+                    charSequence = Html.fromHtml(allUrl)
+                }
+
+                holder.tvName.text = charSequence
+            }
+        }*/
 
         holder.tvName.text = info
 
@@ -58,5 +83,21 @@ class RoomLinkAdapter(private val mContext: Activity, private val mOnItemClickLi
             tvName = itemView.findViewById(R.id.tv_name)
             lineView = itemView.findViewById(R.id.line)
         }
+    }
+
+    /**
+     * 判断字符串中是否有超链接，若有，则返回超链接。
+     * @param str
+     * @return
+     */
+    private fun judgeString(str: String): Array<String?>? {
+        val m = Pattern.compile(regexStr).matcher(str)
+        val url = arrayOfNulls<String>(str.length / 5)
+        var count = 0
+        while (m.find()) {
+            count++
+            url[count] = m.group()
+        }
+        return url
     }
 }

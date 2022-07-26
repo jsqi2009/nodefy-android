@@ -16,29 +16,28 @@
 
 package im.vector.app.features.roomprofile.uploads.links
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.epoxy.EpoxyModel
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.core.time.Clock
+import im.vector.app.core.utils.openUrlInExternalBrowser
 import im.vector.app.databinding.FragmentRoomUploadsLinksBinding
 import im.vector.app.features.home.AvatarRenderer
-import im.vector.app.features.home.room.detail.timeline.item.MessageTextItem
-import im.vector.app.kelare.adapter.CallHistoryAdapter
 import im.vector.app.kelare.adapter.RecyclerItemClickListener
 import im.vector.app.kelare.content.Contants
 import org.matrix.android.sdk.api.session.Session
 import timber.log.Timber
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 class RoomUploadsLinksFragment @Inject constructor(
         private val session: Session,
-        private val avatarRenderer: AvatarRenderer,
-        private val clock: Clock
+        private val avatarRenderer: AvatarRenderer
 ) : VectorBaseFragment<FragmentRoomUploadsLinksBinding>(), RecyclerItemClickListener{
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentRoomUploadsLinksBinding {
@@ -47,6 +46,7 @@ class RoomUploadsLinksFragment @Inject constructor(
 
     private var mAdapter: RoomLinkAdapter? = null
     private var linkList: ArrayList<String> = ArrayList()
+    private val regexStr = "(((https|http)?://)?([a-z0-9]+[.])|(www.))" + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,7 +57,14 @@ class RoomUploadsLinksFragment @Inject constructor(
             Timber.e("link fragment list is 0")
         }
 
-        linkList = Contants.roomTimeLineList
+        linkList.clear()
+        if (Contants.roomTimeLineList.isNotEmpty()) {
+            Contants.roomTimeLineList.forEach {
+                if (hasLink(it)) {
+                    linkList.add(it)
+                }
+            }
+        }
         initView()
         renderData()
     }
@@ -76,5 +83,43 @@ class RoomUploadsLinksFragment @Inject constructor(
 
     override fun onRecyclerViewItemClick(view: View, position: Int) {
         val itemLink = linkList[position]
+
+        /*val url = judgeString(itemLink)
+        if (url != null && url.isNotEmpty()) {
+            Timber.e("valid link-------${url[0]}")
+            openUrlInExternalBrowser(requireContext(), url[0].toString())
+
+            *//*val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(url[0])
+            }
+            startActivity(intent)*//*
+        }*/
+
+        openUrlInExternalBrowser(requireContext(), itemLink)
     }
+
+    private fun hasLink(str: String): Boolean {
+        val m = Pattern.compile(regexStr).matcher(str)
+        if (m.find()) {
+            return true
+        }
+        return false
+    }
+
+    /**
+     * 判断字符串中是否有超链接，若有，则返回超链接。
+     * @param str
+     * @return
+     */
+    private fun judgeString(str: String): Array<String?>? {
+        val m = Pattern.compile(regexStr).matcher(str)
+        val url = arrayOfNulls<String>(str.length / 5)
+        var count = 0
+        while (m.find()) {
+            count++
+            url[count] = m.group()
+        }
+        return url
+    }
+
 }
