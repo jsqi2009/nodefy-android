@@ -32,6 +32,8 @@ object Contants {
     const val LANGUAGE_ENGLISH = "English"
     const val LANGUAGE_CHINA = "中文"
 
+    lateinit var roomTimeLineList: ArrayList<String>
+
     var Public_Room_ID = ""
 
     const val LANGUAGE_COUNTRY_US = "United States"

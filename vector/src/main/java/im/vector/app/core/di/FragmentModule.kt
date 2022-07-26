@@ -140,6 +140,7 @@ import im.vector.app.features.roomprofile.settings.joinrule.RoomJoinRuleFragment
 import im.vector.app.features.roomprofile.settings.joinrule.advanced.RoomJoinRuleChooseRestrictedFragment
 import im.vector.app.features.roomprofile.uploads.RoomUploadsFragment
 import im.vector.app.features.roomprofile.uploads.files.RoomUploadsFilesFragment
+import im.vector.app.features.roomprofile.uploads.links.RoomUploadsLinksFragment
 import im.vector.app.features.roomprofile.uploads.media.RoomUploadsMediaFragment
 import im.vector.app.features.settings.VectorSettingsGeneralFragment
 import im.vector.app.features.settings.VectorSettingsHelpAboutFragment
@@ -993,4 +994,9 @@ interface FragmentModule {
     @IntoMap
     @FragmentKey(LocationPreviewFragment::class)
     fun bindLocationPreviewFragment(fragment: LocationPreviewFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(RoomUploadsLinksFragment::class)
+    fun bindRoomUploadsLinksFragment(fragment: RoomUploadsLinksFragment): Fragment
 }

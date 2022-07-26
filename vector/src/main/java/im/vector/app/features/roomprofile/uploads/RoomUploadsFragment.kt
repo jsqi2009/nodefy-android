@@ -71,6 +71,7 @@ class RoomUploadsFragment @Inject constructor(
             when (position) {
                 0 -> tab.text = getString(R.string.uploads_media_title)
                 1 -> tab.text = getString(R.string.uploads_files_title)
+                2 -> tab.text = getString(R.string.uploads_links_title)
             }
         }.attach()
 

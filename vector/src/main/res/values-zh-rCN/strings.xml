@@ -2430,5 +2430,8 @@
     <string name="room_permissions_change_room_avatar2">更改群组头像</string>
     <string name="room_permissions_change_room_name2">更改群组名称</string>
 
+    <string name="uploads_links_title">链接</string>
+    <string name="uploads_links_no_result">此聊天室中暂无链接</string>
+
 
 </resources>

@@ -18,6 +18,7 @@ package im.vector.app.features.home.room.detail.timeline
 
 import android.os.Handler
 import android.os.Looper
+import android.text.Spanned
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
@@ -54,6 +55,7 @@ import im.vector.app.features.home.room.detail.timeline.item.DaySeparatorItem
 import im.vector.app.features.home.room.detail.timeline.item.DaySeparatorItem_
 import im.vector.app.features.home.room.detail.timeline.item.ItemWithEvents
 import im.vector.app.features.home.room.detail.timeline.item.MessageInformationData
+import im.vector.app.features.home.room.detail.timeline.item.MessageTextItem
 import im.vector.app.features.home.room.detail.timeline.item.ReactionsSummaryEvents
 import im.vector.app.features.home.room.detail.timeline.item.ReadReceiptData
 import im.vector.app.features.home.room.detail.timeline.item.ReadReceiptsItem
@@ -73,6 +75,7 @@ import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import org.matrix.android.sdk.api.session.room.model.message.MessageAudioContent
 import org.matrix.android.sdk.api.session.room.model.message.MessageImageInfoContent
 import org.matrix.android.sdk.api.session.room.model.message.MessageVideoContent
+import org.matrix.android.sdk.api.session.room.send.SendState
 import org.matrix.android.sdk.api.session.room.timeline.Timeline
 import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 import timber.log.Timber
@@ -334,7 +337,7 @@ class TimelineEventController @Inject constructor(
                 .addWhenLoading(Timeline.Direction.FORWARDS)
 
         val timelineModels = getModels()
-        //Timber.e("chat messages list----> ${timelineModels.toString()}")
+        filterModels(timelineModels)
         add(timelineModels)
         if (hasReachedInvite && hasUTD) {
             return
@@ -647,7 +650,6 @@ class TimelineEventController @Inject constructor(
 
     private fun filterBotMessage(timeList: List<TimelineEvent>):List<TimelineEvent> {
         val resultList: ArrayList<TimelineEvent> = ArrayList()
-        Timber.e("TimelineEvent----$timeList")
         timeList.forEach {
             if (!it.senderInfo.userId.contains(Contants.SkypeBotName) && !it.senderInfo.userId.contains(Contants.WhatsAppBotName)
                     && !it.senderInfo.userId.contains(Contants.TelegramBotName) && !it.senderInfo.userId.contains(Contants.SlackBotName)) {
@@ -655,6 +657,24 @@ class TimelineEventController @Inject constructor(
             }
         }
         return resultList
+    }
+
+    private fun filterModels(model: List<EpoxyModel<*>>) {
+        val itemList: ArrayList<String> = ArrayList()
+        model.forEach { item ->
+            when (item) {
+                is MessageTextItem -> {
+                    item.message!!.charSequence.let {
+                        val tree = it as Spanned
+                        itemList.add(tree.toString())
+                        Timber.e("text time line---->${tree.toString()}")
+                    }
+                }
+                else -> {}
+            }
+        }
+
+        Contants.roomTimeLineList = itemList
     }
 
 }

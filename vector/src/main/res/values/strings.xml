@@ -3141,7 +3141,6 @@
     <string name="invite_just_to_this_room2">Just to this group</string>
 
 
-
     <!-- nodefy  home create group -->
     <string name="room_directory_search_hint2">Name or ID</string>
     <string name="home_create_a_new_group">Create a new group</string>
@@ -3192,6 +3191,9 @@
     <string name="room_permissions_notice_read_only2">"You don't have permission to update the roles required to change various parts of the group"</string>
     <string name="room_permissions_change_room_avatar2">Change group avatar</string>
     <string name="room_permissions_change_room_name2">Change group name</string>
+
+    <string name="uploads_links_title">LINKS</string>
+    <string name="uploads_links_no_result">There are no links in this room</string>
 
 
 </resources>
