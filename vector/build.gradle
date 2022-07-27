@@ -19,7 +19,7 @@ ext.versionMinor = 0
 // Note: even values are reserved for regular release, odd values for hotfix release.
 // When creating a hotfix, you should decrease the value, since the current value
 // is the value for the next regular release.
-ext.versionPatch = 10
+ext.versionPatch = 11
 
 static def getGitTimestamp() {
     def cmd = 'git show -s --format=%ct'
@@ -262,8 +262,9 @@ android {
 
     productFlavors {
         gplay {
-            /*apply plugin: 'com.google.gms.google-services'
-            afterEvaluate {
+            apply plugin: 'com.google.gms.google-services'
+
+            /*afterEvaluate {
                 tasks.matching { it.name.contains("GoogleServices") && !it.name.contains("Gplay") }*.enabled = false
             }*/
 
@@ -604,5 +605,7 @@ dependencies {
 //    implementation 'com.github.zhoulinxue:BGStart:1.1.5'
     implementation project(":BgStartLib")
 
+    implementation platform('com.google.firebase:firebase-bom:30.3.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
 }

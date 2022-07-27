@@ -23,6 +23,9 @@ buildscript {
         maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
         maven {url 'https://oss.sonatype.org/content/repositories/snapshots'}
         mavenCentral() // add repository
+
+        //for google firebase
+        google()  // Google's Maven repository
     }
 
     dependencies {
@@ -31,7 +34,7 @@ buildscript {
         classpath libs.gradle.gradlePlugin
         classpath libs.gradle.kotlinPlugin
         classpath libs.gradle.hiltPlugin
-        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.gms:google-services:4.3.13'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
         classpath 'com.google.android.gms:oss-licenses-plugin:0.10.5'
         classpath "com.likethesalad.android:stem-plugin:2.0.0"
@@ -114,6 +117,9 @@ allprojects {
         maven {
             url "https://jitpack.io"
         }
+
+        //for google firebase
+        google()  // Google's Maven repository
     }
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

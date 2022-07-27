@@ -116,8 +116,8 @@ class RoomUploadsLinksFragment @Inject constructor(
         val url = arrayOfNulls<String>(str.length / 5)
         var count = 0
         while (m.find()) {
-            count++
             url[count] = m.group()
+            count++
         }
         return url
     }
