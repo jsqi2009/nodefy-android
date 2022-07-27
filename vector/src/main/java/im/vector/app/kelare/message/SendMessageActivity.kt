@@ -222,9 +222,11 @@ class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), Vi
             }
         }
 
-        views.tvDefaultAccount.text = defaultSipAccount!!.username
-
-        setDefaultAccount()
+        try {
+            views.tvDefaultAccount.text = defaultSipAccount!!.username
+            setDefaultAccount()
+        } catch (e: Exception) {
+        }
     }
 
     private fun receivedList(){
