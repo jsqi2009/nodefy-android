@@ -84,18 +84,13 @@ class RoomUploadsLinksFragment @Inject constructor(
     override fun onRecyclerViewItemClick(view: View, position: Int) {
         val itemLink = linkList[position]
 
-        /*val url = judgeString(itemLink)
+        val url = judgeString(itemLink)
         if (url != null && url.isNotEmpty()) {
             Timber.e("valid link-------${url[0]}")
             openUrlInExternalBrowser(requireContext(), url[0].toString())
+        }
 
-            *//*val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(url[0])
-            }
-            startActivity(intent)*//*
-        }*/
-
-        openUrlInExternalBrowser(requireContext(), itemLink)
+        //openUrlInExternalBrowser(requireContext(), itemLink)
     }
 
     private fun hasLink(str: String): Boolean {

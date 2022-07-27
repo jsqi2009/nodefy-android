@@ -49,7 +49,7 @@ class RoomLinkAdapter(private val mContext: Activity, private val mOnItemClickLi
         var url = judgeString(info)
         var allUrl: String = info
         var charSequence: CharSequence
-        /*if (url != null) {
+        if (url != null) {
             if (url.isNotEmpty()) {
                 url.forEach {
                     if (StringUtils.isNotBlank(it)) {
@@ -65,9 +65,9 @@ class RoomLinkAdapter(private val mContext: Activity, private val mOnItemClickLi
 
                 holder.tvName.text = charSequence
             }
-        }*/
+        }
 
-        holder.tvName.text = info
+        //holder.tvName.text = info
 
         holder.itemView.setOnClickListener {
             mOnItemClickListener.onRecyclerViewItemClick(holder.itemView, position)
