@@ -48,6 +48,7 @@ class RoomLinkAdapter(private val mContext: Activity, private val mOnItemClickLi
 
         var url = judgeString(info)
         var allUrl: String = info
+        var resultUrl = ""
         var charSequence: CharSequence
         if (url != null) {
             if (url.isNotEmpty()) {
@@ -55,12 +56,16 @@ class RoomLinkAdapter(private val mContext: Activity, private val mOnItemClickLi
                     if (StringUtils.isNotBlank(it)) {
                         val str = "<font color='#0099cc'> <a href=\"$it\">$it</a></font>"
                         allUrl = allUrl.replace(it!!, str)
+
+                        resultUrl = "$resultUrl$str "
                     }
                 }
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    charSequence = Html.fromHtml(allUrl, Html.FROM_HTML_MODE_LEGACY)
+//                    charSequence = Html.fromHtml(allUrl, Html.FROM_HTML_MODE_LEGACY)
+                    charSequence = Html.fromHtml(resultUrl, Html.FROM_HTML_MODE_LEGACY)
                 } else {
-                    charSequence = Html.fromHtml(allUrl)
+//                    charSequence = Html.fromHtml(allUrl)
+                    charSequence = Html.fromHtml(resultUrl)
                 }
 
                 holder.tvName.text = charSequence
