@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash</item>
-        <item name="android:windowSplashScreenBackground">@color/app_color</item>
-        <item name="android:windowSplashScreenIconBackgroundColor">@color/app_color</item>
+
+    <style name="Theme.Vector.Launcher" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="colorPrimary">@color/element_accent_light</item>
+        <item name="android:statusBarColor">@color/element_accent_light</item>
+        <item name="android:navigationBarColor">@color/element_accent_light</item>
+
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/nodefy_me_logo</item>
+        <item name="android:windowSplashScreenBackground">@color/element_accent_light</item>
+
+
     </style>
 </resources>
