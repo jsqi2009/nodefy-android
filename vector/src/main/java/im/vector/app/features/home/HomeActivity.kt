@@ -103,7 +103,10 @@ import timber.log.Timber
 import javax.inject.Inject
 import android.R.attr.action
 import android.os.Handler
+import android.util.Log
 import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import im.vector.app.features.home.contact.HomeContactFragment
 import im.vector.app.features.home.event.ChooseGroupTypeEvent
 import im.vector.app.features.home.event.CreateGroupRoomEvent
@@ -763,6 +766,7 @@ class HomeActivity :
 
         getPublicRoom()
         getDialerAccounts()
+        getFcmToken()
     }
 
     private fun getPublicRoom() {
@@ -908,6 +912,19 @@ class HomeActivity :
                 }
             }
         }
+    }
+
+    private fun getFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Timber.e("Fetching FCM registration token failed---${task.exception}")
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Timber.e("FCM registration token---$token")
+        })
     }
 
 }

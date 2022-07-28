@@ -4,7 +4,7 @@
     android:opacity="opaque">
 
     <!-- Background color -->
-    <item android:drawable="?colorPrimary" />
+    <item android:drawable="@color/app_color" />
 
     <!-- Centered logo -->
     <item>
