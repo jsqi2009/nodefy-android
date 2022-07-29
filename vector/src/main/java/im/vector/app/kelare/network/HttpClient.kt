@@ -12,6 +12,7 @@ import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
+import im.vector.app.kelare.network.event.GetThemesResponseEvent
 import im.vector.app.kelare.network.event.SaveAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.SaveContactInfoResponseEvent
 import im.vector.app.kelare.network.event.UpdateAccountInfoResponseEvent
@@ -28,6 +29,7 @@ import im.vector.app.kelare.network.response.DialerAccountInfoResponse
 import im.vector.app.kelare.network.response.GetContactResponse
 import im.vector.app.kelare.network.response.GetLicenseResponse
 import im.vector.app.kelare.network.response.GetPublicRoomResponse
+import im.vector.app.kelare.network.response.GetThemesResponse
 import im.vector.app.kelare.network.response.SaveAccountInfoResponse
 import im.vector.app.kelare.network.response.SaveContactInfoResponse
 import im.vector.app.kelare.network.response.UpdateAccountInfoResponse
@@ -285,7 +287,7 @@ object HttpClient {
      */
     fun getThemes() {
         val call = mHttpApi!!.getThemes()
-        dispatchClient!!.enqueue(call, GetPublicRoomResponse::class.java, GetPublicRoomResponseEvent::class.java)
+        dispatchClient!!.enqueue(call, GetThemesResponse::class.java, GetThemesResponseEvent::class.java)
     }
 
 

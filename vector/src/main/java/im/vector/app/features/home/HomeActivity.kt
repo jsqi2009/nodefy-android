@@ -116,6 +116,7 @@ import im.vector.app.features.home.room.list.widget.ChooseCreateGroupTypeDialog
 import im.vector.app.features.spaces.SpaceListFragment
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
+import im.vector.app.kelare.network.event.GetThemesResponseEvent
 import java.util.Timer
 import java.util.TimerTask
 
@@ -783,6 +784,7 @@ class HomeActivity :
         getDialerAccounts()
         getFcmToken()
         getDialerLicense()
+        getThemeInfo()
     }
 
     private fun getPublicRoom() {
@@ -951,6 +953,13 @@ class HomeActivity :
         }
     }
 
+    private fun getThemeInfo() {
+        try {
+            HttpClient.getThemes()
+        } catch (e: Exception) {
+        }
+    }
+
     @Subscribe
     fun onLicenseEvent(event: GetLicenseResponseEvent) {
         if (event.isSuccess) {
@@ -962,6 +971,14 @@ class HomeActivity :
             }
         } else {
             dialerSession.isPaid = false
+        }
+    }
+
+    @Subscribe
+    fun onThemeEvent(event: GetThemesResponseEvent) {
+        if (event.isSuccess) {
+            dialerSession.themeListInfo = event.model!!.themes
+            Timber.e("theme list info-------${dialerSession.themeListInfo}")
         }
     }
 

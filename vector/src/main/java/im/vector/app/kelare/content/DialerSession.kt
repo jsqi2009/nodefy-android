@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import im.vector.app.kelare.network.models.AddSipPhoneBean
 import im.vector.app.kelare.network.models.DialerAccountInfo
+import im.vector.app.kelare.network.models.ThemeInfo
 
 class DialerSession(c: Context) {
 
@@ -37,6 +38,7 @@ class DialerSession(c: Context) {
         private const val KEY_CREATE_ACCOUNT_LOGIN = "create_account_login"
         private const val KEY_PUBLIC_ROOM_ID = "public_room_id"
         private const val KEY_ACCOUNT_PAID = "account_paid"
+        private const val KEY_NODEFY_THEME = "nodefy_theme"
 
     }
 
@@ -132,6 +134,21 @@ class DialerSession(c: Context) {
     var isCreateAccountLogin: Boolean
         get() = this.mHashStorage.getBoolean(KEY_CREATE_ACCOUNT_LOGIN)
         set(paramFlag) = this.mHashStorage.put(KEY_CREATE_ACCOUNT_LOGIN, paramFlag)
+
+    var themeListInfo : ArrayList<ThemeInfo>?
+        get() {
+            val json = this.mHashStorage.getString(KEY_NODEFY_THEME)
+            if (json.isEmpty()) {
+                return null
+            } else {
+                return Gson().fromJson<ArrayList<ThemeInfo>>(json, object : TypeToken<ArrayList<ThemeInfo>>() {
+                }.type)
+            }
+        }
+        set(themeListInfo) {
+            val json = Gson().toJson(themeListInfo)
+            this.mHashStorage.put(KEY_NODEFY_THEME, json)
+        }
 
     /*var userInfo: UserInfo
         get() = this.getData(UserInfo::class.java, KEY_USER_INFO)
