@@ -104,6 +104,7 @@ import javax.inject.Inject
 import android.R.attr.action
 import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -924,6 +925,7 @@ class HomeActivity :
             // Get new FCM registration token
             val token = task.result
             Timber.e("FCM registration token---$token")
+            //Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
         })
     }
 

@@ -17,7 +17,8 @@
      -->
 
     <!-- Note: pusher_http_url should have path '/_matrix/push/v1/notify' -->
-    <string name="pusher_http_url" translatable="false">https://matrix.org/_matrix/push/v1/notify</string>
+    <!--<string name="pusher_http_url" translatable="false">https://matrix.org/_matrix/push/v1/notify</string>-->
+    <string name="pusher_http_url" translatable="false">https://push.nodefy.info/_matrix/push/v1/notify</string>
     <!-- Note: pusher_app_id cannot exceed 64 chars -->
     <string name="pusher_app_id" translatable="false">comms.nodefy.me</string>
     <!--<string name="pusher_app_id" translatable="false">im.vector.app.android</string>-->

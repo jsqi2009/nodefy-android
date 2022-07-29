@@ -247,6 +247,10 @@ android {
             buildConfigField "boolean", "LOW_PRIVACY_LOG_ENABLE", "false"
             buildConfigField "boolean", "ENABLE_STRICT_MODE_LOGS", "false"
 
+            //make release open debug mode
+            minifyEnabled false
+            debuggable true
+
             /*postprocessing {
                 removeUnusedCode true
                 removeUnusedResources true
