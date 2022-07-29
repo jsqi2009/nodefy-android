@@ -2433,5 +2433,7 @@
     <string name="uploads_links_title">链接</string>
     <string name="uploads_links_no_result">此聊天室中暂无链接</string>
 
+    <!-- nodefy license  -->
+    <string name="license_module_tip">"这个模块需要您自托管nodefy服务，了解更多请访问：https://nodefy.me"</string>
 
 </resources>

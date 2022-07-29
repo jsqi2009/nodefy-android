@@ -36,6 +36,7 @@ class DialerSession(c: Context) {
         private const val KEY_USER_ID = "user_id"
         private const val KEY_CREATE_ACCOUNT_LOGIN = "create_account_login"
         private const val KEY_PUBLIC_ROOM_ID = "public_room_id"
+        private const val KEY_ACCOUNT_PAID = "account_paid"
 
     }
 
@@ -93,6 +94,10 @@ class DialerSession(c: Context) {
     var publicRoomID: String
         get() = this.mHashStorage.getString(KEY_PUBLIC_ROOM_ID)
         set(paramString) = this.mHashStorage.put(KEY_PUBLIC_ROOM_ID, paramString)
+
+    var isPaid: Boolean
+        get() = this.mHashStorage.getBoolean(KEY_ACCOUNT_PAID)
+        set(paramFlag) = this.mHashStorage.put(KEY_ACCOUNT_PAID, paramFlag)
 
     var accountListInfo : ArrayList<DialerAccountInfo>?
         get() {

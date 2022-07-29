@@ -3196,4 +3196,7 @@
     <string name="uploads_links_no_result">There are no links in this room</string>
 
 
+    <!-- nodefy license  -->
+    <string name="license_module_tip">"This module requires you to self-host nodefy service. For details, please visit: https://nodefy.me"</string>
+
 </resources>

@@ -103,4 +103,10 @@ public interface HttpApi {
     @GET("_matrix/client/r0/public_room")
     Call<JsonObject> getPublicRoomInfo();
 
+    @GET("_synapse/admin/v1/license_admin")
+    Call<JsonObject> getLicense();
+
+    @GET("_synapse/admin/v2/themes")
+    Call<JsonObject> getThemes();
+
 }

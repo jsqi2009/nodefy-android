@@ -10,6 +10,7 @@ import im.vector.app.kelare.network.event.DeleteAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactResponseEvent
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
+import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
 import im.vector.app.kelare.network.event.SaveAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.SaveContactInfoResponseEvent
@@ -25,6 +26,7 @@ import im.vector.app.kelare.network.response.DeleteAccountInfoResponse
 import im.vector.app.kelare.network.response.DeleteContactResponse
 import im.vector.app.kelare.network.response.DialerAccountInfoResponse
 import im.vector.app.kelare.network.response.GetContactResponse
+import im.vector.app.kelare.network.response.GetLicenseResponse
 import im.vector.app.kelare.network.response.GetPublicRoomResponse
 import im.vector.app.kelare.network.response.SaveAccountInfoResponse
 import im.vector.app.kelare.network.response.SaveContactInfoResponse
@@ -267,6 +269,22 @@ object HttpClient {
      */
     fun getPublicRoomInfo() {
         val call = mHttpApi!!.getPublicRoomInfo()
+        dispatchClient!!.enqueue(call, GetPublicRoomResponse::class.java, GetPublicRoomResponseEvent::class.java)
+    }
+
+    /**
+     * get license
+     */
+    fun getLicense() {
+        val call = mHttpApi!!.getLicense()
+        dispatchClient!!.enqueue(call, GetLicenseResponse::class.java, GetLicenseResponseEvent::class.java)
+    }
+
+    /**
+     * get themes
+     */
+    fun getThemes() {
+        val call = mHttpApi!!.getThemes()
         dispatchClient!!.enqueue(call, GetPublicRoomResponse::class.java, GetPublicRoomResponseEvent::class.java)
     }
 

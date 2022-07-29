@@ -114,6 +114,7 @@ import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.event.ToSpaceDetailsEvent
 import im.vector.app.features.home.room.list.widget.ChooseCreateGroupTypeDialog
 import im.vector.app.features.spaces.SpaceListFragment
+import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
 import java.util.Timer
 import java.util.TimerTask
@@ -718,6 +719,7 @@ class HomeActivity :
     private fun setBottomNavigationView() {
 
         views.bottomNavigationViewNew.setOnItemSelectedListener { item ->
+
             when (item.itemId) {
                 R.id.bottom_action_people  -> {
                     replaceFragment(views.homeDetailFragmentContainer, HomeDetailFragment::class.java)
@@ -727,10 +729,22 @@ class HomeActivity :
 //                    replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)
                 }
                 R.id.bottom_action_contact -> {
-                    replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)
+                    if (!dialerSession.isPaid) {
+                        showToast(getString(R.string.license_module_tip))
+                        //views.bottomNavigationViewNew.menu.findItem(R.id.bottom_action_contact).isEnabled = false
+                    } else {
+                        replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)
+                    }
+                    //replaceFragment(views.homeDetailFragmentContainer, HomeContactFragment::class.java)
                 }
                 R.id.bottom_action_dialer  -> {
-                    replaceFragment(views.homeDetailFragmentContainer, DialerFragment::class.java)
+                    if (!dialerSession.isPaid) {
+                        showToast(getString(R.string.license_module_tip))
+                        //views.bottomNavigationViewNew.menu.findItem(R.id.bottom_action_dialer).isEnabled = false
+                    } else {
+                        replaceFragment(views.homeDetailFragmentContainer, DialerFragment::class.java)
+                    }
+                    //replaceFragment(views.homeDetailFragmentContainer, DialerFragment::class.java)
                 }
                 else                       -> {}
             }
@@ -768,6 +782,7 @@ class HomeActivity :
         getPublicRoom()
         getDialerAccounts()
         getFcmToken()
+        getDialerLicense()
     }
 
     private fun getPublicRoom() {
@@ -927,6 +942,27 @@ class HomeActivity :
             Timber.e("FCM registration token---$token")
             //Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun getDialerLicense() {
+        try {
+            HttpClient.getLicense()
+        } catch (e: Exception) {
+        }
+    }
+
+    @Subscribe
+    fun onLicenseEvent(event: GetLicenseResponseEvent) {
+        if (event.isSuccess) {
+            if (event.model!!.license != null) {
+                dialerSession.isPaid = true
+                Timber.e("dialer license-----paid")
+            } else {
+                dialerSession.isPaid = false
+            }
+        } else {
+            dialerSession.isPaid = false
+        }
     }
 
 }
