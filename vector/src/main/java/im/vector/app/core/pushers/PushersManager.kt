@@ -22,6 +22,8 @@ import im.vector.app.core.resources.AppNameProvider
 import im.vector.app.core.resources.LocaleProvider
 import im.vector.app.core.resources.StringProvider
 import org.matrix.android.sdk.api.session.pushers.PushersService
+import timber.log.Timber
+import java.sql.Time
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.math.abs
@@ -47,6 +49,9 @@ class PushersManager @Inject constructor(
 
     fun enqueueRegisterPusherWithFcmKey(pushKey: String): UUID {
         val currentSession = activeSessionHolder.getActiveSession()
+        Timber.e("push key----->$pushKey")
+        Timber.e("pusher_app_id----->${stringProvider.getString(R.string.pusher_app_id)}")
+        Timber.e("pusher_http_url----->${stringProvider.getString(R.string.pusher_http_url)}")
         return currentSession.pushersService().enqueueAddHttpPusher(createHttpPusher(pushKey))
     }
 

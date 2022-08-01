@@ -335,6 +335,11 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                 requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), 0)
                 return
             }
+
+            if (!core.isPushNotificationAvailable) {
+                Timber.e("Something is wrong with the linphone push setup!")
+            }
+
         } catch (e: Exception) {
 
         }

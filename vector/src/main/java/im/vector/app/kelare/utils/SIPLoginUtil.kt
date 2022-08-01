@@ -113,6 +113,10 @@ class SIPLoginUtil(val context: Context, val core: Core, private val accountInfo
             return
         }
 
+        if (!core.isPushNotificationAvailable) {
+            Timber.e("Something is wrong with the linphone push setup!")
+        }
+
     }
 
     // Create a Core listener to listen for the callback we need
