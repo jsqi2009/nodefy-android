@@ -1075,7 +1075,6 @@ class TimelineFragment @Inject constructor(
         //hide the open matrix app
         menu.findItem(R.id.open_matrix_apps).isVisible = false
         menu.findItem(R.id.search).isVisible = false
-        menu.findItem(R.id.voice_call).isVisible = true
 
         withState(timelineViewModel) { state ->
             // Set the visual state of the call buttons (voice/video) to enabled/disabled according to user permissions
@@ -1086,7 +1085,8 @@ class TimelineFragment @Inject constructor(
                 else -> state.isAllowedToManageWidgets
             }
             setOf(R.id.voice_call, R.id.video_call).forEach {
-                menu.findItem(it).icon?.alpha = if (callButtonsEnabled) 0xFF else 0x40
+//                menu.findItem(it).icon?.alpha = if (callButtonsEnabled) 0xFF else 0x40
+                menu.findItem(it).icon?.alpha = if (callButtonsEnabled) 0xFF else 0xFF
             }
 
             val matrixAppsMenuItem = menu.findItem(R.id.open_matrix_apps)
@@ -1111,6 +1111,11 @@ class TimelineFragment @Inject constructor(
 
             // Handle custom threads badge notification
             updateMenuThreadNotificationBadge(menu, state)
+
+            //hide the voice icon in the group
+            if (!state.isDm()) {
+                menu.findItem(R.id.voice_call).isVisible = false
+            }
         }
     }
 

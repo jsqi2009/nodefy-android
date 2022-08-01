@@ -161,9 +161,9 @@ internal class WidgetManager @Inject constructor(private val integrationManager:
     }
 
     suspend fun createRoomWidget(roomId: String, widgetId: String, content: Content): Widget {
-        if (!hasPermissionsToHandleWidgets(roomId)) {
+        /*if (!hasPermissionsToHandleWidgets(roomId)) {
             throw WidgetManagementFailure.NotEnoughPower
-        }
+        }*/
         val params = CreateWidgetTask.Params(
                 roomId = roomId,
                 widgetId = widgetId,
