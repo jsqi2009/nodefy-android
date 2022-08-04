@@ -29,6 +29,7 @@ import im.vector.app.R
 import im.vector.app.databinding.ViewRemoveJitsiWidgetBinding
 import im.vector.app.features.home.room.detail.RoomDetailViewState
 import org.matrix.android.sdk.api.session.room.model.Membership
+import timber.log.Timber
 
 @SuppressLint("ClickableViewAccessibility") class RemoveJitsiWidgetView @JvmOverloads constructor(
         context: Context,
@@ -89,7 +90,7 @@ import org.matrix.android.sdk.api.session.room.model.Membership
         val summary = roomDetailViewState.asyncRoomSummary()
         val newState = if (summary?.membership != Membership.JOIN ||
                 roomDetailViewState.isCallOptionAvailable() ||
-                !roomDetailViewState.isAllowedToManageWidgets ||
+                //!roomDetailViewState.isAllowedToManageWidgets ||
                 roomDetailViewState.jitsiState.widgetId == null) {
             State.Unmount
         } else if (roomDetailViewState.jitsiState.deleteWidgetInProgress) {
@@ -97,6 +98,7 @@ import org.matrix.android.sdk.api.session.room.model.Membership
         } else {
             State.Idle
         }
+        Timber.e("current user stata--->$newState")
         // Don't force Idle if we are already sliding
         if (state is State.Sliding && newState is State.Idle) {
             return

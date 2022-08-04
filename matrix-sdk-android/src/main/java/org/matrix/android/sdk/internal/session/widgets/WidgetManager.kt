@@ -178,9 +178,9 @@ internal class WidgetManager @Inject constructor(private val integrationManager:
     }
 
     suspend fun destroyRoomWidget(roomId: String, widgetId: String) {
-        if (!hasPermissionsToHandleWidgets(roomId)) {
+        /*if (!hasPermissionsToHandleWidgets(roomId)) {
             throw WidgetManagementFailure.NotEnoughPower
-        }
+        }*/
         val params = CreateWidgetTask.Params(
                 roomId = roomId,
                 widgetId = widgetId,
