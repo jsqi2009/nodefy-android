@@ -423,11 +423,11 @@ class VectorApplication :
                 return
             }
 
-            /*Factory.instance().setLogCollectionPath(context.applicationContext.filesDir.absolutePath)
-            Factory.instance().enableLogCollection(LogCollectionState.Enabled)*/
+            Factory.instance().setLogCollectionPath(context.applicationContext.filesDir.absolutePath)
+            Factory.instance().enableLogCollection(LogCollectionState.Enabled)
 
             // For VFS
-            Factory.instance().setCacheDir(context.cacheDir.absolutePath)
+            //Factory.instance().setCacheDir(context.cacheDir.absolutePath)
 
             corePreferences = CorePreferences(context)
             corePreferences.copyAssetsFromPackage()
