@@ -49,7 +49,7 @@ abstract class ProximitySensorActivity : GenericActivity() {
         super.onResume()
 
         if (coreContext.core.callsNb > 0) {
-            val videoEnabled = coreContext.core.currentCall?.currentParams?.isVideoEnabled ?: false
+            val videoEnabled = coreContext.core.currentCall?.currentParams?.videoEnabled() ?: false
             enableProximitySensor(!videoEnabled)
         }
     }

@@ -36,7 +36,7 @@ class CallStatisticsData(val call: Call) : GenericContactData(call.remoteAddress
 
     private val listener = object : CallListenerStub() {
         override fun onStatsUpdated(call: Call, stats: CallStats) {
-            isVideoEnabled.value = call.currentParams.isVideoEnabled
+            isVideoEnabled.value = call.currentParams.videoEnabled()
             updateCallStats(stats)
         }
     }
@@ -48,7 +48,7 @@ class CallStatisticsData(val call: Call) : GenericContactData(call.remoteAddress
 
         initCallStats()
 
-        val videoEnabled = call.currentParams.isVideoEnabled
+        val videoEnabled = call.currentParams.videoEnabled()
         isVideoEnabled.value = videoEnabled
 
         updateMediaEncryptionStats()

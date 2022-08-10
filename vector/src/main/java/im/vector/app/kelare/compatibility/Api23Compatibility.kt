@@ -79,8 +79,8 @@ class Api23Compatibility {
             var name = adapter?.name
             if (name == null) {
                 name = Settings.Secure.getString(
-                    context.contentResolver,
-                    "bluetooth_name"
+                        context.contentResolver,
+                        "bluetooth_name"
                 )
             }
             if (name == null) {
@@ -141,7 +141,7 @@ class Api23Compatibility {
             return EditorInfo.IME_FLAG_NO_EXTRACT_UI
         }
 
-        suspend fun addImageToMediaStore(context: Context, content: Content): Boolean {
+        /*suspend fun addImageToMediaStore(context: Context, content: Content): Boolean {
             if (!PermissionHelper.get().hasWriteExternalStoragePermission()) {
                 Log.e("[Media Store] Write external storage permission denied")
                 return false
@@ -177,9 +177,9 @@ class Api23Compatibility {
                 return true
             }
             return false
-        }
+        }*/
 
-        suspend fun addVideoToMediaStore(context: Context, content: Content): Boolean {
+        /*suspend fun addVideoToMediaStore(context: Context, content: Content): Boolean {
             if (!PermissionHelper.get().hasWriteExternalStoragePermission()) {
                 Log.e("[Media Store] Write external storage permission denied")
                 return false
@@ -216,9 +216,9 @@ class Api23Compatibility {
                 return true
             }
             return false
-        }
+        }*/
 
-        suspend fun addAudioToMediaStore(context: Context, content: Content): Boolean {
+        /*suspend fun addAudioToMediaStore(context: Context, content: Content): Boolean {
             if (!PermissionHelper.get().hasWriteExternalStoragePermission()) {
                 Log.e("[Media Store] Write external storage permission denied")
                 return false
@@ -256,13 +256,13 @@ class Api23Compatibility {
                 return true
             }
             return false
-        }
+        }*/
 
         private suspend fun addContentValuesToCollection(
-            context: Context,
-            filePath: String,
-            collection: Uri,
-            values: ContentValues
+                context: Context,
+                filePath: String,
+                collection: Uri,
+                values: ContentValues
         ): String {
             try {
                 val fileUri = context.contentResolver.insert(collection, values)
@@ -284,11 +284,11 @@ class Api23Compatibility {
 
         fun requestReadExternalStorageAndCameraPermissions(fragment: Fragment, code: Int) {
             fragment.requestPermissions(
-                arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.CAMERA
-                ),
-                code
+                    arrayOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA
+                    ),
+                    code
             )
         }
 

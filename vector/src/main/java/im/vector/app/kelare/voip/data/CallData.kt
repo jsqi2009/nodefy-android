@@ -69,8 +69,8 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
             update()
 
             if (call.state == Call.State.UpdatedByRemote) {
-                val remoteVideo = call.remoteParams?.isVideoEnabled ?: false
-                val localVideo = call.currentParams.isVideoEnabled
+                val remoteVideo = call.remoteParams?.videoEnabled() ?: false
+                val localVideo = call.currentParams.videoEnabled()
                 if (remoteVideo && !localVideo) {
                     // User has 30 secs to accept or decline call update
                     startVideoUpdateAcceptanceTimer()
@@ -83,10 +83,10 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
             }
         }
 
-        override fun onRemoteRecording(call: Call, recording: Boolean) {
+        /*override fun onRemoteRecording(call: Call, recording: Boolean) {
             Log.i("[Call] Remote recording changed: $recording")
             isRemotelyRecorded.value = recording
-        }
+        }*/
 
         override fun onSnapshotTaken(call: Call, filePath: String) {
             Log.i("[Call] Snapshot taken: $filePath")
@@ -97,11 +97,11 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
             content.name = filePath.substring(filePath.indexOf("/") + 1)
 
             scope.launch {
-                if (Compatibility.addImageToMediaStore(coreContext.context, content)) {
+                /*if (Compatibility.addImageToMediaStore(coreContext.context, content)) {
                     Log.i("[Call] Adding snapshot ${content.name} to Media Store terminated")
                 } else {
                     Log.e("[Call] Something went wrong while copying file to Media Store...")
-                }
+                }*/
             }
         }
     }
@@ -110,7 +110,7 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
 
     init {
         call.addListener(listener)
-        isRemotelyRecorded.value = call.remoteParams?.isRecording
+        //isRemotelyRecorded.value = call.remoteParams?.isRecording
         displayableAddress.value = SipUtils.getDisplayableAddress(call.remoteAddress)
 
         isConferenceCall.addSource(remoteConferenceSubject) {
@@ -206,7 +206,7 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
         isRemotelyPaused.value = isCallRemotelyPaused()
         canBePaused.value = canCallBePaused()
 
-        updateConferenceInfo()
+        //updateConferenceInfo()
 
         isOutgoing.value = when (call.state) {
             Call.State.OutgoingInit, Call.State.OutgoingEarlyMedia, Call.State.OutgoingProgress, Call.State.OutgoingRinging -> true
@@ -226,7 +226,7 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
         }
     }
 
-    private fun updateConferenceInfo() {
+    /*private fun updateConferenceInfo() {
         val conference = call.conference
         isInRemoteConference.value = conference != null
         if (conference != null) {
@@ -269,20 +269,20 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
                 conferenceParticipantsCountLabel.value = coreContext.context.getString(R.string.conference_participants_title, participantsList.size)
             }
         }
-    }
+    }*/
 
     private fun startVideoUpdateAcceptanceTimer() {
         timer?.cancel()
 
         timer = Timer("Call update timeout")
         timer?.schedule(
-            object : TimerTask() {
-                override fun run() {
-                    // Decline call update
-                    coreContext.videoUpdateRequestTimedOut(call)
-                }
-            },
-            30000
+                object : TimerTask() {
+                    override fun run() {
+                        // Decline call update
+                        coreContext.videoUpdateRequestTimedOut(call)
+                    }
+                },
+                30000
         )
         Log.i("[Call] Starting 30 seconds timer to automatically decline video request")
     }

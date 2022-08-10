@@ -65,31 +65,32 @@ class StatItemData(val type: StatType) {
         val payloadType = if (stats.type == StreamType.Audio) call.currentParams.usedAudioPayloadType else call.currentParams.usedVideoPayloadType
         payloadType ?: return
         value.value = when (type) {
-            StatType.CAPTURE                         -> if (stats.type == StreamType.Audio) audioDeviceToString(call.inputAudioDevice) else call.core.videoDevice
-            StatType.PLAYBACK                        -> if (stats.type == StreamType.Audio) audioDeviceToString(call.outputAudioDevice) else call.core.videoDisplayFilter
-            StatType.PAYLOAD                         -> "${payloadType.mimeType}/${payloadType.clockRate / 1000} kHz"
-            StatType.ENCODER                         -> call.core.mediastreamerFactory.getDecoderText(payloadType.mimeType)
-            StatType.DECODER                         -> call.core.mediastreamerFactory.getEncoderText(payloadType.mimeType)
-            StatType.DOWNLOAD_BW                     -> "${stats.downloadBandwidth} kbits/s"
-            StatType.UPLOAD_BW                       -> "${stats.uploadBandwidth} kbits/s"
-            StatType.ICE                             -> stats.iceState.toString()
-            StatType.IP_FAM                          -> if (stats.ipFamilyOfRemote == AddressFamily.Inet6) "IPv6" else "IPv4"
-            StatType.SENDER_LOSS                     -> DecimalFormat("##.##%").format(stats.senderLossRate)
-            StatType.RECEIVER_LOSS                   -> DecimalFormat("##.##%").format(stats.receiverLossRate)
-            StatType.JITTER                          -> DecimalFormat("##.## ms").format(stats.jitterBufferSizeMs)
-            StatType.SENT_RESOLUTION                 -> call.currentParams.sentVideoDefinition?.name
-            StatType.RECEIVED_RESOLUTION             -> call.currentParams.receivedVideoDefinition?.name
-            StatType.SENT_FPS                        -> "${call.currentParams.sentFramerate}"
-            StatType.RECEIVED_FPS                    -> "${call.currentParams.receivedFramerate}"
+            StatType.CAPTURE -> if (stats.type == StreamType.Audio) audioDeviceToString(call.inputAudioDevice) else call.core.videoDevice
+            StatType.PLAYBACK -> if (stats.type == StreamType.Audio) audioDeviceToString(call.outputAudioDevice) else call.core.videoDisplayFilter
+            StatType.PAYLOAD -> "${payloadType.mimeType}/${payloadType.clockRate / 1000} kHz"
+            StatType.ENCODER -> call.core.mediastreamerFactory.getDecoderText(payloadType.mimeType)
+            StatType.DECODER -> call.core.mediastreamerFactory.getEncoderText(payloadType.mimeType)
+            StatType.DOWNLOAD_BW -> "${stats.downloadBandwidth} kbits/s"
+            StatType.UPLOAD_BW -> "${stats.uploadBandwidth} kbits/s"
+            StatType.ICE -> stats.iceState.toString()
+            StatType.IP_FAM -> if (stats.ipFamilyOfRemote == AddressFamily.Inet6) "IPv6" else "IPv4"
+            StatType.SENDER_LOSS -> DecimalFormat("##.##%").format(stats.senderLossRate)
+            StatType.RECEIVER_LOSS -> DecimalFormat("##.##%").format(stats.receiverLossRate)
+            StatType.JITTER -> DecimalFormat("##.## ms").format(stats.jitterBufferSizeMs)
+            StatType.SENT_RESOLUTION -> call.currentParams.sentVideoDefinition?.name
+            StatType.RECEIVED_RESOLUTION -> call.currentParams.receivedVideoDefinition?.name
+            StatType.SENT_FPS -> "${call.currentParams.sentFramerate}"
+            StatType.RECEIVED_FPS -> "${call.currentParams.receivedFramerate}"
             StatType.ESTIMATED_AVAILABLE_DOWNLOAD_BW -> "${stats.estimatedDownloadBandwidth} kbit/s"
-            StatType.MEDIA_ENCRYPTION                -> {
+            StatType.MEDIA_ENCRYPTION -> {
                 when (call.currentParams.mediaEncryption) {
                     MediaEncryption.ZRTP -> {
-                        if (stats.isZrtpKeyAgreementAlgoPostQuantum) {
-                            AppUtils.getString(R.string.call_settings_media_encryption_zrtp_post_quantum)
-                        } else {
-                            AppUtils.getString(R.string.call_settings_media_encryption_zrtp)
-                        }
+                        /* if (stats.isZrtpKeyAgreementAlgoPostQuantum) {
+                             AppUtils.getString(R.string.call_settings_media_encryption_zrtp_post_quantum)
+                         } else {
+                             AppUtils.getString(R.string.call_settings_media_encryption_zrtp)
+                         }*/
+                        AppUtils.getString(R.string.call_settings_media_encryption_zrtp)
                     }
                     MediaEncryption.DTLS -> AppUtils.getString(R.string.call_settings_media_encryption_dtls)
                     MediaEncryption.SRTP -> AppUtils.getString(R.string.call_settings_media_encryption_srtp)
@@ -97,11 +98,14 @@ class StatItemData(val type: StatType) {
                     else -> "Unexpected!"
                 }
             }
-            StatType.ZRTP_CIPHER_ALGO                -> stats.zrtpCipherAlgo
-            StatType.ZRTP_KEY_AGREEMENT_ALGO         -> stats.zrtpKeyAgreementAlgo
-            StatType.ZRTP_HASH_ALGO                  -> stats.zrtpHashAlgo
-            StatType.ZRTP_AUTH_TAG_ALGO              -> stats.zrtpAuthTagAlgo
-            StatType.ZRTP_AUTH_SAS_ALGO              -> stats.zrtpSasAlgo
+            /*StatType.ZRTP_CIPHER_ALGO -> stats.zrtpCipherAlgo
+            StatType.ZRTP_KEY_AGREEMENT_ALGO -> stats.zrtpKeyAgreementAlgo
+            StatType.ZRTP_HASH_ALGO -> stats.zrtpHashAlgo
+            StatType.ZRTP_AUTH_TAG_ALGO -> stats.zrtpAuthTagAlgo
+            StatType.ZRTP_AUTH_SAS_ALGO -> stats.zrtpSasAlgo*/
+            else -> {
+                "Unexpected!"
+            }
         }
     }
 }

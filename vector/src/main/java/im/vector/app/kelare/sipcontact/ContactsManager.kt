@@ -128,10 +128,9 @@ class ContactsManager(private val context: Context) {
             if (pictureUri != null) {
                 val parsedUri = if (pictureUri.startsWith("/")) "file:$pictureUri" else pictureUri
                 Log.i("[Contacts Manager] Found local picture URI: $parsedUri")
-                friend.photo = parsedUri
+                //friend.photo = parsedUri
             }
 
-            Log.i("[Contacts Manager] Local contact created for account [${address.asString()}] and picture [${friend.photo}]")
             localFriends.add(friend)
         }
     }
@@ -362,11 +361,11 @@ fun Friend.getPictureUri(thumbnailPreferred: Boolean = false): Uri? {
                 ContactsContract.Contacts.Photo.CONTENT_DIRECTORY
             )
         } catch (e: Exception) { }
-    } else if (photo != null) {
+    } /*else if (photo != null) {
         try {
             return Uri.parse(photo)
         } catch (e: Exception) { }
-    }
+    }*/
     return null
 }
 
@@ -386,7 +385,7 @@ fun Friend.getPerson(): Person {
         personBuilder.setIcon(icon)
     }
 
-    personBuilder.setUri(nativeUri)
-    personBuilder.setImportant(starred)
+   /* personBuilder.setUri(nativeUri)
+    personBuilder.setImportant(starred)*/
     return personBuilder.build()
 }

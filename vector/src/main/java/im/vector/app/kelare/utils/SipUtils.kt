@@ -78,7 +78,7 @@ class SipUtils {
             val remoteContact = call.remoteContact
             val conferenceAddress = if (call.dir == Call.Dir.Incoming) {
                 if (remoteContact != null)
-                    coreContext.core.interpretUrl(remoteContact, false)
+                    coreContext.core.interpretUrl(remoteContact)
                 else
                     null
             } else {
@@ -89,7 +89,8 @@ class SipUtils {
 
         fun getConferenceSubject(conference: Conference): String? {
             return if (conference.subject.isNullOrEmpty()) {
-                val conferenceInfo = coreContext.core.findConferenceInformationFromUri(conference.conferenceAddress)
+                return ""
+                /*val conferenceInfo = coreContext.core.findConferenceInformationFromUri(conference.conferenceAddress)
                 if (conferenceInfo != null) {
                     conferenceInfo.subject
                 } else {
@@ -98,30 +99,11 @@ class SipUtils {
                     } else {
                         AppUtils.getString(R.string.conference_default_title)
                     }
-                }
+                }*/
             } else {
                 conference.subject
             }
         }
-
-        fun isLimeAvailable(): Boolean {
-            val core = coreContext.core
-            return core.limeX3DhAvailable() && core.isLimeX3DhEnabled &&
-                core.limeX3DhServerUrl != null &&
-                core.defaultAccount?.params?.conferenceFactoryUri != null
-        }
-
-        fun isGroupChatAvailable(): Boolean {
-            val core = coreContext.core
-            return core.defaultAccount?.params?.conferenceFactoryUri != null
-        }
-
-        fun isRemoteConferencingAvailable(): Boolean {
-            val core = coreContext.core
-            return core.defaultAccount?.params?.audioVideoConferenceFactoryAddress != null || core.defaultAccount?.params?.conferenceFactoryUri != null
-        }
-
-
 
         fun deleteFilesAttachedToEventLog(eventLog: EventLog) {
             if (eventLog.type == EventLog.Type.ConferenceChatMessage) {
@@ -204,18 +186,6 @@ class SipUtils {
             val remoteSipUri = remoteAddress.clone()
             remoteSipUri.clean()
             return "${localSipUri.asStringUriOnly()}~${remoteSipUri.asStringUriOnly()}"
-        }
-
-        fun getAccountsNotHidden(): List<Account> {
-            val list = arrayListOf<Account>()
-
-            for (account in coreContext.core.accountList) {
-                if (account.getCustomParam("hidden") != "1") {
-                    list.add(account)
-                }
-            }
-
-            return list
         }
 
         fun applyInternationalPrefix(): Boolean {

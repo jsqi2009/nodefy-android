@@ -107,6 +107,9 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ensureCoreExists(applicationContext)
+
         args = parseArgs()
         if (args.clearCredentials || args.isUserLoggedOut || args.clearCache) {
             clearNotifications()
@@ -130,7 +133,6 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
 
 
         Log.i("[Main Activity] Ensuring Core exists")
-        ensureCoreExists(applicationContext)
     }
 
     private fun clearNotifications() {

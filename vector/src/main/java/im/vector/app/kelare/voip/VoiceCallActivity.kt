@@ -64,8 +64,6 @@ class VoiceCallActivity : ProximitySensorActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_voice_call)
         binding.lifecycleOwner = this
-
-        statusBarWhiteColor(this)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -176,13 +174,13 @@ class VoiceCallActivity : ProximitySensorActivity() {
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
 
-        if (coreContext.core.currentCall?.currentParams?.isVideoEnabled == true) {
+        if (coreContext.core.currentCall?.currentParams?.videoEnabled() == true) {
             Log.i("[Call Activity] Entering PiP mode")
             Compatibility.enterPipMode(this, conferenceViewModel.conferenceExists.value == true)
         }
     }
 
-   /* override fun onPictureInPictureModeChanged(
+    override fun onPictureInPictureModeChanged(
             isInPictureInPictureMode: Boolean,
             newConfig: Configuration
     ) {
@@ -191,7 +189,7 @@ class VoiceCallActivity : ProximitySensorActivity() {
             // To hide UI except for TextureViews
             controlsViewModel.pipMode.value = isInPictureInPictureMode
         }
-    }*/
+    }
 
     override fun onResume() {
         super.onResume()
@@ -216,13 +214,13 @@ class VoiceCallActivity : ProximitySensorActivity() {
             Call.State.OutgoingInit, Call.State.OutgoingEarlyMedia, Call.State.OutgoingProgress, Call.State.OutgoingRinging -> {
                 //navigateToOutgoingCall()
             }
-            Call.State.IncomingReceived, Call.State.IncomingEarlyMedia                                                      -> {
+            Call.State.IncomingReceived, Call.State.IncomingEarlyMedia -> {
                 val earlyMediaVideoEnabled = corePreferences.acceptEarlyMedia &&
                         currentCall.state == Call.State.IncomingEarlyMedia &&
-                        currentCall.currentParams.isVideoEnabled
+                        currentCall.currentParams.videoEnabled()
                 navigateToIncomingCall(earlyMediaVideoEnabled)
             }
-            else                                                                                                            -> {}
+            else -> {}
         }
     }
 
@@ -250,7 +248,7 @@ class VoiceCallActivity : ProximitySensorActivity() {
             permissionsRequiredList.add(Manifest.permission.RECORD_AUDIO)
         }
 
-        if (callsViewModel.currentCallData.value?.call?.currentParams?.isVideoEnabled == true &&
+        if (callsViewModel.currentCallData.value?.call?.currentParams?.videoEnabled() == true &&
                 !PermissionHelper.get().hasCameraPermission()
         ) {
             Log.i("[Call Activity] Asking for CAMERA permission")
@@ -281,12 +279,12 @@ class VoiceCallActivity : ProximitySensorActivity() {
                         Log.i("[Call Activity] RECORD_AUDIO permission has been granted")
                         callsViewModel.updateMicState()
                     }
-                    Manifest.permission.CAMERA       -> if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Manifest.permission.CAMERA -> if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         Log.i("[Call Activity] CAMERA permission has been granted")
                         coreContext.core.reloadVideoDevices()
                         controlsViewModel.toggleVideo()
                     }
-                    Compatibility.BLUETOOTH_CONNECT  -> if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Compatibility.BLUETOOTH_CONNECT -> if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         Log.i("[Call Activity] BLUETOOTH_CONNECT permission has been granted")
                     }
                 }
@@ -305,13 +303,5 @@ class VoiceCallActivity : ProximitySensorActivity() {
         Log.i("[Call Activity] Folding feature state changed: ${foldingFeature.state}, orientation is ${foldingFeature.orientation}")
 
         controlsViewModel.foldingState.value = foldingFeature
-    }
-
-    fun statusBarWhiteColor(activity: Activity) {
-        ImmersionBar.with(activity)
-                .statusBarColor(R.color.white)
-                .statusBarDarkFont(true)
-                .fitsSystemWindows(true)
-                .init()
     }
 }

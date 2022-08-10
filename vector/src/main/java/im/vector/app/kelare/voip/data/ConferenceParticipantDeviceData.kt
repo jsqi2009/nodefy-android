@@ -32,7 +32,7 @@ class ConferenceParticipantDeviceData(
     val participantDevice: ParticipantDevice,
     val isMe: Boolean
 ) :
-    GenericContactData(participantDevice.address) {
+        GenericContactData(participantDevice.address) {
     val videoEnabled: MediatorLiveData<Boolean> = MediatorLiveData()
 
     val videoAvailable = MutableLiveData<Boolean>()
@@ -49,7 +49,7 @@ class ConferenceParticipantDeviceData(
 
     private var textureView: TextureView? = null
 
-    private val listener = object : ParticipantDeviceListenerStub() {
+    /*private val listener = object : ParticipantDeviceListenerStub() {
         override fun onIsSpeakingChanged(
             participantDevice: ParticipantDevice,
             isSpeaking: Boolean
@@ -106,11 +106,11 @@ class ConferenceParticipantDeviceData(
                 }
             }
         }
-    }
+    }*/
 
     init {
         Log.i("[Conference Participant Device] Created device width Address [${participantDevice.address.asStringUriOnly()}], is it myself? $isMe")
-        participantDevice.addListener(listener)
+        /*participantDevice.addListener(listener)
 
         isSpeaking.value = false
         isMuted.value = participantDevice.isMuted
@@ -121,7 +121,7 @@ class ConferenceParticipantDeviceData(
         isInConference.value = participantDevice.isInConference
 
         val state = participantDevice.state
-        isJoining.value = state == ParticipantDeviceState.Joining || state == ParticipantDeviceState.Alerting
+        isJoining.value = state == ParticipantDeviceState.Joining || state == ParticipantDeviceState.Alerting*/
 
         videoEnabled.value = isVideoAvailableAndSendReceive()
         videoEnabled.addSource(videoAvailable) {
@@ -131,11 +131,9 @@ class ConferenceParticipantDeviceData(
             videoEnabled.value = isVideoAvailableAndSendReceive()
         }
 
-        Log.i("[Conference Participant Device] Participant [${participantDevice.address.asStringUriOnly()}], is in conf? ${isInConference.value}, is video available? ${videoAvailable.value} ($videoCapability), is mic muted? ${isMuted.value}")
     }
 
     override fun destroy() {
-        participantDevice.removeListener(listener)
 
         super.destroy()
     }
@@ -158,18 +156,18 @@ class ConferenceParticipantDeviceData(
             Log.i("[Conference Participant Device] Got textureView [$textureView] for participant [${participantDevice.address.asStringUriOnly()}], but it is not available yet")
             tv.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
                 override fun onSurfaceTextureAvailable(
-                    surface: SurfaceTexture,
-                    width: Int,
-                    height: Int
+                        surface: SurfaceTexture,
+                        width: Int,
+                        height: Int
                 ) {
                     Log.i("[Conference Participant Device] Setting textureView [$textureView] for participant [${participantDevice.address.asStringUriOnly()}]")
                     updateWindowId(textureView)
                 }
 
                 override fun onSurfaceTextureSizeChanged(
-                    surface: SurfaceTexture,
-                    width: Int,
-                    height: Int
+                        surface: SurfaceTexture,
+                        width: Int,
+                        height: Int
                 ) { }
 
                 override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
@@ -188,7 +186,7 @@ class ConferenceParticipantDeviceData(
         if (isMe) {
             coreContext.core.nativePreviewWindowId = windowId
         } else {
-            participantDevice.nativeVideoWindowId = windowId
+            //participantDevice.nativeVideoWindowId = windowId
         }
     }
 

@@ -111,11 +111,11 @@ class CallsViewModel : ViewModel() {
             } else if (call.state == Call.State.UpdatedByRemote) {
                 // If the correspondent asks to turn on video while audio call,
                 // defer update until user has chosen whether to accept it or not
-                val remoteVideo = call.remoteParams?.isVideoEnabled ?: false
-                val localVideo = call.currentParams.isVideoEnabled
+                val remoteVideo = call.remoteParams?.videoEnabled() ?: false
+                val localVideo = call.currentParams.videoEnabled()
                 val autoAccept = call.core.videoActivationPolicy.automaticallyAccept
                 if (remoteVideo && !localVideo && !autoAccept) {
-                    if (coreContext.core.isVideoCaptureEnabled || coreContext.core.isVideoDisplayEnabled) {
+                    if (coreContext.core.videoCaptureEnabled() || coreContext.core.videoDisplayEnabled()) {
                         call.deferUpdate()
                         callUpdateEvent.value = SipCallEvent(call)
                     } else {
@@ -177,22 +177,13 @@ class CallsViewModel : ViewModel() {
         updateMicState()
     }
 
-    fun mergeCallsIntoConference() {
-        Log.i("[Calls] Merging all calls into new conference")
-        val core = coreContext.core
-        val params = core.createConferenceParams(null)
-        params.subject = AppUtils.getString(R.string.conference_local_title)
-        // Prevent group call to start in audio only layout
-        params.isVideoEnabled = true
-        val conference = core.createConferenceWithParams(params)
-        conference?.addParticipants(core.calls)
-    }
+
 
     fun takeSnapshot() {
         if (!PermissionHelper.get().hasWriteExternalStoragePermission()) {
             askWriteExternalStoragePermissionEvent.value = SipCallEvent(true)
         } else {
-            if (currentCallData.value?.call?.currentParams?.isVideoEnabled == true) {
+            if (currentCallData.value?.call?.currentParams?.videoEnabled() == true) {
                 val fileName = System.currentTimeMillis().toString() + ".jpeg"
                 Log.i("[Calls] Snapshot will be save under $fileName")
                 currentCallData.value?.call?.takeVideoSnapshot(FileUtils.getFileStoragePath(fileName).absolutePath)

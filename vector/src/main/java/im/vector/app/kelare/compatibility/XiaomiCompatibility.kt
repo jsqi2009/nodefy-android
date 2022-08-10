@@ -50,48 +50,49 @@ class XiaomiCompatibility {
         ): Notification {
             val contact: Friend?
             val roundPicture: Bitmap?
-            val displayName: String
-            val address: String
+            var displayName: String = ""
+            var address: String = ""
             val info: String
 
             val remoteContact = call.remoteContact
-            val conferenceAddress = if (remoteContact != null) coreContext.core.interpretUrl(remoteContact, false) else null
-            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+            val conferenceAddress = if (remoteContact != null) coreContext.core.interpretUrl(remoteContact) else null
+//            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+            val conferenceInfo =  null
             if (conferenceInfo == null) {
                 Log.i("[Notifications Manager] No conference info found for remote contact address $remoteContact")
                 contact = coreContext.contactsManager.findContactByAddress(call.remoteAddress)
                 roundPicture =
-                    ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
+                        ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
                 displayName = contact?.name ?: SipUtils.getDisplayName(call.remoteAddress)
                 address = SipUtils.getDisplayableAddress(call.remoteAddress)
                 info = context.getString(R.string.incoming_call_notification_title)
             } else {
                 contact = null
-                displayName = conferenceInfo.subject ?: context.getString(R.string.conference)
-                address = SipUtils.getDisplayableAddress(conferenceInfo.organizer)
+                //displayName = conferenceInfo.subject ?: context.getString(R.string.conference)
+                //address = SipUtils.getDisplayableAddress(conferenceInfo.organizer)
                 roundPicture = BitmapFactory.decodeResource(context.resources, R.drawable.ic_message_sent)
                 info = context.getString(R.string.incoming_group_call_notification_title)
-                Log.i("[Notifications Manager] Displaying incoming group call notification with subject $displayName and remote contact address $remoteContact")
+                //Log.i("[Notifications Manager] Displaying incoming group call notification with subject $displayName and remote contact address $remoteContact")
             }
 
             val builder = NotificationCompat.Builder(context, context.getString(R.string.notification_channel_incoming_call_id))
-                .addPerson(notificationsManager.getPerson(contact, displayName, roundPicture))
-                .setSmallIcon(R.drawable.topbar_call_notification)
-                .setLargeIcon(roundPicture ?: BitmapFactory.decodeResource(context.resources, R.drawable.ic_message_sent))
-                .setContentTitle(displayName)
-                .setContentText(address)
-                .setSubText(info)
-                .setCategory(NotificationCompat.CATEGORY_CALL)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(false)
-                .setShowWhen(true)
-                .setOngoing(true)
-                .setColor(ContextCompat.getColor(context, R.color.primary_color))
-                .setFullScreenIntent(pendingIntent, true)
-                .addAction(notificationsManager.getCallDeclineAction(notifiable))
-                .addAction(notificationsManager.getCallAnswerAction(notifiable))
+                    .addPerson(notificationsManager.getPerson(contact, displayName, roundPicture))
+                    .setSmallIcon(R.drawable.topbar_call_notification)
+                    .setLargeIcon(roundPicture ?: BitmapFactory.decodeResource(context.resources, R.drawable.ic_message_sent))
+                    .setContentTitle(displayName)
+                    .setContentText(address)
+                    .setSubText(info)
+                    .setCategory(NotificationCompat.CATEGORY_CALL)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setWhen(System.currentTimeMillis())
+                    .setAutoCancel(false)
+                    .setShowWhen(true)
+                    .setOngoing(true)
+                    .setColor(ContextCompat.getColor(context, R.color.primary_color))
+                    .setFullScreenIntent(pendingIntent, true)
+                    .addAction(notificationsManager.getCallDeclineAction(notifiable))
+                    .addAction(notificationsManager.getCallAnswerAction(notifiable))
 
             if (!corePreferences.preventInterfaceFromShowingUp) {
                 builder.setContentIntent(pendingIntent)

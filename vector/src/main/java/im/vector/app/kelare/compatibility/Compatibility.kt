@@ -89,40 +89,26 @@ class Compatibility {
             }
         }
 
-        fun requestTelecomManagerPermissions(activity: Activity, code: Int) {
-            if (Version.sdkAboveOrEqual(Version.API30_ANDROID_11)) {
-                Api30Compatibility.requestTelecomManagerPermission(activity, code)
-            } else {
-                Api26Compatibility.requestTelecomManagerPermission(activity, code)
-            }
-        }
 
-        fun requestPostNotificationsPermission(fragment: Fragment, code: Int) {
-            if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
-                Api33Compatibility.requestPostNotificationsPermission(fragment, code)
-            }
-        }
 
         fun hasPostNotificationsPermission(context: Context): Boolean {
-            return if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
+            /*return if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
                 Api33Compatibility.hasPostNotificationsPermission(context)
-            } else true
+            } else true*/
+
+
+            return true
         }
 
-        fun requestReadExternalStorageAndCameraPermissions(fragment: Fragment, code: Int) {
-            if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
-                Api33Compatibility.requestReadMediaAndCameraPermissions(fragment, code)
-            } else {
-                Api23Compatibility.requestReadExternalStorageAndCameraPermissions(fragment, code)
-            }
-        }
 
         fun hasReadExternalStoragePermission(context: Context): Boolean {
-            return if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
+            /*return if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
                 Api33Compatibility.hasReadExternalStoragePermission(context)
             } else {
                 Api23Compatibility.hasReadExternalStoragePermission(context)
-            }
+            }*/
+
+            return true
         }
 
         fun getDeviceName(context: Context): String {
@@ -177,8 +163,8 @@ class Compatibility {
         /* Notifications */
 
         fun createNotificationChannels(
-            context: Context,
-            notificationManager: NotificationManagerCompat
+                context: Context,
+                notificationManager: NotificationManagerCompat
         ) {
             if (Version.sdkAboveOrEqual(Version.API26_O_80)) {
                 Api26Compatibility.createServiceChannel(context, notificationManager)
@@ -193,8 +179,8 @@ class Compatibility {
         }
 
         fun getChannelImportance(
-            notificationManager: NotificationManagerCompat,
-            channelId: String
+                notificationManager: NotificationManagerCompat,
+                channelId: String
         ): Int {
             if (Version.sdkAboveOrEqual(Version.API26_O_80)) {
                 return Api26Compatibility.getChannelImportance(notificationManager, channelId)
@@ -223,11 +209,11 @@ class Compatibility {
                 return Api31Compatibility.createIncomingCallNotification(context, call, notifiable, pendingIntent, notificationsManager)
             } else if (manufacturer == "xiaomi") { // Xiaomi devices don't handle CustomHeadsUpContentView correctly
                 return XiaomiCompatibility.createIncomingCallNotification(
-                    context,
-                    call,
-                    notifiable,
-                    pendingIntent,
-                    notificationsManager
+                        context,
+                        call,
+                        notifiable,
+                        pendingIntent,
+                        notificationsManager
                 )
             }
             return Api26Compatibility.createIncomingCallNotification(context, call, notifiable, pendingIntent, notificationsManager)
@@ -287,9 +273,9 @@ class Compatibility {
         }
 
         fun getPipRatio(
-            activity: Activity,
-            forcePortrait: Boolean = false,
-            forceLandscape: Boolean = false
+                activity: Activity,
+                forcePortrait: Boolean = false,
+                forceLandscape: Boolean = false
         ): Rational {
             val displayMetrics = DisplayMetrics()
             activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -370,27 +356,6 @@ class Compatibility {
                 return Api29Compatibility.canChatMessageChannelBubble(context)
             }
             return false
-        }
-
-        suspend fun addImageToMediaStore(context: Context, content: Content): Boolean {
-            if (Version.sdkAboveOrEqual(Version.API29_ANDROID_10)) {
-                return Api29Compatibility.addImageToMediaStore(context, content)
-            }
-            return Api23Compatibility.addImageToMediaStore(context, content)
-        }
-
-        suspend fun addVideoToMediaStore(context: Context, content: Content): Boolean {
-            if (Version.sdkAboveOrEqual(Version.API29_ANDROID_10)) {
-                return Api29Compatibility.addVideoToMediaStore(context, content)
-            }
-            return Api23Compatibility.addVideoToMediaStore(context, content)
-        }
-
-        suspend fun addAudioToMediaStore(context: Context, content: Content): Boolean {
-            if (Version.sdkAboveOrEqual(Version.API29_ANDROID_10)) {
-                return Api29Compatibility.addAudioToMediaStore(context, content)
-            }
-            return Api23Compatibility.addAudioToMediaStore(context, content)
         }
 
         fun getUpdateCurrentPendingIntentFlag(): Int {

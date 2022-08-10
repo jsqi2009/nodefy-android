@@ -76,7 +76,7 @@ class CoreContext(
         service: CoreService? = null,
         useAutoStartDescription: Boolean = false
 ) :
-    LifecycleOwner, ViewModelStoreOwner {
+        LifecycleOwner, ViewModelStoreOwner {
     private val _lifecycleRegistry = LifecycleRegistry(this)
     override fun getLifecycle(): Lifecycle {
         return _lifecycleRegistry
@@ -129,10 +129,10 @@ class CoreContext(
         }
 
         override fun onAccountRegistrationStateChanged(
-            core: Core,
-            account: Account,
-            state: RegistrationState?,
-            message: String
+                core: Core,
+                account: Account,
+                state: RegistrationState?,
+                message: String
         ) {
             Log.i("[Context] Account [${account.params.identityAddress?.asStringUriOnly()}] registration state changed [$state]")
             if (state == RegistrationState.Ok && account == core.defaultAccount) {
@@ -141,10 +141,10 @@ class CoreContext(
         }
 
         override fun onCallStateChanged(
-            core: Core,
-            call: Call,
-            state: Call.State,
-            message: String
+                core: Core,
+                call: Call,
+                state: Call.State,
+                message: String
         ) {
             Log.i("[Context] Call state changed [$state]")
             if (state == Call.State.IncomingReceived || state == Call.State.IncomingEarlyMedia) {
@@ -166,20 +166,20 @@ class CoreContext(
                     } else {
                         Log.i("[Context] Scheduling auto answering in $autoAnswerDelay milliseconds")
                         handler.postDelayed(
-                            {
-                                Log.w("[Context] Auto answering call")
-                                answerCall(call)
-                            },
-                            autoAnswerDelay.toLong()
+                                {
+                                    Log.w("[Context] Auto answering call")
+                                    answerCall(call)
+                                },
+                                autoAnswerDelay.toLong()
                         )
                     }
                 }
             } else if (state == Call.State.OutgoingProgress) {
-                val conferenceInfo = core.findConferenceInformationFromUri(call.remoteAddress)
+                //val conferenceInfo = core.findConferenceInformationFromUri(call.remoteAddress)
                 // Do not show outgoing call view for conference calls, wait for connected state
-                if (conferenceInfo == null) {
+                /*if (conferenceInfo == null) {
                     onOutgoingStarted()
-                }
+                }*/
 
                 if (core.callsNb == 1 && corePreferences.routeAudioToBluetoothIfAvailable) {
                     AudioRouteUtils.routeAudioToBluetooth(call)
@@ -217,9 +217,9 @@ class CoreContext(
                     }
                     callErrorMessageResourceId.value = SipCallEvent(toastMessage)
                 } else if (state == Call.State.End &&
-                    call.dir == Call.Dir.Outgoing &&
-                    call.errorInfo.reason == Reason.Declined &&
-                    core.callsNb == 0
+                        call.dir == Call.Dir.Outgoing &&
+                        call.errorInfo.reason == Reason.Declined &&
+                        core.callsNb == 0
                 ) {
                     Log.i("[Context] Call has been declined")
                     val toastMessage = context.getString(R.string.call_error_declined)
@@ -233,9 +233,9 @@ class CoreContext(
         override fun onLastCallEnded(core: Core) {
             Log.i("[Context] Last call has ended")
             removeCallOverlay()
-            if (!core.isMicEnabled) {
+            if (!core.micEnabled()) {
                 Log.w("[Context] Mic was muted in Core, enabling it back for next call")
-                core.isMicEnabled = true
+                core.enableMic(true)
             }
         }
 
@@ -260,18 +260,18 @@ class CoreContext(
 
     private val loggingServiceListener = object : LoggingServiceListenerStub() {
         override fun onLogMessageWritten(
-            logService: LoggingService,
-            domain: String,
-            level: LogLevel,
-            message: String
+                logService: LoggingService,
+                domain: String,
+                level: LogLevel,
+                message: String
         ) {
             if (corePreferences.logcatLogsOutput) {
                 when (level) {
-                    LogLevel.Error   -> Timber.tag(domain).e(message)
-                    LogLevel.Warning -> Timber.tag(domain).w(message)
-                    LogLevel.Message -> Timber.tag(domain).i(message)
-                    LogLevel.Fatal   -> Timber.tag(domain).wtf(message)
-                    else             -> Timber.tag(domain).d(message)
+                    LogLevel.Error -> android.util.Log.e(domain, message)
+                    LogLevel.Warning -> android.util.Log.w(domain, message)
+                    LogLevel.Message -> android.util.Log.i(domain, message)
+                    LogLevel.Fatal -> android.util.Log.wtf(domain, message)
+                    else -> android.util.Log.d(domain, message)
                 }
             }
             FirebaseCrashlytics.getInstance().log("[$domain] [${level.name}] $message")
@@ -387,7 +387,7 @@ class CoreContext(
         }
 
         if (!core.config.getBool("app", "conference_migration", false)) {
-            core.isRecordAwareEnabled = true
+            //core.isRecordAwareEnabled = true
             core.config.setBool("app", "conference_migration", true)
         }
 
@@ -409,7 +409,7 @@ class CoreContext(
                 }
 
                 // Ensure audio/video conference factory URI is set on sip.linphone.org proxy configs
-                if (account.params.audioVideoConferenceFactoryAddress == null) {
+                /*if (account.params.audioVideoConferenceFactoryAddress == null) {
                     val uri = corePreferences.audioVideoConferenceServerUri
                     val address = core.interpretUrl(uri, false)
                     if (address != null) {
@@ -433,7 +433,7 @@ class CoreContext(
                     params.isCpimInBasicChatRoomEnabled = true
                     paramsChanged = true
                     Log.i("[Context] CPIM allowed in basic chat rooms for account ${params.identityAddress?.asString()}")
-                }
+                }*/
 
                 if (paramsChanged) {
                     Log.i("[Context] Account params have been updated, apply changes")
@@ -480,7 +480,7 @@ class CoreContext(
 
         if (isLinphoneAccount) {
             core.config.setString("sip", "rls_uri", corePreferences.defaultRlsUri)
-            val rlsAddress = core.interpretUrl(corePreferences.defaultRlsUri, false)
+            val rlsAddress = core.interpretUrl(corePreferences.defaultRlsUri)
             if (rlsAddress != null) {
                 for (friendList in core.friendsLists) {
                     friendList.rlsAddress = rlsAddress
@@ -505,10 +505,10 @@ class CoreContext(
         if (PermissionHelper.required(context).hasReadPhoneStatePermission()) {
             try {
                 phoneStateListener =
-                    Compatibility.createPhoneListener(context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
+                        Compatibility.createPhoneListener(context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
             } catch (exception: SecurityException) {
                 val hasReadPhoneStatePermission =
-                    PermissionHelper.get().hasReadPhoneStateOrPhoneNumbersPermission()
+                        PermissionHelper.get().hasReadPhoneStateOrPhoneNumbersPermission()
                 Log.e("[Context] Failed to create phone state listener: $exception, READ_PHONE_STATE permission status is $hasReadPhoneStatePermission")
             }
         } else {
@@ -530,7 +530,7 @@ class CoreContext(
         } else {
             if (TelecomHelper.exists()) {
                 if (!TelecomHelper.get().isIncomingCallPermitted() ||
-                    TelecomHelper.get().isInManagedCall()
+                        TelecomHelper.get().isInManagedCall()
                 ) {
                     Log.w("[Context] Refusing the call with reason busy because Telecom Manager will reject the call")
                     return true
@@ -553,11 +553,11 @@ class CoreContext(
         val params = core.createCallParams(call)
 
         if (accept) {
-            params?.isVideoEnabled = true
-            core.isVideoCaptureEnabled = true
-            core.isVideoDisplayEnabled = true
+            params?.enableVideo(true)
+            /*core.isVideoCaptureEnabled = true
+            core.isVideoDisplayEnabled = true*/
         } else {
-            params?.isVideoEnabled = false
+            //params?.isVideoEnabled = false
         }
 
         call.acceptUpdate(params)
@@ -576,13 +576,13 @@ class CoreContext(
 
         if (SipUtils.checkIfNetworkHasLowBandwidth(context)) {
             Log.w("[Context] Enabling low bandwidth mode!")
-            params.isLowBandwidthEnabled = true
+            //params.isLowBandwidthEnabled = true
         }
 
         if (call.callLog.wasConference()) {
             // Prevent incoming group call to start in audio only layout
             // Do the same as the conference waiting room
-            params.isVideoEnabled = true
+            //params.isVideoEnabled = true
             params.videoDirection = if (core.videoActivationPolicy.automaticallyInitiate) MediaDirection.SendRecv else MediaDirection.RecvOnly
             Log.i("[Context] Enabling video on call params to prevent audio-only layout when answering")
         }
@@ -593,7 +593,7 @@ class CoreContext(
     fun declineCall(call: Call) {
         val voiceMailUri = corePreferences.voiceMailUri
         if (voiceMailUri != null && corePreferences.redirectDeclinedCallToVoiceMail) {
-            val voiceMailAddress = core.interpretUrl(voiceMailUri, false)
+            val voiceMailAddress = core.interpretUrl(voiceMailUri)
             if (voiceMailAddress != null) {
                 Log.i("[Context] Redirecting call $call to voice mail URI: $voiceMailUri")
                 call.redirectTo(voiceMailAddress)
@@ -607,90 +607,6 @@ class CoreContext(
     fun terminateCall(call: Call) {
         Log.i("[Context] Terminating call $call")
         call.terminate()
-    }
-
-    fun transferCallTo(addressToCall: String): Boolean {
-        val currentCall = core.currentCall ?: core.calls.firstOrNull()
-        if (currentCall == null) {
-            Log.e("[Context] Couldn't find a call to transfer")
-        } else {
-            val address = core.interpretUrl(addressToCall, SipUtils.applyInternationalPrefix())
-            if (address != null) {
-                Log.i("[Context] Transferring current call to $addressToCall")
-                currentCall.transferTo(address)
-                return true
-            }
-        }
-        return false
-    }
-
-    fun startCall(to: String) {
-        var stringAddress = to
-        if (android.util.Patterns.PHONE.matcher(to).matches()) {
-            val contact = contactsManager.findContactByPhoneNumber(to)
-            val alias = contact?.getContactForPhoneNumberOrAddress(to)
-            if (alias != null) {
-                Log.i("[Context] Found matching alias $alias for phone number $to, using it")
-                stringAddress = alias
-            }
-        }
-
-        val address: Address? = core.interpretUrl(stringAddress, SipUtils.applyInternationalPrefix())
-        if (address == null) {
-            Log.e("[Context] Failed to parse $stringAddress, abort outgoing call")
-            callErrorMessageResourceId.value = SipCallEvent(context.getString(R.string.call_error_network_unreachable))
-            return
-        }
-
-        startCall(address)
-    }
-
-    fun startCall(
-        address: Address,
-        callParams: CallParams? = null,
-        forceZRTP: Boolean = false,
-        localAddress: Address? = null
-    ) {
-        if (!core.isNetworkReachable) {
-            Log.e("[Context] Network unreachable, abort outgoing call")
-            callErrorMessageResourceId.value = SipCallEvent(context.getString(R.string.call_error_network_unreachable))
-            return
-        }
-
-        val params = callParams ?: core.createCallParams(null)
-        if (params == null) {
-            val call = core.inviteAddress(address)
-            Log.w("[Context] Starting call $call without params")
-            return
-        }
-
-        if (forceZRTP) {
-            params.mediaEncryption = MediaEncryption.ZRTP
-        }
-        if (SipUtils.checkIfNetworkHasLowBandwidth(context)) {
-            Log.w("[Context] Enabling low bandwidth mode!")
-            params.isLowBandwidthEnabled = true
-        }
-        params.recordFile = SipUtils.getRecordingFilePathForAddress(address)
-
-        if (localAddress != null) {
-            val account = core.accountList.find { account ->
-                account.params.identityAddress?.weakEqual(localAddress) ?: false
-            }
-            if (account != null) {
-                params.account = account
-                Log.i("[Context] Using account matching address ${localAddress.asStringUriOnly()} as From")
-            } else {
-                Log.e("[Context] Failed to find account matching address ${localAddress.asStringUriOnly()}")
-            }
-        }
-
-        if (corePreferences.sendEarlyMedia) {
-            params.isEarlyMediaSendingEnabled = true
-        }
-
-        val call = core.inviteAddressWithParams(address, params)
-        Log.i("[Context] Starting call $call")
     }
 
     fun switchCamera() {
@@ -729,11 +645,11 @@ class CoreContext(
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         // WRAP_CONTENT doesn't work well on some launchers...
         val params: WindowManager.LayoutParams = WindowManager.LayoutParams(
-            AppUtils.getDimension(R.dimen.call_overlay_size).toInt(),
-            AppUtils.getDimension(R.dimen.call_overlay_size).toInt(),
-            Compatibility.getOverlayType(),
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            PixelFormat.TRANSLUCENT
+                AppUtils.getDimension(R.dimen.call_overlay_size).toInt(),
+                AppUtils.getDimension(R.dimen.call_overlay_size).toInt(),
+                Compatibility.getOverlayType(),
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT
         )
         params.x = overlayX.toInt()
         params.y = overlayY.toInt()
@@ -758,7 +674,7 @@ class CoreContext(
                 }
                 MotionEvent.ACTION_UP -> {
                     if (abs(overlayX - params.x) < CorePreferences.OVERLAY_CLICK_SENSITIVITY &&
-                        abs(overlayY - params.y) < CorePreferences.OVERLAY_CLICK_SENSITIVITY
+                            abs(overlayY - params.y) < CorePreferences.OVERLAY_CLICK_SENSITIVITY
                     ) {
                         view.performClick()
                     }
@@ -822,7 +738,6 @@ class CoreContext(
         if (PermissionHelper.get().hasWriteExternalStoragePermission()) {
             for (content in message.contents) {
                 if (content.isFile && content.filePath != null && content.userData == null) {
-                    addContentToMediaStore(content)
                 }
             }
         } else {
@@ -830,47 +745,6 @@ class CoreContext(
         }
     }
 
-    fun addContentToMediaStore(content: Content) {
-        if (corePreferences.vfsEnabled) {
-            Log.w("[Context] Do not make received file(s) public when VFS is enabled")
-            return
-        }
-        if (!corePreferences.makePublicMediaFilesDownloaded) {
-            Log.w("[Context] Making received files public setting disabled")
-            return
-        }
-
-        if (PermissionHelper.get().hasWriteExternalStoragePermission()) {
-            coroutineScope.launch {
-                when (content.type) {
-                    "image" -> {
-                        if (Compatibility.addImageToMediaStore(context, content)) {
-                            Log.i("[Context] Adding image ${content.name} to Media Store terminated")
-                        } else {
-                            Log.e("[Context] Something went wrong while copying file to Media Store...")
-                        }
-                    }
-                    "video" -> {
-                        if (Compatibility.addVideoToMediaStore(context, content)) {
-                            Log.i("[Context] Adding video ${content.name} to Media Store terminated")
-                        } else {
-                            Log.e("[Context] Something went wrong while copying file to Media Store...")
-                        }
-                    }
-                    "audio" -> {
-                        if (Compatibility.addAudioToMediaStore(context, content)) {
-                            Log.i("[Context] Adding audio ${content.name} to Media Store terminated")
-                        } else {
-                            Log.e("[Context] Something went wrong while copying file to Media Store...")
-                        }
-                    }
-                    else -> {
-                        Log.w("[Context] File ${content.name} isn't either an image, an audio file or a video, can't add it to the Media Store")
-                    }
-                }
-            }
-        }
-    }
 
     fun checkIfForegroundServiceNotificationCanBeRemovedAfterDelay(delayInMs: Long) {
         coroutineScope.launch {
@@ -940,15 +814,15 @@ class CoreContext(
         @Throws(java.lang.Exception::class)
         private fun generateSecretKey() {
             val keyGenerator =
-                KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE)
+                    KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE)
             keyGenerator.init(
-                KeyGenParameterSpec.Builder(
-                    ALIAS,
-                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-                )
-                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                    .build()
+                    KeyGenParameterSpec.Builder(
+                            ALIAS,
+                            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                    )
+                            .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                            .build()
             )
             keyGenerator.generateKey()
         }
@@ -972,8 +846,8 @@ class CoreContext(
             cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
             val iv = cipher.iv
             return Pair<ByteArray, ByteArray>(
-                iv,
-                cipher.doFinal(textToEncrypt.toByteArray(StandardCharsets.UTF_8))
+                    iv,
+                    cipher.doFinal(textToEncrypt.toByteArray(StandardCharsets.UTF_8))
             )
         }
 
@@ -990,8 +864,8 @@ class CoreContext(
         fun encryptToken(string_to_encrypt: String): Pair<String?, String?> {
             val encryptedData = encryptData(string_to_encrypt)
             return Pair<String?, String?>(
-                Base64.encodeToString(encryptedData.first, Base64.DEFAULT),
-                Base64.encodeToString(encryptedData.second, Base64.DEFAULT)
+                    Base64.encodeToString(encryptedData.first, Base64.DEFAULT),
+                    Base64.encodeToString(encryptedData.second, Base64.DEFAULT)
             )
         }
 
@@ -1012,8 +886,8 @@ class CoreContext(
             val keyStore = KeyStore.getInstance(ANDROID_KEY_STORE)
             keyStore.load(null)
             return decryptData(
-                sharedPreferences.getString(VFS_KEY, null),
-                Base64.decode(sharedPreferences.getString(VFS_IV, null), Base64.DEFAULT)
+                    sharedPreferences.getString(VFS_KEY, null),
+                    Base64.decode(sharedPreferences.getString(VFS_IV, null), Base64.DEFAULT)
             )
         }
 
@@ -1030,16 +904,16 @@ class CoreContext(
                     generateSecretKey()
                     encryptToken(generateToken()).let { data ->
                         preferences
-                            .edit()
-                            .putString(VFS_IV, data.first)
-                            .putString(VFS_KEY, data.second)
-                            .commit()
+                                .edit()
+                                .putString(VFS_IV, data.first)
+                                .putString(VFS_KEY, data.second)
+                                .commit()
                     }
                 }
                 Factory.instance().setVfsEncryption(
-                    LINPHONE_VFS_ENCRYPTION_AES256GCM128_SHA256,
-                    getVfsKey(preferences).toByteArray().copyOfRange(0, 32),
-                    32
+                        LINPHONE_VFS_ENCRYPTION_AES256GCM128_SHA256,
+                        getVfsKey(preferences).toByteArray().copyOfRange(0, 32),
+                        32
                 )
 
                 Log.i("[Context] VFS activated")

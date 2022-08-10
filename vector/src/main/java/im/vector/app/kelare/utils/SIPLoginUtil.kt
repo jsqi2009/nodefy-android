@@ -64,7 +64,7 @@ class SIPLoginUtil(val context: Context, val core: Core, private val accountInfo
         accountParams.identityAddress = identity
         // Ensure push notification is enabled for this account
         accountParams.pushNotificationAllowed = true
-        accountParams.isRegisterEnabled = true
+        accountParams.registerEnabled = true
 
 
         // We also need to configure where the proxy server is located

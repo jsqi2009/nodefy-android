@@ -102,10 +102,10 @@ class NotificationsManager(private val context: Context) {
 
     private val listener: CoreListenerStub = object : CoreListenerStub() {
         override fun onCallStateChanged(
-            core: Core,
-            call: Call,
-            state: Call.State,
-            message: String
+                core: Core,
+                call: Call,
+                state: Call.State,
+                message: String
         ) {
             Log.i("[Notifications Manager] Call state changed [$state]")
 
@@ -160,8 +160,8 @@ class NotificationsManager(private val context: Context) {
             }
 
             if (message.contents.find { content ->
-                content.isFile or content.isFileTransfer or content.isText
-            } == null
+                        content.isFile or content.isFileTransfer or content.isText
+                    } == null
             ) {
                 Log.w("[Notifications Manager] Received message with neither text or attachment, do not notify")
                 return
@@ -184,13 +184,13 @@ class NotificationsManager(private val context: Context) {
                     dismissChatNotification(chatRoom)
                 }
             } else {
-                val notificationId = chatRoom.creationTime.toInt()
+                /*val notificationId = chatRoom.creationTime.toInt()
                 if (chatBubbleNotifications.contains(notificationId)) {
                     Log.i("[Notifications Manager] Chat room [$chatRoom] has been marked as read but no notifiable found, not removing notification because of a chat bubble")
                 } else {
                     Log.i("[Notifications Manager] Chat room [$chatRoom] has been marked as read but no notifiable found, removing notification if any")
                     dismissChatNotification(chatRoom)
-                }
+                }*/
             }
         }
 
@@ -416,15 +416,16 @@ class NotificationsManager(private val context: Context) {
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val builder = NotificationCompat.Builder(context, serviceChannel)
-            .setContentTitle(context.getString(R.string.service_name))
-            .setContentText(if (useAutoStartDescription) context.getString(R.string.service_auto_start_description) else context.getString(R.string.service_description))
-            .setSmallIcon(R.drawable.nodefy_logo)
-            .setCategory(NotificationCompat.CATEGORY_SERVICE)
-            .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-            .setWhen(System.currentTimeMillis())
-            .setShowWhen(true)
-            .setOngoing(true)
-            .setColor(ContextCompat.getColor(context, R.color.primary_color))
+                .setContentTitle(context.getString(R.string.service_name))
+                .setContentText(if (useAutoStartDescription) context.getString(R.string.service_auto_start_description) else context.getString(
+                        R.string.service_description))
+                .setSmallIcon(R.drawable.nodefy_logo)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+                .setWhen(System.currentTimeMillis())
+                .setShowWhen(true)
+                .setOngoing(true)
+                .setColor(ContextCompat.getColor(context, R.color.primary_color))
 
         if (!corePreferences.preventInterfaceFromShowingUp) {
             builder.setContentIntent(pendingIntent)
@@ -457,11 +458,11 @@ class NotificationsManager(private val context: Context) {
         } else {
             val builder = Person.Builder().setName(displayName)
             val userIcon =
-                if (picture != null) {
-                    IconCompat.createWithAdaptiveBitmap(picture)
-                } else {
-                    coreContext.contactsManager.contactAvatar
-                }
+                    if (picture != null) {
+                        IconCompat.createWithAdaptiveBitmap(picture)
+                    } else {
+                        coreContext.contactsManager.contactAvatar
+                    }
             if (userIcon != null) builder.setIcon(userIcon)
             builder.build()
         }
@@ -481,9 +482,9 @@ class NotificationsManager(private val context: Context) {
 
         try {
             val showLockScreenNotification = android.provider.Settings.Secure.getInt(
-                context.contentResolver,
-                "lock_screen_show_notifications",
-                0
+                    context.contentResolver,
+                    "lock_screen_show_notifications",
+                    0
             )
             Log.i("[Notifications Manager] Are notifications allowed on lock screen? ${showLockScreenNotification != 0} ($showLockScreenNotification)")
         } catch (e: Exception) {
@@ -493,10 +494,10 @@ class NotificationsManager(private val context: Context) {
         val incomingCallNotificationIntent = Intent(context, VoiceCallActivity::class.java)
         incomingCallNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_USER_ACTION or Intent.FLAG_FROM_BACKGROUND)
         val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            incomingCallNotificationIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                context,
+                0,
+                incomingCallNotificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val notification = Compatibility.createIncomingCallNotification(context, call, notifiable, pendingIntent, this)
@@ -514,12 +515,12 @@ class NotificationsManager(private val context: Context) {
         val body: String
         if (missedCallCount > 1) {
             body = context.getString(R.string.missed_calls_notification_body)
-                .format(missedCallCount)
+                    .format(missedCallCount)
             Log.i("[Notifications Manager] Updating missed calls notification count to $missedCallCount")
         } else {
             val friend: Friend? = coreContext.contactsManager.findContactByAddress(remoteAddress)
             body = context.getString(R.string.missed_call_notification_body)
-                .format(friend?.name ?: SipUtils.getDisplayName(remoteAddress))
+                    .format(friend?.name ?: SipUtils.getDisplayName(remoteAddress))
             Log.i("[Notifications Manager] Creating missed call notification")
         }
 
@@ -533,18 +534,18 @@ class NotificationsManager(private val context: Context) {
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val builder = NotificationCompat.Builder(
-            context, context.getString(R.string.notification_channel_missed_call_id)
+                context, context.getString(R.string.notification_channel_missed_call_id)
         )
-            .setContentTitle(context.getString(R.string.missed_call_notification_title))
-            .setContentText(body)
-            .setSmallIcon(R.drawable.topbar_missed_call_notification)
-            .setAutoCancel(true)
-            // .setCategory(NotificationCompat.CATEGORY_EVENT) No one really matches "missed call"
-            .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
-            .setWhen(System.currentTimeMillis())
-            .setShowWhen(true)
-            .setNumber(missedCallCount)
-            .setColor(ContextCompat.getColor(context, R.color.notification_led_color))
+                .setContentTitle(context.getString(R.string.missed_call_notification_title))
+                .setContentText(body)
+                .setSmallIcon(R.drawable.topbar_missed_call_notification)
+                .setAutoCancel(true)
+                // .setCategory(NotificationCompat.CATEGORY_EVENT) No one really matches "missed call"
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setWhen(System.currentTimeMillis())
+                .setShowWhen(true)
+                .setNumber(missedCallCount)
+                .setColor(ContextCompat.getColor(context, R.color.notification_led_color))
 
         if (!corePreferences.preventInterfaceFromShowingUp) {
             builder.setContentIntent(pendingIntent)
@@ -581,10 +582,10 @@ class NotificationsManager(private val context: Context) {
         val callNotificationIntent = Intent(context, VoiceCallActivity::class.java)
         callNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            callNotificationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                context,
+                0,
+                callNotificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val notification = Compatibility.createCallNotification(context, call, notifiable, pendingIntent, channelToUse, this)
@@ -613,11 +614,11 @@ class NotificationsManager(private val context: Context) {
 
         val text = message.contents.find { content -> content.isText }?.utf8Text ?: ""
         val reply = NotifiableMessage(
-            text,
-            null,
-            notifiable.myself ?: SipUtils.getDisplayName(message.fromAddress),
-            System.currentTimeMillis(),
-            isOutgoing = true
+                text,
+                null,
+                notifiable.myself ?: SipUtils.getDisplayName(message.fromAddress),
+                System.currentTimeMillis(),
+                isOutgoing = true
         )
         notifiable.messages.add(reply)
 
@@ -633,7 +634,7 @@ class NotificationsManager(private val context: Context) {
             cancel(notifiable.notificationId, CHAT_TAG)
             return true
         } else {
-            val previousNotificationId = previousChatNotifications.find { id -> id == room.creationTime.toInt() }
+            /*val previousNotificationId = previousChatNotifications.find { id -> id == room.creationTime.toInt() }
             if (previousNotificationId != null) {
                 if (chatBubbleNotifications.contains(previousNotificationId)) {
                     Log.i("[Notifications Manager] Found previous notification with same ID [$previousNotificationId] but not cancelling it as it's ID is in chat bubbles list")
@@ -642,7 +643,7 @@ class NotificationsManager(private val context: Context) {
                     cancel(previousNotificationId, CHAT_TAG)
                 }
                 return true
-            }
+            }*/
         }
         return false
     }
@@ -656,18 +657,18 @@ class NotificationsManager(private val context: Context) {
         answerIntent.putExtra(INTENT_REMOTE_ADDRESS, notifiable.remoteAddress)
 
         return PendingIntent.getBroadcast(
-            context,
-            notifiable.notificationId,
-            answerIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                context,
+                notifiable.notificationId,
+                answerIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
     fun getCallAnswerAction(notifiable: Notifiable): NotificationCompat.Action {
         return NotificationCompat.Action.Builder(
-            R.drawable.ic_call_hold,
-            context.getString(R.string.incoming_call_notification_answer_action_label),
-            getCallAnswerPendingIntent(notifiable)
+                R.drawable.ic_call_hold,
+                context.getString(R.string.incoming_call_notification_answer_action_label),
+                getCallAnswerPendingIntent(notifiable)
         ).build()
     }
 
@@ -678,26 +679,26 @@ class NotificationsManager(private val context: Context) {
         hangupIntent.putExtra(INTENT_REMOTE_ADDRESS, notifiable.remoteAddress)
 
         return PendingIntent.getBroadcast(
-            context,
-            notifiable.notificationId,
-            hangupIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                context,
+                notifiable.notificationId,
+                hangupIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
     fun getCallDeclineAction(notifiable: Notifiable): NotificationCompat.Action {
         return NotificationCompat.Action.Builder(
-            R.drawable.ic_call_hold,
-            context.getString(R.string.incoming_call_notification_hangup_action_label),
-            getCallDeclinePendingIntent(notifiable)
+                R.drawable.ic_call_hold,
+                context.getString(R.string.incoming_call_notification_hangup_action_label),
+                getCallDeclinePendingIntent(notifiable)
         ).build()
     }
 
     private fun getReplyMessageAction(notifiable: Notifiable): NotificationCompat.Action {
         val replyLabel =
-            context.resources.getString(R.string.received_chat_notification_reply_label)
+                context.resources.getString(R.string.received_chat_notification_reply_label)
         val remoteInput =
-            RemoteInput.Builder(KEY_TEXT_REPLY).setLabel(replyLabel).build()
+                RemoteInput.Builder(KEY_TEXT_REPLY).setLabel(replyLabel).build()
 
         val replyIntent = Intent(context, NotificationBroadcastReceiver::class.java)
         replyIntent.action = INTENT_REPLY_NOTIF_ACTION
@@ -707,20 +708,20 @@ class NotificationsManager(private val context: Context) {
 
         // PendingIntents attached to actions with remote inputs must be mutable
         val replyPendingIntent = PendingIntent.getBroadcast(
-            context,
-            notifiable.notificationId,
-            replyIntent,
-            Compatibility.getUpdateCurrentPendingIntentFlag()
+                context,
+                notifiable.notificationId,
+                replyIntent,
+                Compatibility.getUpdateCurrentPendingIntentFlag()
         )
         return NotificationCompat.Action.Builder(
-            R.drawable.icon_dialer_message,
-            context.getString(R.string.received_chat_notification_reply_label),
-            replyPendingIntent
+                R.drawable.icon_dialer_message,
+                context.getString(R.string.received_chat_notification_reply_label),
+                replyPendingIntent
         )
-            .addRemoteInput(remoteInput)
-            .setAllowGeneratedReplies(true)
-            .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
-            .build()
+                .addRemoteInput(remoteInput)
+                .setAllowGeneratedReplies(true)
+                .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
+                .build()
     }
 
     private fun getMarkMessageAsReadPendingIntent(notifiable: Notifiable): PendingIntent {
@@ -731,21 +732,21 @@ class NotificationsManager(private val context: Context) {
         markAsReadIntent.putExtra(INTENT_REMOTE_ADDRESS, notifiable.remoteAddress)
 
         return PendingIntent.getBroadcast(
-            context,
-            notifiable.notificationId,
-            markAsReadIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                context,
+                notifiable.notificationId,
+                markAsReadIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
     private fun getMarkMessageAsReadAction(notifiable: Notifiable): NotificationCompat.Action {
         val markAsReadPendingIntent = getMarkMessageAsReadPendingIntent(notifiable)
         return NotificationCompat.Action.Builder(
-            R.drawable.icon_dialer_message,
-            context.getString(R.string.received_chat_notification_mark_as_read_label),
-            markAsReadPendingIntent
+                R.drawable.icon_dialer_message,
+                context.getString(R.string.received_chat_notification_mark_as_read_label),
+                markAsReadPendingIntent
         )
-            .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
-            .build()
+                .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
+                .build()
     }
 }

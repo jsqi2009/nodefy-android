@@ -107,16 +107,16 @@ class ControlsViewModel : ViewModel() {
 
     private val listener: CoreListenerStub = object : CoreListenerStub() {
         override fun onCallStateChanged(
-            core: Core,
-            call: Call,
-            state: Call.State,
-            message: String
+                core: Core,
+                call: Call,
+                state: Call.State,
+                message: String
         ) {
             Log.i("[Call Controls] State changed: $state")
 
             isOutgoingEarlyMedia.value = state == Call.State.OutgoingEarlyMedia
             if (state == Call.State.StreamsRunning) {
-                if (!call.currentParams.isVideoEnabled && fullScreenMode.value == true) {
+                if (!call.currentParams.videoEnabled() && fullScreenMode.value == true) {
                     fullScreenMode.value = false
                 }
                 isVideoUpdateInProgress.value = false
@@ -124,7 +124,7 @@ class ControlsViewModel : ViewModel() {
                 fullScreenMode.value = false
             }
 
-            if (core.currentCall?.currentParams?.isVideoEnabled == true && !PermissionHelper.get().hasCameraPermission()) {
+            if (core.currentCall?.currentParams?.videoEnabled() == true && !PermissionHelper.get().hasCameraPermission()) {
                 askPermissionEvent.value = SipCallEvent(Manifest.permission.CAMERA)
             }
 
@@ -294,8 +294,8 @@ class ControlsViewModel : ViewModel() {
             isVideoUpdateInProgress.value = true
             val params = core.createCallParams(currentCall)
             if (currentCall.conference != null) {
-                if (params?.isVideoEnabled == false) {
-                    params.isVideoEnabled = true
+                if (params?.videoEnabled() == false) {
+                    params.enableVideo(true)
                     params.videoDirection = MediaDirection.SendRecv
                 } else {
                     if (params?.videoDirection == MediaDirection.SendRecv || params?.videoDirection == MediaDirection.SendOnly) {
@@ -305,7 +305,7 @@ class ControlsViewModel : ViewModel() {
                     }
                 }
             } else {
-                params?.isVideoEnabled = !currentCall.currentParams.isVideoEnabled
+                params?.enableVideo(!currentCall.currentParams.videoEnabled())
             }
             currentCall.update(params)
         }
@@ -413,13 +413,13 @@ class ControlsViewModel : ViewModel() {
     private fun updateVideoAvailable() {
         val core = coreContext.core
         val currentCall = core.currentCall
-        isVideoAvailable.value = (core.isVideoCaptureEnabled || core.isVideoPreviewEnabled) &&
-            ((currentCall != null && !currentCall.mediaInProgress()) || core.conference?.isIn == true)
+        isVideoAvailable.value = (core.videoCaptureEnabled() || core.videoPreviewEnabled()) &&
+                ((currentCall != null && !currentCall.mediaInProgress()) || core.conference?.isIn == true)
     }
 
     private fun updateVideoEnabled() {
         val currentCall = coreContext.core.currentCall ?: coreContext.core.calls.firstOrNull()
-        val enabled = currentCall?.currentParams?.isVideoEnabled ?: false
+        val enabled = currentCall?.currentParams?.videoEnabled() ?: false
         // Prevent speaker to turn on each time a participant joins a video conference
         val isConference = currentCall?.conference != null
         if (enabled && !isConference && isVideoEnabled.value == false) {
@@ -427,7 +427,7 @@ class ControlsViewModel : ViewModel() {
             if (corePreferences.routeAudioToSpeakerWhenVideoIsEnabled) {
                 // Do not turn speaker on when video is enabled if headset or bluetooth is used
                 if (!AudioRouteUtils.isHeadsetAudioRouteAvailable() &&
-                    !AudioRouteUtils.isBluetoothAudioRouteCurrentlyUsed()
+                        !AudioRouteUtils.isBluetoothAudioRouteCurrentlyUsed()
                 ) {
                     Log.i("[Call Controls] Video enabled and no wired headset not bluetooth in use, routing audio to speaker")
                     AudioRouteUtils.routeAudioToSpeaker()

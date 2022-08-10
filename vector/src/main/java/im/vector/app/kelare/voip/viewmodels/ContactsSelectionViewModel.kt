@@ -61,9 +61,6 @@ open class ContactsSelectionViewModel : MessageNotifierViewModel() {
             fetchInProgress.value = false
         }
 
-        override fun onLdapHaveMoreResults(magicSearch: MagicSearch, ldap: Ldap) {
-            moreResultsAvailableEvent.value = SipCallEvent(true)
-        }
     }
 
     init {
@@ -86,9 +83,9 @@ open class ContactsSelectionViewModel : MessageNotifierViewModel() {
         val filterValue = filter.value.orEmpty()
 
         if (previousFilter.isNotEmpty() && (
-            previousFilter.length > filterValue.length ||
-                (previousFilter.length == filterValue.length && previousFilter != filterValue)
-            )
+                        previousFilter.length > filterValue.length ||
+                                (previousFilter.length == filterValue.length && previousFilter != filterValue)
+                        )
         ) {
             coreContext.contactsManager.magicSearch.resetSearchCache()
         }
@@ -97,7 +94,7 @@ open class ContactsSelectionViewModel : MessageNotifierViewModel() {
         val domain = if (sipContactsSelected.value == true) coreContext.core.defaultAccount?.params?.domain ?: "" else ""
         searchResultsPending = true
         fastFetchJob?.cancel()
-        coreContext.contactsManager.magicSearch.getContactsListAsync(filter.value.orEmpty(), domain, MagicSearchSource.All.toInt(), MagicSearchAggregation.None)
+        //coreContext.contactsManager.magicSearch.getContactsListAsync(filter.value.orEmpty(), domain, MagicSearchSource.All.toInt(), MagicSearchAggregation.None)
 
         val spinnerDelay = corePreferences.delayBeforeShowingContactsSearchSpinner.toLong()
         fastFetchJob = viewModelScope.launch {

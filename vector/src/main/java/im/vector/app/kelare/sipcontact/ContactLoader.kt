@@ -132,7 +132,7 @@ class ContactLoader : LoaderManager.LoaderCallbacks<Cursor> {
                                 friend.refKey = id
                                 if (friend.name.isNullOrEmpty()) {
                                     friend.name = displayName
-                                    friend.photo = Uri.withAppendedPath(
+                                    /*friend.photo = Uri.withAppendedPath(
                                         ContentUris.withAppendedId(
                                             ContactsContract.Contacts.CONTENT_URI,
                                             id.toLong()
@@ -144,7 +144,7 @@ class ContactLoader : LoaderManager.LoaderCallbacks<Cursor> {
                                         "${ContactsContract.Contacts.CONTENT_LOOKUP_URI}/$lookupKey"
 
                                     // Disable short term presence
-                                    friend.isSubscribesEnabled = false
+                                    friend.isSubscribesEnabled = false*/
                                     friend.incSubscribePolicy = SubscribePolicy.SPDeny
                                 }
 
@@ -176,16 +176,16 @@ class ContactLoader : LoaderManager.LoaderCallbacks<Cursor> {
                                                     )
                                                 } == null
                                             ) {
-                                                val phoneNumber = Factory.instance()
+                                                /*val phoneNumber = Factory.instance()
                                                     .createFriendPhoneNumber(number, label)
-                                                friend.addPhoneNumberWithLabel(phoneNumber)
+                                                friend.addPhoneNumberWithLabel(phoneNumber)*/
                                                 friendsPhoneNumbers.add(number)
                                             }
                                         }
                                     }
                                     linphoneMime, ContactsContract.CommonDataKinds.SipAddress.CONTENT_ITEM_TYPE -> {
                                         if (data1 != null) {
-                                            val address = core.interpretUrl(data1, true)
+                                            val address = core.interpretUrl(data1)
                                             if (address != null &&
                                                 friendsAddresses.find {
                                                     it.weakEqual(address)
@@ -198,7 +198,7 @@ class ContactLoader : LoaderManager.LoaderCallbacks<Cursor> {
                                     }
                                     ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE -> {
                                         if (data1 != null) {
-                                            friend.organization = data1
+                                            //friend.organization = data1
                                         }
                                     }
                                     ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE -> {

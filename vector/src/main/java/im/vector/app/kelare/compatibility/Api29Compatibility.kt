@@ -57,8 +57,8 @@ class Api29Compatibility {
         }
 
         fun createMessageChannel(
-            context: Context,
-            notificationManager: NotificationManagerCompat
+                context: Context,
+                notificationManager: NotificationManagerCompat
         ) {
             // Create messages notification channel
             val id = context.getString(R.string.notification_channel_chat_id)
@@ -88,7 +88,7 @@ class Api29Compatibility {
 
         fun canChatMessageChannelBubble(context: Context): Boolean {
             val notificationManager: NotificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val bubblesAllowed = notificationManager.areBubblesAllowed()
             Log.i("[Notifications Manager] Bubbles notifications are ${if (bubblesAllowed) "allowed" else "forbidden"}")
             return bubblesAllowed
@@ -98,43 +98,43 @@ class Api29Compatibility {
             return ImageDecoder.decodeBitmap(ImageDecoder.createSource(context.contentResolver, uri))
         }
 
-        suspend fun addImageToMediaStore(context: Context, content: Content): Boolean {
-            val plainFilePath = content.exportPlainFile().orEmpty()
-            val isVfsEncrypted = plainFilePath.isNotEmpty()
-            Log.w("[Media Store] Content is encrypted, requesting plain file path")
-            val filePath = if (isVfsEncrypted) plainFilePath else content.filePath
-            if (filePath == null) {
-                Log.e("[Media Store] Content doesn't have a file path!")
-                return false
-            }
+        /* suspend fun addImageToMediaStore(context: Context, content: Content): Boolean {
+             val plainFilePath = content.exportPlainFile().orEmpty()
+             val isVfsEncrypted = plainFilePath.isNotEmpty()
+             Log.w("[Media Store] Content is encrypted, requesting plain file path")
+             val filePath = if (isVfsEncrypted) plainFilePath else content.filePath
+             if (filePath == null) {
+                 Log.e("[Media Store] Content doesn't have a file path!")
+                 return false
+             }
 
-            val appName = AppUtils.getString(R.string.app_name)
-            val relativePath = "${Environment.DIRECTORY_PICTURES}/$appName"
-            val fileName = content.name
-            val mime = "${content.type}/${content.subtype}"
-            Log.i("[Media Store] Adding image $filePath to Media Store with name $fileName and MIME $mime, asking to be stored in $relativePath")
+             val appName = AppUtils.getString(R.string.app_name)
+             val relativePath = "${Environment.DIRECTORY_PICTURES}/$appName"
+             val fileName = content.name
+             val mime = "${content.type}/${content.subtype}"
+             Log.i("[Media Store] Adding image $filePath to Media Store with name $fileName and MIME $mime, asking to be stored in $relativePath")
 
-            val values = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
-                put(MediaStore.Images.Media.MIME_TYPE, mime)
-                put(MediaStore.Images.Media.RELATIVE_PATH, relativePath)
-                put(MediaStore.Images.Media.IS_PENDING, 1)
-            }
-            val collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
-            val mediaStoreFilePath = addContentValuesToCollection(context, filePath, collection, values, MediaStore.Images.Media.IS_PENDING)
+             val values = ContentValues().apply {
+                 put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+                 put(MediaStore.Images.Media.MIME_TYPE, mime)
+                 put(MediaStore.Images.Media.RELATIVE_PATH, relativePath)
+                 put(MediaStore.Images.Media.IS_PENDING, 1)
+             }
+             val collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+             val mediaStoreFilePath = addContentValuesToCollection(context, filePath, collection, values, MediaStore.Images.Media.IS_PENDING)
 
-            if (isVfsEncrypted) {
-                Log.w("[Media Store] Content was encrypted, delete plain version: $plainFilePath")
-                FileUtils.deleteFile(plainFilePath)
-            }
-            if (mediaStoreFilePath.isNotEmpty()) {
-                content.userData = mediaStoreFilePath
-                return true
-            }
-            return false
-        }
+             if (isVfsEncrypted) {
+                 Log.w("[Media Store] Content was encrypted, delete plain version: $plainFilePath")
+                 FileUtils.deleteFile(plainFilePath)
+             }
+             if (mediaStoreFilePath.isNotEmpty()) {
+                 content.userData = mediaStoreFilePath
+                 return true
+             }
+             return false
+         }*/
 
-        suspend fun addVideoToMediaStore(context: Context, content: Content): Boolean {
+        /*suspend fun addVideoToMediaStore(context: Context, content: Content): Boolean {
             val plainFilePath = content.exportPlainFile().orEmpty()
             val isVfsEncrypted = plainFilePath.isNotEmpty()
             Log.w("[Media Store] Content is encrypted, requesting plain file path")
@@ -169,9 +169,9 @@ class Api29Compatibility {
                 return true
             }
             return false
-        }
+        }*/
 
-        suspend fun addAudioToMediaStore(context: Context, content: Content): Boolean {
+        /*suspend fun addAudioToMediaStore(context: Context, content: Content): Boolean {
             val plainFilePath = content.exportPlainFile().orEmpty()
             val isVfsEncrypted = plainFilePath.isNotEmpty()
             Log.w("[Media Store] Content is encrypted, requesting plain file path")
@@ -207,14 +207,14 @@ class Api29Compatibility {
                 return true
             }
             return false
-        }
+        }*/
 
         private suspend fun addContentValuesToCollection(
-            context: Context,
-            filePath: String,
-            collection: Uri,
-            values: ContentValues,
-            pendingKey: String
+                context: Context,
+                filePath: String,
+                collection: Uri,
+                values: ContentValues,
+                pendingKey: String
         ): String {
             try {
                 val fileUri = context.contentResolver.insert(collection, values)

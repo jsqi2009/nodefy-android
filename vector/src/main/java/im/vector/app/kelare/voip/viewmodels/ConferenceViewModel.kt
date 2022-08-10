@@ -85,24 +85,24 @@ class ConferenceViewModel : ViewModel() {
         }
 
         override fun onParticipantDeviceAdded(
-            conference: Conference,
-            participantDevice: ParticipantDevice
+                conference: Conference,
+                participantDevice: ParticipantDevice
         ) {
             Log.i("[Conference] Participant device added: ${participantDevice.address.asStringUriOnly()}")
             addParticipantDevice(participantDevice)
         }
 
         override fun onParticipantDeviceRemoved(
-            conference: Conference,
-            participantDevice: ParticipantDevice
+                conference: Conference,
+                participantDevice: ParticipantDevice
         ) {
             Log.i("[Conference] Participant device removed: ${participantDevice.address.asStringUriOnly()}")
             removeParticipantDevice(participantDevice)
         }
 
         override fun onParticipantAdminStatusChanged(
-            conference: Conference,
-            participant: Participant
+                conference: Conference,
+                participant: Participant
         ) {
             Log.i("[Conference] Participant admin status changed [${participant.address.asStringUriOnly()}] is ${if (participant.isAdmin) "now admin" else "no longer admin"}")
             isMeAdmin.value = conference.me.isAdmin
@@ -128,48 +128,48 @@ class ConferenceViewModel : ViewModel() {
             this@ConferenceViewModel.subject.value = subject
         }
 
-        override fun onParticipantDeviceStateChanged(
-            conference: Conference,
-            device: ParticipantDevice,
-            state: ParticipantDeviceState
-        ) {
-            if (conference.isMe(device.address)) {
-                when (state) {
-                    ParticipantDeviceState.Present -> {
-                        Log.i("[Conference] Entered conference")
-                        isConferenceLocallyPaused.value = false
-                    }
-                    ParticipantDeviceState.OnHold -> {
-                        Log.i("[Conference] Left conference")
-                        isConferenceLocallyPaused.value = true
-                    }
-                    else -> {}
-                }
-            }
-        }
+        /* override fun onParticipantDeviceStateChanged(
+             conference: Conference,
+             device: ParticipantDevice,
+             state: ParticipantDeviceState
+         ) {
+             if (conference.isMe(device.address)) {
+                 when (state) {
+                     ParticipantDeviceState.Present -> {
+                         Log.i("[Conference] Entered conference")
+                         isConferenceLocallyPaused.value = false
+                     }
+                     ParticipantDeviceState.OnHold -> {
+                         Log.i("[Conference] Left conference")
+                         isConferenceLocallyPaused.value = true
+                     }
+                     else -> {}
+                 }
+             }
+         }
 
-        override fun onParticipantDeviceIsSpeakingChanged(
-            conference: Conference,
-            participantDevice: ParticipantDevice,
-            isSpeaking: Boolean
-        ) {
-            Log.i("[Conference] Participant [${participantDevice.address.asStringUriOnly()}] is ${if (isSpeaking) "speaking" else "not speaking"}")
-            if (isSpeaking) {
-                val device = conferenceParticipantDevices.value.orEmpty().find {
-                    it.participantDevice.address.weakEqual(participantDevice.address)
-                }
-                if (device != null && device != speakingParticipant.value) {
-                    Log.i("[Conference] Found participant device")
-                    if (!device.isMe) {
-                        // TODO: FIXME: remove, this is a temporary workaround to not have your name
-                        //  displayed above someone else video in active speaker layout when you talk
-                        speakingParticipant.value = device!!
-                    }
-                } else if (device == null) {
-                    Log.w("[Conference] Participant device [${participantDevice.address.asStringUriOnly()}] is speaking but couldn't find it in devices list")
-                }
-            }
-        }
+         override fun onParticipantDeviceIsSpeakingChanged(
+             conference: Conference,
+             participantDevice: ParticipantDevice,
+             isSpeaking: Boolean
+         ) {
+             Log.i("[Conference] Participant [${participantDevice.address.asStringUriOnly()}] is ${if (isSpeaking) "speaking" else "not speaking"}")
+             if (isSpeaking) {
+                 val device = conferenceParticipantDevices.value.orEmpty().find {
+                     it.participantDevice.address.weakEqual(participantDevice.address)
+                 }
+                 if (device != null && device != speakingParticipant.value) {
+                     Log.i("[Conference] Found participant device")
+                     if (!device.isMe) {
+                         // TODO: FIXME: remove, this is a temporary workaround to not have your name
+                         //  displayed above someone else video in active speaker layout when you talk
+                         speakingParticipant.value = device!!
+                     }
+                 } else if (device == null) {
+                     Log.w("[Conference] Participant device [${participantDevice.address.asStringUriOnly()}] is speaking but couldn't find it in devices list")
+                 }
+             }
+         }*/
 
         override fun onStateChanged(conference: Conference, state: Conference.State) {
             Log.i("[Conference] State changed: $state")
@@ -190,9 +190,9 @@ class ConferenceViewModel : ViewModel() {
 
     private val listener = object : CoreListenerStub() {
         override fun onConferenceStateChanged(
-            core: Core,
-            conference: Conference,
-            state: Conference.State
+                core: Core,
+                conference: Conference,
+                state: Conference.State
         ) {
             Log.i("[Conference] Conference state changed: $state")
             if (state == Conference.State.Instantiated) {
@@ -219,7 +219,7 @@ class ConferenceViewModel : ViewModel() {
                 }
             }
         }
-        if (conference != null) {
+        /*if (conference != null) {
             val state = conference.state
             Log.i("[Conference] Found an existing conference: $conference in state $state")
             if (state != Conference.State.TerminationPending && state != Conference.State.Terminated) {
@@ -230,7 +230,7 @@ class ConferenceViewModel : ViewModel() {
                     conferenceCreationPending.value = true
                 }
             }
-        }
+        }*/
     }
 
     override fun onCleared() {
@@ -258,9 +258,9 @@ class ConferenceViewModel : ViewModel() {
             Log.i("[Conference] Stopping conference recording")
             conference.value?.stopRecording()
         } else {
-            val path = SipUtils.getRecordingFilePathForConference(conference.value?.currentParams?.subject)
+            /*val path = SipUtils.getRecordingFilePathForConference(conference.value?.currentParams?.subject)
             Log.i("[Conference] Starting recording in file $path")
-            conference.value?.startRecording(path)
+            conference.value?.startRecording(path)*/
         }
         isRecording.value = conference.value?.isRecording
     }
@@ -274,7 +274,7 @@ class ConferenceViewModel : ViewModel() {
         isRecording.value = conference.isRecording
         subject.value = SipUtils.getConferenceSubject(conference)
 
-        updateConferenceLayout(conference)
+        //updateConferenceLayout(conference)
     }
 
     fun configureConference(conference: Conference) {
@@ -289,7 +289,7 @@ class ConferenceViewModel : ViewModel() {
         isVideoConference.value = conference.currentParams.isVideoEnabled
         subject.value = SipUtils.getConferenceSubject(conference)
 
-        updateConferenceLayout(conference)
+        //updateConferenceLayout(conference)
     }
 
     fun addCallsToConference() {
@@ -309,37 +309,9 @@ class ConferenceViewModel : ViewModel() {
         }
     }
 
-    fun changeLayout(layout: ConferenceDisplayMode) {
-        Log.i("[Conference] Trying to change conference layout to $layout")
-        val conference = conference.value
-        if (conference != null) {
-            val call = conference.call
-            if (call != null) {
-                val params = call.core.createCallParams(call)
-                if (params == null) {
-                    Log.e("[Conference] Failed to create call params from conference call!")
-                    return
-                }
 
-                params.isVideoEnabled = layout != ConferenceDisplayMode.AUDIO_ONLY
-                params.conferenceVideoLayout = when (layout) {
-                    ConferenceDisplayMode.GRID -> ConferenceLayout.Grid
-                    else -> ConferenceLayout.ActiveSpeaker
-                }
-                call.update(params)
 
-                conferenceDisplayMode.value = layout
-                val list = sortDevicesDataList(conferenceParticipantDevices.value.orEmpty())
-                conferenceParticipantDevices.value = list
-            } else {
-                Log.e("[Conference] Failed to get call from conference!")
-            }
-        } else {
-            Log.e("[Conference] Conference is null in ConferenceViewModel")
-        }
-    }
-
-    private fun updateConferenceLayout(conference: Conference) {
+    /*private fun updateConferenceLayout(conference: Conference) {
         val call = conference.call
         if (call == null) {
             Log.e("[Conference] Conference call is null!")
@@ -360,7 +332,7 @@ class ConferenceViewModel : ViewModel() {
         conferenceParticipantDevices.value = list
 
         Log.i("[Conference] Conference current layout is: ${conferenceDisplayMode.value}")
-    }
+    }*/
 
     private fun terminateConference(conference: Conference) {
         conferenceExists.value = false

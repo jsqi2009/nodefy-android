@@ -52,50 +52,51 @@ class Api31Compatibility {
                 notificationsManager: NotificationsManager
         ): Notification {
             val remoteContact = call.remoteContact
-            val conferenceAddress = if (remoteContact != null) coreContext.core.interpretUrl(remoteContact, false) else null
-            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+            val conferenceAddress = if (remoteContact != null) coreContext.core.interpretUrl(remoteContact) else null
+//            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+            val conferenceInfo =  null
             if (conferenceInfo != null) {
-                Log.i("[Notifications Manager] Displaying incoming group call notification with subject ${conferenceInfo.subject} and remote contact address $remoteContact")
+                //Log.i("[Notifications Manager] Displaying incoming group call notification with subject ${conferenceInfo.subject} and remote contact address $remoteContact")
             } else {
                 Log.i("[Notifications Manager] No conference info found for remote contact address $remoteContact")
             }
 
             val caller = if (conferenceInfo == null) {
                 val contact =
-                    coreContext.contactsManager.findContactByAddress(call.remoteAddress)
+                        coreContext.contactsManager.findContactByAddress(call.remoteAddress)
                 val roundPicture =
-                    ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
+                        ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
                 val displayName = contact?.name ?: SipUtils.getDisplayName(call.remoteAddress)
 
                 val person = notificationsManager.getPerson(contact, displayName, roundPicture)
                 Person.Builder()
-                    .setName(person.name)
-                    .setIcon(person.icon?.toIcon(context))
-                    .setUri(person.uri)
-                    .setKey(person.key)
-                    .setImportant(person.isImportant)
-                    .build()
+                        .setName(person.name)
+                        .setIcon(person.icon?.toIcon(context))
+                        .setUri(person.uri)
+                        .setKey(person.key)
+                        .setImportant(person.isImportant)
+                        .build()
             } else {
                 Person.Builder()
-                    .setName(if (conferenceInfo.subject.isNullOrEmpty()) context.getString(R.string.conference_incoming_title) else conferenceInfo.subject)
-                    .setIcon(coreContext.contactsManager.groupAvatar.toIcon(context))
-                    .setImportant(false)
-                    .build()
+                        //.setName(if (conferenceInfo.subject.isNullOrEmpty()) context.getString(R.string.conference_incoming_title) else conferenceInfo.subject)
+                        .setIcon(coreContext.contactsManager.groupAvatar.toIcon(context))
+                        .setImportant(false)
+                        .build()
             }
 
             val declineIntent = notificationsManager.getCallDeclinePendingIntent(notifiable)
             val answerIntent = notificationsManager.getCallAnswerPendingIntent(notifiable)
 
-            val isVideoEnabledInRemoteParams = call.remoteParams?.isVideoEnabled ?: false
+            val isVideoEnabledInRemoteParams = call.remoteParams?.videoEnabled() ?: false
             val isVideoAutomaticallyAccepted = call.core.videoActivationPolicy.automaticallyAccept
             val isVideo = isVideoEnabledInRemoteParams && isVideoAutomaticallyAccepted
 
             val builder = Notification.Builder(context, context.getString(R.string.notification_channel_incoming_call_id)).apply {
                 try {
                     style = Notification.CallStyle.forIncomingCall(
-                        caller,
-                        declineIntent,
-                        answerIntent
+                            caller,
+                            declineIntent,
+                            answerIntent
                     ).setIsVideo(isVideo)
                 } catch (iae: IllegalArgumentException) {
                     Log.e("[Api31 Compatibility] Can't use notification call style: $iae, using API 26 notification instead")
@@ -128,36 +129,37 @@ class Api31Compatibility {
                 notificationsManager: NotificationsManager
         ): Notification {
             val conferenceAddress = SipUtils.getConferenceAddress(call)
-            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+//            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+            val conferenceInfo =  null
             if (conferenceInfo != null) {
-                Log.i("[Notifications Manager] Displaying group call notification with subject ${conferenceInfo.subject}")
+                //Log.i("[Notifications Manager] Displaying group call notification with subject ${conferenceInfo.subject}")
             } else {
                 Log.i("[Notifications Manager] No conference info found for remote contact address ${call.remoteAddress} (${call.remoteContact})")
             }
 
             val caller = if (conferenceInfo == null) {
                 val contact =
-                    coreContext.contactsManager.findContactByAddress(call.remoteAddress)
+                        coreContext.contactsManager.findContactByAddress(call.remoteAddress)
                 val roundPicture =
-                    ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
+                        ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
                 val displayName = contact?.name ?: SipUtils.getDisplayName(call.remoteAddress)
 
                 val person = notificationsManager.getPerson(contact, displayName, roundPicture)
                 Person.Builder()
-                    .setName(person.name)
-                    .setIcon(person.icon?.toIcon(context))
-                    .setUri(person.uri)
-                    .setKey(person.key)
-                    .setImportant(person.isImportant)
-                    .build()
+                        .setName(person.name)
+                        .setIcon(person.icon?.toIcon(context))
+                        .setUri(person.uri)
+                        .setKey(person.key)
+                        .setImportant(person.isImportant)
+                        .build()
             } else {
                 Person.Builder()
-                    .setName(conferenceInfo.subject)
-                    .setIcon(coreContext.contactsManager.groupAvatar.toIcon(context))
-                    .setImportant(false)
-                    .build()
+                        //.setName(conferenceInfo.subject)
+                        .setIcon(coreContext.contactsManager.groupAvatar.toIcon(context))
+                        .setImportant(false)
+                        .build()
             }
-            val isVideo = call.currentParams.isVideoEnabled
+            val isVideo = call.currentParams.videoEnabled()
             val iconResourceId: Int = when (call.state) {
                 Call.State.Paused, Call.State.Pausing, Call.State.PausedByRemote -> {
                     R.drawable.topbar_call_paused_notification
@@ -173,11 +175,11 @@ class Api31Compatibility {
             val declineIntent = notificationsManager.getCallDeclinePendingIntent(notifiable)
 
             val builder = Notification.Builder(
-                context, channel
+                    context, channel
             ).apply {
                 try {
                     style = Notification.CallStyle.forOngoingCall(caller, declineIntent)
-                        .setIsVideo(isVideo)
+                            .setIsVideo(isVideo)
                 } catch (iae: IllegalArgumentException) {
                     Log.e("[Api31 Compatibility] Can't use notification call style: $iae, using API 26 notification instead")
                     return Api26Compatibility.createCallNotification(context, call, notifiable, pendingIntent, channel, notificationsManager)
@@ -219,15 +221,15 @@ class Api31Compatibility {
 
         fun enableAutoEnterPiP(activity: Activity, enable: Boolean, conference: Boolean) {
             val supportsPip = activity.packageManager
-                .hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+                    .hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
             Log.i("[Call] Is PiP supported: $supportsPip")
             if (supportsPip) {
                 // Force portrait layout if in conference, otherwise for landscape
                 // Our layouts behave better in these orientation
                 val params = PictureInPictureParams.Builder()
-                    .setAutoEnterEnabled(enable)
-                    .setAspectRatio(Compatibility.getPipRatio(activity, conference, !conference))
-                    .build()
+                        .setAutoEnterEnabled(enable)
+                        .setAspectRatio(Compatibility.getPipRatio(activity, conference, !conference))
+                        .build()
                 try {
                     activity.setPictureInPictureParams(params)
                     Log.i("[Call] PiP auto enter enabled params set to $enable with ${if (conference) "portrait" else "landscape"} aspect ratio")

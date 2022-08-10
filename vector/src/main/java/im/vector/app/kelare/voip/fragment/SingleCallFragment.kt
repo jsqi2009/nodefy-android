@@ -90,9 +90,9 @@ class SingleCallFragment : GenericFragment<FragmentSingleCallBinding>(), View.On
                 if (call.state == Call.State.StreamsRunning) {
                     dialog?.dismiss()
                 } else if (call.state == Call.State.UpdatedByRemote) {
-                    if (coreContext.core.isVideoEnabled) {
-                        val remoteVideo = call.remoteParams?.isVideoEnabled ?: false
-                        val localVideo = call.currentParams.isVideoEnabled
+                    if (coreContext.core.videoEnabled()) {
+                        val remoteVideo = call.remoteParams?.videoEnabled() ?: false
+                        val localVideo = call.currentParams.videoEnabled()
                         if (remoteVideo && !localVideo) {
                             //showCallVideoUpdateDialog(call)
                         }
@@ -231,7 +231,7 @@ class SingleCallFragment : GenericFragment<FragmentSingleCallBinding>(), View.On
             binding.tvMute.text = "mute"
             isMute = false
         }
-        coreContext.core.isMicEnabled = !coreContext.core.isMicEnabled
+        coreContext.core.enableMic(!coreContext.core.micEnabled())
     }
 
     private fun sendDTMF() {

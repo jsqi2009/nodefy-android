@@ -206,7 +206,7 @@ class DialerCallActivity : VectorBaseActivity<ActivityDialerCallBinding>(), View
             views.tvMute.text = "mute"
             isMute = false
         }
-        core.isMicEnabled = !core.isMicEnabled
+        core.enableMic(!core.micEnabled())
     }
 
     private fun sendDTMF() {
@@ -251,7 +251,7 @@ class DialerCallActivity : VectorBaseActivity<ActivityDialerCallBinding>(), View
         // Here we ask for no encryption but we could ask for ZRTP/SRTP/DTLS
         params.mediaEncryption = MediaEncryption.SRTP
         // If we wanted to start the call with video directly
-        params.isVideoEnabled = true
+        params.enableVideo(true)
 
         //core.interpretUrl(remoteUser)
 

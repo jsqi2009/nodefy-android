@@ -57,14 +57,14 @@ class Api26Compatibility {
     companion object {
         fun enterPipMode(activity: Activity, conference: Boolean) {
             val supportsPip = activity.packageManager
-                .hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+                    .hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
             Log.i("[Call] Is PiP supported: $supportsPip")
             if (supportsPip) {
                 // Force portrait layout if in conference, otherwise for landscape
                 // Our layouts behave better in these orientation
                 val params = PictureInPictureParams.Builder()
-                    .setAspectRatio(Compatibility.getPipRatio(activity, conference, !conference))
-                    .build()
+                        .setAspectRatio(Compatibility.getPipRatio(activity, conference, !conference))
+                        .build()
                 try {
                     if (!activity.enterPictureInPictureMode(params)) {
                         Log.e("[Call] Failed to enter PiP mode")
@@ -91,8 +91,8 @@ class Api26Compatibility {
         }
 
         fun createMissedCallChannel(
-            context: Context,
-            notificationManager: NotificationManagerCompat
+                context: Context,
+                notificationManager: NotificationManagerCompat
         ) {
             val id = context.getString(R.string.notification_channel_missed_call_id)
             val name = context.getString(R.string.notification_channel_missed_call_name)
@@ -107,8 +107,8 @@ class Api26Compatibility {
         }
 
         fun createIncomingCallChannel(
-            context: Context,
-            notificationManager: NotificationManagerCompat
+                context: Context,
+                notificationManager: NotificationManagerCompat
         ) {
             // Create incoming calls notification channel
             val id = context.getString(R.string.notification_channel_incoming_call_id)
@@ -124,8 +124,8 @@ class Api26Compatibility {
         }
 
         fun createMessageChannel(
-            context: Context,
-            notificationManager: NotificationManagerCompat
+                context: Context,
+                notificationManager: NotificationManagerCompat
         ) {
             // Create messages notification channel
             val id = context.getString(R.string.notification_channel_chat_id)
@@ -141,8 +141,8 @@ class Api26Compatibility {
         }
 
         fun getChannelImportance(
-            notificationManager: NotificationManagerCompat,
-            channelId: String
+                notificationManager: NotificationManagerCompat,
+                channelId: String
         ): Int {
             val channel = notificationManager.getNotificationChannel(channelId)
             return channel?.importance ?: NotificationManagerCompat.IMPORTANCE_NONE
@@ -161,28 +161,29 @@ class Api26Compatibility {
         ): Notification {
             val contact: Friend?
             val roundPicture: Bitmap?
-            val displayName: String
-            val address: String
+            var displayName: String = ""
+            var address: String = ""
             val info: String
 
             val remoteContact = call.remoteContact
-            val conferenceAddress = if (remoteContact != null) coreContext.core.interpretUrl(remoteContact, false) else null
-            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+            val conferenceAddress = if (remoteContact != null) coreContext.core.interpretUrl(remoteContact) else null
+            //val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+            val conferenceInfo = null
             if (conferenceInfo == null) {
                 Log.i("[Notifications Manager] No conference info found for remote contact address $remoteContact")
                 contact = coreContext.contactsManager.findContactByAddress(call.remoteAddress)
                 roundPicture =
-                    ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
+                        ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
                 displayName = contact?.name ?: SipUtils.getDisplayName(call.remoteAddress)
                 address = SipUtils.getDisplayableAddress(call.remoteAddress)
                 info = context.getString(R.string.incoming_call_notification_title)
             } else {
                 contact = null
-                displayName = conferenceInfo.subject ?: "Meeting"
-                address = SipUtils.getDisplayableAddress(conferenceInfo.organizer)
+                /*displayName = conferenceInfo.subject ?: "Meeting"
+                address = SipUtils.getDisplayableAddress(conferenceInfo.organizer)*/
                 roundPicture = BitmapFactory.decodeResource(context.resources, R.drawable.ic_message_sent)
                 info = context.getString(R.string.incoming_group_call_notification_title)
-                Log.i("[Notifications Manager] Displaying incoming group call notification with subject $displayName for remote contact address $remoteContact")
+                //Log.i("[Notifications Manager] Displaying incoming group call notification with subject $displayName for remote contact address $remoteContact")
             }
 
             val notificationLayoutHeadsUp = RemoteViews(context.packageName, R.layout.call_incoming_notification_heads_up)
@@ -195,23 +196,23 @@ class Api26Compatibility {
             }
 
             val builder = NotificationCompat.Builder(context, context.getString(R.string.notification_channel_incoming_call_id))
-                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-                .addPerson(notificationsManager.getPerson(contact, displayName, roundPicture))
-                .setSmallIcon(R.drawable.topbar_call_notification)
-                .setContentTitle(displayName)
-                .setContentText(context.getString(R.string.incoming_call_notification_title))
-                .setCategory(NotificationCompat.CATEGORY_CALL)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(false)
-                .setShowWhen(true)
-                .setOngoing(true)
-                .setColor(ContextCompat.getColor(context, R.color.primary_color))
-                .setFullScreenIntent(pendingIntent, true)
-                .addAction(notificationsManager.getCallDeclineAction(notifiable))
-                .addAction(notificationsManager.getCallAnswerAction(notifiable))
-                .setCustomHeadsUpContentView(notificationLayoutHeadsUp)
+                    .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                    .addPerson(notificationsManager.getPerson(contact, displayName, roundPicture))
+                    .setSmallIcon(R.drawable.topbar_call_notification)
+                    .setContentTitle(displayName)
+                    .setContentText(context.getString(R.string.incoming_call_notification_title))
+                    .setCategory(NotificationCompat.CATEGORY_CALL)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setWhen(System.currentTimeMillis())
+                    .setAutoCancel(false)
+                    .setShowWhen(true)
+                    .setOngoing(true)
+                    .setColor(ContextCompat.getColor(context, R.color.primary_color))
+                    .setFullScreenIntent(pendingIntent, true)
+                    .addAction(notificationsManager.getCallDeclineAction(notifiable))
+                    .addAction(notificationsManager.getCallAnswerAction(notifiable))
+                    .setCustomHeadsUpContentView(notificationLayoutHeadsUp)
 
             if (!corePreferences.preventInterfaceFromShowingUp) {
                 builder.setContentIntent(pendingIntent)
@@ -231,31 +232,32 @@ class Api26Compatibility {
             val stringResourceId: Int
             val iconResourceId: Int
             val roundPicture: Bitmap?
-            val title: String
+            var title: String = ""
             val person: Person
 
             val conferenceAddress = SipUtils.getConferenceAddress(call)
-            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+//            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
+            val conferenceInfo =  null
             if (conferenceInfo != null) {
-                Log.i("[Notifications Manager] Displaying group call notification with subject ${conferenceInfo.subject}")
+                //Log.i("[Notifications Manager] Displaying group call notification with subject ${conferenceInfo.subject}")
             } else {
                 Log.i("[Notifications Manager] No conference info found for remote contact address ${call.remoteAddress} (${call.remoteContact})")
             }
 
             if (conferenceInfo == null) {
                 val contact: Friend? =
-                    coreContext.contactsManager.findContactByAddress(call.remoteAddress)
+                        coreContext.contactsManager.findContactByAddress(call.remoteAddress)
                 roundPicture = ImageUtils.getRoundBitmapFromUri(context, contact?.getThumbnailUri())
                 val displayName = contact?.name ?: SipUtils.getDisplayName(call.remoteAddress)
                 title = contact?.name ?: displayName
                 person = notificationsManager.getPerson(contact, displayName, roundPicture)
             } else {
-                title = conferenceInfo.subject ?: "Meeting"
+                //title = conferenceInfo.subject ?: "Meeting"
                 roundPicture = BitmapFactory.decodeResource(context.resources, R.drawable.ic_message_sent)
                 person = Person.Builder()
-                    .setName(title)
-                    .setIcon(IconCompat.createWithBitmap(roundPicture))
-                    .build()
+                        .setName("title")
+                        .setIcon(IconCompat.createWithBitmap(roundPicture))
+                        .build()
             }
 
             when (call.state) {
@@ -265,7 +267,7 @@ class Api26Compatibility {
                 }
                 Call.State.OutgoingRinging, Call.State.OutgoingProgress, Call.State.OutgoingInit, Call.State.OutgoingEarlyMedia -> {
                     stringResourceId = R.string.call_notification_outgoing
-                    iconResourceId = if (call.params.isVideoEnabled) {
+                    iconResourceId = if (call.params.videoEnabled()) {
                         R.drawable.topbar_videocall_notification
                     } else {
                         R.drawable.topbar_call_notification
@@ -273,7 +275,7 @@ class Api26Compatibility {
                 }
                 else -> {
                     stringResourceId = R.string.call_notification_active
-                    iconResourceId = if (call.currentParams.isVideoEnabled) {
+                    iconResourceId = if (call.currentParams.videoEnabled()) {
                         R.drawable.topbar_videocall_notification
                     } else {
                         R.drawable.topbar_call_notification
@@ -282,22 +284,22 @@ class Api26Compatibility {
             }
 
             val builder = NotificationCompat.Builder(
-                context, channel
+                    context, channel
             )
-                .setContentTitle(title)
-                .setContentText(context.getString(stringResourceId))
-                .setSmallIcon(iconResourceId)
-                .setLargeIcon(roundPicture)
-                .addPerson(person)
-                .setAutoCancel(false)
-                .setCategory(NotificationCompat.CATEGORY_CALL)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setWhen(System.currentTimeMillis())
-                .setShowWhen(true)
-                .setOngoing(true)
-                .setColor(ContextCompat.getColor(context, R.color.notification_led_color))
-                .addAction(notificationsManager.getCallDeclineAction(notifiable))
+                    .setContentTitle(title)
+                    .setContentText(context.getString(stringResourceId))
+                    .setSmallIcon(iconResourceId)
+                    .setLargeIcon(roundPicture)
+                    .addPerson(person)
+                    .setAutoCancel(false)
+                    .setCategory(NotificationCompat.CATEGORY_CALL)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setWhen(System.currentTimeMillis())
+                    .setShowWhen(true)
+                    .setOngoing(true)
+                    .setColor(ContextCompat.getColor(context, R.color.notification_led_color))
+                    .addAction(notificationsManager.getCallDeclineAction(notifiable))
 
             if (!corePreferences.preventInterfaceFromShowingUp) {
                 builder.setContentIntent(pendingIntent)
@@ -310,8 +312,8 @@ class Api26Compatibility {
         fun eventVibration(vibrator: Vibrator) {
             val effect = VibrationEffect.createWaveform(longArrayOf(0L, 100L, 100L), intArrayOf(0, VibrationEffect.DEFAULT_AMPLITUDE, 0), -1)
             val audioAttrs = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
-                .build()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                    .build()
             vibrator.vibrate(effect, audioAttrs)
         }
 
@@ -333,11 +335,11 @@ class Api26Compatibility {
 
         fun requestTelecomManagerPermission(activity: Activity, code: Int) {
             activity.requestPermissions(
-                arrayOf(
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.MANAGE_OWN_CALLS
-                ),
-                code
+                    arrayOf(
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.MANAGE_OWN_CALLS
+                    ),
+                    code
             )
         }
 

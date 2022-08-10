@@ -54,8 +54,8 @@ object LinphoneUtils {
     fun createBasicChatRoom(message: ChatMessage, localAccount:Account, core: Core) {
         val params = core.createDefaultChatRoomParams()
         params.backend = ChatRoomBackend.Basic
-        params.isEncryptionEnabled = false
-        params.isGroupEnabled = false
+        params.enableEncryption(false)
+        params.enableGroup(false)
 //        params.isEncryptionEnabled = false
 //        params.isGroupEnabled = false
 
