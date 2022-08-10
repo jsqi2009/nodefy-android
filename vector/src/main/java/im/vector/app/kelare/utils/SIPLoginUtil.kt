@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.text.TextUtils
 import androidx.core.app.ActivityCompat.requestPermissions
+import im.vector.app.VectorApplication
 import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.greendao.DaoSession
 import im.vector.app.kelare.network.models.DialerAccountInfo
@@ -63,7 +64,7 @@ class SIPLoginUtil(val context: Context, val core: Core, private val accountInfo
         accountParams.identityAddress = identity
         // Ensure push notification is enabled for this account
         accountParams.pushNotificationAllowed = true
-        accountParams.registerEnabled = true
+        accountParams.isRegisterEnabled = true
 
 
         // We also need to configure where the proxy server is located
@@ -107,6 +108,8 @@ class SIPLoginUtil(val context: Context, val core: Core, private val accountInfo
 
         // Finally we need the Core to be started for the registration to happen (it could have been started before)
         core.start()
+
+        VectorApplication.coreContext.newAccountConfigured(false)
         // We will need the RECORD_AUDIO permission for video call
         if (context.packageManager.checkPermission(Manifest.permission.RECORD_AUDIO, context.packageName) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(context as Activity, arrayOf(Manifest.permission.RECORD_AUDIO), 0)

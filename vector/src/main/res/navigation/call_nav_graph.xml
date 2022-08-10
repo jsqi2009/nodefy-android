@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/call_nav_graph"
+    app:startDestination="@id/callFragment">
+
+    <fragment
+        android:id="@+id/callFragment"
+        android:name="im.vector.app.kelare.voip.fragment.SingleCallFragment"
+        tools:layout="@layout/fragment_single_call"
+        android:label="callFragment" >
+    </fragment>
+
+    <action android:id="@+id/action_global_singleCallFragment"
+        app:destination="@id/callFragment"/>
+
+    <fragment
+        android:id="@+id/comingCallFragment"
+        android:name="im.vector.app.kelare.voip.fragment.ComingCallFragment"
+        tools:layout="@layout/fragment_coming_call"
+        android:label="comingCallFragment" >
+    </fragment>
+
+    <action android:id="@+id/action_global_incomingCallFragment"
+        app:destination="@id/comingCallFragment" />
+
+
+
+</navigation>

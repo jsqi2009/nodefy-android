@@ -26,6 +26,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
+import im.vector.app.VectorApplication.Companion.coreContext
+import im.vector.app.VectorApplication.Companion.ensureCoreExists
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.error.ErrorFormatter
 import im.vector.app.core.extensions.startSyncing
@@ -46,10 +48,12 @@ import im.vector.app.features.settings.VectorPreferences
 import im.vector.app.features.signout.hard.SignedOutActivity
 import im.vector.app.features.themes.ActivityOtherThemes
 import im.vector.app.features.ui.UiStateRepository
+import im.vector.app.kelare.voip.VoiceCallActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
+import org.linphone.core.tools.Log
 import org.matrix.android.sdk.api.failure.GlobalError
 import timber.log.Timber
 import javax.inject.Inject
@@ -123,6 +127,10 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
             shortcutsHandler.clearShortcuts()
         } catch (e: Exception) {
         }
+
+
+        Log.i("[Main Activity] Ensuring Core exists")
+        ensureCoreExists(applicationContext)
     }
 
     private fun clearNotifications() {
@@ -265,5 +273,47 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
         }
         intent?.let { startActivity(it) }
         finish()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Remove service notification if it has been started by device boot
+        coreContext.notificationsManager.stopForegroundNotificationIfPossible()
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+
+        if (intent != null) handleIntentParams(intent)
+    }
+
+    /*override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (intent != null) handleIntentParams(intent)
+    }*/
+
+    private fun handleIntentParams(intent: Intent) {
+        when (intent.action) {
+            Intent.ACTION_MAIN -> {
+                val core = coreContext.core
+                val call = core.currentCall ?: core.calls.firstOrNull()
+                if (call != null) {
+                    Log.i("[Main Activity] Launcher clicked while there is at least one active call, go to CallActivity")
+                    val callIntent = Intent(this, VoiceCallActivity::class.java)
+                    callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivity(callIntent)
+                }
+            }
+            else -> {
+
+            }
+        }
+
+        // Prevent this intent to be processed again
+        intent.action = null
+        intent.data = null
+        intent.extras?.clear()
     }
 }

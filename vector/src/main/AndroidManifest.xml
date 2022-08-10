@@ -79,13 +79,15 @@
         android:theme="@style/Theme.Vector.Light"
         tools:replace="android:allowBackup">
 
+
         <meta-data
             android:name="android.max_aspect"
             android:value="9.9" />
-        <!--<meta-data
+        <!--
+<meta-data
             android:name="com.google.android.gms.car.application"
-            android:resource="@xml/automotive_app_desc" />-->
-
+            android:resource="@xml/automotive_app_desc" />
+        -->
         <activity
             android:name=".features.MainActivity"
             android:theme="@style/Theme.Vector.Launcher" /> <!-- Activity alias for the launcher Activity (must be declared after the Activity it targets) -->
@@ -93,6 +95,7 @@
         <activity-alias
             android:name=".features.Alias"
             android:exported="true"
+            android:launchMode="singleTask"
             android:targetActivity=".features.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -100,9 +103,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!--<meta-data
+            <!--
+                <meta-data
                 android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />-->
+                android:resource="@xml/shortcuts" />
+            -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_LOCUS" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.DIAL" />
+                <action android:name="android.intent.action.CALL" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tel" />
+                <data android:scheme="sip" />
+                <data android:scheme="sips" />
+                <data android:scheme="linphone" />
+                <data android:scheme="sip-linphone" />
+            </intent-filter>
         </activity-alias>
 
         <activity android:name=".features.home.HomeActivity" />
@@ -371,6 +394,17 @@
         <activity
             android:name=".kelare.dialer.call.OutgoingCallActivity"
             android:exported="false" /> <!-- No limit for screen ratio: avoid black strips -->
+
+        <activity
+            android:name=".kelare.voip.VoiceCallActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:showWhenLocked="true"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/Launcher"
+            android:turnScreenOn="true"/>
+
         <service
             android:name=".core.services.CallService"
             android:exported="false">
@@ -455,24 +489,57 @@
             android:exported="false"
             tools:node="merge" />
 
-        <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" />
-
-        <!-- The following is mandatory to have our SDK to handle push automatically -->
-        <service android:name="org.linphone.core.tools.firebase.FirebaseMessaging"
+        <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" /> <!-- The following is mandatory to have our SDK to handle push automatically -->
+        <service
+            android:name="org.linphone.core.tools.firebase.FirebaseMessaging"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-
-        <!-- This is to handle the PUSH_RECEIVED broadcast emitted by our SDK upon push reception -->
-        <receiver android:name=".kelare.broadcast.LinphonePushBroadcastReceiver"
+        </service> <!-- This is to handle the PUSH_RECEIVED broadcast emitted by our SDK upon push reception -->
+        <receiver
+            android:name=".kelare.broadcast.LinphonePushBroadcastReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="org.linphone.core.action.PUSH_RECEIVED"/>
+                <action android:name="org.linphone.core.action.PUSH_RECEIVED" />
             </intent-filter>
         </receiver>
 
+        <service
+            android:name=".kelare.sipcore.CoreService"
+            android:exported="false"
+            android:foregroundServiceType="phoneCall|camera|microphone"
+            android:label="@string/app_name"
+            android:stopWithTask="false" />
+        <!--<service
+            android:name="org.linphone.core.tools.firebase.FirebaseMessaging"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>-->
+        <service
+            android:name=".kelare.telecom.TelecomConnectionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE">
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".kelare.notifications.NotificationBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".kelare.sipcore.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

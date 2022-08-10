@@ -31,6 +31,7 @@ import com.squareup.otto.Subscribe
 import com.suke.widget.SwitchButton
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
+import im.vector.app.VectorApplication
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivitySipLoginBinding
 import im.vector.app.kelare.network.HttpClient
@@ -268,7 +269,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
             accountParams.identityAddress = identity
             // Ensure push notification is enabled for this account
             accountParams.pushNotificationAllowed = true
-            accountParams.registerEnabled = true
+            accountParams.isRegisterEnabled = true
 
             // We also need to configure where the proxy server is located
             //val address = Factory.instance().createAddress("sip:${proxy}")
@@ -329,6 +330,8 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
 
             // Finally we need the Core to be started for the registration to happen (it could have been started before)
             core.start()
+
+            VectorApplication.coreContext.newAccountConfigured(false)
 
             // We will need the RECORD_AUDIO permission for video call
             if (packageManager.checkPermission(Manifest.permission.RECORD_AUDIO, packageName) != PackageManager.PERMISSION_GRANTED) {

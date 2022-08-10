@@ -249,7 +249,7 @@ android {
 
             //make release open debug mode
             minifyEnabled false
-            debuggable false
+            debuggable true
 
             /*postprocessing {
                 removeUnusedCode true
@@ -268,6 +268,7 @@ android {
     productFlavors {
         gplay {
             apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
 
             afterEvaluate {
                 tasks.matching { it.name.contains("GoogleServices") && !it.name.contains("Gplay") }*.enabled = false
@@ -334,6 +335,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        dataBinding = true
     }
 
     //More than one file was found with OS independent path 'lib/x86/libc++_shared.so'
@@ -576,7 +578,8 @@ dependencies {
     }
     androidTestUtil libs.androidx.orchestrator
 
-    implementation 'org.linphone:linphone-sdk-android:5.0+'
+    //implementation 'org.linphone:linphone-sdk-android:5.0+'
+    implementation 'org.linphone:linphone-sdk-android:5.2+'
     implementation 'com.squareup:otto:1.3.8'
 
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
@@ -613,5 +616,17 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha01'
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ndk'
+
+    implementation 'androidx.media:media:1.6.0'
+    implementation "androidx.security:security-crypto-ktx:1.1.0-alpha03"
+    implementation "androidx.window:window:1.0.0"
+    implementation 'androidx.emoji:emoji:1.1.0'
+    implementation 'androidx.emoji:emoji-bundled:1.1.0'
+    def nav_version = "2.5.1"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation 'com.permissionx.guolindev:permissionx:1.4.0'
 
 }

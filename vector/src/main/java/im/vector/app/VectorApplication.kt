@@ -16,6 +16,7 @@
 
 package im.vector.app
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -34,6 +35,9 @@ import androidx.multidex.MultiDex
 import com.airbnb.epoxy.EpoxyAsyncUtil
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.Mavericks
+import im.vector.app.kelare.sipcore.CoreContext
+import im.vector.app.kelare.sipcore.CorePreferences
+import im.vector.app.kelare.sipcore.CoreService
 import com.facebook.stetho.Stetho
 import com.gabrielittner.threetenbp.LazyThreeTen
 import com.mapbox.mapboxsdk.Mapbox
@@ -79,6 +83,8 @@ import org.linphone.core.CoreListenerStub
 import org.linphone.core.Factory
 import org.linphone.core.InfoMessage
 import org.linphone.core.LogCollectionState
+import org.linphone.core.LogLevel
+import org.linphone.core.tools.Log
 import org.matrix.android.sdk.api.Matrix
 import org.matrix.android.sdk.api.auth.AuthenticationService
 import org.matrix.android.sdk.api.legacy.LegacySessionImporter
@@ -231,7 +237,8 @@ class VectorApplication :
         mBus = AndroidBus()
         HttpClient.init(this, mBus)
         mBus.register(this)
-        initLinPhone()
+        //initLinPhone()
+        createConfig(applicationContext)
         initGreenDao()
         AndroidSmackInitializer.initialize(this)
         BgManager.getInstance().init(this)
@@ -404,6 +411,63 @@ class VectorApplication :
     companion object{
         operator fun get(content: Context): VectorApplication {
             return content.applicationContext as VectorApplication
+        }
+
+        @SuppressLint("StaticFieldLeak")
+        lateinit var corePreferences: CorePreferences
+        @SuppressLint("StaticFieldLeak")
+        lateinit var coreContext: CoreContext
+
+        private fun createConfig(context: Context) {
+            if (::corePreferences.isInitialized) {
+                return
+            }
+
+            /*Factory.instance().setLogCollectionPath(context.applicationContext.filesDir.absolutePath)
+            Factory.instance().enableLogCollection(LogCollectionState.Enabled)*/
+
+            // For VFS
+            Factory.instance().setCacheDir(context.cacheDir.absolutePath)
+
+            corePreferences = CorePreferences(context)
+            corePreferences.copyAssetsFromPackage()
+
+            if (corePreferences.vfsEnabled) {
+                CoreContext.activateVFS()
+            }
+
+            val config = Factory.instance().createConfigWithFactory(corePreferences.configPath, corePreferences.factoryConfigPath)
+            corePreferences.config = config
+
+            val appName = context.getString(R.string.app_name)
+            Factory.instance().setLoggerDomain(appName)
+            Factory.instance().enableLogcatLogs(corePreferences.logcatLogsOutput)
+            if (corePreferences.debugLogs) {
+                Factory.instance().loggingService.setLogLevel(LogLevel.Message)
+            }
+
+            Log.i("[Application] Core config & preferences created")
+        }
+
+        fun ensureCoreExists(
+                context: Context,
+                pushReceived: Boolean = false,
+                service: CoreService? = null,
+                useAutoStartDescription: Boolean = false
+        ): Boolean {
+            if (::coreContext.isInitialized && !coreContext.stopped) {
+                Log.d("[Application] Skipping Core creation (push received? $pushReceived)")
+                return false
+            }
+
+            Log.i("[Application] Core context is being created ${if (pushReceived) "from push" else ""}")
+            coreContext = CoreContext(context, corePreferences.config, service, useAutoStartDescription)
+            coreContext.start()
+            return true
+        }
+
+        fun contextExists(): Boolean {
+            return ::coreContext.isInitialized
         }
     }
 }

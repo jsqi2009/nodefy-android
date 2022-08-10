@@ -86,8 +86,8 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
         views.ll0.setOnLongClickListener(this)
 
         core.addListener(outgoingCallCoreListener)
-        core.enableVideoCapture(true)
-        core.enableVideoDisplay(true)
+        core.isVideoCaptureEnabled = true
+        core.isVideoDisplayEnabled = true
 
         getRegisterSIPUser()
     }

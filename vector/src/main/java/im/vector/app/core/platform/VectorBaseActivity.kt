@@ -271,7 +271,8 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
         mBus = VectorApplication.get(this).mBus
         this.mBus.register(this)
         dialerSession = DialerSession(this)
-        core = VectorApplication.get(this).linphoneCore
+        //core = VectorApplication.get(this).linphoneCore
+        core = VectorApplication.coreContext.core
         daoSession = VectorApplication.get(this).getDaoSession()!!
         mConnectionList = VectorApplication.get(this).mConnectionList
     }
@@ -444,12 +445,12 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
         }
     }
 
-    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
+    /*override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
 
         Timber.w("onMultiWindowModeChanged. isInMultiWindowMode: $isInMultiWindowMode")
         bugReporter.inMultiWindowMode = isInMultiWindowMode
-    }
+    }*/
 
     protected fun createFragment(fragmentClass: Class<out Fragment>, argsParcelable: Parcelable? = null): Fragment {
         return fragmentFactory.instantiate(classLoader, fragmentClass.name).apply {

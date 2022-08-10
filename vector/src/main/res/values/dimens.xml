@@ -106,5 +106,9 @@
     <dimen name="textsize_30">30sp</dimen>
 
 
+    <dimen name="call_overlay_size">60dp</dimen>
+    <dimen name="voip_call_extra_buttons_translate_y">210dp</dimen>
+    <dimen name="voip_audio_routes_menu_translate_y">260dp</dimen>
+    <dimen name="voip_counter_bounce_offset">5dp</dimen>
 
 </resources>

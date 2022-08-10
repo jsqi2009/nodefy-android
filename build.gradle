@@ -45,6 +45,7 @@ buildscript {
 
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0' // add plugin
         classpath 'com.novoda:bintray-release:+'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
     }
 }
 
@@ -69,6 +70,7 @@ allprojects {
 
     repositories {
         // Do not use `mavenCentral()`, it prevents Dependabot from working properly
+        mavenCentral()
         maven {
             url 'https://repo1.maven.org/maven2'
             content {

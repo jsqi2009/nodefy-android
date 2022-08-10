@@ -3199,4 +3199,91 @@
     <!-- nodefy license  -->
     <string name="license_module_tip">"This module requires you to self-host nodefy service. For details, please visit: https://nodefy.me"</string>
 
+    <string name="user_agent_app_name" translatable="false">${app_name} Android</string>
+    <string name="service_name">${app_name} Service</string>
+    <string name="service_auto_start_description">${app_name} has been started automatically</string>
+    <string name="service_description">This is required to receive calls while in background</string>
+    <string name="sync_account_name">${app_name} contacts</string>
+
+
+    <!-- Launch screen -->
+    <string name="app_description">the <i>libre</i> SIP client</string>
+    <string name="about_bugreport_email" translatable="false">linphone-android@belledonne-communications.com</string>
+    <string name="share_uploaded_logs_link">Share logs link using…</string>
+
+
+    <!-- Call stats -->
+    <string name="call_stats_audio">Audio</string>
+    <string name="call_stats_video">Video</string>
+    <string name="call_stats_codec">Codec:</string>
+    <string name="call_stats_ip">IP Family:</string>
+    <string name="call_stats_upload">Upload bandwidth:</string>
+    <string name="call_stats_download">Download bandwidth:</string>
+    <string name="call_stats_estimated_download">Estimated download bandwidth:</string>
+    <string name="call_stats_ice">ICE connectivity:</string>
+    <string name="call_stats_video_resolution_sent">Sent video resolution:</string>
+    <string name="call_stats_video_resolution_received">Received video resolution:</string>
+    <string name="call_stats_video_fps_sent">Sent video fps:</string>
+    <string name="call_stats_video_fps_received">Received video fps:</string>
+    <string name="call_stats_sender_loss_rate">Sender loss rate:</string>
+    <string name="call_stats_receiver_loss_rate">Receiver loss rate:</string>
+    <string name="call_stats_jitter_buffer">Jitter buffer:</string>
+    <string name="call_stats_encoder_name">Encoder:</string>
+    <string name="call_stats_decoder_name">Decoder:</string>
+    <string name="call_stats_player_filter">Player filter:</string>
+    <string name="call_stats_capture_filter">Capture filter:</string>
+    <string name="call_stats_media_encryption">Media encryption:</string>
+    <string name="call_stats_zrtp_cipher_algo">Cipher algorithm:</string>
+    <string name="call_stats_zrtp_key_agreement_algo">Key agreement algorithm:</string>
+    <string name="call_stats_zrtp_hash_algo">Hash algorithm:</string>
+    <string name="call_stats_zrtp_auth_tag_algo">Authentication algorithm:</string>
+    <string name="call_stats_zrtp_sas_algo">SAS algorithm:</string>
+
+    <string name="call_error_declined">Call has been declined</string>
+    <string name="call_error_user_busy">User is busy</string>
+    <string name="call_error_user_not_found">User hasn\'t been found</string>
+    <string name="call_error_incompatible_media_params">Incompatible media parameters</string>
+    <string name="call_error_network_unreachable">Network is unreachable</string>
+    <string name="call_error_io_error">Service unavailable or network error</string>
+    <string name="call_error_server_timeout">Server timeout</string>
+    <string name="call_error_temporarily_unavailable">Temporarily unavailable</string>
+    <string name="call_error_generic">Error: %s</string>
+
+    <string name="call_settings_media_encryption_none">None</string>
+    <string name="call_settings_media_encryption_srtp">SRTP</string>
+    <string name="call_settings_media_encryption_zrtp">ZRTP</string>
+    <string name="call_settings_media_encryption_zrtp_post_quantum">Post Quantum ZRTP</string>
+    <string name="call_settings_media_encryption_dtls">DTLS-SRTP</string>
+
+    <string name="conference_default_title">Remote group call</string>
+    <string name="conference_local_title">Local group call</string>
+    <string name="conference_participants_title">Participants (%d)</string>
+    <string name="content_description_go_back_to_call">Go back to the call view</string>
+
+    <!-- Notifications -->
+    <string name="call_incoming_title">Incoming Call</string>
+    <string name="call_notification_paused">Paused call</string>
+    <string name="call_notification_outgoing">Outgoing call</string>
+    <string name="call_notification_active">Call running</string>
+    <string name="conference_incoming_title">Incoming group call</string>
+    <string name="conference">Meeting</string>
+    <string name="notification_channel_service_id" translatable="false">nodefy_notification_service_id</string>
+    <string name="notification_channel_missed_call_id" translatable="false">nodefy_notification_missed_call_id</string>
+    <string name="notification_channel_incoming_call_id" translatable="false">nodefy_notification_call_id</string>
+    <string name="notification_channel_chat_id" translatable="false">nodefy_notification_chat_id</string>
+    <string name="notification_channel_service_name">${app_name} service notification</string>
+    <string name="notification_channel_missed_call_name">${app_name} missed calls notifications</string>
+    <string name="notification_channel_incoming_call_name">${app_name} incoming calls notifications</string>
+    <string name="notification_channel_chat_name">${app_name} instant messages notifications</string>
+    <string name="incoming_call_notification_title">Incoming call</string>
+    <string name="incoming_group_call_notification_title">Incoming group call</string>
+    <string name="incoming_call_notification_hangup_action_label">Hangup</string>
+    <string name="incoming_call_notification_answer_action_label">Answer</string>
+    <string name="received_chat_notification_reply_label">Reply</string>
+    <string name="received_chat_notification_mark_as_read_label">Mark as read</string>
+    <string name="missed_call_notification_title">Missed call</string>
+    <string name="missed_call_notification_body">Missed call from %s</string>
+    <string name="missed_calls_notification_body" tools:ignore="PluralsCandidate">%d missed calls</string>
+
+
 </resources>
