@@ -96,13 +96,6 @@ class CorePreferences constructor(private val context: Context) {
         return sharedPreferences.getBoolean(id, false)
     }
 
-    fun muteChatRoom(id: String, mute: Boolean) {
-        val sharedPreferences: SharedPreferences = coreContext.context.getSharedPreferences("notifications", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean(id, mute)
-        editor.apply()
-    }
-
     /* App settings */
 
     var debugLogs: Boolean
@@ -127,12 +120,6 @@ class CorePreferences constructor(private val context: Context) {
         get() = config.getBool("app", "keep_service_alive", false)
         set(value) {
             config.setBool("app", "keep_service_alive", value)
-        }
-
-    var readAndAgreeTermsAndPrivacy: Boolean
-        get() = config.getBool("app", "read_and_agree_terms_and_privacy", false)
-        set(value) {
-            config.setBool("app", "read_and_agree_terms_and_privacy", value)
         }
 
     /* UI */
@@ -165,35 +152,6 @@ class CorePreferences constructor(private val context: Context) {
             config.setInt("app", "dark_mode", value)
         }
 
-    /** Allow to make screenshots of encrypted chat rooms, disables fragment's secure mode */
-    var disableSecureMode: Boolean
-        get() = config.getBool("app", "disable_fragment_secure_mode", false)
-        set(value) {
-            config.setBool("app", "disable_fragment_secure_mode", value)
-        }
-
-    /* Audio */
-
-    /* Video */
-
-    var videoPreview: Boolean
-        get() = config.getBool("app", "video_preview", false)
-        set(value) = config.setBool("app", "video_preview", value)
-
-    /* Chat */
-
-    var preventMoreThanOneFilePerMessage: Boolean
-        get() = config.getBool("app", "prevent_more_than_one_file_per_message", false)
-        set(value) {
-            config.setBool("app", "prevent_more_than_one_file_per_message", value)
-        }
-
-    var markAsReadUponChatMessageNotificationDismissal: Boolean
-        get() = config.getBool("app", "mark_as_read_notif_dismissal", false)
-        set(value) {
-            config.setBool("app", "mark_as_read_notif_dismissal", value)
-        }
-
     var makePublicMediaFilesDownloaded: Boolean
         // Keep old name for backward compatibility
         get() = config.getBool("app", "make_downloaded_images_public_in_gallery", true)
@@ -201,53 +159,9 @@ class CorePreferences constructor(private val context: Context) {
             config.setBool("app", "make_downloaded_images_public_in_gallery", value)
         }
 
-    var useInAppFileViewerForNonEncryptedFiles: Boolean
-        get() = config.getBool("app", "use_in_app_file_viewer_for_non_encrypted_files", false)
-        set(value) {
-            config.setBool("app", "use_in_app_file_viewer_for_non_encrypted_files", value)
-        }
-
-    var hideChatMessageContentInNotification: Boolean
-        get() = config.getBool("app", "hide_chat_message_content_in_notification", false)
-        set(value) {
-            config.setBool("app", "hide_chat_message_content_in_notification", value)
-        }
-
-    var hideEmptyRooms: Boolean
-        get() = config.getBool("misc", "hide_empty_chat_rooms", true)
-        set(value) {
-            config.setBool("misc", "hide_empty_chat_rooms", value)
-        }
-
-    var hideRoomsFromRemovedProxies: Boolean
-        get() = config.getBool("misc", "hide_chat_rooms_from_removed_proxies", true)
-        set(value) {
-            config.setBool("misc", "hide_chat_rooms_from_removed_proxies", value)
-        }
-
     var deviceName: String
         get() = config.getString("app", "device_name", Compatibility.getDeviceName(context))!!
         set(value) = config.setString("app", "device_name", value)
-
-    var chatRoomShortcuts: Boolean
-        get() = config.getBool("app", "chat_room_shortcuts", true)
-        set(value) {
-            config.setBool("app", "chat_room_shortcuts", value)
-        }
-
-    /* Voice Recordings */
-
-    var voiceRecordingMaxDuration: Int
-        get() = config.getInt("app", "voice_recording_max_duration", 600000) // in ms
-        set(value) = config.setInt("app", "voice_recording_max_duration", value)
-
-    var holdToRecordVoiceMessage: Boolean
-        get() = config.getBool("app", "voice_recording_hold_and_release_mode", false)
-        set(value) = config.setBool("app", "voice_recording_hold_and_release_mode", value)
-
-    var sendVoiceRecordingRightAway: Boolean
-        get() = config.getBool("app", "voice_recording_send_right_away", false)
-        set(value) = config.setBool("app", "voice_recording_send_right_away", value)
 
     /* Contacts */
 
@@ -257,31 +171,7 @@ class CorePreferences constructor(private val context: Context) {
             config.setBool("app", "store_presence_in_native_contact", value)
         }
 
-    var showNewContactAccountDialog: Boolean
-        get() = config.getBool("app", "show_new_contact_account_dialog", true)
-        set(value) {
-            config.setBool("app", "show_new_contact_account_dialog", value)
-        }
-
-    var displayOrganization: Boolean
-        get() = config.getBool("app", "display_contact_organization", contactOrganizationVisible)
-        set(value) {
-            config.setBool("app", "display_contact_organization", value)
-        }
-
-    var contactsShortcuts: Boolean
-        get() = config.getBool("app", "contact_shortcuts", false)
-        set(value) {
-            config.setBool("app", "contact_shortcuts", value)
-        }
-
     /* Call */
-
-    var sendEarlyMedia: Boolean
-        get() = config.getBool("sip", "outgoing_calls_early_media", false)
-        set(value) {
-            config.setBool("sip", "outgoing_calls_early_media", value)
-        }
 
     var acceptEarlyMedia: Boolean
         get() = config.getBool("sip", "incoming_calls_early_media", false)
@@ -315,12 +205,6 @@ class CorePreferences constructor(private val context: Context) {
             config.setBool("app", "system_wide_call_overlay", value)
         }
 
-    var callRightAway: Boolean
-        get() = config.getBool("app", "call_right_away", false)
-        set(value) {
-            config.setBool("app", "call_right_away", value)
-        }
-
     var automaticallyStartCallRecording: Boolean
         get() = config.getBool("app", "auto_start_call_record", false)
         set(value) {
@@ -336,13 +220,6 @@ class CorePreferences constructor(private val context: Context) {
             config.setBool("audio", "android_disable_audio_focus_requests", value)
         }
 
-    // We will try to auto enable Telecom Manager feature, but in case user disables it don't try again
-    var manuallyDisabledTelecomManager: Boolean
-        get() = config.getBool("app", "user_disabled_self_managed_telecom_manager", false)
-        set(value) {
-            config.setBool("app", "user_disabled_self_managed_telecom_manager", value)
-        }
-
     var routeAudioToBluetoothIfAvailable: Boolean
         get() = config.getBool("app", "route_audio_to_bluetooth_if_available", true)
         set(value) {
@@ -356,31 +233,12 @@ class CorePreferences constructor(private val context: Context) {
             config.setBool("app", "route_audio_to_speaker_when_video_enabled", value)
         }
 
-    // Automatically handled by SDK
-    var pauseCallsWhenAudioFocusIsLost: Boolean
-        get() = config.getBool("audio", "android_pause_calls_when_audio_focus_lost", true)
-        set(value) {
-            config.setBool("audio", "android_pause_calls_when_audio_focus_lost", value)
-        }
-
-    var enableFullScreenWhenJoiningVideoConference: Boolean
-        get() = config.getBool("app", "enter_video_conference_enable_full_screen_mode", true)
-        set(value) {
-            config.setBool("app", "enter_video_conference_enable_full_screen_mode", value)
-        }
-
     /* Assistant */
 
     var firstStart: Boolean
         get() = config.getBool("app", "first_start", true)
         set(value) {
             config.setBool("app", "first_start", value)
-        }
-
-    var xmlRpcServerUrl: String?
-        get() = config.getString("assistant", "xmlrpc_url", null)
-        set(value) {
-            config.setString("assistant", "xmlrpc_url", value)
         }
 
     /* Dialog related */
@@ -405,12 +263,6 @@ class CorePreferences constructor(private val context: Context) {
             config.setBool("app", "redirect_declined_call_to_voice_mail", value)
         }
 
-    var lastUpdateAvailableCheckTimestamp: Int
-        get() = config.getInt("app", "version_check_url_last_timestamp", 0)
-        set(value) {
-            config.setInt("app", "version_check_url_last_timestamp", value)
-        }
-
     var defaultAccountAvatarPath: String?
         get() = config.getString("app", "default_avatar_path", null)
         set(value) {
@@ -432,12 +284,6 @@ class CorePreferences constructor(private val context: Context) {
     val showScreenshotButton: Boolean
         get() = config.getBool("app", "show_take_screenshot_button_in_call", false)
 
-    val dtmfKeypadVibration: Boolean
-        get() = config.getBool("app", "dtmf_keypad_vibraton", false)
-
-    val allowMultipleFilesAndTextInSameMessage: Boolean
-        get() = config.getBool("app", "allow_multiple_files_and_text_in_same_message", true)
-
     val fetchContactsFromDefaultDirectory: Boolean
         get() = config.getBool("app", "fetch_contacts_from_default_directory", true)
 
@@ -449,9 +295,6 @@ class CorePreferences constructor(private val context: Context) {
     val preferNormalizedPhoneNumbersFromAddressBook: Boolean
         get() = config.getBool("app", "prefer_normalized_phone_numbers_from_address_book", false)
 
-    val hideStaticImageCamera: Boolean
-        get() = config.getBool("app", "hide_static_image_camera", true)
-
     // Will disable chat feature completely
     val disableChat: Boolean
         get() = config.getBool("app", "disable_chat_feature", false)
@@ -459,27 +302,6 @@ class CorePreferences constructor(private val context: Context) {
     // This will prevent UI from showing up, except for the launcher & the foreground service notification
     val preventInterfaceFromShowingUp: Boolean
         get() = config.getBool("app", "keep_app_invisible", false)
-
-    // By default we will record voice messages using MKV format and Opus audio encoding
-    // If disabled, WAV format will be used instead. Warning: files will be heavier!
-    val voiceMessagesFormatMkv: Boolean
-        get() = config.getBool("app", "record_voice_messages_in_mkv_format", true)
-
-    val useEphemeralPerDeviceMode: Boolean
-        get() = config.getBool("app", "ephemeral_chat_messages_settings_per_device", true)
-
-    // If enabled user will see all ringtones bundled in our SDK
-    // and will be able to choose which one to use if not using it's device's default
-    val showAllRingtones: Boolean
-        get() = config.getBool("app", "show_all_available_ringtones", false)
-
-    val showContactInviteBySms: Boolean
-        get() = config.getBool("app", "show_invite_contact_by_sms", true)
-
-    /* Default values related */
-
-    val echoCancellerCalibration: Int
-        get() = config.getInt("sound", "ec_delay", -1)
 
     val defaultDomain: String
         get() = config.getString("app", "default_domain", "sip.linphone.org")!!
@@ -489,9 +311,6 @@ class CorePreferences constructor(private val context: Context) {
 
     val defaultLimeServerUrl: String
         get() = config.getString("lime", "lime_server_url", "https://lime.linphone.org/lime-server/lime-server.php")!!
-
-    val debugPopupCode: String
-        get() = config.getString("app", "debug_popup_magic", "#1234#")!!
 
     // If there is more participants than this value in a conference, force ActiveSpeaker layout
     val maxConferenceParticipantsForMosaicLayout: Int
@@ -503,88 +322,6 @@ class CorePreferences constructor(private val context: Context) {
             "default_conference_factory_uri",
             "sip:conference-factory@sip.linphone.org"
         )!!
-
-    val audioVideoConferenceServerUri: String
-        get() = config.getString(
-            "app",
-            "default_audio_video_conference_factory_uri",
-            "sip:videoconference-factory2@sip.linphone.org"
-        )!!
-
-    val checkUpdateAvailableInterval: Int
-        get() = config.getInt("app", "version_check_interval", 86400000)
-
-    /* Assistant */
-
-    val showCreateAccount: Boolean
-        get() = config.getBool("app", "assistant_create_account", true)
-
-    val showLinphoneLogin: Boolean
-        get() = config.getBool("app", "assistant_linphone_login", true)
-
-    val showGenericLogin: Boolean
-        get() = config.getBool("app", "assistant_generic_login", true)
-
-    val showRemoteProvisioning: Boolean
-        get() = config.getBool("app", "assistant_remote_provisioning", true)
-
-    /* Side Menu */
-
-    val showAccountsInSideMenu: Boolean
-        get() = config.getBool("app", "side_menu_accounts", true)
-
-    val showAssistantInSideMenu: Boolean
-        get() = config.getBool("app", "side_menu_assistant", true)
-
-    val showSettingsInSideMenu: Boolean
-        get() = config.getBool("app", "side_menu_settings", true)
-
-    val showRecordingsInSideMenu: Boolean
-        get() = config.getBool("app", "side_menu_recordings", true)
-
-    val showScheduledConferencesInSideMenu: Boolean
-        get() = config.getBool("app", "side_menu_conferences", true)
-
-    val showAboutInSideMenu: Boolean
-        get() = config.getBool("app", "side_menu_about", true)
-
-    val showQuitInSideMenu: Boolean
-        get() = config.getBool("app", "side_menu_quit", true)
-
-    /* Settings */
-
-    val allowDtlsTransport: Boolean
-        get() = config.getBool("app", "allow_dtls_transport", false)
-
-    val showAccountSettings: Boolean
-        get() = config.getBool("app", "settings_accounts", true)
-
-    val showTunnelSettings: Boolean
-        get() = config.getBool("app", "settings_tunnel", true)
-
-    val showAudioSettings: Boolean
-        get() = config.getBool("app", "settings_audio", true)
-
-    val showVideoSettings: Boolean
-        get() = config.getBool("app", "settings_video", true)
-
-    val showCallSettings: Boolean
-        get() = config.getBool("app", "settings_call", true)
-
-    val showChatSettings: Boolean
-        get() = config.getBool("app", "settings_chat", true)
-
-    val showNetworkSettings: Boolean
-        get() = config.getBool("app", "settings_network", true)
-
-    val showContactsSettings: Boolean
-        get() = config.getBool("app", "settings_contacts", true)
-
-    val showAdvancedSettings: Boolean
-        get() = config.getBool("app", "settings_advanced", true)
-
-    val showConferencesSettings: Boolean
-        get() = config.getBool("app", "settings_conferences", true)
 
     /* Assets stuff */
 
@@ -599,12 +336,6 @@ class CorePreferences constructor(private val context: Context) {
 
     val defaultValuesPath: String
         get() = context.filesDir.absolutePath + "/assistant_default_values"
-
-    val ringtonesPath: String
-        get() = context.filesDir.absolutePath + "/share/sounds/linphone/rings/"
-
-    val defaultRingtonePath: String
-        get() = ringtonesPath + "notes_of_the_optimistic.mkv"
 
     val userCertificatesPath: String
         get() = context.filesDir.absolutePath + "/user-certs"

@@ -109,41 +109,6 @@ open class ContactsSelectionViewModel : MessageNotifierViewModel() {
         }
     }
 
-    fun clearFilter() {
-        filter.value = ""
-    }
-
-    fun toggleSelectionForSearchResult(searchResult: SearchResult) {
-        val address = searchResult.address
-        if (address != null) {
-            toggleSelectionForAddress(address)
-        }
-    }
-
-    fun toggleSelectionForAddress(address: Address) {
-        val list = arrayListOf<Address>()
-        list.addAll(selectedAddresses.value.orEmpty())
-
-        val found = list.find {
-            it.weakEqual(address)
-        }
-
-        if (found != null) {
-            list.remove(found)
-        } else {
-            val contact = coreContext.contactsManager.findContactByAddress(address)
-            if (contact != null) {
-                val clone = address.clone()
-                clone.displayName = contact.name
-                list.add(clone)
-            } else {
-                list.add(address)
-            }
-        }
-
-        selectedAddresses.value = list
-    }
-
     private fun processMagicSearchResults(results: Array<SearchResult>) {
         Log.i("[Contacts Selection] Processing ${results.size} results")
         val list = arrayListOf<SearchResult>()

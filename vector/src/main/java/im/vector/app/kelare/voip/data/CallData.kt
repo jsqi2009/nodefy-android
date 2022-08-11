@@ -226,51 +226,6 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
         }
     }
 
-    /*private fun updateConferenceInfo() {
-        val conference = call.conference
-        isInRemoteConference.value = conference != null
-        if (conference != null) {
-            Log.d("[Call] Found conference attached to call")
-            remoteConferenceSubject.value = SipUtils.getConferenceSubject(conference)
-            Log.d("[Call] Found conference related to this call with subject [${remoteConferenceSubject.value}]")
-
-            val participantsList = arrayListOf<ConferenceInfoParticipantData>()
-            for (participant in conference.participantList) {
-                val participantData = ConferenceInfoParticipantData(participant.address)
-                participantsList.add(participantData)
-            }
-
-            conferenceParticipants.value = participantsList
-            conferenceParticipantsCountLabel.value = coreContext.context.getString(R.string.conference_participants_title, participantsList.size)
-        } else {
-            val conferenceAddress = SipUtils.getConferenceAddress(call)
-            val conferenceInfo = if (conferenceAddress != null) coreContext.core.findConferenceInformationFromUri(conferenceAddress) else null
-            if (conferenceInfo != null) {
-                Log.d("[Call] Found matching conference info with subject: ${conferenceInfo.subject}")
-                remoteConferenceSubject.value = conferenceInfo.subject
-
-                val participantsList = arrayListOf<ConferenceInfoParticipantData>()
-                for (participant in conferenceInfo.participants) {
-                    val participantData = ConferenceInfoParticipantData(participant)
-                    participantsList.add(participantData)
-                }
-
-                // Add organizer if not in participants list
-                val organizer = conferenceInfo.organizer
-                if (organizer != null) {
-                    val found = participantsList.find { it.participant.weakEqual(organizer) }
-                    if (found == null) {
-                        val participantData = ConferenceInfoParticipantData(organizer)
-                        participantsList.add(0, participantData)
-                    }
-                }
-
-                conferenceParticipants.value = participantsList
-                conferenceParticipantsCountLabel.value = coreContext.context.getString(R.string.conference_participants_title, participantsList.size)
-            }
-        }
-    }*/
-
     private fun startVideoUpdateAcceptanceTimer() {
         timer?.cancel()
 

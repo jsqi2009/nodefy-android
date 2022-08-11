@@ -297,11 +297,11 @@ class CoreContext(
         ) {
             if (corePreferences.logcatLogsOutput) {
                 when (level) {
-                    LogLevel.Error -> android.util.Log.e(domain, message)
-                    LogLevel.Warning -> android.util.Log.w(domain, message)
-                    LogLevel.Message -> android.util.Log.i(domain, message)
-                    LogLevel.Fatal -> android.util.Log.wtf(domain, message)
-                    else -> android.util.Log.d(domain, message)
+                    LogLevel.Error   -> Timber.tag(domain).e(message)
+                    LogLevel.Warning -> Timber.tag(domain).w(message)
+                    LogLevel.Message -> Timber.tag(domain).i(message)
+                    LogLevel.Fatal   -> Timber.tag(domain).wtf(message)
+                    else             -> Timber.tag(domain).d(message)
                 }
             }
             FirebaseCrashlytics.getInstance().log("[$domain] [${level.name}] $message")

@@ -67,20 +67,3 @@ open class GenericContactData(private val sipAddress: Address) : ContactDataInte
     }
 }
 
-abstract class GenericContactViewModel(private val sipAddress: Address) : MessageNotifierViewModel(),
-        ContactDataInterface {
-    final override val contact: MutableLiveData<Friend> = MutableLiveData<Friend>()
-    final override val displayName: MutableLiveData<String> = MutableLiveData<String>()
-    final override val securityLevel: MutableLiveData<ChatRoomSecurityLevel> = MutableLiveData<ChatRoomSecurityLevel>()
-    final override val coroutineScope: CoroutineScope = viewModelScope
-
-    init {
-        securityLevel.value = ChatRoomSecurityLevel.ClearText
-        contactLookup()
-    }
-
-    private fun contactLookup() {
-        displayName.value = SipUtils.getDisplayName(sipAddress)
-        contact.value = coreContext.contactsManager.findContactByAddress(sipAddress)
-    }
-}

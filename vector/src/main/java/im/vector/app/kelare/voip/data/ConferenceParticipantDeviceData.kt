@@ -49,79 +49,8 @@ class ConferenceParticipantDeviceData(
 
     private var textureView: TextureView? = null
 
-    /*private val listener = object : ParticipantDeviceListenerStub() {
-        override fun onIsSpeakingChanged(
-            participantDevice: ParticipantDevice,
-            isSpeaking: Boolean
-        ) {
-            Log.i("[Conference Participant Device] Participant [${participantDevice.address.asStringUriOnly()}] is ${if (isSpeaking) "speaking" else "not speaking"}")
-            this@ConferenceParticipantDeviceData.isSpeaking.value = isSpeaking
-        }
-
-        override fun onIsMuted(participantDevice: ParticipantDevice, isMuted: Boolean) {
-            Log.i("[Conference Participant Device] Participant [${participantDevice.address.asStringUriOnly()}] is ${if (isMuted) "muted" else "not muted"}")
-            this@ConferenceParticipantDeviceData.isMuted.value = isMuted
-        }
-
-        override fun onStateChanged(
-            participantDevice: ParticipantDevice,
-            state: ParticipantDeviceState
-        ) {
-            Log.i("[Conference Participant Device] Participant [${participantDevice.address.asStringUriOnly()}] state has changed: $state")
-            when (state) {
-                ParticipantDeviceState.Joining, ParticipantDeviceState.Alerting -> isJoining.value = true
-                ParticipantDeviceState.OnHold -> {
-                    isInConference.value = false
-                }
-                ParticipantDeviceState.Present -> {
-                    isJoining.value = false
-                    isInConference.value = true
-                    updateWindowId(textureView)
-                }
-                else -> {}
-            }
-        }
-
-        override fun onStreamCapabilityChanged(
-            participantDevice: ParticipantDevice,
-            direction: MediaDirection,
-            streamType: StreamType
-        ) {
-            if (streamType == StreamType.Video) {
-                Log.i("[Conference Participant Device] Participant [${participantDevice.address.asStringUriOnly()}] video capability changed to $direction")
-                isSendingVideo.value = direction == MediaDirection.SendRecv || direction == MediaDirection.SendOnly
-            }
-        }
-
-        override fun onStreamAvailabilityChanged(
-            participantDevice: ParticipantDevice,
-            available: Boolean,
-            streamType: StreamType
-        ) {
-            if (streamType == StreamType.Video) {
-                Log.i("[Conference Participant Device] Participant [${participantDevice.address.asStringUriOnly()}] video availability changed to ${if (available) "available" else "unavailable"}")
-                videoAvailable.value = available
-                if (available) {
-                    updateWindowId(textureView)
-                }
-            }
-        }
-    }*/
-
     init {
         Log.i("[Conference Participant Device] Created device width Address [${participantDevice.address.asStringUriOnly()}], is it myself? $isMe")
-        /*participantDevice.addListener(listener)
-
-        isSpeaking.value = false
-        isMuted.value = participantDevice.isMuted
-
-        videoAvailable.value = participantDevice.getStreamAvailability(StreamType.Video)
-        val videoCapability = participantDevice.getStreamCapability(StreamType.Video)
-        isSendingVideo.value = videoCapability == MediaDirection.SendRecv || videoCapability == MediaDirection.SendOnly
-        isInConference.value = participantDevice.isInConference
-
-        val state = participantDevice.state
-        isJoining.value = state == ParticipantDeviceState.Joining || state == ParticipantDeviceState.Alerting*/
 
         videoEnabled.value = isVideoAvailableAndSendReceive()
         videoEnabled.addSource(videoAvailable) {

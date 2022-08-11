@@ -112,38 +112,6 @@ class NativeContactEditor(val friend: Friend) {
         cursor?.close()
     }
 
-    fun setFirstAndLastNames(firstName: String, lastName: String): NativeContactEditor {
-        if (firstName == friend.vcard?.givenName && lastName == friend.vcard?.familyName) {
-            Log.w("[Native Contact Editor] First & last names haven't changed")
-            return this
-        }
-
-        val builder = if (friend.vcard?.givenName == null && friend.vcard?.familyName == null) {
-            // Probably a contact creation
-            ContentProviderOperation.newInsert(contactUri)
-                .withValue(ContactsContract.Data.RAW_CONTACT_ID, rawId)
-        } else {
-            ContentProviderOperation.newUpdate(contactUri)
-                .withSelection(
-                    selection,
-                    arrayOf(friend.refKey, CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                )
-        }
-
-        builder.withValue(
-            ContactsContract.Data.MIMETYPE,
-            CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE
-        )
-            .withValue(
-                CommonDataKinds.StructuredName.GIVEN_NAME, firstName
-            )
-            .withValue(
-                CommonDataKinds.StructuredName.FAMILY_NAME, lastName
-            )
-        addChanges(builder.build())
-        return this
-    }
-
     fun setOrganization(value: String): NativeContactEditor {
         val previousValue = friend.vcard?.organization.orEmpty()
         if (value == previousValue) {
@@ -175,41 +143,6 @@ class NativeContactEditor(val friend: Friend) {
             )
 
         addChanges(builder.build())
-        return this
-    }
-
-    fun setPhoneNumbers(value: List<NumberOrAddressEditorData>): NativeContactEditor {
-        var addCount = 0
-        var removeCount = 0
-        var editCount = 0
-
-        for (phoneNumber in value) {
-            when {
-                phoneNumber.currentValue.isEmpty() -> {
-                    // New phone number to add
-                    val number = phoneNumber.newValue.value.orEmpty()
-                    if (number.isNotEmpty()) {
-                        addCount++
-                        addPhoneNumber(number)
-                    }
-                }
-                phoneNumber.toRemove.value == true -> {
-                    // Existing number to remove
-                    removeCount++
-                    removePhoneNumber(phoneNumber.currentValue)
-                }
-                phoneNumber.currentValue != phoneNumber.newValue.value -> {
-                    // Existing number to update
-                    val number = phoneNumber.newValue.value.orEmpty()
-                    if (number.isNotEmpty()) {
-                        editCount++
-                        updatePhoneNumber(phoneNumber.currentValue, number)
-                    }
-                }
-            }
-        }
-
-        Log.i("[Native Contact Editor] $addCount numbers added, $removeCount numbers removed and $editCount numbers updated")
         return this
     }
 
@@ -245,12 +178,6 @@ class NativeContactEditor(val friend: Friend) {
         }
 
         Log.i("[Native Contact Editor] $addCount addresses added, $removeCount addresses removed and $editCount addresses updated")
-        return this
-    }
-
-    fun setPicture(value: ByteArray?): NativeContactEditor {
-        pictureByteArray = value
-        if (value != null) Log.i("[Native Contact Editor] Adding operation: picture set/update")
         return this
     }
 
@@ -346,58 +273,6 @@ class NativeContactEditor(val friend: Friend) {
     private fun addChanges(operation: ContentProviderOperation) {
         Log.i("[Native Contact Editor] Adding operation: $operation")
         changes.add(operation)
-    }
-
-    private fun addPhoneNumber(phoneNumber: String) {
-        val insert = ContentProviderOperation.newInsert(contactUri)
-            .withValue(ContactsContract.Data.RAW_CONTACT_ID, rawId)
-            .withValue(
-                ContactsContract.Data.MIMETYPE,
-                CommonDataKinds.Phone.CONTENT_ITEM_TYPE
-            )
-            .withValue(CommonDataKinds.Phone.NUMBER, phoneNumber)
-            .withValue(
-                CommonDataKinds.Phone.TYPE,
-                CommonDataKinds.Phone.TYPE_MOBILE
-            )
-            .build()
-        addChanges(insert)
-    }
-
-    private fun updatePhoneNumber(currentValue: String, phoneNumber: String) {
-        val update = ContentProviderOperation.newUpdate(contactUri)
-            .withSelection(
-                phoneNumberSelection,
-                arrayOf(
-                    friend.refKey,
-                    CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
-                    currentValue,
-                    currentValue
-                )
-            )
-            .withValue(ContactsContract.Data.MIMETYPE, CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-            .withValue(CommonDataKinds.Phone.NUMBER, phoneNumber)
-            .withValue(
-                CommonDataKinds.Phone.TYPE,
-                CommonDataKinds.Phone.TYPE_MOBILE
-            )
-            .build()
-        addChanges(update)
-    }
-
-    private fun removePhoneNumber(phoneNumber: String) {
-        val delete = ContentProviderOperation.newDelete(contactUri)
-            .withSelection(
-                phoneNumberSelection,
-                arrayOf(
-                    friend.refKey,
-                    CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
-                    phoneNumber,
-                    phoneNumber
-                )
-            )
-            .build()
-        addChanges(delete)
     }
 
     private fun addSipAddress(address: String) {

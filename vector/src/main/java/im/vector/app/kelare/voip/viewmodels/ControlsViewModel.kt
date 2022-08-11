@@ -246,15 +246,6 @@ class ControlsViewModel : ViewModel() {
         }
     }
 
-    fun toggleRoutesMenu() {
-        audioRoutesSelected.value = audioRoutesSelected.value != true
-        if (audioRoutesSelected.value == true) {
-            audioRoutesMenuAnimator.start()
-        } else {
-            audioRoutesMenuAnimator.reverse()
-        }
-    }
-
     fun forceEarpieceAudioRoute() {
         if (AudioRouteUtils.isHeadsetAudioRouteAvailable()) {
             Log.i("[Call Controls] Headset found, route audio to it instead of earpiece")
@@ -268,12 +259,6 @@ class ControlsViewModel : ViewModel() {
 
     fun forceSpeakerAudioRoute() {
         AudioRouteUtils.routeAudioToSpeaker()
-        updateSpeakerState()
-        updateBluetoothHeadsetState()
-    }
-
-    fun forceBluetoothAudioRoute() {
-        AudioRouteUtils.routeAudioToBluetooth()
         updateSpeakerState()
         updateBluetoothHeadsetState()
     }
@@ -311,15 +296,6 @@ class ControlsViewModel : ViewModel() {
         }
     }
 
-    fun switchCamera() {
-        coreContext.switchCamera()
-    }
-
-    fun showExtraButtons() {
-        extraButtonsMenuAnimator.start()
-        showExtras.value = true
-    }
-
     fun hideExtraButtons(skipAnimation: Boolean) {
         // Animation must be skipped when called from Fragment's onPause() !
         if (skipAnimation) {
@@ -331,42 +307,8 @@ class ControlsViewModel : ViewModel() {
         chatRoomCreationInProgress.value = false
     }
 
-    fun toggleFullScreen() {
-        if (fullScreenMode.value == false && isVideoEnabled.value == false) return
-        fullScreenMode.value = fullScreenMode.value != true
-    }
-
-    fun goToConferenceParticipantsList() {
-        goToConferenceParticipantsListEvent.value = SipCallEvent(true)
-    }
-
-    fun goToChat() {
-        chatRoomCreationInProgress.value = true
-        goToChatEvent.value = SipCallEvent(true)
-    }
-
-    fun showNumpad() {
-        hideExtraButtons(false)
-        numpadVisible.value = true
-    }
-
     fun hideNumpad() {
         numpadVisible.value = false
-    }
-
-    fun handleDtmfClick(key: Char) {
-        dtmfHistory.value = "${dtmfHistory.value.orEmpty()}$key"
-        coreContext.core.playDtmf(key, 1)
-        coreContext.core.currentCall?.sendDtmf(key)
-    }
-
-    fun goToCallsList() {
-        goToCallsListEvent.value = SipCallEvent(true)
-    }
-
-    fun showCallStats(skipAnimation: Boolean = false) {
-        hideExtraButtons(skipAnimation)
-        callStatsVisible.value = true
     }
 
     fun hideCallStats() {
@@ -375,14 +317,6 @@ class ControlsViewModel : ViewModel() {
 
     fun goToConferenceLayout() {
         goToConferenceLayoutSettingsEvent.value = SipCallEvent(true)
-    }
-
-    fun goToDialerForCallTransfer() {
-        goToDialerEvent.value = SipCallEvent(true)
-    }
-
-    fun goToDialerForNewCall() {
-        goToDialerEvent.value = SipCallEvent(false)
     }
 
     private fun updateUI() {

@@ -59,12 +59,4 @@ class ConferenceParticipantData(
         }
     }
 
-    fun removeParticipantFromConference() {
-        if (conference.me.isAdmin) {
-            Log.i("[Conference Participant] Removing participant ${participant.address.asStringUriOnly()} from conference")
-            conference.removeParticipant(participant)
-        } else {
-            Log.e("[Conference Participant] Can't remove participant ${participant.address.asStringUriOnly()} from conference, you aren't admin")
-        }
-    }
 }

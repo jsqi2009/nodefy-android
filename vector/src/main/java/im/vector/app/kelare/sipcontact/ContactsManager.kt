@@ -136,19 +136,6 @@ class ContactsManager(private val context: Context) {
     }
 
     @Synchronized
-    fun getAndroidContactIdFromUri(uri: Uri): String? {
-        val projection = arrayOf(ContactsContract.Data.CONTACT_ID)
-        val cursor = context.contentResolver.query(uri, projection, null, null, null)
-        if (cursor?.moveToFirst() == true) {
-            val nameColumnIndex = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)
-            val id = cursor.getString(nameColumnIndex)
-            cursor.close()
-            return id
-        }
-        return null
-    }
-
-    @Synchronized
     fun findContactById(id: String): Friend? {
         return coreContext.core.defaultFriendList?.findFriendByRefKey(id)
     }
@@ -230,35 +217,6 @@ class ContactsManager(private val context: Context) {
         }
     }
 
-    fun getAvailableSyncAccounts(): List<Triple<String, String, Drawable?>> {
-        val accountManager = context.getSystemService(Context.ACCOUNT_SERVICE) as AccountManager
-        val packageManager = context.packageManager
-        val syncAdapters = ContentResolver.getSyncAdapterTypes()
-        val authenticators: Array<AuthenticatorDescription> = accountManager.authenticatorTypes
-        val available = arrayListOf<Triple<String, String, Drawable?>>()
-
-        for (syncAdapter in syncAdapters) {
-            if (syncAdapter.authority == "com.android.contacts" && syncAdapter.isUserVisible) {
-                if (syncAdapter.supportsUploading() || syncAdapter.accountType == "org.linphone.sync") {
-                    Log.i("[Contacts Manager] Found sync adapter for com.android.contacts authority: ${syncAdapter.accountType}")
-                    val accounts = accountManager.getAccountsByType(syncAdapter.accountType)
-                    for (account in accounts) {
-                        Log.i("[Contacts Manager] Found account for account type ${syncAdapter.accountType}: ${account.name}")
-                        for (authenticator in authenticators) {
-                            if (authenticator.type == account.type) {
-                                val drawable = packageManager.getDrawable(authenticator.packageName, authenticator.smallIconId, null)
-                                val triple = Triple(account.name, account.type, drawable)
-                                available.add(triple)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return available
-    }
-
     @Synchronized
     private fun refreshContactOnPresenceReceived(friend: Friend) {
         Log.d("[Contacts Manager] Received presence information for contact $friend")
@@ -285,47 +243,12 @@ class ContactsManager(private val context: Context) {
         }
         contactEditor.commit()
     }
-
-    fun createFriendFromSearchResult(searchResult: SearchResult): Friend {
-        val searchResultFriend = searchResult.friend
-        if (searchResultFriend != null) return searchResultFriend
-
-        val friend = coreContext.core.createFriend()
-
-        val address = searchResult.address
-        if (address != null) {
-            friend.address = address
-        }
-
-        val number = searchResult.phoneNumber
-        if (number != null) {
-            friend.addPhoneNumber(number)
-
-            if (address != null && address.username == number) {
-                friend.removeAddress(address)
-            }
-        }
-
-        return friend
-    }
 }
 
 fun Friend.getContactForPhoneNumberOrAddress(value: String): String? {
     val presenceModel = getPresenceModelForUriOrTel(value)
     if (presenceModel != null && presenceModel.basicStatus == PresenceBasicStatus.Open) return presenceModel.contact
     return null
-}
-
-fun Friend.hasPresence(): Boolean {
-    for (address in addresses) {
-        val presenceModel = getPresenceModelForUriOrTel(address.asStringUriOnly())
-        if (presenceModel != null && presenceModel.basicStatus == PresenceBasicStatus.Open) return true
-    }
-    for (number in phoneNumbers) {
-        val presenceModel = getPresenceModelForUriOrTel(number)
-        if (presenceModel != null && presenceModel.basicStatus == PresenceBasicStatus.Open) return true
-    }
-    return false
 }
 
 fun Friend.getThumbnailUri(): Uri? {
