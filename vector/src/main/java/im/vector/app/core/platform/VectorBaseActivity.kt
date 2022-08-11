@@ -274,7 +274,8 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
         dialerSession = DialerSession(this)
         //core = VectorApplication.get(this).linphoneCore
         core = VectorApplication.coreContext.core
-        daoSession = VectorApplication.get(this).getDaoSession()!!
+        //daoSession = VectorApplication.get(this).getDaoSession()!!
+        daoSession = VectorApplication.getDaoSession()!!
         mConnectionList = VectorApplication.get(this).mConnectionList
     }
 
@@ -402,6 +403,9 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
                     debugReceiver = DebugReceiver()
                     registerReceiver(debugReceiver, it)
                 }
+
+        // Remove service notification if it has been started by device boot
+        VectorApplication.coreContext.notificationsManager.stopForegroundNotificationIfPossible()
     }
 
     private val postResumeScheduledActions = mutableListOf<() -> Unit>()

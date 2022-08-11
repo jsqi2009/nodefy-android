@@ -108,8 +108,6 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ensureCoreExists(applicationContext)
-
         args = parseArgs()
         if (args.clearCredentials || args.isUserLoggedOut || args.clearCache) {
             clearNotifications()
@@ -275,47 +273,5 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
         }
         intent?.let { startActivity(it) }
         finish()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Remove service notification if it has been started by device boot
-        coreContext.notificationsManager.stopForegroundNotificationIfPossible()
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-
-        if (intent != null) handleIntentParams(intent)
-    }
-
-    /*override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
-        if (intent != null) handleIntentParams(intent)
-    }*/
-
-    private fun handleIntentParams(intent: Intent) {
-        when (intent.action) {
-            Intent.ACTION_MAIN -> {
-                val core = coreContext.core
-                val call = core.currentCall ?: core.calls.firstOrNull()
-                if (call != null) {
-                    Log.i("[Main Activity] Launcher clicked while there is at least one active call, go to CallActivity")
-                    val callIntent = Intent(this, VoiceCallActivity::class.java)
-                    callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    startActivity(callIntent)
-                }
-            }
-            else -> {
-
-            }
-        }
-
-        // Prevent this intent to be processed again
-        intent.action = null
-        intent.data = null
-        intent.extras?.clear()
     }
 }

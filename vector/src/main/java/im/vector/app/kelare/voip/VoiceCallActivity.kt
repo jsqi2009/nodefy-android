@@ -35,6 +35,7 @@ import im.vector.app.VectorApplication.Companion.coreContext
 import im.vector.app.VectorApplication.Companion.corePreferences
 import im.vector.app.databinding.ActivityVoiceCallBinding
 import im.vector.app.features.MainActivity
+import im.vector.app.features.home.HomeActivity
 import im.vector.app.kelare.compatibility.Compatibility
 import im.vector.app.kelare.utils.PermissionHelper
 import im.vector.app.kelare.voip.viewmodels.CallsViewModel
@@ -199,7 +200,7 @@ class VoiceCallActivity : ProximitySensorActivity() {
             if (isTaskRoot) {
                 // When resuming app from recent tasks make sure MainActivity will be launched if there is no call
                 val intent = Intent()
-                intent.setClass(this, MainActivity::class.java)
+                intent.setClass(this, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             } else {

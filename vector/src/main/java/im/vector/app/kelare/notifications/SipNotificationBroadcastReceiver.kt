@@ -30,7 +30,7 @@ import org.linphone.core.Call
 import org.linphone.core.Core
 import org.linphone.core.tools.Log
 
-class NotificationBroadcastReceiver : BroadcastReceiver() {
+class SipNotificationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.i("[Notification Broadcast Receiver] Ensuring Core exists")
         ensureCoreExists(context, false)

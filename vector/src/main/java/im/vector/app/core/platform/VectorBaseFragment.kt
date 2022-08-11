@@ -156,7 +156,8 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
         //core = VectorApplication.get(activity!!).linphoneCore
         core = VectorApplication.coreContext.core
         dialerSession = DialerSession(activity!!)
-        daoSession = VectorApplication.get(activity!!).getDaoSession()!!
+//        daoSession = VectorApplication.get(activity!!).getDaoSession()!!
+        daoSession = VectorApplication.getDaoSession()!!
         mConnectionList = VectorApplication.get(activity!!).mConnectionList
     }
 

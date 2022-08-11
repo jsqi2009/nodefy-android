@@ -132,7 +132,7 @@ class VectorApplication :
     //nodefy sip
     lateinit var linphoneCore: Core
     lateinit var mBus: AndroidBus
-    private var daoSession: DaoSession? = null
+    //private var daoSession: DaoSession? = null
     var mConnectionList: ArrayList<XMPPTCPConnection> = ArrayList()
 
     private val powerKeyReceiver = object : BroadcastReceiver() {
@@ -239,7 +239,7 @@ class VectorApplication :
         mBus.register(this)
         //initLinPhone()
         createConfig(applicationContext)
-        initGreenDao()
+        initGreenDao(applicationContext)
         AndroidSmackInitializer.initialize(this)
         BgManager.getInstance().init(this)
     }
@@ -329,19 +329,19 @@ class VectorApplication :
         linphoneCore.addListener(coreListener)
     }
 
-    fun getDaoSession(): DaoSession? {
+    /*fun getDaoSession(): DaoSession? {
         return daoSession
     }
 
-    /**
+    *//**
      * 初始化GreenDao,直接在Application中进行初始化操作
-     */
+     *//*
     private fun initGreenDao() {
         val helper = DaoMaster.DevOpenHelper(this, "nodefy_sip.db")
         val db = helper.writableDatabase
         val daoMaster = DaoMaster(db)
         daoSession = daoMaster.newSession()
-    }
+    }*/
 
     private val coreListener = object: CoreListenerStub() {
 
@@ -411,6 +411,22 @@ class VectorApplication :
     companion object{
         operator fun get(content: Context): VectorApplication {
             return content.applicationContext as VectorApplication
+        }
+
+        private var daoSession: DaoSession? = null
+
+        fun getDaoSession(): DaoSession? {
+            return daoSession
+        }
+
+        /**
+         * 初始化GreenDao,直接在Application中进行初始化操作
+         */
+        private fun initGreenDao(content: Context) {
+            val helper = DaoMaster.DevOpenHelper(content, "nodefy_sip.db")
+            val db = helper.writableDatabase
+            val daoMaster = DaoMaster(db)
+            daoSession = daoMaster.newSession()
         }
 
         @SuppressLint("StaticFieldLeak")

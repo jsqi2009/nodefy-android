@@ -108,6 +108,30 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
             -->
+        </activity-alias>
+
+        <activity android:name=".features.home.HomeActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/*" />
+                <data android:mimeType="image/*" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="application/*" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="application/*" />
+            </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW_LOCUS" />
@@ -126,9 +150,7 @@
                 <data android:scheme="linphone" />
                 <data android:scheme="sip-linphone" />
             </intent-filter>
-        </activity-alias>
-
-        <activity android:name=".features.home.HomeActivity" />
+        </activity>
         <activity
             android:name=".features.login.SSORedirectRouterActivity"
             android:exported="true"
@@ -145,6 +167,7 @@
                     android:host="connect"
                     android:scheme="element" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".features.login.LoginActivity"
@@ -529,7 +552,7 @@
         </service>
 
         <receiver
-            android:name=".kelare.notifications.NotificationBroadcastReceiver"
+            android:name=".kelare.notifications.SipNotificationBroadcastReceiver"
             android:enabled="true"
             android:exported="false" />
         <receiver

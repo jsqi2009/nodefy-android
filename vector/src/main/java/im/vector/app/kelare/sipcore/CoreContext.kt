@@ -62,11 +62,13 @@ import im.vector.app.kelare.sipcontact.getContactForPhoneNumberOrAddress
 import im.vector.app.kelare.notifications.NotificationsManager
 import im.vector.app.R
 import im.vector.app.VectorApplication.Companion.corePreferences
+import im.vector.app.VectorApplication.Companion.getDaoSession
 import im.vector.app.kelare.telecom.TelecomHelper
 import im.vector.app.kelare.utils.SipCallEvent
 import im.vector.app.kelare.compatibility.PhoneStateInterface
 import org.linphone.core.*
 import im.vector.app.kelare.utils.AppUtils
+import im.vector.app.kelare.utils.LinphoneUtils
 import im.vector.app.kelare.voip.VoiceCallActivity
 import timber.log.Timber
 
@@ -255,6 +257,34 @@ class CoreContext(
 
             val id = SipUtils.getChatRoomId(chatRoom.localAddress, chatRoom.peerAddress)
             Log.e("[Notifications Manager] Chat room $id has been muted")
+
+            //user the receivedPeerDomain, receivedLocalDomain is the IP, maybe not correct
+            /**
+             * receivedLocalDomain:,182.119.130.45
+             * receivedLocalUser:, 2222
+             * receivedPeerDomain:, comms.kelare-demo.com
+             * receivedPeerUser:, 3333
+             */
+            val receivedLocalDomain = message.localAddress.domain
+            val receivedLocalUser = message.localAddress.username
+            val receivedPeerDomain = message.fromAddress.domain
+            val receivedPeerUser = message.fromAddress.username
+            Timber.e("receivedLocalDomain:,$receivedLocalDomain")
+            Timber.e("receivedLocalUser:, $receivedLocalUser")
+            Timber.e("receivedPeerDomain:, $receivedPeerDomain")
+            Timber.e("receivedPeerUser:, $receivedPeerUser")
+
+            Timber.e("toAddress:, ${message.toAddress.domain}")
+
+
+            val localAccount = LinphoneUtils.getSipAccount(message, core)
+            LinphoneUtils.createBasicChatRoom(message, localAccount!!, core)
+
+            for (content in message.contents) {
+                if (content.isText) {
+                    LinphoneUtils.insertSipMessage(content.utf8Text.toString(), false, message, localAccount, getDaoSession()!!)
+                }
+            }
         }
     }
 

@@ -42,7 +42,7 @@ import im.vector.app.kelare.utils.SipUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
 import im.vector.app.R
-import im.vector.app.features.MainActivity
+import im.vector.app.features.home.HomeActivity
 import im.vector.app.kelare.voip.VoiceCallActivity
 
 class Notifiable(val notificationId: Int) {
@@ -412,7 +412,7 @@ class NotificationsManager(private val context: Context) {
             //.setDestination(R.id.dialerFragment)
             .createPendingIntent()*/
 
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, HomeActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val builder = NotificationCompat.Builder(context, serviceChannel)
@@ -530,7 +530,7 @@ class NotificationsManager(private val context: Context) {
             .setDestination(R.id.masterCallLogsFragment)
             .createPendingIntent()*/
 
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, HomeActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val builder = NotificationCompat.Builder(
@@ -651,7 +651,7 @@ class NotificationsManager(private val context: Context) {
     /* Notifications actions */
 
     fun getCallAnswerPendingIntent(notifiable: Notifiable): PendingIntent {
-        val answerIntent = Intent(context, NotificationBroadcastReceiver::class.java)
+        val answerIntent = Intent(context, SipNotificationBroadcastReceiver::class.java)
         answerIntent.action = INTENT_ANSWER_CALL_NOTIF_ACTION
         answerIntent.putExtra(INTENT_NOTIF_ID, notifiable.notificationId)
         answerIntent.putExtra(INTENT_REMOTE_ADDRESS, notifiable.remoteAddress)
@@ -673,7 +673,7 @@ class NotificationsManager(private val context: Context) {
     }
 
     fun getCallDeclinePendingIntent(notifiable: Notifiable): PendingIntent {
-        val hangupIntent = Intent(context, NotificationBroadcastReceiver::class.java)
+        val hangupIntent = Intent(context, SipNotificationBroadcastReceiver::class.java)
         hangupIntent.action = INTENT_HANGUP_CALL_NOTIF_ACTION
         hangupIntent.putExtra(INTENT_NOTIF_ID, notifiable.notificationId)
         hangupIntent.putExtra(INTENT_REMOTE_ADDRESS, notifiable.remoteAddress)
@@ -700,7 +700,7 @@ class NotificationsManager(private val context: Context) {
         val remoteInput =
                 RemoteInput.Builder(KEY_TEXT_REPLY).setLabel(replyLabel).build()
 
-        val replyIntent = Intent(context, NotificationBroadcastReceiver::class.java)
+        val replyIntent = Intent(context, SipNotificationBroadcastReceiver::class.java)
         replyIntent.action = INTENT_REPLY_NOTIF_ACTION
         replyIntent.putExtra(INTENT_NOTIF_ID, notifiable.notificationId)
         replyIntent.putExtra(INTENT_LOCAL_IDENTITY, notifiable.localIdentity)
@@ -725,7 +725,7 @@ class NotificationsManager(private val context: Context) {
     }
 
     private fun getMarkMessageAsReadPendingIntent(notifiable: Notifiable): PendingIntent {
-        val markAsReadIntent = Intent(context, NotificationBroadcastReceiver::class.java)
+        val markAsReadIntent = Intent(context, SipNotificationBroadcastReceiver::class.java)
         markAsReadIntent.action = INTENT_MARK_AS_READ_ACTION
         markAsReadIntent.putExtra(INTENT_NOTIF_ID, notifiable.notificationId)
         markAsReadIntent.putExtra(INTENT_LOCAL_IDENTITY, notifiable.localIdentity)

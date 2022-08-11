@@ -108,6 +108,7 @@ import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import im.vector.app.VectorApplication
 import im.vector.app.features.home.contact.HomeContactFragment
 import im.vector.app.features.home.event.ChooseGroupTypeEvent
 import im.vector.app.features.home.event.CreateGroupRoomEvent
@@ -117,6 +118,7 @@ import im.vector.app.features.spaces.SpaceListFragment
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
 import im.vector.app.kelare.network.event.GetThemesResponseEvent
+import im.vector.app.kelare.voip.VoiceCallActivity
 import java.util.Timer
 import java.util.TimerTask
 
@@ -980,6 +982,35 @@ class HomeActivity :
             dialerSession.themeListInfo = event.model!!.themes
             Timber.e("theme list info-------${dialerSession.themeListInfo}")
         }
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+
+        if (intent != null) handleIntentParams(intent)
+    }
+
+    private fun handleIntentParams(intent: Intent) {
+        when (intent.action) {
+            Intent.ACTION_MAIN -> {
+                val core = VectorApplication.coreContext.core
+                val call = core.currentCall ?: core.calls.firstOrNull()
+                if (call != null) {
+                    org.linphone.core.tools.Log.i("[Main Activity] Launcher clicked while there is at least one active call, go to CallActivity")
+                    val callIntent = Intent(this, VoiceCallActivity::class.java)
+                    callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivity(callIntent)
+                }
+            }
+            else -> {
+
+            }
+        }
+
+        // Prevent this intent to be processed again
+        intent.action = null
+        intent.data = null
+        intent.extras?.clear()
     }
 
 }
