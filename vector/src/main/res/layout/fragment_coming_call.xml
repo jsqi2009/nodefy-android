@@ -16,10 +16,14 @@
             type="im.vector.app.kelare.voip.viewmodels.ControlsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!--<androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_incoming_call_bg">
+        android:background="@drawable/shape_incoming_call_bg">-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextureView
             android:id="@+id/remote_video_surface"
@@ -42,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:text="@string/call_incoming_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +71,7 @@
             android:layout_marginTop="15dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:text="@{callsViewModel.currentCallData.contact.name ?? callsViewModel.currentCallData.displayName, default=`123456`}"
             app:layout_constraintBottom_toTopOf="@id/buttonLayout"

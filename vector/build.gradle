@@ -249,7 +249,8 @@ android {
 
             //make release open debug mode
             minifyEnabled false
-            debuggable false
+//            debuggable false
+            debuggable true
 
             /*postprocessing {
                 removeUnusedCode true
