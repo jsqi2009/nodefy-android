@@ -3285,5 +3285,8 @@
     <string name="missed_call_notification_body">Missed call from %s</string>
     <string name="missed_calls_notification_body" tools:ignore="PluralsCandidate">%d missed calls</string>
 
+    <!-- Dialer Contact -->
+    <string name="add_sip_contact_ext_example">example:&#060;ext&#062;@&#060;domain name or IP address&#062;</string>
+
 
 </resources>

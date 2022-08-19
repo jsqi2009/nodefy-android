@@ -2436,4 +2436,8 @@
     <!-- nodefy license  -->
     <string name="license_module_tip">"这个模块需要您自托管nodefy服务，了解更多请访问：https://nodefy.me"</string>
 
+
+    <!-- Dialer Contact -->
+    <string name="add_sip_contact_ext_example">例如:&#060;分机&#062;@&#060;域名或IP地址&#062;</string>
+
 </resources>

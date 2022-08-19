@@ -36,6 +36,8 @@ import im.vector.app.kelare.adapter.SipAccountAdapter
 import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.event.SetDefaultAccountEvent
+import im.vector.app.kelare.network.event.SetDefaultCallAccountEvent
+import im.vector.app.kelare.network.event.SetDefaultMessageAccountEvent
 import im.vector.app.kelare.network.models.DialerAccountInfo
 import java.lang.Math.max
 import kotlin.math.hypot
@@ -45,7 +47,8 @@ import kotlin.math.hypot
  *  date   : 2022/5/23 13:36
  *  desc   :
  */
-class SipAccountPopup(context: Context, private val mBus: AndroidBus, accountList: ArrayList<DialerAccountInfo>, private val isCall:Boolean, private val isVM:Boolean) : RelativePopupWindow(context),
+class SipAccountPopup(context: Context, private val mBus: AndroidBus, accountList: ArrayList<DialerAccountInfo>, private val isCall:Boolean,
+                      private val isVM:Boolean, private val isFromContactDetail: Boolean, private val isMessage: Boolean) : RelativePopupWindow(context),
         RecyclerItemClickListener {
 
 
@@ -96,7 +99,14 @@ class SipAccountPopup(context: Context, private val mBus: AndroidBus, accountLis
     }*/
 
     override fun onRecyclerViewItemClick(view: View, position: Int) {
-        mBus.post(SetDefaultAccountEvent(sipList[position], isCall, isVM))
+        //mBus.post(SetDefaultAccountEvent(sipList[position], isCall, isVM))
+        if (isFromContactDetail && isMessage) {
+            mBus.post(SetDefaultMessageAccountEvent(sipList[position], isFromContactDetail, isMessage))
+        } else if (isFromContactDetail && !isMessage) {
+            mBus.post(SetDefaultCallAccountEvent(sipList[position], isFromContactDetail, isMessage))
+        } else {
+            mBus.post(SetDefaultAccountEvent(sipList[position], isCall, isVM))
+        }
         dismiss()
 
     }

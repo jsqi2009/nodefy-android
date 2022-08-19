@@ -44,6 +44,8 @@ import im.vector.app.kelare.dialer.call.DialerCallActivity
 import im.vector.app.kelare.message.SendMessageActivity
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.SetDefaultAccountEvent
+import im.vector.app.kelare.network.event.SetDefaultCallAccountEvent
+import im.vector.app.kelare.network.event.SetDefaultMessageAccountEvent
 import im.vector.app.kelare.network.models.DialerAccountInfo
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.PhoneInfo
@@ -61,6 +63,7 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
     private var extAdapter: DialerPhoneAdapter? = null
     private var accountList:ArrayList<DialerAccountInfo> = ArrayList()
     private var selectedAccount:DialerAccountInfo = DialerAccountInfo()
+    private var defaultNumber:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +128,7 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
     private fun getRegisterSIPUser() {
         accountList.clear()
         dialerSession.accountListInfo!!.forEach {
-            if (it.type_value!!.lowercase(Locale.ROOT) == "sip" && it.enabled) {
+            if (it.type_value!!.lowercase(Locale.ROOT) == "sip" && it.enabled && it.extension.isConnected) {
                 accountList.add(it)
             }
         }
@@ -134,6 +137,7 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
     override fun onClick(view: View?) {
         when (view!!.id) {
             R.id.rl_back -> {
+                mBus.unregister(this)
                 finish()
             }
             R.id.tv_edit -> {
@@ -143,9 +147,11 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
                 if (core.accountList.isEmpty()) {
                     return
                 }
-                val intent = Intent(this, SendMessageActivity::class.java)
+                sendMessage()
+
+                /*val intent = Intent(this, SendMessageActivity::class.java)
                 intent.putExtra("remote_number", views.tvDefaultNumber.text.toString())
-                startActivity(intent)
+                startActivity(intent)*/
             }
             R.id.ll_call -> {
                 if (core.accountList.isNotEmpty()) {
@@ -165,20 +171,24 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
 
     private fun outgoingCall(){
         if (accountList.size > 0) {
-            if (accountList.size == 1) {
-                setDefaultAccount()
+            val filterList = checkDefaultDomain()
+            if (filterList!!.isEmpty()) {
+                return
+            }
+            if (filterList.size == 1) {
+                setDefaultAccount(filterList[0])
                 directlyToCall()
             } else {
-                val callPopupWindow = SipAccountPopup(this, mBus, accountList, true, false)
+                val callPopupWindow = SipAccountPopup(this, mBus, filterList, true, false, true, false)
                 callPopupWindow!!.showOnAnchor(views.llCall, RelativePopupWindow.VerticalPosition.ABOVE,
                         RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, true)
             }
         }
     }
 
-    private fun setDefaultAccount() {
-        val mAccount = accountList[0]
-        selectedAccount = accountList[0]
+    private fun setDefaultAccount(item: DialerAccountInfo) {
+        val mAccount = item
+        selectedAccount = item
         val list = core.accountList
         for (account in list) {
             val domain = account.findAuthInfo()!!.domain.toString()
@@ -208,7 +218,7 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
     }
 
     @Subscribe
-    fun onSetDefaultEvent(event: SetDefaultAccountEvent){
+    fun onSetDefaultCallEvent(event: SetDefaultCallAccountEvent){
         selectedAccount = event.item
         Timber.e("selected account--${selectedAccount.username}")
         val list = core.accountList
@@ -223,15 +233,34 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
         directlyToCall()
     }
 
+    @Subscribe
+    fun onSetDefaultMessageEvent(event: SetDefaultMessageAccountEvent){
+        selectedAccount = event.item
+        Timber.e("selected message account--${selectedAccount.username}")
+        val list = core.accountList
+        for (account in list) {
+            val domain = account.findAuthInfo()!!.domain.toString()
+            val username = account.findAuthInfo()!!.username
+            if (username == selectedAccount.username && domain == selectedAccount.domain) {
+                core.defaultAccount = account
+                break
+            }
+        }
+        directlyToMessage(event.item)
+    }
+
     private fun setDefaultNumber() {
         contactInfo.phone!!.forEach {
             if (it.isDefault!!) {
                 views.tvDefaultNumber.text = it.number
+                defaultNumber = it.number
             }
         }
         contactInfo.online_phone!!.forEach {
             if (it.isDefault!!) {
-                views.tvDefaultNumber.text = it.number
+                //views.tvDefaultNumber.text = it.number
+                views.tvDefaultNumber.text = it.number!!.split("@")[0]
+                defaultNumber = it.number
             }
         }
     }
@@ -271,7 +300,13 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
     fun onSelectedNumberEvent(event: SelectedNumberEvent) {
         if (event.index == 2) {
             val selectedValue = event.selectedNum
-            views.tvDefaultNumber.text = event.selectedNum
+            //views.tvDefaultNumber.text = event.selectedNum
+            defaultNumber = event.selectedNum
+            if (event.selectedNum.contains("@")) {
+                views.tvDefaultNumber.text = event.selectedNum.split("@")[0]
+            } else {
+                views.tvDefaultNumber.text = event.selectedNum
+            }
             Timber.e("selectedValue : ${event.selectedNum}")
             var flag = false
             contactInfo.phone!!.forEach {
@@ -302,10 +337,54 @@ class DialerContactDetailActivity : VectorBaseActivity<ActivityDialerContactDeta
 
     private fun updateContactInfo() {
 
-        HttpClient.updateDialerContact(this, contactInfo)
+        HttpClient.detailUpdateDialerContact(this, contactInfo)
     }
 
     override fun onRecyclerViewItemClick(view: View, position: Int) {
 
     }
+
+    private fun checkDefaultDomain(): ArrayList<DialerAccountInfo>? {
+        var filterAccountList:ArrayList<DialerAccountInfo> = ArrayList()
+
+        if (!defaultNumber!!.contains("@")) {
+            filterAccountList = accountList
+        } else {
+            filterAccountList.clear()
+            val defaultDomain = defaultNumber!!.split("@")[1]
+            accountList.forEach {
+                if (it.domain!!.trim().trimEnd() == defaultDomain.trimEnd().trim()) {
+                    filterAccountList.add(it)
+                }
+            }
+        }
+        return filterAccountList
+    }
+
+    private fun sendMessage(){
+        if (accountList.size > 0) {
+            val filterList = checkDefaultDomain()
+            if (filterList!!.isEmpty()) {
+                return
+            }
+            if (filterList.size == 1) {
+                setDefaultAccount(filterList[0])
+                directlyToMessage(filterList[0])
+            } else {
+                val callPopupWindow = SipAccountPopup(this, mBus, filterList, true, false, true, true)
+                callPopupWindow.showOnAnchor(views.llMessage, RelativePopupWindow.VerticalPosition.ABOVE,
+                        RelativePopupWindow.HorizontalPosition.ALIGN_LEFT, true)
+            }
+        }
+    }
+
+    private fun directlyToMessage(item: DialerAccountInfo) {
+        val intent = Intent(this, SendMessageActivity::class.java)
+        intent.putExtra("remote_number", views.tvDefaultNumber.text.toString())
+        intent.putExtra("selected_account", item)
+        startActivity(intent)
+    }
+
+
+
 }

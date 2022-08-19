@@ -17,6 +17,7 @@ import im.vector.app.kelare.network.event.SaveAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.SaveContactInfoResponseEvent
 import im.vector.app.kelare.network.event.UpdateAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.UpdateContactInfoResponseEvent
+import im.vector.app.kelare.network.event.UpdateDetailContactInfoResponseEvent
 import im.vector.app.kelare.network.response.LoginResponse
 import im.vector.app.kelare.network.models.DeleteAccountInfo
 import im.vector.app.kelare.network.models.DeleteDialerContact
@@ -34,6 +35,7 @@ import im.vector.app.kelare.network.response.SaveAccountInfoResponse
 import im.vector.app.kelare.network.response.SaveContactInfoResponse
 import im.vector.app.kelare.network.response.UpdateAccountInfoResponse
 import im.vector.app.kelare.network.response.UpdateContactInfoResponse
+import im.vector.app.kelare.network.response.UpdateDetailContactInfoResponse
 import im.vector.app.kelare.utils.APPUtil
 import im.vector.app.kelare.utils.UserAgentUtil
 import okhttp3.OkHttpClient
@@ -255,6 +257,15 @@ object HttpClient {
 
         val call = mHttpApi!!.updateDialerContact(getHeaders(context), info)
         dispatchClient!!.enqueue(call, UpdateContactInfoResponse::class.java, UpdateContactInfoResponseEvent::class.java)
+    }
+
+    /**
+     * update dialer contact
+     */
+    fun detailUpdateDialerContact(context: Context, info: DialerContactInfo) {
+
+        val call = mHttpApi!!.updateDialerContact(getHeaders(context), info)
+        dispatchClient!!.enqueue(call, UpdateDetailContactInfoResponse::class.java, UpdateDetailContactInfoResponseEvent::class.java)
     }
 
     /**

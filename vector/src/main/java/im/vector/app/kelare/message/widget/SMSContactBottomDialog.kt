@@ -81,6 +81,10 @@ class SMSContactBottomDialog(context: Context, private val mBus: AndroidBus, pri
         mAdapter = SelectDialerContactAdapter(context as Activity, this)
         recyclerView!!.adapter = mAdapter
 
+        contactList.forEach {
+            it.isSelected = false
+        }
+
         mAdapter!!.clearDataList()
         mAdapter!!.addDataList(contactList)
         mAdapter!!.notifyDataSetChanged()
@@ -103,7 +107,8 @@ class SMSContactBottomDialog(context: Context, private val mBus: AndroidBus, pri
 
                 item.online_phone!!.forEach {
                     if (it.isDefault!!) {
-                        numberList.add(it.number!!)
+                        //numberList.add(it.number!!)
+                        numberList.add(it.number!!.split("@")[0])
                     }
                 }
 

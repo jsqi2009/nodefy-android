@@ -72,6 +72,7 @@ class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), Vi
     private var accountList:ArrayList<DialerAccountInfo> = ArrayList()
     private var contactList: ArrayList<DialerContactInfo> = ArrayList()
     private var defaultSipAccount:DialerAccountInfo? = null
+    private var selectedAccount:DialerAccountInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +117,10 @@ class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), Vi
             views.tvDefaultAccount.text = sipRoom!!.localUserName
         }
 
+        if (intent.hasExtra("selected_account")) {
+            selectedAccount = intent.extras!!.get("selected_account") as DialerAccountInfo?
+        }
+
         views.rlBack.setOnClickListener(this)
         views.sendMessage.setOnClickListener(this)
         views.sendImage.setOnClickListener(this)
@@ -154,7 +159,9 @@ class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), Vi
                 receivedList()
             }
             R.id.iv_add   -> {
-                SMSContactBottomDialog(this, mBus, contactList).show(supportFragmentManager, "tag")
+                val filterList = filterContact()
+                SMSContactBottomDialog(this, mBus, filterList).show(supportFragmentManager, "tag")
+                //SMSContactBottomDialog(this, mBus, contactList).show(supportFragmentManager, "tag")
             }
             R.id.tv_default_account   -> {
                 if (!TextUtils.isEmpty(chatRoomID)) {
@@ -177,6 +184,7 @@ class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), Vi
         defaultSipAccount = event.item
         views.tvDefaultAccount.text = defaultSipAccount!!.username
         setDefaultAccount()
+        views.etUserContact.setText("")
     }
 
     @Subscribe
@@ -223,6 +231,10 @@ class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), Vi
         }
 
         try {
+            if (selectedAccount != null) {
+                defaultSipAccount = selectedAccount
+            }
+
             views.tvDefaultAccount.text = defaultSipAccount!!.username
             setDefaultAccount()
         } catch (e: Exception) {
@@ -479,4 +491,34 @@ class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), Vi
         super.onPause()
         core.removeListener(coreReceivedListener)
     }
+
+    private fun filterContact(): ArrayList<DialerContactInfo> {
+        val mList:ArrayList<DialerContactInfo> = ArrayList()
+        if (defaultSipAccount != null) {
+            val targetDomain = defaultSipAccount!!.domain!!.trim()
+            contactList.forEach { item ->
+                var flag = false
+                item.phone!!.forEach {
+                    if (it.isDefault!!) {
+                        flag = true
+                    }
+                }
+
+                if (!flag) {
+                    item.online_phone!!.forEach {
+                        if (it.isDefault!! && (it.number!!.split("@")[1].trim() == targetDomain)) {
+                            flag = true
+                        }
+                    }
+                    if (flag) {
+                        mList.add(item)
+                    }
+                } else {
+                    mList.add(item)
+                }
+            }
+        }
+        return mList
+    }
+
 }

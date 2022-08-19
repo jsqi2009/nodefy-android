@@ -43,7 +43,7 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:inputType="phone"
+            android:inputType="text"
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="start|center_vertical"

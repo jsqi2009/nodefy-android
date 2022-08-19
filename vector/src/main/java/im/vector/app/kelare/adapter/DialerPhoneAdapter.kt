@@ -44,7 +44,13 @@ class DialerPhoneAdapter(private val mContext: Activity, private val mOnItemClic
         val holder = holder as ViewHolder
         val info = getDataList()!![position]
 
-        holder.tvUsername.text = info.number
+        //holder.tvUsername.text = info.number
+        if (info.number!!.contains("@")) {
+            holder.tvUsername.text = info.number!!.split("@")[0]
+        } else {
+            holder.tvUsername.text = info.number
+        }
+
 
         if (position == 0) {
             holder.lineView.visibility = View.GONE

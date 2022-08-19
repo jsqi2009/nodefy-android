@@ -183,7 +183,8 @@ class AddSIPContactDialog(val mContext: Context, private val mBus: AndroidBus, v
         }
         contactInfo.online_phone!!.forEach {
             if (it.isDefault!!) {
-                tvDefaultNum!!.text = it.number
+                //tvDefaultNum!!.text = it.number
+                tvDefaultNum!!.text = it.number!!.split("@")[0]
                 defaultNumber = it.number
                 mNumber = it.number
             }
@@ -429,7 +430,12 @@ class AddSIPContactDialog(val mContext: Context, private val mBus: AndroidBus, v
             }
 
             defaultNumber = event.selectedNum
-            tvDefaultNum!!.text = event.selectedNum
+            //tvDefaultNum!!.text = event.selectedNum
+            if (event.selectedNum.contains("@")) {
+                tvDefaultNum!!.text = event.selectedNum.split("@")[0]
+            } else {
+                tvDefaultNum!!.text = event.selectedNum
+            }
         }
     }
 

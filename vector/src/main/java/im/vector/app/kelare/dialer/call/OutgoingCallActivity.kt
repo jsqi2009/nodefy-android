@@ -120,7 +120,7 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
                 directlyToCall(false)
 //                outgoingCall()
             } else {
-                val callPopupWindow = SipAccountPopup(this, mBus, accountList, true, false)
+                val callPopupWindow = SipAccountPopup(this, mBus, accountList, true, false, false, false)
                 callPopupWindow!!.showOnAnchor(views.ivSwitchAccount, RelativePopupWindow.VerticalPosition.BELOW,
                         RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, true)
             }
@@ -135,7 +135,7 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
                     directlyToCall(true)
                 }
             } else {
-                val callPopupWindow = SipAccountPopup(this, mBus, accountList, true, true)
+                val callPopupWindow = SipAccountPopup(this, mBus, accountList, true, true, false, false)
                 callPopupWindow!!.showOnAnchor(views.ivSwitchAccount, RelativePopupWindow.VerticalPosition.BELOW,
                         RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, true)
             }
@@ -287,7 +287,7 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
                 hangUp()
             }
             R.id.iv_switch_account-> {
-                val mPopupWindow = SipAccountPopup(this, mBus, accountList, false, false)
+                val mPopupWindow = SipAccountPopup(this, mBus, accountList, false, false, false, false)
                 mPopupWindow!!.showOnAnchor(views.ivSwitchAccount, RelativePopupWindow.VerticalPosition.BELOW,
                         RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, true)
             }
