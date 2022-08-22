@@ -53,7 +53,7 @@ class AccountContactAdapter(val mContext: Context, data: ArrayList<AccountContac
 
         holder.setText(R.id.tv_username, item.displayname)
 
-        AvatarRendererUtil.render(mContext, item, holder.getView<ImageView>(R.id.contactAvatar))
+        AvatarRendererUtil.render(mContext, item, holder.getView(R.id.contactAvatarImageView))
     }
 
 }
