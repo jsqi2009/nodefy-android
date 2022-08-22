@@ -19,6 +19,8 @@ package im.vector.app.features.accountcontact
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,6 +54,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
 
     private var contactList: ArrayList<AccountContactInfo> = ArrayList()
     private lateinit var mAdapter: AccountContactAdapter
+    private var terms = ""
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?) =
             FragmentHomeContactBinding.inflate(inflater, container, false)
@@ -67,9 +70,14 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecycler()
-
+        initView()
         getContacts()
+    }
+
+    private fun initView() {
+        views.searchText.addTextChangedListener(textWatcher)
+
+        initRecycler()
     }
 
     private fun getContacts() {
@@ -103,5 +111,36 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             startActivity(intent)
         }
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateList() {
+        val filterList: ArrayList<AccountContactInfo> = ArrayList()
+        contactList.forEach {
+            if (it.displayname!!.contains(terms)) {
+                filterList.add(it)
+            }
+        }
+
+        mAdapter.data.clear()
+        mAdapter.data.addAll(filterList)
+        mAdapter.notifyDataSetChanged()
+    }
+
+    private val textWatcher: TextWatcher =  object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            terms = s.toString()
+            if (s.toString().isEmpty()) {
+                terms = ""
+            }
+            updateList()
+        }
+        override fun afterTextChanged(s: Editable?) {
+        }
+    }
+
+
 
 }

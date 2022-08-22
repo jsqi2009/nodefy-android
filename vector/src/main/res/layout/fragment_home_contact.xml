@@ -40,6 +40,7 @@
                 android:layout_marginHorizontal="@dimen/margin_8"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_home_search"/>
+
             <EditText
                 android:id="@+id/searchText"
                 android:layout_width="match_parent"
