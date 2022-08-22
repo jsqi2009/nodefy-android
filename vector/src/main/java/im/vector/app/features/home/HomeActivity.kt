@@ -109,7 +109,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import im.vector.app.VectorApplication
-import im.vector.app.features.home.contact.HomeContactFragment
+import im.vector.app.features.accountcontact.HomeContactFragment
 import im.vector.app.features.home.event.ChooseGroupTypeEvent
 import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.event.ToSpaceDetailsEvent

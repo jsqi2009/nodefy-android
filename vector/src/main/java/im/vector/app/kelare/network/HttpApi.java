@@ -109,4 +109,7 @@ public interface HttpApi {
     @GET("_synapse/admin/v2/themes")
     Call<JsonObject> getThemes();
 
+    @GET("_matrix/client/r0/account/account_contacts")
+    Call<JsonObject> getAccountContact(@HeaderMap Map<String, String> headerMap);
+
 }

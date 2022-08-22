@@ -9,6 +9,7 @@ import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.event.DeleteAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactResponseEvent
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
+import im.vector.app.kelare.network.event.GetAccountContactResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
@@ -27,6 +28,7 @@ import im.vector.app.kelare.network.models.UpdateAccountInfo
 import im.vector.app.kelare.network.response.DeleteAccountInfoResponse
 import im.vector.app.kelare.network.response.DeleteContactResponse
 import im.vector.app.kelare.network.response.DialerAccountInfoResponse
+import im.vector.app.kelare.network.response.GetAccountContactResponse
 import im.vector.app.kelare.network.response.GetContactResponse
 import im.vector.app.kelare.network.response.GetLicenseResponse
 import im.vector.app.kelare.network.response.GetPublicRoomResponse
@@ -301,6 +303,13 @@ object HttpClient {
         dispatchClient!!.enqueue(call, GetThemesResponse::class.java, GetThemesResponseEvent::class.java)
     }
 
+    /**
+     * get Account Contact
+     */
+    fun getAccountContact(context: Context) {
+        val call = mHttpApi!!.getAccountContact(getHeaders(context))
+        dispatchClient!!.enqueue(call, GetAccountContactResponse::class.java, GetAccountContactResponseEvent::class.java)
+    }
 
 
 }

@@ -78,7 +78,9 @@
         android:taskAffinity="${applicationId}.${appTaskAffinitySuffix}"
         android:theme="@style/Theme.Vector.Light"
         tools:replace="android:allowBackup">
-
+        <activity
+            android:name=".features.accountcontact.AccountContactDetailActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="android.max_aspect"
@@ -110,29 +112,31 @@
             -->
         </activity-alias>
 
-        <activity android:name=".features.home.HomeActivity"
+        <activity
+            android:name=".features.home.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/*" />
                 <data android:mimeType="image/*" />
                 <data android:mimeType="audio/*" />
                 <data android:mimeType="video/*" />
                 <data android:mimeType="application/*" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
                 <data android:mimeType="audio/*" />
                 <data android:mimeType="video/*" />
                 <data android:mimeType="application/*" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW_LOCUS" />
             </intent-filter>
@@ -167,7 +171,6 @@
                     android:host="connect"
                     android:scheme="element" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".features.login.LoginActivity"
@@ -417,7 +420,6 @@
         <activity
             android:name=".kelare.dialer.call.OutgoingCallActivity"
             android:exported="false" /> <!-- No limit for screen ratio: avoid black strips -->
-
         <activity
             android:name=".kelare.voip.VoiceCallActivity"
             android:exported="false"
@@ -426,7 +428,7 @@
             android:showWhenLocked="true"
             android:supportsPictureInPicture="true"
             android:theme="@style/Launcher"
-            android:turnScreenOn="true"/>
+            android:turnScreenOn="true" />
 
         <service
             android:name=".core.services.CallService"
@@ -534,14 +536,16 @@
             android:foregroundServiceType="phoneCall|camera|microphone"
             android:label="@string/app_name"
             android:stopWithTask="false" />
-        <!--<service
+        <!--
+<service
             android:name="org.linphone.core.tools.firebase.FirebaseMessaging"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>-->
+        </service>
+        -->
         <service
             android:name=".kelare.telecom.TelecomConnectionService"
             android:exported="true"
@@ -563,7 +567,6 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

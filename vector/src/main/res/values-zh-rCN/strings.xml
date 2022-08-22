@@ -2440,4 +2440,9 @@
     <!-- Dialer Contact -->
     <string name="add_sip_contact_ext_example">例如:&#060;分机&#062;@&#060;域名或IP地址&#062;</string>
 
+
+    <!-- nodefy account contact -->
+    <string name="account_contact_title">联系人</string>
+    <string name="account_contact_search_hint">搜索联系人</string>
+
 </resources>
