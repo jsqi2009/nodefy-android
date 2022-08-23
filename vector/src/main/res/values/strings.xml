@@ -3291,6 +3291,20 @@
     <!-- nodefy account contact -->
     <string name="account_contact_title">Contact</string>
     <string name="account_contact_search_hint">Search contact</string>
+    <string name="account_contact_edit">Edit</string>
+    <string name="account_contact_message">Message</string>
+    <string name="account_contact_call">Call</string>
+    <string name="account_contact_sip">SIP</string>
+    <string name="account_contact_xmpp">XMPP</string>
+    <string name="account_contact_skype">SKYPE</string>
+    <string name="account_contact_slack">SLACK</string>
+    <string name="account_contact_telegram">TELEGRAM</string>
+    <string name="account_contact_whatsapp">WHATSAPP</string>
+    <string name="account_contact_associate">Associate</string>
+    <string name="account_contact_default_channel">DEFAULT COMMUNICATION CHANNEL</string>
+    <string name="account_contact_default_channel_set">Set</string>
+    <string name="account_contact_sheet_cancel">Cancel</string>
+    <string name="account_contact_sheet_account_to_admin">account to admin</string>
 
 
 </resources>

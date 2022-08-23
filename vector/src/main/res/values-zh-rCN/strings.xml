@@ -2444,5 +2444,19 @@
     <!-- nodefy account contact -->
     <string name="account_contact_title">联系人</string>
     <string name="account_contact_search_hint">搜索联系人</string>
+    <string name="account_contact_edit">编辑</string>
+    <string name="account_contact_message">消息</string>
+    <string name="account_contact_call">电话</string>
+    <string name="account_contact_sip">SIP</string>
+    <string name="account_contact_xmpp">XMPP</string>
+    <string name="account_contact_skype">SKYPE</string>
+    <string name="account_contact_slack">SLACK</string>
+    <string name="account_contact_telegram">TELEGRAM</string>
+    <string name="account_contact_whatsapp">WHATSAPP</string>
+    <string name="account_contact_associate">关联</string>
+    <string name="account_contact_default_channel">默认沟通渠道</string>
+    <string name="account_contact_default_channel_set">设置</string>
+    <string name="account_contact_sheet_cancel">取消</string>
+    <string name="account_contact_sheet_account_to_admin">账号为admin</string>
 
 </resources>
