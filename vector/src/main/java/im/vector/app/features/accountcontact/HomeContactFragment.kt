@@ -21,36 +21,30 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.otto.Subscribe
-import im.vector.app.AppStateHandler
-import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseFragment
-import im.vector.app.core.resources.ColorProvider
-import im.vector.app.databinding.FragmentDialerBinding
 import im.vector.app.databinding.FragmentHomeContactBinding
-import im.vector.app.features.accountcontact.util.AvatarRendererUtil
-import im.vector.app.features.call.webrtc.WebRtcCallManager
-import im.vector.app.features.home.AvatarRenderer
-import im.vector.app.features.popup.PopupAlertManager
-import im.vector.app.features.settings.VectorPreferences
+import im.vector.app.features.home.HomeActivity
 import im.vector.app.kelare.adapter.AccountContactAdapter
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.GetAccountContactResponseEvent
+import im.vector.app.kelare.network.event.PresenceStatusResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
-import org.matrix.android.sdk.api.session.Session
-import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+private const val onlineStatus  = "online"
+private const val nodefyType  = "nodefy"
+
 class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), View.OnClickListener {
     private var param1: String? = null
     private var param2: String? = null
+
 
     private var contactList: ArrayList<AccountContactInfo> = ArrayList()
     private lateinit var mAdapter: AccountContactAdapter
@@ -95,7 +89,31 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             mAdapter.data.clear()
             mAdapter.data.addAll(contactList)
             mAdapter.notifyDataSetChanged()
+
+            //check presence status
+            checkStatus()
         }
+    }
+
+    private fun checkStatus() {
+        contactList.forEach {
+            if (it.contacts_type == nodefyType) {
+                HttpClient.getPresenceStatus(this@HomeContactFragment.vectorBaseActivity, it.contacts_id!!)
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Subscribe
+    fun onPresenceStatusEvent(event:PresenceStatusResponseEvent) {
+        if (event.isSuccess) {
+            contactList.forEach {
+                if (event.model!!.flag == it.contacts_id) {
+                    it.isOnline = event.model!!.presence == onlineStatus
+                }
+            }
+        }
+        mAdapter.notifyDataSetChanged()
     }
 
     override fun onClick(v: View?) {

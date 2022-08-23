@@ -18,6 +18,7 @@ package im.vector.app.kelare.adapter
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.view.View
 import android.widget.ImageView
 import com.amulyakhare.textdrawable.TextDrawable
 import com.avatarfirst.avatargenlib.AvatarGenerator
@@ -54,6 +55,14 @@ class AccountContactAdapter(val mContext: Context, data: ArrayList<AccountContac
         holder.setText(R.id.tv_username, item.displayname)
 
         AvatarRendererUtil.render(mContext, item, holder.getView(R.id.contactAvatarImageView))
+
+        if (item.isOnline) {
+            holder.getView<ImageView>(R.id.onlineStatus).visibility = View.VISIBLE
+            holder.getView<ImageView>(R.id.offlineStatus).visibility = View.GONE
+        } else {
+            holder.getView<ImageView>(R.id.onlineStatus).visibility = View.GONE
+            holder.getView<ImageView>(R.id.offlineStatus).visibility = View.VISIBLE
+        }
     }
 
 }

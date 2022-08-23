@@ -9,6 +9,7 @@ import im.vector.app.kelare.network.models.UpdateAccountInfo;
 
 import java.util.Map;
 
+import im.vector.app.kelare.network.models.UpdateContactRelationInfo;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -111,5 +112,14 @@ public interface HttpApi {
 
     @GET("_matrix/client/r0/account/account_contacts")
     Call<JsonObject> getAccountContact(@HeaderMap Map<String, String> headerMap);
+
+    @GET("_matrix/client/r0/presence/{key}/status")
+    Call<JsonObject> getPresenceStatus(@HeaderMap Map<String, String> headerMap, @Path("key") String key);
+
+    @GET("_matrix/client/r0/relations")
+    Call<JsonObject> getContactRelations(@HeaderMap Map<String, String> headerMap, @QueryMap Map<String, Object> map);
+
+    @PUT("_matrix/client/r0/relations")
+    Call<JsonObject> updateContactRelation(@HeaderMap Map<String, String> headerMap, @Body UpdateContactRelationInfo info);
 
 }

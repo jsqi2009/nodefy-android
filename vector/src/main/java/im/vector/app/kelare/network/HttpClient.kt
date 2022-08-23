@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import im.vector.app.kelare.network.event.LoginResponseEvent
 import im.vector.app.kelare.content.AndroidBus
-import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.event.DeleteAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactResponseEvent
@@ -12,6 +11,7 @@ import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.GetAccountContactResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
+import im.vector.app.kelare.network.event.PresenceStatusResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
 import im.vector.app.kelare.network.event.GetThemesResponseEvent
 import im.vector.app.kelare.network.event.SaveAccountInfoResponseEvent
@@ -25,6 +25,7 @@ import im.vector.app.kelare.network.models.DeleteDialerContact
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.SaveAccountInfo
 import im.vector.app.kelare.network.models.UpdateAccountInfo
+import im.vector.app.kelare.network.models.UpdateContactRelationInfo
 import im.vector.app.kelare.network.response.DeleteAccountInfoResponse
 import im.vector.app.kelare.network.response.DeleteContactResponse
 import im.vector.app.kelare.network.response.DialerAccountInfoResponse
@@ -33,12 +34,12 @@ import im.vector.app.kelare.network.response.GetContactResponse
 import im.vector.app.kelare.network.response.GetLicenseResponse
 import im.vector.app.kelare.network.response.GetPublicRoomResponse
 import im.vector.app.kelare.network.response.GetThemesResponse
+import im.vector.app.kelare.network.response.PresenceStatusResponse
 import im.vector.app.kelare.network.response.SaveAccountInfoResponse
 import im.vector.app.kelare.network.response.SaveContactInfoResponse
 import im.vector.app.kelare.network.response.UpdateAccountInfoResponse
 import im.vector.app.kelare.network.response.UpdateContactInfoResponse
 import im.vector.app.kelare.network.response.UpdateDetailContactInfoResponse
-import im.vector.app.kelare.utils.APPUtil
 import im.vector.app.kelare.utils.UserAgentUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -309,6 +310,35 @@ object HttpClient {
     fun getAccountContact(context: Context) {
         val call = mHttpApi!!.getAccountContact(getHeaders(context))
         dispatchClient!!.enqueue(call, GetAccountContactResponse::class.java, GetAccountContactResponseEvent::class.java)
+    }
+
+    /**
+     * get presence status
+     */
+    fun getPresenceStatus(context: Context, userID: String) {
+        val call = mHttpApi!!.getPresenceStatus(getHeaders(context), userID)
+        dispatchClient!!.enqueue(call, PresenceStatusResponse::class.java, PresenceStatusResponseEvent::class.java, userID)
+    }
+
+    /**
+     * get Contact Relations
+     */
+    fun getContactRelations(context: Context, contactID: String) {
+
+        val formMap: HashMap<String, Any> = HashMap<String, Any>()
+        formMap.put("primary_user_id",contactID)
+
+        val call = mHttpApi!!.getContactRelations(getHeaders(context), formMap)
+        dispatchClient!!.enqueue(call, GetContactResponse::class.java, GetContactResponseEvent::class.java)
+    }
+
+    /**
+     * update Contact Relations
+     */
+    fun updateContactRelations(context: Context, relationInfo: UpdateContactRelationInfo) {
+
+        val call = mHttpApi!!.updateContactRelation(getHeaders(context), relationInfo)
+        dispatchClient!!.enqueue(call, GetContactResponse::class.java, GetContactResponseEvent::class.java)
     }
 
 

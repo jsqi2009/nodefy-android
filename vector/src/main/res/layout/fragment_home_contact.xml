@@ -62,6 +62,7 @@
         android:id="@+id/contactListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginVertical="@dimen/margin_10"
         android:layout_marginHorizontal="@dimen/margin_16" />
 
 </LinearLayout>
