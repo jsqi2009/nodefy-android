@@ -5,10 +5,13 @@ import android.content.Context
 import im.vector.app.kelare.network.event.LoginResponseEvent
 import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.DialerSession
+import im.vector.app.kelare.network.event.DefaultContactRelationResponseEvent
 import im.vector.app.kelare.network.event.DeleteAccountInfoResponseEvent
+import im.vector.app.kelare.network.event.DeleteContactRelationResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactResponseEvent
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.GetAccountContactResponseEvent
+import im.vector.app.kelare.network.event.GetContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.PresenceStatusResponseEvent
@@ -18,7 +21,9 @@ import im.vector.app.kelare.network.event.SaveAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.SaveContactInfoResponseEvent
 import im.vector.app.kelare.network.event.UpdateAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.UpdateContactInfoResponseEvent
+import im.vector.app.kelare.network.event.UpdateContactRelationResponseEvent
 import im.vector.app.kelare.network.event.UpdateDetailContactInfoResponseEvent
+import im.vector.app.kelare.network.models.DefaultContactRelationInfo
 import im.vector.app.kelare.network.response.LoginResponse
 import im.vector.app.kelare.network.models.DeleteAccountInfo
 import im.vector.app.kelare.network.models.DeleteDialerContact
@@ -26,10 +31,13 @@ import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.SaveAccountInfo
 import im.vector.app.kelare.network.models.UpdateAccountInfo
 import im.vector.app.kelare.network.models.UpdateContactRelationInfo
+import im.vector.app.kelare.network.response.DefaultContactRelationResponse
 import im.vector.app.kelare.network.response.DeleteAccountInfoResponse
+import im.vector.app.kelare.network.response.DeleteContactRelationResponse
 import im.vector.app.kelare.network.response.DeleteContactResponse
 import im.vector.app.kelare.network.response.DialerAccountInfoResponse
 import im.vector.app.kelare.network.response.GetAccountContactResponse
+import im.vector.app.kelare.network.response.GetContactRelationResponse
 import im.vector.app.kelare.network.response.GetContactResponse
 import im.vector.app.kelare.network.response.GetLicenseResponse
 import im.vector.app.kelare.network.response.GetPublicRoomResponse
@@ -39,6 +47,7 @@ import im.vector.app.kelare.network.response.SaveAccountInfoResponse
 import im.vector.app.kelare.network.response.SaveContactInfoResponse
 import im.vector.app.kelare.network.response.UpdateAccountInfoResponse
 import im.vector.app.kelare.network.response.UpdateContactInfoResponse
+import im.vector.app.kelare.network.response.UpdateContactRelationResponse
 import im.vector.app.kelare.network.response.UpdateDetailContactInfoResponse
 import im.vector.app.kelare.utils.UserAgentUtil
 import okhttp3.OkHttpClient
@@ -329,16 +338,34 @@ object HttpClient {
         formMap.put("primary_user_id",contactID)
 
         val call = mHttpApi!!.getContactRelations(getHeaders(context), formMap)
-        dispatchClient!!.enqueue(call, GetContactResponse::class.java, GetContactResponseEvent::class.java)
+        dispatchClient!!.enqueue(call, GetContactRelationResponse::class.java, GetContactRelationResponseEvent::class.java)
     }
 
     /**
-     * update Contact Relations
+     * set default Contact communication channel
      */
-    fun updateContactRelations(context: Context, relationInfo: UpdateContactRelationInfo) {
+    fun setContactDefaultChannel(context: Context, relationInfo: DefaultContactRelationInfo) {
 
-        val call = mHttpApi!!.updateContactRelation(getHeaders(context), relationInfo)
-        dispatchClient!!.enqueue(call, GetContactResponse::class.java, GetContactResponseEvent::class.java)
+        val call = mHttpApi!!.setContactDefaultChannel(getHeaders(context), relationInfo)
+        dispatchClient!!.enqueue(call, DefaultContactRelationResponse::class.java, DefaultContactRelationResponseEvent::class.java)
+    }
+
+    /**
+     * update Contact Relation
+     */
+    fun updateContactRelation(context: Context, relationInfo: UpdateContactRelationInfo) {
+
+        val call = mHttpApi!!.updateContactRelations(getHeaders(context), relationInfo)
+        dispatchClient!!.enqueue(call, UpdateContactRelationResponse::class.java, UpdateContactRelationResponseEvent::class.java)
+    }
+
+    /**
+     * delete Contact Relation
+     */
+    fun deleteContactRelation(context: Context, relationInfo: UpdateContactRelationInfo) {
+
+        val call = mHttpApi!!.deleteContactRelation(getHeaders(context), relationInfo)
+        dispatchClient!!.enqueue(call, DeleteContactRelationResponse::class.java, DeleteContactRelationResponseEvent::class.java)
     }
 
 

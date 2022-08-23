@@ -20,18 +20,13 @@ import java.io.Serializable
 
 /**
  * author : Jason
+ *  date   : 2022/8/23 16:26
  *  desc   :
  */
-class UpdateContactRelationInfo : Serializable {
-
-    var primary_user_id: String? = null
-    var children_users: ArrayList<ChildrenUserInfo> = ArrayList()
-}
-
-class ChildrenUserInfo:Serializable {
+class ContactRelationInfo: Serializable {
 
     var user_id: String? = null
+    var parent_user_id: String? = null
     var account_type: String? = null
-    var is_main: Boolean = false
-
+    var is_main: Boolean? = false
 }

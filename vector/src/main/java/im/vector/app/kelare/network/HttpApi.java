@@ -1,6 +1,8 @@
 package im.vector.app.kelare.network;
 
 import com.google.gson.JsonObject;
+
+import im.vector.app.kelare.network.models.DefaultContactRelationInfo;
 import im.vector.app.kelare.network.models.DeleteAccountInfo;
 import im.vector.app.kelare.network.models.DeleteDialerContact;
 import im.vector.app.kelare.network.models.DialerContactInfo;
@@ -119,7 +121,13 @@ public interface HttpApi {
     @GET("_matrix/client/r0/relations")
     Call<JsonObject> getContactRelations(@HeaderMap Map<String, String> headerMap, @QueryMap Map<String, Object> map);
 
+    @POST("_matrix/client/r0/relations")
+    Call<JsonObject> updateContactRelations(@HeaderMap Map<String, String> headerMap, @Body UpdateContactRelationInfo info);
+
     @PUT("_matrix/client/r0/relations")
-    Call<JsonObject> updateContactRelation(@HeaderMap Map<String, String> headerMap, @Body UpdateContactRelationInfo info);
+    Call<JsonObject> setContactDefaultChannel(@HeaderMap Map<String, String> headerMap, @Body DefaultContactRelationInfo info);
+
+    @HTTP(method = "DELETE", path = "_matrix/client/r0/relations", hasBody = true)
+    Call<JsonObject> deleteContactRelation(@HeaderMap Map<String, String> headerMap, @Body UpdateContactRelationInfo info);
 
 }
