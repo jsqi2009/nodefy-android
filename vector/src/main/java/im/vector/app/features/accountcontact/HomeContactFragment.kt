@@ -204,7 +204,6 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getXmppContact() {
-        contactList.clear()
         if (mConnectionList.isNotEmpty()) {
             Timber.e("mConnectionList size: ${mConnectionList.size}")
             for (connection in mConnectionList) {
@@ -249,7 +248,10 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
 
     override fun onPause() {
         super.onPause()
-        mBus.unregister(this)
+        try {
+            mBus.unregister(this)
+        } catch (e: Exception) {
+        }
     }
 
 
