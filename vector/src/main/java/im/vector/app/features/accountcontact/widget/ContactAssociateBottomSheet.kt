@@ -16,20 +16,28 @@
 
 package im.vector.app.features.accountcontact.widget
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.airbnb.mvrx.args
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import com.squareup.otto.Subscribe
 import dagger.hilt.android.AndroidEntryPoint
+import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseBottomSheetDialogFragment
 import im.vector.app.databinding.BottomSheetContactAssociateBinding
-import im.vector.app.databinding.BottomSheetSpaceInviteChooserBinding
-import im.vector.app.features.spaces.SpaceBottomSheetSettingsArgs
-import im.vector.app.features.spaces.SpaceSettingsMenuBottomSheet
+import im.vector.app.kelare.adapter.AssociateContactAdapter
+import im.vector.app.kelare.network.HttpClient
+import im.vector.app.kelare.network.event.GetContactResponseEvent
+import im.vector.app.kelare.network.models.AccountContactInfo
 import kotlinx.parcelize.Parcelize
+import timber.log.Timber
 
 @Parcelize
 data class ContactAssociateBottomSheetArgs(
@@ -37,7 +45,7 @@ data class ContactAssociateBottomSheetArgs(
 ) : Parcelable
 
 @AndroidEntryPoint
-class ContactAssociateBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSheetContactAssociateBinding>() {
+class ContactAssociateBottomSheet (val type: String,val currentUserID: String, val mListener: InteractionListener) : VectorBaseBottomSheetDialogFragment<BottomSheetContactAssociateBinding>(), OnItemChildClickListener {
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): BottomSheetContactAssociateBinding {
         return BottomSheetContactAssociateBinding.inflate(inflater, container, false)
@@ -47,20 +55,71 @@ class ContactAssociateBottomSheet : VectorBaseBottomSheetDialogFragment<BottomSh
         fun onRefreshRelations()
     }
 
-    var interactionListener: InteractionListener? = null
+    private var interactionListener: InteractionListener? = null
+    private lateinit var mAdapter: AssociateContactAdapter
+    private var contactList: ArrayList<AccountContactInfo> = ArrayList()
 
-    private val associateArgs: ContactAssociateBottomSheetArgs by args()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        this.interactionListener = mListener
+
+        initRecycler()
+
+        getSipContact()
     }
 
-    companion object {
-        fun newInstance(type: String, interactionListener: InteractionListener): ContactAssociateBottomSheet {
-            return ContactAssociateBottomSheet().apply {
-                this.interactionListener = interactionListener
-                setArguments(ContactAssociateBottomSheetArgs(type))
+    private fun initRecycler() {
+        mAdapter = AssociateContactAdapter(requireActivity(), arrayListOf())
+        views.associateList.layoutManager = LinearLayoutManager(context)
+        views.associateList.adapter = mAdapter
+
+        mAdapter.addChildClickViewIds(R.id.associateView)
+        mAdapter.setOnItemChildClickListener(this)
+
+    }
+
+    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        val info = mAdapter.getItem(position)
+        when (view.id) {
+            R.id.associateView    -> {
+                Timber.e("clicked the associate")
             }
+            else -> {}
         }
     }
+
+    private fun getSipContact() {
+
+        HttpClient.getDialerContact(requireActivity(), currentUserID)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Subscribe
+    fun onGetContactEvent(event: GetContactResponseEvent) {
+        if (event.isSuccess) {
+            contactList.clear()
+            Timber.e("info: ${event.model!!.data}")
+
+            val sipList = event.model!!.data
+            sipList.forEach {
+                val contactInfo: AccountContactInfo = AccountContactInfo()
+                contactInfo.contacts_id = it.id
+                contactInfo.contacts_type = "sip"
+                contactInfo.displayname = it.first_name
+                contactInfo.avatar_url = ""
+                contactInfo.isOnline = false
+
+                contactList.add(contactInfo)
+            }
+
+            mAdapter.data.clear()
+            mAdapter.data.addAll(contactList)
+            mAdapter.notifyDataSetChanged()
+        }
+    }
+
+
+
 }

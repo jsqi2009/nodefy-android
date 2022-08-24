@@ -56,13 +56,6 @@ class AssociateContactAdapter(val mContext: Context, data: ArrayList<AccountCont
 
         AvatarRendererUtil.render(mContext, item, holder.getView(R.id.contactAvatarImageView))
 
-        if (item.isOnline) {
-            holder.getView<ImageView>(R.id.onlineStatus).visibility = View.VISIBLE
-            holder.getView<ImageView>(R.id.offlineStatus).visibility = View.GONE
-        } else {
-            holder.getView<ImageView>(R.id.onlineStatus).visibility = View.GONE
-            holder.getView<ImageView>(R.id.offlineStatus).visibility = View.VISIBLE
-        }
     }
 
 }

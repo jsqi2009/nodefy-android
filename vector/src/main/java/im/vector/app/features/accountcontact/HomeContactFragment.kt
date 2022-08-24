@@ -25,15 +25,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.squareup.otto.Subscribe
+import im.vector.app.R
+import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.databinding.FragmentHomeContactBinding
 import im.vector.app.features.home.HomeActivity
 import im.vector.app.kelare.adapter.AccountContactAdapter
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.GetAccountContactResponseEvent
+import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.PresenceStatusResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
+import im.vector.app.kelare.network.models.DialerAccountInfo
+import im.vector.app.kelare.network.models.DialerContactInfo
+import im.vector.app.kelare.network.models.XmppContact
+import org.jivesoftware.smack.roster.Roster
+import org.matrix.android.sdk.api.session.Session
+import timber.log.Timber
+import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -45,10 +56,11 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     private var param1: String? = null
     private var param2: String? = null
 
-
     private var contactList: ArrayList<AccountContactInfo> = ArrayList()
     private lateinit var mAdapter: AccountContactAdapter
     private var terms = ""
+    private var sipContactList:ArrayList<DialerContactInfo> = ArrayList()
+    private var xmppContactList: ArrayList<XmppContact> = ArrayList()
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?) =
             FragmentHomeContactBinding.inflate(inflater, container, false)
@@ -76,22 +88,20 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
 
     private fun getContacts() {
         showLoadingDialog()
-        HttpClient.getAccountContact(requireActivity())
+        HttpClient.getAccountContact(this@HomeContactFragment.vectorBaseActivity)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Subscribe
     fun onContactEvent(event: GetAccountContactResponseEvent) {
         hideLoadingDialog()
+        contactList.clear()
         if (event.isSuccess) {
-            contactList = event.model!!.data
+            val mList = event.model!!.data
+            contactList.addAll(mList)
 
-            mAdapter.data.clear()
-            mAdapter.data.addAll(contactList)
-            mAdapter.notifyDataSetChanged()
-
-            //check presence status
-            checkStatus()
+            getXmppContact()
+            getSipContact()
         }
     }
 
@@ -159,6 +169,88 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
         }
     }
 
+    private fun getSipContact() {
+
+        //showLoadingDialog()
+        HttpClient.getDialerContact(this@HomeContactFragment.vectorBaseActivity, dialerSession.userID)
+    }
+
+    @Subscribe
+    fun onGetContactEvent(event: GetContactResponseEvent) {
+        //hideLoadingDialog()
+        if (event.isSuccess) {
+            Timber.e("info: ${event.model!!.data}")
+            sipContactList = event.model!!.data
+
+            sipContactList.forEach {
+                val contactInfo: AccountContactInfo = AccountContactInfo()
+                contactInfo.contacts_id = it.id
+                contactInfo.contacts_type = "sip"
+                contactInfo.displayname = it.first_name
+                contactInfo.avatar_url = ""
+                contactInfo.isOnline = false
+
+                contactList.add(contactInfo)
+            }
+
+            mAdapter.data.clear()
+            mAdapter.data.addAll(contactList)
+            mAdapter.notifyDataSetChanged()
+
+            //check presence status
+            checkStatus()
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getXmppContact() {
+        contactList.clear()
+        if (mConnectionList.isNotEmpty()) {
+            Timber.e("mConnectionList size: ${mConnectionList.size}")
+            for (connection in mConnectionList) {
+                val roster = Roster.getInstanceFor(connection)
+                Timber.e("roster entries  szie: ${roster.entries.size}")
+                for (entry in roster.entries) {
+                    val xContact = XmppContact()
+                    xContact.jid = entry.jid
+                    xContact.isAvailable = roster!!.getPresence(entry.jid).isAvailable
+                    xContact.login_user_jid = connection.user.asBareJid().toString()
+                    xContact.login_user = connection.user.split("@")[0]
+                    xContact.login_account = getAccountName(xContact.login_user_jid!!)
+
+                    xmppContactList.add(xContact)
+                }
+            }
+
+            xmppContactList.forEach {
+                val contactInfo: AccountContactInfo = AccountContactInfo()
+                contactInfo.contacts_id = it.jid.toString()
+                contactInfo.contacts_type = "xmpp"
+                contactInfo.displayname = it.jid.toString()
+                contactInfo.avatar_url = ""
+                contactInfo.isOnline = false
+
+                contactList.add(contactInfo)
+            }
+        }
+    }
+
+    private fun getAccountName(jid: String): String? {
+        var accountName = ""
+        val accountList = dialerSession.accountListInfo
+        accountList!!.forEach {
+            if (it.username + "@" + it.domain == jid) {
+                accountName = it.account_name!!
+                return accountName
+            }
+        }
+        return accountName
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mBus.unregister(this)
+    }
 
 
 }

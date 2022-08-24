@@ -4,14 +4,26 @@ import android.os.Bundle
 import android.view.View
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
+import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityAccountContactDetailBinding
+import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
 import im.vector.app.features.accountcontact.widget.ContactAssociateBottomSheet
+import im.vector.app.kelare.network.models.AccountContactInfo
+import org.matrix.android.sdk.api.session.Session
+import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDetailBinding>(), View.OnClickListener, ContactAssociateBottomSheet.InteractionListener {
+class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDetailBinding>(), View.OnClickListener, AssociateContactBottomDialog.InteractionListener {
 
     override fun getBinding() = ActivityAccountContactDetailBinding.inflate(layoutInflater)
+
+    @Inject lateinit var sessionHolder: ActiveSessionHolder
+
+    var session: Session? = null
+    private var contactList: ArrayList<AccountContactInfo> = ArrayList()
+    private var targetContact: AccountContactInfo = AccountContactInfo()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +33,8 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     }
 
     private fun initView() {
+
+        session = sessionHolder.getActiveSession()
 
         views.rlBack.setOnClickListener(this)
         views.sipAssociate.setOnClickListener(this)
@@ -59,10 +73,12 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     }
 
     private fun associateContact(accountType: String) {
-        ContactAssociateBottomSheet.newInstance(accountType, this).show(supportFragmentManager, "associate")
+
+        AssociateContactBottomDialog(this, mBus, accountType, session!!.myUserId, mConnectionList, dialerSession, this).show(supportFragmentManager, "associate")
     }
 
     override fun onRefreshRelations() {
 
+        Timber.e("call the refresh relation")
     }
 }

@@ -3290,7 +3290,7 @@
 
     <!-- nodefy account contact -->
     <string name="account_contact_title">Contact</string>
-    <string name="account_contact_search_hint">Search contact</string>
+    <string name="account_contact_search_hint">Search</string>
     <string name="account_contact_edit">Edit</string>
     <string name="account_contact_message">Message</string>
     <string name="account_contact_call">Call</string>
@@ -3305,6 +3305,7 @@
     <string name="account_contact_default_channel_set">Set</string>
     <string name="account_contact_sheet_cancel">Cancel</string>
     <string name="account_contact_sheet_account_to_admin">account to admin</string>
+    <string name="account_contact_sheet_back">Back</string>
 
 
 </resources>
