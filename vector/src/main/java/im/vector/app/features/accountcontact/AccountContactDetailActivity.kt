@@ -8,8 +8,9 @@ import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityAccountContactDetailBinding
 import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
-import im.vector.app.features.accountcontact.widget.ContactAssociateBottomSheet
 import im.vector.app.kelare.network.models.AccountContactInfo
+import im.vector.app.kelare.network.models.DialerContactInfo
+import im.vector.app.kelare.network.models.XmppContact
 import org.matrix.android.sdk.api.session.Session
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,6 +24,8 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
     var session: Session? = null
     private var contactList: ArrayList<AccountContactInfo> = ArrayList()
+    private var sipContactList:ArrayList<DialerContactInfo> = ArrayList()
+    private var xmppContactList: ArrayList<XmppContact> = ArrayList()
     private var targetContact: AccountContactInfo = AccountContactInfo()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +38,16 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     private fun initView() {
 
         session = sessionHolder.getActiveSession()
+
+        contactList = intent.getSerializableExtra("contactList") as ArrayList<AccountContactInfo>
+        sipContactList = intent.getSerializableExtra("sipContactList") as ArrayList<DialerContactInfo>
+        xmppContactList = intent.getSerializableExtra("xmppContactList") as ArrayList<XmppContact>
+        targetContact = intent.getSerializableExtra("item") as AccountContactInfo
+
+        Timber.e("contact item info---${contactList[0]}")
+        Timber.e("sip contact item info---${sipContactList}")
+        Timber.e("xmpp contact item info---${xmppContactList}")
+        Timber.e("item info---$targetContact")
 
         views.rlBack.setOnClickListener(this)
         views.sipAssociate.setOnClickListener(this)

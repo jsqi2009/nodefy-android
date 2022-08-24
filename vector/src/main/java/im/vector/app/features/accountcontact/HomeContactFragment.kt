@@ -44,6 +44,7 @@ import im.vector.app.kelare.network.models.XmppContact
 import org.jivesoftware.smack.roster.Roster
 import org.matrix.android.sdk.api.session.Session
 import timber.log.Timber
+import java.io.Serializable
 import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
@@ -136,6 +137,10 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
         views.contactListView.adapter = mAdapter
         mAdapter.setOnItemClickListener { adapter, view, position ->
             val intent = Intent(context, AccountContactDetailActivity::class.java)
+            intent.putExtra("contactList", contactList as Serializable)
+            intent.putExtra("sipContactList", sipContactList as Serializable)
+            intent.putExtra("xmppContactList", xmppContactList as Serializable)
+            intent.putExtra("item", mAdapter.getItem(position) as Serializable)
             startActivity(intent)
         }
     }
