@@ -21,9 +21,12 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -72,6 +75,7 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     private var recyclerView: RecyclerView? = null
     private var backView: TextView? = null
     private var desView: TextView? = null
+    private var searchView: EditText? = null
 
     private var interactionListener: InteractionListener? = null
     private lateinit var mAdapter: AssociateContactAdapter
@@ -82,6 +86,8 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     private var selectedContact: AccountContactInfo = AccountContactInfo()
     private var filterContactList: ArrayList<AccountContactInfo> = ArrayList()
     private var relationsList: ArrayList<ContactRelationInfo> = ArrayList()
+
+    private var terms = ""
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -113,8 +119,10 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         backView = rootView.findViewById<TextView>(R.id.backView)
         desView = rootView.findViewById<TextView>(R.id.descriptionView)
         recyclerView = rootView.findViewById<RecyclerView>(R.id.associateList)
+        searchView = rootView.findViewById<EditText>(R.id.searchText)
 
         backView!!.setOnClickListener(this)
+        searchView!!.addTextChangedListener(textWatcher)
 
         desView!!.text = getString(R.string.account_contact_associate) + " " + type + " " + getString(R.string.account_contact_sheet_account_to_admin)
 
@@ -216,9 +224,49 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
             }
         }
 
+        if (relationsList.isNotEmpty()) {
+            relationsList.forEach {
+                filterContactList.forEach { item ->
+                    if (it.account_type!!.lowercase() == item.contacts_type!!.lowercase() && it.user_id == item.contacts_id) {
+                        item.isAssociate = true
+                        return@forEach
+                    }
+                }
+            }
+        }
+
         mAdapter.data.clear()
         mAdapter.data.addAll(filterContactList)
         mAdapter.notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateList() {
+        val list: ArrayList<AccountContactInfo> = ArrayList()
+        filterContactList.forEach {
+            if (it.displayname!!.contains(terms)) {
+                list.add(it)
+            }
+        }
+
+        mAdapter.data.clear()
+        mAdapter.data.addAll(list)
+        mAdapter.notifyDataSetChanged()
+    }
+
+    private val textWatcher: TextWatcher =  object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            terms = s.toString()
+            if (s.toString().isEmpty()) {
+                terms = ""
+            }
+            updateList()
+        }
+        override fun afterTextChanged(s: Editable?) {
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
