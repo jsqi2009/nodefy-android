@@ -42,8 +42,11 @@ import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.GetContactResponseEvent
+import im.vector.app.kelare.network.event.UpdateContactRelationResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
+import im.vector.app.kelare.network.models.ChildrenUserInfo
 import im.vector.app.kelare.network.models.DialerContactInfo
+import im.vector.app.kelare.network.models.UpdateContactRelationInfo
 import im.vector.app.kelare.network.models.XmppContact
 import org.jivesoftware.smack.roster.Roster
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
@@ -55,7 +58,10 @@ import timber.log.Timber
  *  desc   :
  */
 class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus, val type: String, val currentUserID: String,
-                                    val mConnectionList: ArrayList<XMPPTCPConnection>, val dialerSession: DialerSession, val mListener: InteractionListener) : BottomSheetDialogFragment(),
+                                    val mConnectionList: ArrayList<XMPPTCPConnection>, val dialerSession: DialerSession,
+                                    val mList: ArrayList<AccountContactInfo>, val sipList:ArrayList<DialerContactInfo>,
+                                    val xmppList: ArrayList<XmppContact>, val targetContact: AccountContactInfo,
+                                    val mListener: InteractionListener,) : BottomSheetDialogFragment(),
         OnItemChildClickListener, View.OnClickListener {
 
     interface InteractionListener {
@@ -70,6 +76,10 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     private lateinit var mAdapter: AssociateContactAdapter
 
     private var contactList: ArrayList<AccountContactInfo> = ArrayList()
+    private var sipContactList:ArrayList<DialerContactInfo> = ArrayList()
+    private var xmppContactList: ArrayList<XmppContact> = ArrayList()
+    private var selectedContact: AccountContactInfo = AccountContactInfo()
+    private var filterContactList: ArrayList<AccountContactInfo> = ArrayList()
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -78,7 +88,7 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         val rootView = LayoutInflater.from(activity).inflate(R.layout.bottom_sheet_contact_associate, null)
         bottomDialog.setContentView(rootView)
         bottomDialog.setCanceledOnTouchOutside(false)
-        //设置宽度
+        //set height
         val params = rootView.layoutParams
         params.height = (0.85 * resources.displayMetrics.heightPixels).toInt()
         rootView.layoutParams = params
@@ -91,6 +101,11 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     @SuppressLint("SetTextI18n")
     private fun initView(rootView: View) {
         interactionListener = mListener
+
+        contactList = mList
+        sipContactList = sipList
+        xmppContactList = xmppList
+        selectedContact = targetContact
 
         backView = rootView.findViewById<TextView>(R.id.backView)
         desView = rootView.findViewById<TextView>(R.id.descriptionView)
@@ -107,13 +122,7 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         mAdapter.addChildClickViewIds(R.id.associateView)
         mAdapter.setOnItemChildClickListener(this)
 
-        if (type.lowercase() == "sip") {
-            getSipContact()
-        } else if (type.lowercase() == "xmpp") {
-            getXmppContact()
-        } else {
-
-        }
+        filterData()
     }
 
     override fun onClick(v: View?) {
@@ -136,82 +145,70 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         }
     }
 
-    private fun getSipContact() {
+    private fun associateContact(item: AccountContactInfo) {
 
-        HttpClient.getDialerContact(requireActivity(), currentUserID)
+        val childrenInfo = ChildrenUserInfo()
+        childrenInfo.user_id = item.contacts_id
+        childrenInfo.account_type = item.contacts_type
+        childrenInfo.is_main = false
+
+        val info: UpdateContactRelationInfo = UpdateContactRelationInfo()
+        info.primary_user_id = selectedContact.contacts_id
+        info.children_users.add(childrenInfo)
+
+        HttpClient.updateContactRelation(mContext, info)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Subscribe
-    fun onGetContactEvent(event: GetContactResponseEvent) {
+    fun onAssociateContactEvent(event: UpdateContactRelationResponseEvent) {
         if (event.isSuccess) {
-            contactList.clear()
-            Timber.e("info: ${event.model!!.data}")
-
-            val sipList = event.model!!.data
-            sipList.forEach {
-                val contactInfo: AccountContactInfo = AccountContactInfo()
-                contactInfo.contacts_id = it.id
-                contactInfo.contacts_type = "sip"
-                contactInfo.displayname = it.first_name
-                contactInfo.avatar_url = ""
-                contactInfo.isOnline = false
-
-                contactList.add(contactInfo)
-            }
-
-            mAdapter.data.clear()
-            mAdapter.data.addAll(contactList)
-            mAdapter.notifyDataSetChanged()
+            Timber.e("associate contact success")
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun getXmppContact() {
-        contactList.clear()
-        if (mConnectionList.isNotEmpty()) {
-            Timber.e("mConnectionList size: ${mConnectionList.size}")
-            for (connection in mConnectionList) {
-                val roster = Roster.getInstanceFor(connection)
-                Timber.e("roster entries  szie: ${roster.entries.size}")
-                for (entry in roster.entries) {
-
-                    val contactInfo: AccountContactInfo = AccountContactInfo()
-                    contactInfo.contacts_id = entry.jid.toString()
-                    contactInfo.contacts_type = "xmpp"
-                    contactInfo.displayname = entry.jid.toString()
-                    contactInfo.avatar_url = ""
-                    contactInfo.isOnline = roster!!.getPresence(entry.jid).isAvailable
-
-                    contactList.add(contactInfo)
-
-                    /*val xContact = XmppContact()
-                    xContact.jid = entry.jid
-                    xContact.isAvailable = roster!!.getPresence(entry.jid).isAvailable
-                    xContact.login_user_jid = connection.user.asBareJid().toString()
-                    xContact.login_user = connection.user.split("@")[0]
-                    xContact.login_account = getAccountName(xContact.login_user_jid!!)*/
-
+    private fun filterData() {
+        filterContactList.clear()
+        if (type.lowercase() == "sip") {
+            contactList.forEach {
+                if (it.contacts_type!!.lowercase() == "sip") {
+                    filterContactList.add(it)
                 }
-                Timber.e("xmpp contact list: ${Gson().toJson(contactList)}")
             }
-
-            mAdapter.data.clear()
-            mAdapter.data.addAll(contactList)
-            mAdapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun getAccountName(jid: String): String? {
-        var accountName = ""
-        val accountList = dialerSession.accountListInfo
-        accountList!!.forEach {
-            if (it.username + "@" + it.domain == jid) {
-                accountName = it.account_name!!
-                return accountName
+        } else if (type.lowercase() == "xmpp") {
+            contactList.forEach {
+                if (it.contacts_type!!.lowercase() == "xmpp") {
+                    filterContactList.add(it)
+                }
+            }
+        } else if (type.lowercase() == "slack") {
+            contactList.forEach {
+                if (it.contacts_type!!.lowercase() == "slack") {
+                    filterContactList.add(it)
+                }
+            }
+        } else if (type.lowercase() == "skype") {
+            contactList.forEach {
+                if (it.contacts_type!!.lowercase() == "skype") {
+                    filterContactList.add(it)
+                }
+            }
+        }else if (type.lowercase() == "telegram") {
+            contactList.forEach {
+                if (it.contacts_type!!.lowercase() == "telegram") {
+                    filterContactList.add(it)
+                }
+            }
+        }else if (type.lowercase() == "whatsapp") {
+            contactList.forEach {
+                if (it.contacts_type!!.lowercase() == "whatsapp") {
+                    filterContactList.add(it)
+                }
             }
         }
-        return accountName
+
+        mAdapter.data.clear()
+        mAdapter.data.addAll(filterContactList)
+        mAdapter.notifyDataSetChanged()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -226,6 +223,14 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         val behavior = BottomSheetBehavior.from(view)
         behavior.peekHeight = 3000
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            mBus.unregister(this)
+        } catch (e: Exception) {
+        }
     }
 
 

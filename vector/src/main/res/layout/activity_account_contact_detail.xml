@@ -150,193 +150,203 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/account_contact_sip"
-                android:textSize="15sp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/text_color_black1"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:id="@+id/sipAssociate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:text="@string/account_contact_associate"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/contact_associate_color"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:text="@string/account_contact_xmpp"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/text_color_black1"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:id="@+id/xmppAssociate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:text="@string/account_contact_associate"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/contact_associate_color"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:text="@string/account_contact_skype"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/text_color_black1"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:id="@+id/skypeAssociate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:text="@string/account_contact_associate"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/contact_associate_color"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:text="@string/account_contact_slack"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/text_color_black1"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:id="@+id/slackAssociate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:text="@string/account_contact_associate"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/contact_associate_color"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:text="@string/account_contact_telegram"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/text_color_black1"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:id="@+id/telegramAssociate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:text="@string/account_contact_associate"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/contact_associate_color"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:text="@string/account_contact_whatsapp"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/text_color_black1"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:id="@+id/whatsappAssociate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:text="@string/account_contact_associate"
-                android:textSize="15sp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/contact_associate_color"
-                tools:ignore="ContentDescription,HardcodedText" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/account_contact_default_channel"
-                android:textSize="15sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:textColor="@color/text_color_black1"
-                tools:ignore="ContentDescription,HardcodedText" />
-
             <LinearLayout
-                android:id="@+id/ll_set_default"
+                android:id="@+id/associateLayout"
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="45dp"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
                 <TextView
-                    android:id="@+id/tv_default_number"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Set default number"
-                    android:textSize="14sp"
-                    android:textColor="@color/contact_associate_color"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/account_contact_default_channel_set"
-                    android:textSize="14sp"
+                    android:text="@string/account_contact_sip"
+                    android:textSize="15sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/text_color_black1"
                     tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:id="@+id/sipAssociate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_contact_associate"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/contact_associate_color"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:text="@string/account_contact_xmpp"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/text_color_black1"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:id="@+id/xmppAssociate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_contact_associate"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/contact_associate_color"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:text="@string/account_contact_skype"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/text_color_black1"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:id="@+id/skypeAssociate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_contact_associate"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/contact_associate_color"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:text="@string/account_contact_slack"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/text_color_black1"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:id="@+id/slackAssociate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_contact_associate"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/contact_associate_color"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:text="@string/account_contact_telegram"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/text_color_black1"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:id="@+id/telegramAssociate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_contact_associate"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/contact_associate_color"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:text="@string/account_contact_whatsapp"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/text_color_black1"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:id="@+id/whatsappAssociate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_contact_associate"
+                    android:textSize="15sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/contact_associate_color"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_contact_default_channel"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/text_color_black1"
+                    tools:ignore="ContentDescription,HardcodedText" />
+
+                <LinearLayout
+                    android:id="@+id/ll_set_default"
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
+                    android:layout_height="45dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_default_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Set default number"
+                        android:textSize="14sp"
+                        android:textColor="@color/contact_associate_color"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/account_contact_default_channel_set"
+                        android:textSize="14sp"
+                        tools:ignore="ContentDescription,HardcodedText" />
+                </LinearLayout>
+
             </LinearLayout>
+
+
 
         </LinearLayout>
 

@@ -15,6 +15,8 @@ import org.matrix.android.sdk.api.session.Session
 import timber.log.Timber
 import javax.inject.Inject
 
+private const val nodefyType  = "nodefy"
+
 @AndroidEntryPoint
 class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDetailBinding>(), View.OnClickListener, AssociateContactBottomDialog.InteractionListener {
 
@@ -44,10 +46,16 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         xmppContactList = intent.getSerializableExtra("xmppContactList") as ArrayList<XmppContact>
         targetContact = intent.getSerializableExtra("item") as AccountContactInfo
 
-        Timber.e("contact item info---${contactList[0]}")
-        Timber.e("sip contact item info---${sipContactList}")
-        Timber.e("xmpp contact item info---${xmppContactList}")
-        Timber.e("item info---$targetContact")
+        Timber.d("contact item info---${contactList[0]}")
+        Timber.d("sip contact item info---${sipContactList}")
+        Timber.d("xmpp contact item info---${xmppContactList}")
+        Timber.d("item info---$targetContact")
+
+        if (targetContact.contacts_type!!.lowercase() == nodefyType) {
+            views.associateLayout.visibility = View.VISIBLE
+        } else {
+            views.associateLayout.visibility = View.GONE
+        }
 
         views.rlBack.setOnClickListener(this)
         views.sipAssociate.setOnClickListener(this)
@@ -87,7 +95,8 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
     private fun associateContact(accountType: String) {
 
-        AssociateContactBottomDialog(this, mBus, accountType, session!!.myUserId, mConnectionList, dialerSession, this).show(supportFragmentManager, "associate")
+        AssociateContactBottomDialog(this, mBus, accountType, session!!.myUserId, mConnectionList, dialerSession,
+                contactList, sipContactList, xmppContactList, targetContact,this).show(supportFragmentManager, "associate")
     }
 
     override fun onRefreshRelations() {
