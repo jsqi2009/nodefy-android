@@ -20,6 +20,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import com.amulyakhare.textdrawable.TextDrawable
 import com.avatarfirst.avatargenlib.AvatarGenerator
 import com.bumptech.glide.load.MultiTransformation
@@ -56,6 +57,11 @@ class AssociateContactAdapter(val mContext: Context, data: ArrayList<AccountCont
 
         AvatarRendererUtil.render(mContext, item, holder.getView(R.id.contactAvatarImageView))
 
+        if (item.isAssociate) {
+            holder.getView<TextView>(R.id.associateView).visibility = View.GONE
+        } else {
+            holder.getView<TextView>(R.id.associateView).visibility = View.VISIBLE
+        }
     }
 
 }

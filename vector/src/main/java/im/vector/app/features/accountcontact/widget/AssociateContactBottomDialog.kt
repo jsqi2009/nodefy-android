@@ -26,6 +26,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -45,6 +46,7 @@ import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.UpdateContactRelationResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
 import im.vector.app.kelare.network.models.ChildrenUserInfo
+import im.vector.app.kelare.network.models.ContactRelationInfo
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.UpdateContactRelationInfo
 import im.vector.app.kelare.network.models.XmppContact
@@ -58,10 +60,9 @@ import timber.log.Timber
  *  desc   :
  */
 class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus, val type: String, val currentUserID: String,
-                                    val mConnectionList: ArrayList<XMPPTCPConnection>, val dialerSession: DialerSession,
-                                    val mList: ArrayList<AccountContactInfo>, val sipList:ArrayList<DialerContactInfo>,
-                                    val xmppList: ArrayList<XmppContact>, val targetContact: AccountContactInfo,
-                                    val mListener: InteractionListener,) : BottomSheetDialogFragment(),
+        val mConnectionList: ArrayList<XMPPTCPConnection>, val dialerSession: DialerSession, val mList: ArrayList<AccountContactInfo>,
+        val sipList:ArrayList<DialerContactInfo>, val xmppList: ArrayList<XmppContact>, val targetContact: AccountContactInfo,
+        val relList: ArrayList<ContactRelationInfo>, val mListener: InteractionListener) : BottomSheetDialogFragment(),
         OnItemChildClickListener, View.OnClickListener {
 
     interface InteractionListener {
@@ -80,6 +81,7 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     private var xmppContactList: ArrayList<XmppContact> = ArrayList()
     private var selectedContact: AccountContactInfo = AccountContactInfo()
     private var filterContactList: ArrayList<AccountContactInfo> = ArrayList()
+    private var relationsList: ArrayList<ContactRelationInfo> = ArrayList()
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -106,6 +108,7 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         sipContactList = sipList
         xmppContactList = xmppList
         selectedContact = targetContact
+        relationsList = relList
 
         backView = rootView.findViewById<TextView>(R.id.backView)
         desView = rootView.findViewById<TextView>(R.id.descriptionView)
@@ -140,6 +143,7 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         when (view.id) {
             R.id.associateView    -> {
                 Timber.e("clicked the associate")
+                associateContact(info)
             }
             else -> {}
         }
@@ -162,7 +166,13 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     @Subscribe
     fun onAssociateContactEvent(event: UpdateContactRelationResponseEvent) {
         if (event.isSuccess) {
+            filterContactList.forEach {
+                it.isAssociate = it.contacts_id == event.model!!.flag
+            }
+            mAdapter.notifyDataSetChanged()
             Timber.e("associate contact success")
+        } else {
+            Toast.makeText(mContext, event.model!!.error, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -356,7 +356,7 @@ object HttpClient {
     fun updateContactRelation(context: Context, relationInfo: UpdateContactRelationInfo) {
 
         val call = mHttpApi!!.updateContactRelations(getHeaders(context), relationInfo)
-        dispatchClient!!.enqueue(call, UpdateContactRelationResponse::class.java, UpdateContactRelationResponseEvent::class.java)
+        dispatchClient!!.enqueue(call, UpdateContactRelationResponse::class.java, UpdateContactRelationResponseEvent::class.java, relationInfo.children_users[0].user_id!!)
     }
 
     /**

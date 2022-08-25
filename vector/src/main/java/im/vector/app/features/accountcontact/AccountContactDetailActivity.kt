@@ -2,13 +2,19 @@ package im.vector.app.features.accountcontact
 
 import android.os.Bundle
 import android.view.View
+import com.google.gson.Gson
+import com.squareup.otto.Subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityAccountContactDetailBinding
+import im.vector.app.features.accountcontact.util.AvatarRendererUtil
 import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
+import im.vector.app.kelare.network.HttpClient
+import im.vector.app.kelare.network.event.GetContactRelationResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
+import im.vector.app.kelare.network.models.ContactRelationInfo
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.XmppContact
 import org.matrix.android.sdk.api.session.Session
@@ -29,12 +35,18 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     private var sipContactList:ArrayList<DialerContactInfo> = ArrayList()
     private var xmppContactList: ArrayList<XmppContact> = ArrayList()
     private var targetContact: AccountContactInfo = AccountContactInfo()
+    private var relationsList: ArrayList<ContactRelationInfo> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         statusBarWhiteColor(this)
 
         initView()
+        getRelations()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun initView() {
@@ -56,6 +68,9 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         } else {
             views.associateLayout.visibility = View.GONE
         }
+
+        views.tvUsername.text = targetContact.displayname
+        AvatarRendererUtil.render(mContext, targetContact, views.ivAvatar)
 
         views.rlBack.setOnClickListener(this)
         views.sipAssociate.setOnClickListener(this)
@@ -96,11 +111,64 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     private fun associateContact(accountType: String) {
 
         AssociateContactBottomDialog(this, mBus, accountType, session!!.myUserId, mConnectionList, dialerSession,
-                contactList, sipContactList, xmppContactList, targetContact,this).show(supportFragmentManager, "associate")
+                contactList, sipContactList, xmppContactList, targetContact, relationsList,this).show(supportFragmentManager, "associate")
+    }
+
+    private fun getRelations() {
+        showLoadingDialog()
+        HttpClient.getContactRelations(this, targetContact.contacts_id!!)
+    }
+
+    @Subscribe
+    fun onRelationsEvent(event: GetContactRelationResponseEvent) {
+        hideLoadingDialog()
+        if (event.isSuccess) {
+            relationsList.clear()
+            relationsList = event.model!!.children_users
+            Timber.e("relations list----->${Gson().toJson(relationsList)}")
+
+            renderAssociateInfo()
+        }
+    }
+
+    private fun renderAssociateInfo() {
+        relationsList.forEach { item ->
+            if (item.account_type!!.lowercase() == "sip") {
+                sipContactList.forEach {
+                    if (it.id == item.user_id) {
+                        views.sipAssociate.text = it.first_name
+                        return@forEach
+                    }
+                }
+            }
+            if (item.account_type!!.lowercase() == "xmpp") {
+                xmppContactList.forEach {
+                    if (it.jid.toString() == item.user_id) {
+                        views.xmppAssociate.text = it.jid
+                        return@forEach
+                    }
+                }
+            }
+
+            contactList.forEach {
+                if (item.account_type!!.lowercase() == "slack" && it.contacts_id == item.user_id) {
+                    views.slackAssociate.text = it.displayname
+                }
+                if (item.account_type!!.lowercase() == "skype" && it.contacts_id == item.user_id) {
+                    views.skypeAssociate.text = it.displayname
+                }
+                if (item.account_type!!.lowercase() == "telegram" && it.contacts_id == item.user_id) {
+                    views.telegramAssociate.text = it.displayname
+                }
+                if (item.account_type!!.lowercase() == "whatsapp" && it.contacts_id == item.user_id) {
+                    views.whatsappAssociate.text = it.displayname
+                }
+            }
+        }
     }
 
     override fun onRefreshRelations() {
-
         Timber.e("call the refresh relation")
+        getRelations()
     }
 }
