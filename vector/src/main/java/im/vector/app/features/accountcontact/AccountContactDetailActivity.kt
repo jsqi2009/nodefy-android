@@ -287,25 +287,55 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                 .show(supportFragmentManager)
     }
 
-    private fun deleteRelation(info: ContactRelationInfo) {
+    private fun deleteRelation(item: ContactRelationInfo) {
         showLoading()
 
         val childrenInfo = ChildrenUserInfo()
-        childrenInfo.user_id = info.user_id
-        childrenInfo.account_type = info.account_type
+        childrenInfo.user_id = item.user_id
+        childrenInfo.account_type = item.account_type
         childrenInfo.is_main = false
 
         val info: UpdateContactRelationInfo = UpdateContactRelationInfo()
         info.primary_user_id = targetContact.contacts_id
         info.children_users.add(childrenInfo)
-        HttpClient.deleteContactRelation(this, info)
+        HttpClient.deleteContactRelation(this, info, item.account_type!!.lowercase())
     }
 
     @Subscribe
     fun onDeleteRelationEvent(event: DeleteContactRelationResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
+            resetUI(event.model!!.flag)
             getRelations(false)
+        }
+    }
+
+    private fun resetUI(type: String) {
+        when (type) {
+            "sip"      -> {
+                views.sipDelete.visibility = View.GONE
+                views.sipAssociate.text = getString(R.string.account_contact_associate)
+            }
+            "xmpp"     -> {
+                views.xmppDelete.visibility = View.GONE
+                views.xmppAssociate.text = getString(R.string.account_contact_associate)
+            }
+            "skype"    -> {
+                views.skypeDelete.visibility = View.GONE
+                views.skypeAssociate.text = getString(R.string.account_contact_associate)
+            }
+            "slack"    -> {
+                views.slackDelete.visibility = View.GONE
+                views.slackAssociate.text = getString(R.string.account_contact_associate)
+            }
+            "telegram" -> {
+                views.telegramDelete.visibility = View.GONE
+                views.telegramAssociate.text = getString(R.string.account_contact_associate)
+            }
+            "whatsapp" -> {
+                views.whatsappDelete.visibility = View.GONE
+                views.whatsappAssociate.text = getString(R.string.account_contact_associate)
+            }
         }
     }
 

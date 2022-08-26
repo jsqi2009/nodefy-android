@@ -362,10 +362,10 @@ object HttpClient {
     /**
      * delete Contact Relation
      */
-    fun deleteContactRelation(context: Context, relationInfo: UpdateContactRelationInfo) {
+    fun deleteContactRelation(context: Context, relationInfo: UpdateContactRelationInfo, type: String) {
 
         val call = mHttpApi!!.deleteContactRelation(getHeaders(context), relationInfo)
-        dispatchClient!!.enqueue(call, DeleteContactRelationResponse::class.java, DeleteContactRelationResponseEvent::class.java)
+        dispatchClient!!.enqueue(call, DeleteContactRelationResponse::class.java, DeleteContactRelationResponseEvent::class.java, type)
     }
 
 
