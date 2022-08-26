@@ -14,14 +14,19 @@ import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityAccountContactDetailBinding
 import im.vector.app.features.accountcontact.util.AvatarRendererUtil
 import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
+import im.vector.app.features.accountcontact.widget.SetDefaultChannelDialog
 import im.vector.app.kelare.content.Contants
+import im.vector.app.kelare.message.widget.CreateXMPPGroupDialog
 import im.vector.app.kelare.network.HttpClient
+import im.vector.app.kelare.network.event.DefaultContactRelationResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactRelationResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
+import im.vector.app.kelare.network.models.ChildrenInfo
 import im.vector.app.kelare.network.models.ChildrenUserInfo
 import im.vector.app.kelare.network.models.ContactChannelInfo
 import im.vector.app.kelare.network.models.ContactRelationInfo
+import im.vector.app.kelare.network.models.DefaultContactRelationInfo
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.UpdateContactRelationInfo
 import im.vector.app.kelare.network.models.XmppContact
@@ -32,7 +37,8 @@ import javax.inject.Inject
 private const val nodefyType  = "nodefy"
 
 @AndroidEntryPoint
-class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDetailBinding>(), View.OnClickListener, AssociateContactBottomDialog.InteractionListener {
+class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDetailBinding>(), View.OnClickListener,
+        AssociateContactBottomDialog.InteractionListener, SetDefaultChannelDialog.ChannelListener {
 
     override fun getBinding() = ActivityAccountContactDetailBinding.inflate(layoutInflater)
 
@@ -85,6 +91,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         views.rlBack.setOnClickListener(this)
         views.tvEdit.setOnClickListener(this)
+        views.setDefaultChannel.setOnClickListener(this)
         views.sipAssociate.setOnClickListener(this)
         views.xmppAssociate.setOnClickListener(this)
         views.skypeAssociate.setOnClickListener(this)
@@ -107,6 +114,10 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             R.id.tv_edit -> {
                 isEdit = !isEdit
                 refreshUI()
+            }
+            R.id.setDefaultChannel -> {
+                val channelDialog = SetDefaultChannelDialog(this, mBus, contactChannelList, this)
+                channelDialog.show()
             }
             R.id.sipAssociate -> {
                 associateContact(getString(R.string.account_contact_sip))
@@ -391,6 +402,33 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         }
     }
 
+    override fun onRefreshRelations() {
+        Timber.e("call the refresh relation")
+        getRelations(false)
+    }
+
+    override fun onDefaultChannel(item: ContactChannelInfo) {
+        val relationInfo: DefaultContactRelationInfo = DefaultContactRelationInfo()
+
+        val childrenInfo: ChildrenInfo = ChildrenInfo()
+        childrenInfo.user_id = item.contacts_id
+        childrenInfo.account_type = item.contacts_type
+        childrenInfo.is_main = true
+
+        relationInfo.main_children = childrenInfo
+        relationInfo.primary_user_id = targetContact.contacts_id
+
+        showLoading()
+        HttpClient.setContactDefaultChannel(this, relationInfo)
+    }
+
+    @Subscribe
+    fun onChannelEvent(event: DefaultContactRelationResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            getRelations(false)
+        }
+    }
 
     private fun showLoading() {
         if (loading == null || !loading!!.isShowing) {
@@ -408,8 +446,5 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         }
     }
 
-    override fun onRefreshRelations() {
-        Timber.e("call the refresh relation")
-        getRelations(false)
-    }
+
 }

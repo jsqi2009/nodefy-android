@@ -3313,6 +3313,9 @@
     <string name="account_contact_channel_slack">Slack account</string>
     <string name="account_contact_channel_telegram">Telegram account</string>
     <string name="account_contact_channel_whatsapp">Whatsapp account</string>
+    <string name="account_contact_set_default_title">Set default communication channel</string>
+    <string name="account_contact_set_use">Use</string>
+    <string name="account_contact_save">Save</string>
 
 
 </resources>
