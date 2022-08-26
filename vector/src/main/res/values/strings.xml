@@ -3306,6 +3306,13 @@
     <string name="account_contact_sheet_cancel">Cancel</string>
     <string name="account_contact_sheet_account_to_admin">account to admin</string>
     <string name="account_contact_sheet_back">Back</string>
+    <string name="account_contact_channel_nodefy">Nodefy account</string>
+    <string name="account_contact_channel_sip">Sip account</string>
+    <string name="account_contact_channel_xmpp">Xmpp account</string>
+    <string name="account_contact_channel_skype">Skype account</string>
+    <string name="account_contact_channel_slack">Slack account</string>
+    <string name="account_contact_channel_telegram">Telegram account</string>
+    <string name="account_contact_channel_whatsapp">Whatsapp account</string>
 
 
 </resources>

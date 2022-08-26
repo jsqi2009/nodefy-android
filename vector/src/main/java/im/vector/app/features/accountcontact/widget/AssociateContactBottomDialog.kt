@@ -43,6 +43,7 @@ import im.vector.app.R
 import im.vector.app.kelare.adapter.AssociateContactAdapter
 import im.vector.app.kelare.adapter.SelectDialerContactAdapter
 import im.vector.app.kelare.content.AndroidBus
+import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.GetContactResponseEvent
@@ -186,39 +187,39 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
 
     private fun filterData() {
         filterContactList.clear()
-        if (type.lowercase() == "sip") {
+        if (type.lowercase() == Contants.SIP_TYPE) {
             contactList.forEach {
-                if (it.contacts_type!!.lowercase() == "sip") {
+                if (it.contacts_type!!.lowercase() == Contants.SIP_TYPE) {
                     filterContactList.add(it)
                 }
             }
-        } else if (type.lowercase() == "xmpp") {
+        } else if (type.lowercase() == Contants.XMPP_TYPE) {
             contactList.forEach {
-                if (it.contacts_type!!.lowercase() == "xmpp") {
+                if (it.contacts_type!!.lowercase() == Contants.XMPP_TYPE) {
                     filterContactList.add(it)
                 }
             }
-        } else if (type.lowercase() == "slack") {
+        } else if (type.lowercase() == Contants.SLACK_TYPE) {
             contactList.forEach {
-                if (it.contacts_type!!.lowercase() == "slack") {
+                if (it.contacts_type!!.lowercase() == Contants.SLACK_TYPE) {
                     filterContactList.add(it)
                 }
             }
-        } else if (type.lowercase() == "skype") {
+        } else if (type.lowercase() == Contants.SKYPE_TYPE) {
             contactList.forEach {
-                if (it.contacts_type!!.lowercase() == "skype") {
+                if (it.contacts_type!!.lowercase() == Contants.SKYPE_TYPE) {
                     filterContactList.add(it)
                 }
             }
-        }else if (type.lowercase() == "telegram") {
+        }else if (type.lowercase() == Contants.TELEGRAM_TYPE) {
             contactList.forEach {
-                if (it.contacts_type!!.lowercase() == "telegram") {
+                if (it.contacts_type!!.lowercase() == Contants.TELEGRAM_TYPE) {
                     filterContactList.add(it)
                 }
             }
-        }else if (type.lowercase() == "whatsapp") {
+        }else if (type.lowercase() == Contants.WHATSAPP_TYPE) {
             contactList.forEach {
-                if (it.contacts_type!!.lowercase() == "whatsapp") {
+                if (it.contacts_type!!.lowercase() == Contants.WHATSAPP_TYPE) {
                     filterContactList.add(it)
                 }
             }

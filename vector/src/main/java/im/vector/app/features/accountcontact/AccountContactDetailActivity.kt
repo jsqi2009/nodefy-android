@@ -14,11 +14,13 @@ import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityAccountContactDetailBinding
 import im.vector.app.features.accountcontact.util.AvatarRendererUtil
 import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
+import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.DeleteContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactRelationResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
 import im.vector.app.kelare.network.models.ChildrenUserInfo
+import im.vector.app.kelare.network.models.ContactChannelInfo
 import im.vector.app.kelare.network.models.ContactRelationInfo
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.UpdateContactRelationInfo
@@ -36,15 +38,18 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
     @Inject lateinit var sessionHolder: ActiveSessionHolder
 
-    var session: Session? = null
+    private var session: Session? = null
     private var loading: KProgressHUD? = null
     private var contactList: ArrayList<AccountContactInfo> = ArrayList()
     private var sipContactList:ArrayList<DialerContactInfo> = ArrayList()
     private var xmppContactList: ArrayList<XmppContact> = ArrayList()
     private var targetContact: AccountContactInfo = AccountContactInfo()
     private var relationsList: ArrayList<ContactRelationInfo> = ArrayList()
+    private var defaultRelation: ContactRelationInfo? = ContactRelationInfo()
+    private var contactChannelList: ArrayList<ContactChannelInfo> = ArrayList()
 
     private var isEdit = false
+    private var defaultChanelType: String = "nodefy"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,22 +166,22 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         if (isEdit) {
             relationsList.forEach {
-                if (it.account_type!!.lowercase() == "sip") {
+                if (it.account_type!!.lowercase() == Contants.SIP_TYPE) {
                     views.sipDelete.visibility = View.VISIBLE
                 }
-                if (it.account_type!!.lowercase() == "xmpp") {
+                if (it.account_type!!.lowercase() == Contants.XMPP_TYPE) {
                     views.xmppDelete.visibility = View.VISIBLE
                 }
-                if (it.account_type!!.lowercase() == "skype") {
+                if (it.account_type!!.lowercase() == Contants.SKYPE_TYPE) {
                     views.skypeDelete.visibility = View.VISIBLE
                 }
-                if (it.account_type!!.lowercase() == "slack") {
+                if (it.account_type!!.lowercase() == Contants.SLACK_TYPE) {
                     views.slackDelete.visibility = View.VISIBLE
                 }
-                if (it.account_type!!.lowercase() == "telegram") {
+                if (it.account_type!!.lowercase() == Contants.TELEGRAM_TYPE) {
                     views.telegramDelete.visibility = View.VISIBLE
                 }
-                if (it.account_type!!.lowercase() == "whatsapp") {
+                if (it.account_type!!.lowercase() == Contants.WHATSAPP_TYPE) {
                     views.whatsappDelete.visibility = View.VISIBLE
                 }
             }
@@ -208,12 +213,13 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
             renderAssociateInfo()
             refreshUI()
+            setDefaultRelation()
         }
     }
 
     private fun renderAssociateInfo() {
         relationsList.forEach { item ->
-            if (item.account_type!!.lowercase() == "sip") {
+            if (item.account_type!!.lowercase() == Contants.SIP_TYPE) {
                 sipContactList.forEach {
                     if (it.id == item.user_id) {
                         views.sipAssociate.text = it.first_name
@@ -221,7 +227,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                     }
                 }
             }
-            if (item.account_type!!.lowercase() == "xmpp") {
+            if (item.account_type!!.lowercase() == Contants.XMPP_TYPE) {
                 xmppContactList.forEach {
                     if (it.jid.toString() == item.user_id) {
                         views.xmppAssociate.text = it.jid
@@ -231,16 +237,16 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             }
 
             contactList.forEach {
-                if (item.account_type!!.lowercase() == "slack" && it.contacts_id == item.user_id) {
+                if (item.account_type!!.lowercase() == Contants.SLACK_TYPE && it.contacts_id == item.user_id) {
                     views.slackAssociate.text = it.displayname
                 }
-                if (item.account_type!!.lowercase() == "skype" && it.contacts_id == item.user_id) {
+                if (item.account_type!!.lowercase() == Contants.SKYPE_TYPE && it.contacts_id == item.user_id) {
                     views.skypeAssociate.text = it.displayname
                 }
-                if (item.account_type!!.lowercase() == "telegram" && it.contacts_id == item.user_id) {
+                if (item.account_type!!.lowercase() == Contants.TELEGRAM_TYPE && it.contacts_id == item.user_id) {
                     views.telegramAssociate.text = it.displayname
                 }
-                if (item.account_type!!.lowercase() == "whatsapp" && it.contacts_id == item.user_id) {
+                if (item.account_type!!.lowercase() == Contants.WHATSAPP_TYPE && it.contacts_id == item.user_id) {
                     views.whatsappAssociate.text = it.displayname
                 }
             }
@@ -312,29 +318,75 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
     private fun resetUI(type: String) {
         when (type) {
-            "sip"      -> {
+            Contants.SIP_TYPE -> {
                 views.sipDelete.visibility = View.GONE
                 views.sipAssociate.text = getString(R.string.account_contact_associate)
             }
-            "xmpp"     -> {
+            Contants.XMPP_TYPE        -> {
                 views.xmppDelete.visibility = View.GONE
                 views.xmppAssociate.text = getString(R.string.account_contact_associate)
             }
-            "skype"    -> {
+            Contants.SKYPE_TYPE    -> {
                 views.skypeDelete.visibility = View.GONE
                 views.skypeAssociate.text = getString(R.string.account_contact_associate)
             }
-            "slack"    -> {
+            Contants.SLACK_TYPE    -> {
                 views.slackDelete.visibility = View.GONE
                 views.slackAssociate.text = getString(R.string.account_contact_associate)
             }
-            "telegram" -> {
+            Contants.TELEGRAM_TYPE -> {
                 views.telegramDelete.visibility = View.GONE
                 views.telegramAssociate.text = getString(R.string.account_contact_associate)
             }
-            "whatsapp" -> {
+            Contants.WHATSAPP_TYPE-> {
                 views.whatsappDelete.visibility = View.GONE
                 views.whatsappAssociate.text = getString(R.string.account_contact_associate)
+            }
+        }
+    }
+
+    private fun setDefaultRelation() {
+        defaultRelation = null
+        contactChannelList.clear()
+        relationsList.forEach {
+            val channelInfo: ContactChannelInfo = ContactChannelInfo()
+            channelInfo.contacts_id = it.user_id
+            channelInfo.contacts_type = it.account_type
+            channelInfo.isDefault = it.is_main!!
+            if (it.account_type!!.lowercase() == Contants.SIP_TYPE) {
+                channelInfo.displayType = getString(R.string.account_contact_channel_sip)
+            }else if (it.account_type!!.lowercase() == Contants.XMPP_TYPE) {
+                channelInfo.displayType = getString(R.string.account_contact_channel_xmpp)
+            } else if (it.account_type!!.lowercase() == Contants.SKYPE_TYPE) {
+                channelInfo.displayType = getString(R.string.account_contact_channel_skype)
+            } else if (it.account_type!!.lowercase() == Contants.SLACK_TYPE) {
+                channelInfo.displayType = getString(R.string.account_contact_channel_slack)
+            } else if (it.account_type!!.lowercase() == Contants.TELEGRAM_TYPE) {
+                channelInfo.displayType = getString(R.string.account_contact_channel_telegram)
+            }else if (it.account_type!!.lowercase() == Contants.WHATSAPP_TYPE) {
+                channelInfo.displayType = getString(R.string.account_contact_channel_whatsapp)
+            }
+
+            if (it.is_main!!) {
+                defaultRelation = it
+            }
+
+            contactChannelList.add(channelInfo)
+        }
+        if (defaultRelation == null) {
+            val channelInfo: ContactChannelInfo = ContactChannelInfo()
+            channelInfo.contacts_id = targetContact.contacts_id
+            channelInfo.contacts_type = targetContact.contacts_type
+            channelInfo.displayType = getString(R.string.account_contact_channel_nodefy)
+            channelInfo.isDefault = true
+
+            contactChannelList.add(channelInfo)
+        }
+
+        contactChannelList.forEach {
+            if (it.isDefault) {
+                defaultChanelType = it.contacts_type!!
+                views.tvDefaultNumber.text = it.displayType
             }
         }
     }

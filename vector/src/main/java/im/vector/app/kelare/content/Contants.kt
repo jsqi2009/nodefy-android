@@ -36,6 +36,13 @@ object Contants {
 
     var Public_Room_ID = ""
 
+    const val SIP_TYPE = "sip"
+    const val XMPP_TYPE = "xmpp"
+    const val SKYPE_TYPE = "skype"
+    const val SLACK_TYPE = "slack"
+    const val TELEGRAM_TYPE = "telegram"
+    const val WHATSAPP_TYPE = "whatsapp"
+
     const val LANGUAGE_COUNTRY_US = "United States"
     const val LANGUAGE_COUNTRY_CHINA = "中国"
 
