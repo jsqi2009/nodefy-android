@@ -55,10 +55,10 @@ class ContactChannelAdapter(val mContext: Context, data: ArrayList<ContactChanne
 
         holder.setText(R.id.tv_username, mContext.getString(R.string.account_contact_set_use) + " " + item.displayType)
 
-        if (item.isDefault) {
-            holder.getView<TextView>(R.id.defaultStatus).visibility = View.VISIBLE
+        if (item.checked) {
+            holder.getView<ImageView>(R.id.defaultStatus).visibility = View.VISIBLE
         } else {
-            holder.getView<TextView>(R.id.defaultStatus).visibility = View.GONE
+            holder.getView<ImageView>(R.id.defaultStatus).visibility = View.GONE
         }
     }
 

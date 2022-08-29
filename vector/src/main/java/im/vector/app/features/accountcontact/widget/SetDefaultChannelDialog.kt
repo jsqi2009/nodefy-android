@@ -48,7 +48,7 @@ class SetDefaultChannelDialog(val mContext: Context, val mBus: AndroidBus, priva
 
 
     interface ChannelListener {
-        fun onDefaultChannel(item: ContactChannelInfo)
+        fun onDefaultChannel(item: ContactChannelInfo, isNodefy: Boolean)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +81,7 @@ class SetDefaultChannelDialog(val mContext: Context, val mBus: AndroidBus, priva
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val  item = mAdapter.getItem(position)
         contactChannelList.forEach {
-            it.isDefault = item.contacts_id == it.contacts_id
+            it.checked = item.contacts_id == it.contacts_id
         }
         mAdapter.notifyDataSetChanged()
     }
@@ -102,11 +102,26 @@ class SetDefaultChannelDialog(val mContext: Context, val mBus: AndroidBus, priva
     }
 
     private fun saveChannel(){
+        var item = ContactChannelInfo()
+
+        var isNodefy = false
         contactChannelList.forEach {
-            if (it.isDefault && it.displayType!!.lowercase() != mContext.getString(R.string.account_contact_channel_nodefy)) {
-                channelListener!!.onDefaultChannel(it)
+            if (it.checked) {
+                if (it.displayType == mContext.getString(R.string.account_contact_channel_nodefy)) {
+                    isNodefy = true
+                } else {
+                    item = it
+                }
             }
         }
+        if (isNodefy) {
+            contactChannelList.forEach {
+                if (it.isDefault) {
+                    item = it
+                }
+            }
+        }
+        channelListener!!.onDefaultChannel(item, isNodefy)
 
         dismiss()
     }

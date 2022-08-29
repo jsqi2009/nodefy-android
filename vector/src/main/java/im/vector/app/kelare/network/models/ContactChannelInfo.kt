@@ -12,6 +12,7 @@ class ContactChannelInfo:Serializable {
     var contacts_type: String? = null
     var displayType: String? = null
     var isDefault: Boolean = false
+    var checked: Boolean = false
     override fun toString(): String {
         return "ContactChannelInfo(contacts_id=$contacts_id, contacts_type=$contacts_type, displayType=$displayType, isDefault=$isDefault)"
     }

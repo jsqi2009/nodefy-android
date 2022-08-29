@@ -359,11 +359,23 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     private fun setDefaultRelation() {
         defaultRelation = null
         contactChannelList.clear()
+        var isHasDefault = false
+
+        //add default nodefy channel
+        val item: ContactChannelInfo = ContactChannelInfo()
+        item.contacts_id = targetContact.contacts_id
+        item.contacts_type = "nodefy"
+        item.displayType = getString(R.string.account_contact_channel_nodefy)
+        item.isDefault = false
+        item.checked = false
+        contactChannelList.add(item)
+
         relationsList.forEach {
             val channelInfo: ContactChannelInfo = ContactChannelInfo()
             channelInfo.contacts_id = it.user_id
             channelInfo.contacts_type = it.account_type
             channelInfo.isDefault = it.is_main!!
+            channelInfo.checked = it.is_main!!
             if (it.account_type!!.lowercase() == Contants.SIP_TYPE) {
                 channelInfo.displayType = getString(R.string.account_contact_channel_sip)
             }else if (it.account_type!!.lowercase() == Contants.XMPP_TYPE) {
@@ -379,19 +391,20 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             }
 
             if (it.is_main!!) {
+                isHasDefault = true
                 defaultRelation = it
             }
 
             contactChannelList.add(channelInfo)
         }
-        if (defaultRelation == null) {
-            val channelInfo: ContactChannelInfo = ContactChannelInfo()
-            channelInfo.contacts_id = targetContact.contacts_id
-            channelInfo.contacts_type = targetContact.contacts_type
-            channelInfo.displayType = getString(R.string.account_contact_channel_nodefy)
-            channelInfo.isDefault = true
 
-            contactChannelList.add(channelInfo)
+        if (!isHasDefault) {
+            contactChannelList.forEach {
+                if (it.displayType == getString(R.string.account_contact_channel_nodefy)) {
+                    it.isDefault = true
+                    it.checked = true
+                }
+            }
         }
 
         contactChannelList.forEach {
@@ -407,13 +420,13 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         getRelations(false)
     }
 
-    override fun onDefaultChannel(item: ContactChannelInfo) {
+    override fun onDefaultChannel(item: ContactChannelInfo, isNodefy: Boolean) {
         val relationInfo: DefaultContactRelationInfo = DefaultContactRelationInfo()
 
         val childrenInfo: ChildrenInfo = ChildrenInfo()
         childrenInfo.user_id = item.contacts_id
         childrenInfo.account_type = item.contacts_type
-        childrenInfo.is_main = true
+        childrenInfo.is_main = !isNodefy
 
         relationInfo.main_children = childrenInfo
         relationInfo.primary_user_id = targetContact.contacts_id

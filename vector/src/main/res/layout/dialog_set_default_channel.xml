@@ -36,19 +36,17 @@
             android:text="@string/account_contact_set_default_title"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:background="@color/line_color"
+            android:background="@drawable/shape_gray_bg_8dp"
             tools:ignore="HardcodedText" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/channelList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_10" />
+            android:layout_height="wrap_content"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="15dp"
             android:background="@color/normal_bg_color"/>
 
         <LinearLayout
