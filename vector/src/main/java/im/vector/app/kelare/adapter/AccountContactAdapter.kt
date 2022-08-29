@@ -36,6 +36,7 @@ import im.vector.app.core.glide.GlideRequest
 import im.vector.app.core.glide.GlideRequests
 import im.vector.app.features.accountcontact.util.AvatarRendererUtil
 import im.vector.app.features.home.AvatarRenderer
+import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.network.models.AccountContactInfo
 import org.matrix.android.sdk.api.session.content.ContentUrlResolver
 import org.matrix.android.sdk.api.util.MatrixItem
@@ -55,14 +56,38 @@ class AccountContactAdapter(val mContext: Context, data: ArrayList<AccountContac
         holder.setText(R.id.tv_username, item.displayname)
 
         AvatarRendererUtil.render(mContext, item, holder.getView(R.id.contactAvatarImageView))
+        holder.getView<ImageView>(R.id.offlineStatus).visibility = View.GONE
 
-        if (item.isOnline) {
+        if (item.contacts_type!!.lowercase() == Contants.SIP_TYPE) {
+            holder.getView<ImageView>(R.id.onlineStatus).setImageResource(R.drawable.icon_sip_green)
+        } else if (item.contacts_type!!.lowercase() == Contants.XMPP_TYPE) {
+            holder.getView<ImageView>(R.id.onlineStatus).setImageResource(R.drawable.icon_xmpp)
+        }else if (item.contacts_type!!.lowercase() == Contants.SLACK_TYPE) {
+            holder.getView<ImageView>(R.id.onlineStatus).setImageResource(R.drawable.icon_slack_online)
+        }else if (item.contacts_type!!.lowercase() == Contants.SKYPE_TYPE) {
+            holder.getView<ImageView>(R.id.onlineStatus).setImageResource(R.drawable.icon_skype)
+        }else if (item.contacts_type!!.lowercase() == Contants.TELEGRAM_TYPE) {
+            holder.getView<ImageView>(R.id.onlineStatus).setImageResource(R.drawable.icon_telegram)
+        }else if (item.contacts_type!!.lowercase() == Contants.WHATSAPP_TYPE) {
+            holder.getView<ImageView>(R.id.onlineStatus).setImageResource(R.drawable.icon_whatsapp_online)
+        } else {
+            if (item.isOnline) {
+                holder.getView<ImageView>(R.id.onlineStatus).setImageResource(R.drawable.ic_nodefy_online)
+            } else {
+                holder.getView<ImageView>(R.id.onlineStatus).setImageResource(R.drawable.ic_nodefy_offline)
+            }
+        }
+
+
+        /*if (item.isOnline) {
             holder.getView<ImageView>(R.id.onlineStatus).visibility = View.VISIBLE
             holder.getView<ImageView>(R.id.offlineStatus).visibility = View.GONE
         } else {
             holder.getView<ImageView>(R.id.onlineStatus).visibility = View.GONE
             holder.getView<ImageView>(R.id.offlineStatus).visibility = View.VISIBLE
-        }
+        }*/
+
+
     }
 
 }

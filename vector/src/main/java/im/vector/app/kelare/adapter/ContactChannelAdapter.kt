@@ -60,6 +60,10 @@ class ContactChannelAdapter(val mContext: Context, data: ArrayList<ContactChanne
         } else {
             holder.getView<ImageView>(R.id.defaultStatus).visibility = View.GONE
         }
+
+        if (getItemPosition(item) == data.size - 1) {
+            holder.getView<View>(R.id.line).visibility = View.GONE
+        }
     }
 
 }
