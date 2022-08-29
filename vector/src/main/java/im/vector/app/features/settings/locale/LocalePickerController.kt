@@ -80,9 +80,9 @@ class LocalePickerController @Inject constructor(
                     }
                 } else {
                     list()
-                            //.filter { it.toString() != data.currentLocale.toString() }
-                            .filter { it.getDisplayCountry(it).lowercase() == Contants.LANGUAGE_COUNTRY_CHINA.lowercase()
-                                    || it.getDisplayCountry(it).lowercase() == Contants.LANGUAGE_COUNTRY_US.lowercase() }
+                            .filter { it.toString() != data.currentLocale.toString() }
+                            /*.filter { it.getDisplayCountry(it).lowercase() == Contants.LANGUAGE_COUNTRY_CHINA.lowercase()
+                                    || it.getDisplayCountry(it).lowercase() == Contants.LANGUAGE_COUNTRY_US.lowercase() }*/
                             .forEach { locale ->
                                 localeItem {
                                     id(locale.toString())

@@ -413,6 +413,15 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                 views.tvDefaultNumber.text = it.displayType
             }
         }
+
+        if (defaultChanelType.lowercase() == Contants.XMPP_TYPE) {
+            views.llCall.isEnabled = false
+            views.tvCall.setTextColor(resources.getColor(R.color.text_color_black1, null))
+        } else {
+            views.llCall.isEnabled = true
+            views.tvCall.setTextColor(resources.getColor(R.color.text_color_black, null))
+        }
+
     }
 
     override fun onRefreshRelations() {

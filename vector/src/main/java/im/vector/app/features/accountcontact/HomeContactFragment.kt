@@ -149,7 +149,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     private fun updateList() {
         val filterList: ArrayList<AccountContactInfo> = ArrayList()
         contactList.forEach {
-            if (it.displayname!!.contains(terms)) {
+            if (it.displayname!!.contains(terms.lowercase())) {
                 filterList.add(it)
             }
         }
