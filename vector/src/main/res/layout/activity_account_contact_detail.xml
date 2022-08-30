@@ -472,4 +472,8 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <include
+        android:id="@+id/waiting_view"
+        layout="@layout/merge_overlay_waiting_view" />
+
 </LinearLayout>

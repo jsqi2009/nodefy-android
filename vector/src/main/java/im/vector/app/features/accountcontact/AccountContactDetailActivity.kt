@@ -5,6 +5,14 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.viewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.labo.kaji.relativepopupwindow.RelativePopupWindow
@@ -14,11 +22,18 @@ import com.squareup.otto.Subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
 import im.vector.app.core.di.ActiveSessionHolder
+import im.vector.app.core.error.ErrorFormatter
+import im.vector.app.core.extensions.hideKeyboard
 import im.vector.app.core.platform.VectorBaseActivity
+import im.vector.app.core.platform.WaitingViewData
 import im.vector.app.databinding.ActivityAccountContactDetailBinding
 import im.vector.app.features.accountcontact.util.AvatarRendererUtil
 import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
 import im.vector.app.features.accountcontact.widget.SetDefaultChannelDialog
+import im.vector.app.features.analytics.plan.ViewRoom
+import im.vector.app.features.createdirect.CreateDirectRoomAction
+import im.vector.app.features.createdirect.CreateDirectRoomViewModel
+import im.vector.app.features.createdirect.CreateDirectRoomViewState
 import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.dialer.call.DialerCallActivity
 import im.vector.app.kelare.message.PeopleChatMessageActivity
@@ -42,8 +57,11 @@ import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.UpdateContactRelationInfo
 import im.vector.app.kelare.network.models.XmppContact
 import im.vector.app.kelare.widget.SipAccountPopup
+import org.matrix.android.sdk.api.failure.Failure
 import org.matrix.android.sdk.api.session.Session
+import org.matrix.android.sdk.api.session.room.failure.CreateRoomFailure
 import timber.log.Timber
+import java.net.HttpURLConnection
 import java.util.Locale
 import javax.inject.Inject
 
@@ -55,7 +73,10 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
     override fun getBinding() = ActivityAccountContactDetailBinding.inflate(layoutInflater)
 
+    private val viewModel: ContactCreateDirectRoomViewModel by viewModel()
+
     @Inject lateinit var sessionHolder: ActiveSessionHolder
+    @Inject lateinit var errorFormatter: ErrorFormatter
 
     private var session: Session? = null
     private var loading: KProgressHUD? = null
@@ -83,11 +104,24 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         initView()
         getRelations(true)
+
+        viewModel.onEach(CreateDirectRoomViewState::createAndInviteState) {
+            renderCreateAndInviteState(it)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         getRegisterSIPUser()
+    }
+
+    private fun renderCreateAndInviteState(state: Async<String>) {
+        when (state) {
+            is Loading -> renderCreationLoading()
+            is Success -> renderCreationSuccess(state())
+            is Fail    -> renderCreationFailure(state.error)
+            else       -> Unit
+        }
     }
 
     private fun initView() {
@@ -481,17 +515,21 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         showLoading()
         HttpClient.setContactDefaultChannel(this, relationInfo)
-        updateRelations(item)
+        updateRelations(item, isNodefy)
     }
 
-    private fun updateRelations(item: ContactChannelInfo) {
+    private fun updateRelations(item: ContactChannelInfo, isNodefy: Boolean) {
         val info: UpdateContactRelationInfo = UpdateContactRelationInfo()
         info.primary_user_id = targetContact.contacts_id
         relationsList.forEach {
             val childrenInfo = ChildrenUserInfo()
             childrenInfo.user_id = it.user_id
             childrenInfo.account_type = it.account_type
-            childrenInfo.is_main = it.account_type == item.contacts_type
+            if (isNodefy) {
+                childrenInfo.is_main = false
+            } else {
+                childrenInfo.is_main = it.account_type == item.contacts_type
+            }
 
             info.children_users.add(childrenInfo)
         }
@@ -519,7 +557,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     private fun contactMessage() {
         when (defaultChanelType) {
             Contants.NODEFY_TYPE -> {
-
+                viewModel.onSubmitInvitees(targetContact.contacts_id!!)
             }
             Contants.SIP_TYPE    -> {
                 if (core.accountList.isEmpty()) {
@@ -753,6 +791,90 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             }
         }
         directlyToMessage(event.item)
+    }
+
+    private fun renderCreationLoading() {
+        updateWaitingView(WaitingViewData(getString(R.string.creating_direct_room)))
+    }
+
+    private fun renderCreationFailure(error: Throwable) {
+        hideWaitingView()
+        when (error) {
+            is CreateRoomFailure.CreatedWithTimeout           -> {
+
+            }
+            is CreateRoomFailure.CreatedWithFederationFailure -> {
+                MaterialAlertDialogBuilder(this)
+                        .setMessage(getString(R.string.create_room_federation_error, error.matrixError.message))
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> finish() }
+                        .show()
+            }
+            else                                              -> {
+                val message = if (error is Failure.ServerError && error.httpCode == HttpURLConnection.HTTP_INTERNAL_ERROR /*500*/) {
+                    // This error happen if the invited userId does not exist.
+                    getString(R.string.create_room_dm_failure)
+                } else {
+                    errorFormatter.toHumanReadable(error)
+                }
+                MaterialAlertDialogBuilder(this)
+                        .setMessage(message)
+                        .setPositiveButton(R.string.ok, null)
+                        .show()
+            }
+        }
+    }
+
+    private fun renderCreationSuccess(roomId: String) {
+        navigator.openRoom(
+                context = this,
+                roomId = roomId,
+                trigger = ViewRoom.Trigger.MessageUser
+        )
+        finish()
+    }
+
+    /**
+     * Displays a progress indicator with a message to the user.
+     * Blocks user interactions.
+     */
+    fun updateWaitingView(data: WaitingViewData?) {
+        data?.let {
+            views.waitingView.waitingStatusText.text = data.message
+
+            if (data.progress != null && data.progressTotal != null) {
+                views.waitingView.waitingHorizontalProgress.isIndeterminate = false
+                views.waitingView.waitingHorizontalProgress.progress = data.progress
+                views.waitingView.waitingHorizontalProgress.max = data.progressTotal
+                views.waitingView.waitingHorizontalProgress.isVisible = true
+                views.waitingView.waitingCircularProgress.isVisible = false
+            } else if (data.isIndeterminate) {
+                views.waitingView.waitingHorizontalProgress.isIndeterminate = true
+                views.waitingView.waitingHorizontalProgress.isVisible = true
+                views.waitingView.waitingCircularProgress.isVisible = false
+            } else {
+                views.waitingView.waitingHorizontalProgress.isVisible = false
+                views.waitingView.waitingCircularProgress.isVisible = true
+            }
+
+            showWaitingView()
+        } ?: run {
+            hideWaitingView()
+        }
+    }
+
+    override fun showWaitingView(text: String?) {
+        hideKeyboard()
+        views.waitingView.waitingStatusText.isGone = views.waitingView.waitingStatusText.text.isNullOrBlank()
+        super.showWaitingView(text)
+    }
+
+    override fun hideWaitingView() {
+        views.waitingView.waitingStatusText.text = null
+        views.waitingView.waitingStatusText.isGone = true
+        views.waitingView.waitingHorizontalProgress.progress = 0
+        views.waitingView.waitingHorizontalProgress.isVisible = false
+        super.hideWaitingView()
     }
 
     private fun showLoading() {
