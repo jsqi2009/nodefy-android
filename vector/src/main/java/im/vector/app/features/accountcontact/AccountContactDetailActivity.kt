@@ -1,9 +1,13 @@
 package im.vector.app.features.accountcontact
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
+import android.widget.Toast
 import com.google.gson.Gson
 import com.kaopiz.kprogresshud.KProgressHUD
+import com.labo.kaji.relativepopupwindow.RelativePopupWindow
 import com.mylhyl.circledialog.CircleDialog
 import com.mylhyl.circledialog.view.listener.OnButtonClickListener
 import com.squareup.otto.Subscribe
@@ -16,22 +20,31 @@ import im.vector.app.features.accountcontact.util.AvatarRendererUtil
 import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
 import im.vector.app.features.accountcontact.widget.SetDefaultChannelDialog
 import im.vector.app.kelare.content.Contants
+import im.vector.app.kelare.dialer.call.DialerCallActivity
+import im.vector.app.kelare.message.PeopleChatMessageActivity
+import im.vector.app.kelare.message.SendMessageActivity
 import im.vector.app.kelare.message.widget.CreateXMPPGroupDialog
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.DefaultContactRelationResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactRelationResponseEvent
+import im.vector.app.kelare.network.event.SetDefaultCallAccountEvent
+import im.vector.app.kelare.network.event.SetDefaultMessageAccountEvent
+import im.vector.app.kelare.network.event.UpdateContactRelationResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
 import im.vector.app.kelare.network.models.ChildrenInfo
 import im.vector.app.kelare.network.models.ChildrenUserInfo
 import im.vector.app.kelare.network.models.ContactChannelInfo
 import im.vector.app.kelare.network.models.ContactRelationInfo
 import im.vector.app.kelare.network.models.DefaultContactRelationInfo
+import im.vector.app.kelare.network.models.DialerAccountInfo
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.UpdateContactRelationInfo
 import im.vector.app.kelare.network.models.XmppContact
+import im.vector.app.kelare.widget.SipAccountPopup
 import org.matrix.android.sdk.api.session.Session
 import timber.log.Timber
+import java.util.Locale
 import javax.inject.Inject
 
 private const val nodefyType  = "nodefy"
@@ -54,6 +67,13 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     private var defaultRelation: ContactRelationInfo? = ContactRelationInfo()
     private var contactChannelList: ArrayList<ContactChannelInfo> = ArrayList()
 
+    //sip
+    private var sipContactInfo:DialerContactInfo = DialerContactInfo()
+    private var sipAccountList:ArrayList<DialerAccountInfo> = ArrayList()
+    private var selectedAccount: DialerAccountInfo = DialerAccountInfo()
+    private var defaultNumber:String? = null
+    private var defaultSipNumber:String? = null
+
     private var isEdit = false
     private var defaultChanelType: String = "nodefy"
 
@@ -63,6 +83,11 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         initView()
         getRelations(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getRegisterSIPUser()
     }
 
     private fun initView() {
@@ -118,10 +143,10 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                 refreshUI()
             }
             R.id.ll_message -> {
-
+                contactMessage()
             }
             R.id.ll_call -> {
-
+                contactCall()
             }
             R.id.setDefaultChannel -> {
                 val channelDialog = SetDefaultChannelDialog(this, mBus, contactChannelList, this)
@@ -418,7 +443,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         contactChannelList.forEach {
             if (it.isDefault) {
                 defaultChanelType = it.contacts_type!!
-                views.tvDefaultNumber.text = it.displayType
+                views.tvDefaultChannel.text = it.displayType
             }
         }
 
@@ -430,6 +455,10 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             views.llCall.isEnabled = true
             views.tvCall.setTextColor(resources.getColor(R.color.text_color_black, null))
             views.callIcon.setImageResource(R.drawable.ic_dialer_call)
+        }
+
+        if (defaultChanelType.lowercase() == Contants.SIP_TYPE) {
+            setDefaultNumber()
         }
 
     }
@@ -452,14 +481,278 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         showLoading()
         HttpClient.setContactDefaultChannel(this, relationInfo)
+        updateRelations(item)
     }
+
+    private fun updateRelations(item: ContactChannelInfo) {
+        val info: UpdateContactRelationInfo = UpdateContactRelationInfo()
+        info.primary_user_id = targetContact.contacts_id
+        relationsList.forEach {
+            val childrenInfo = ChildrenUserInfo()
+            childrenInfo.user_id = it.user_id
+            childrenInfo.account_type = it.account_type
+            childrenInfo.is_main = it.account_type == item.contacts_type
+
+            info.children_users.add(childrenInfo)
+        }
+        HttpClient.updateContactRelation(this, info)
+    }
+
+    @Subscribe
+    fun onAssociateContactEvent(event: UpdateContactRelationResponseEvent) {
+        if (event.isSuccess) {
+            getRelations(false)
+        } else {
+            Toast.makeText(mContext, event.model!!.error, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     @Subscribe
     fun onChannelEvent(event: DefaultContactRelationResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            getRelations(false)
+            //getRelations(false)
         }
+    }
+
+    private fun contactMessage() {
+        when (defaultChanelType) {
+            Contants.NODEFY_TYPE -> {
+
+            }
+            Contants.SIP_TYPE    -> {
+                if (core.accountList.isEmpty()) {
+                    return
+                }
+                sendSipMessage()
+            }
+            Contants.XMPP_TYPE   -> {
+                xmppMessage()
+            }
+            Contants.SKYPE_TYPE   -> {
+
+            }
+            Contants.SLACK_TYPE   -> {
+
+            }
+            Contants.TELEGRAM_TYPE   -> {
+
+            }
+            Contants.WHATSAPP_TYPE   -> {
+
+            }
+        }
+    }
+
+    private fun contactCall() {
+        when (defaultChanelType) {
+            Contants.NODEFY_TYPE -> {
+
+            }
+            Contants.SIP_TYPE    -> {
+                if (core.accountList.isEmpty()) {
+                    return
+                }
+                sipCall()
+            }
+            Contants.XMPP_TYPE   -> {
+
+            }
+            Contants.SKYPE_TYPE   -> {
+
+            }
+            Contants.SLACK_TYPE   -> {
+
+            }
+            Contants.TELEGRAM_TYPE   -> {
+
+            }
+            Contants.WHATSAPP_TYPE   -> {
+
+            }
+        }
+    }
+
+    private fun xmppMessage() {
+        var item = ContactRelationInfo()
+        var xmppItem: XmppContact = XmppContact()
+        relationsList.forEach {
+            if (it.account_type!!.lowercase() == Contants.XMPP_TYPE) {
+                item = it
+                return@forEach
+            }
+        }
+        xmppContactList.forEach {
+            if (item.user_id == it.jid.toString()) {
+                xmppItem = it
+            }
+        }
+
+        val intent = Intent(this, PeopleChatMessageActivity::class.java)
+        intent.putExtra("contact", xmppItem)
+        intent.putExtra("index", 1)
+        startActivity(intent)
+    }
+
+    private fun sipCall() {
+        if (sipAccountList.size > 0) {
+            val filterList = checkDefaultDomain()
+            if (filterList!!.isEmpty()) {
+                return
+            }
+            if (filterList.size == 1) {
+                setDefaultAccount(filterList[0])
+                directlyToCall()
+            } else {
+                val callPopupWindow = SipAccountPopup(this, mBus, filterList, true, false, true, false)
+                callPopupWindow!!.showOnAnchor(views.llCall, RelativePopupWindow.VerticalPosition.ABOVE,
+                        RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, true)
+            }
+        }
+    }
+
+    private fun directlyToCall() {
+        var proxy = ""
+        if (TextUtils.isEmpty(selectedAccount.extension.outProxy)) {
+            proxy = selectedAccount.domain!!
+        } else {
+            proxy = selectedAccount.extension.outProxy!!
+        }
+
+        val intent = Intent(this, DialerCallActivity::class.java)
+        intent.putExtra("index", 1)
+        intent.putExtra("remote_user", defaultSipNumber)
+        intent.putExtra("local_user", selectedAccount.username)
+        intent.putExtra("domain", proxy)
+        intent.putExtra("proxy", proxy)
+        startActivity(intent)
+    }
+
+    private fun setDefaultNumber() {
+
+        var item = ContactRelationInfo()
+        relationsList.forEach {
+            if (it.account_type!!.lowercase() == Contants.SIP_TYPE) {
+                item = it
+                return@forEach
+            }
+        }
+        sipContactList.forEach {
+            if (item.user_id == it.id) {
+                sipContactInfo = it
+            }
+        }
+
+        sipContactInfo.phone!!.forEach {
+            if (it.isDefault!!) {
+                defaultSipNumber = it.number
+                defaultNumber = it.number
+            }
+        }
+        sipContactInfo.online_phone!!.forEach {
+            if (it.isDefault!!) {
+                //views.tvDefaultNumber.text = it.number
+                defaultSipNumber = it.number!!.split("@")[0]
+                defaultNumber = it.number
+            }
+        }
+    }
+
+    private fun getRegisterSIPUser() {
+        sipAccountList.clear()
+        dialerSession.accountListInfo!!.forEach {
+            if (it.type_value!!.lowercase(Locale.ROOT) == "sip" && it.enabled && it.extension.isConnected) {
+                sipAccountList.add(it)
+            }
+        }
+    }
+
+    private fun sendSipMessage(){
+        if (sipAccountList.size > 0) {
+            val filterList = checkDefaultDomain()
+            if (filterList!!.isEmpty()) {
+                return
+            }
+            if (filterList.size == 1) {
+                setDefaultAccount(filterList[0])
+                directlyToMessage(filterList[0])
+            } else {
+                val callPopupWindow = SipAccountPopup(this, mBus, filterList, true, false, true, true)
+                callPopupWindow.showOnAnchor(views.llMessage, RelativePopupWindow.VerticalPosition.ABOVE,
+                        RelativePopupWindow.HorizontalPosition.ALIGN_LEFT, true)
+            }
+        }
+    }
+
+    private fun directlyToMessage(item: DialerAccountInfo) {
+        val intent = Intent(this, SendMessageActivity::class.java)
+        intent.putExtra("remote_number", defaultSipNumber)
+        intent.putExtra("selected_account", item)
+        startActivity(intent)
+    }
+
+    private fun setDefaultAccount(item: DialerAccountInfo) {
+        val mAccount = item
+        selectedAccount = item
+        val list = core.accountList
+        for (account in list) {
+            val domain = account.findAuthInfo()!!.domain.toString()
+            val username = account.findAuthInfo()!!.username
+            if (username == mAccount.username && domain == mAccount.domain) {
+                core.defaultAccount = account
+                break
+            }
+        }
+    }
+
+    private fun checkDefaultDomain(): ArrayList<DialerAccountInfo>? {
+        var filterAccountList:ArrayList<DialerAccountInfo> = ArrayList()
+
+        if (!defaultNumber!!.contains("@")) {
+            filterAccountList = sipAccountList
+        } else {
+            filterAccountList.clear()
+            val defaultDomain = defaultNumber!!.split("@")[1]
+            sipAccountList.forEach {
+                if (it.domain!!.trim().trimEnd() == defaultDomain.trimEnd().trim()) {
+                    filterAccountList.add(it)
+                }
+            }
+        }
+        return filterAccountList
+    }
+
+    @Subscribe
+    fun onSetDefaultCallEvent(event: SetDefaultCallAccountEvent){
+        selectedAccount = event.item
+        Timber.e("selected account--${selectedAccount.username}")
+        val list = core.accountList
+        for (account in list) {
+            val domain = account.findAuthInfo()!!.domain.toString()
+            val username = account.findAuthInfo()!!.username
+            if (username == selectedAccount.username && domain == selectedAccount.domain) {
+                core.defaultAccount = account
+                break
+            }
+        }
+        directlyToCall()
+    }
+
+    @Subscribe
+    fun onSetDefaultMessageEvent(event: SetDefaultMessageAccountEvent){
+        selectedAccount = event.item
+        Timber.e("selected message account--${selectedAccount.username}")
+        val list = core.accountList
+        for (account in list) {
+            val domain = account.findAuthInfo()!!.domain.toString()
+            val username = account.findAuthInfo()!!.username
+            if (username == selectedAccount.username && domain == selectedAccount.domain) {
+                core.defaultAccount = account
+                break
+            }
+        }
+        directlyToMessage(event.item)
     }
 
     private fun showLoading() {
@@ -475,6 +768,22 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         if (loading != null && loading!!.isShowing) {
             loading!!.dismiss()
             loading = null
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            mBus.unregister(this)
+        } catch (e: Exception) {
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            mBus.unregister(this)
+        } catch (e: Exception) {
         }
     }
 
