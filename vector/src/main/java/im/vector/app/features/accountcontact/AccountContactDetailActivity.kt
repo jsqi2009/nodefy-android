@@ -104,6 +104,8 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         views.slackDelete.setOnClickListener(this)
         views.telegramDelete.setOnClickListener(this)
         views.whatsappDelete.setOnClickListener(this)
+        views.llMessage.setOnClickListener(this)
+        views.llCall.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -114,6 +116,12 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             R.id.tv_edit -> {
                 isEdit = !isEdit
                 refreshUI()
+            }
+            R.id.ll_message -> {
+
+            }
+            R.id.ll_call -> {
+
             }
             R.id.setDefaultChannel -> {
                 val channelDialog = SetDefaultChannelDialog(this, mBus, contactChannelList, this)
@@ -417,9 +425,11 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         if (defaultChanelType.lowercase() == Contants.XMPP_TYPE) {
             views.llCall.isEnabled = false
             views.tvCall.setTextColor(resources.getColor(R.color.text_color_black1, null))
+            views.callIcon.setImageResource(R.drawable.ic_call_gray)
         } else {
             views.llCall.isEnabled = true
             views.tvCall.setTextColor(resources.getColor(R.color.text_color_black, null))
+            views.callIcon.setImageResource(R.drawable.ic_dialer_call)
         }
 
     }
