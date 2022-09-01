@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.accountcontact
+package im.vector.app.features.accountcontact.viewmodel
 
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MavericksViewModelFactory
@@ -28,22 +28,18 @@ import im.vector.app.core.mvrx.runCatchingToAsync
 import im.vector.app.core.platform.VectorViewModel
 import im.vector.app.features.analytics.AnalyticsTracker
 import im.vector.app.features.analytics.plan.CreatedRoom
+import im.vector.app.features.call.webrtc.WebRtcCallManager
 import im.vector.app.features.createdirect.CreateDirectRoomAction
 import im.vector.app.features.createdirect.CreateDirectRoomViewEvents
 import im.vector.app.features.createdirect.CreateDirectRoomViewState
 import im.vector.app.features.raw.wellknown.getElementWellknown
 import im.vector.app.features.raw.wellknown.isE2EByDefault
-import im.vector.app.features.userdirectory.PendingSelection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.matrix.android.sdk.api.extensions.orFalse
 import org.matrix.android.sdk.api.raw.RawService
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getUser
-import org.matrix.android.sdk.api.session.permalinks.PermalinkData
-import org.matrix.android.sdk.api.session.permalinks.PermalinkParser
 import org.matrix.android.sdk.api.session.room.model.create.CreateRoomParams
-import org.matrix.android.sdk.api.session.user.model.User
 
 /**
  * author : Jason
@@ -54,7 +50,8 @@ class ContactCreateDirectRoomViewModel @AssistedInject constructor(
         @Assisted initialState: CreateDirectRoomViewState,
         private val rawService: RawService,
         val session: Session,
-        val analyticsTracker: AnalyticsTracker
+        val analyticsTracker: AnalyticsTracker,
+        private val callManager: WebRtcCallManager,
 ) : VectorViewModel<CreateDirectRoomViewState, CreateDirectRoomAction, CreateDirectRoomViewEvents>(initialState) {
 
     @AssistedFactory
@@ -105,6 +102,17 @@ class ContactCreateDirectRoomViewModel @AssistedInject constructor(
                         createAndInviteState = result
                 )
             }
+        }
+    }
+
+    fun checkRoomIfExist(userId: String): String {
+        val existingRoomId = session.roomService().getExistingDirectRoomWithUser(userId)
+        return existingRoomId ?: ""
+    }
+
+    fun startCall(roomID: String, userId: String) {
+        viewModelScope.launch {
+            callManager.startOutgoingCall(roomID, userId, false)
         }
     }
 

@@ -26,19 +26,28 @@ import im.vector.app.core.error.ErrorFormatter
 import im.vector.app.core.extensions.hideKeyboard
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.core.platform.WaitingViewData
+import im.vector.app.core.ui.views.CurrentCallsView
+import im.vector.app.core.utils.onPermissionDeniedDialog
+import im.vector.app.core.utils.registerForPermissionsResult
 import im.vector.app.databinding.ActivityAccountContactDetailBinding
 import im.vector.app.features.accountcontact.util.AvatarRendererUtil
+import im.vector.app.features.accountcontact.viewmodel.ContactCallViewModel
+import im.vector.app.features.accountcontact.viewmodel.ContactCreateDirectRoomViewModel
+import im.vector.app.features.accountcontact.viewmodel.ContactStartCallActionsHandler
 import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
 import im.vector.app.features.accountcontact.widget.SetDefaultChannelDialog
 import im.vector.app.features.analytics.plan.ViewRoom
-import im.vector.app.features.createdirect.CreateDirectRoomAction
-import im.vector.app.features.createdirect.CreateDirectRoomViewModel
+import im.vector.app.features.call.VectorCallActivity
+import im.vector.app.features.call.webrtc.WebRtcCallManager
 import im.vector.app.features.createdirect.CreateDirectRoomViewState
+import im.vector.app.features.home.room.detail.RoomDetailAction
+import im.vector.app.features.home.room.detail.RoomDetailViewState
+import im.vector.app.features.home.room.detail.StartCallActionsHandler
+import im.vector.app.features.settings.VectorPreferences
 import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.dialer.call.DialerCallActivity
 import im.vector.app.kelare.message.PeopleChatMessageActivity
 import im.vector.app.kelare.message.SendMessageActivity
-import im.vector.app.kelare.message.widget.CreateXMPPGroupDialog
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.DefaultContactRelationResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactRelationResponseEvent
@@ -74,6 +83,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     override fun getBinding() = ActivityAccountContactDetailBinding.inflate(layoutInflater)
 
     private val viewModel: ContactCreateDirectRoomViewModel by viewModel()
+    //private val callViewModel: ContactCallViewModel by viewModel()
 
     @Inject lateinit var sessionHolder: ActiveSessionHolder
     @Inject lateinit var errorFormatter: ErrorFormatter
@@ -94,6 +104,11 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     private var selectedAccount: DialerAccountInfo = DialerAccountInfo()
     private var defaultNumber:String? = null
     private var defaultSipNumber:String? = null
+
+    //nodefy call
+    private lateinit var callActionsHandler: ContactStartCallActionsHandler
+    @Inject lateinit var callManager: WebRtcCallManager
+    @Inject lateinit var vectorPreferences: VectorPreferences
 
     private var isEdit = false
     private var defaultChanelType: String = "nodefy"
@@ -164,9 +179,9 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         views.llCall.setOnClickListener(this)
 
         if (targetContact.contacts_type!!.lowercase() == Contants.XMPP_TYPE) {
-            views.llCall.isEnabled = true
-            views.tvCall.setTextColor(resources.getColor(R.color.text_color_black, null))
-            views.callIcon.setImageResource(R.drawable.ic_dialer_call)
+            views.llCall.isEnabled = false
+            views.tvCall.setTextColor(resources.getColor(R.color.text_color_black1, null))
+            views.callIcon.setImageResource(R.drawable.ic_call_gray)
         }
 
         if (targetContact.contacts_type!!.lowercase() == nodefyType) {
@@ -600,7 +615,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     private fun contactCall() {
         when (defaultChanelType) {
             Contants.NODEFY_TYPE -> {
-
+                nodefyStartCall(targetContact.contacts_id!!)
             }
             Contants.SIP_TYPE    -> {
                 if (core.accountList.isEmpty()) {
@@ -901,6 +916,17 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         views.waitingView.waitingHorizontalProgress.progress = 0
         views.waitingView.waitingHorizontalProgress.isVisible = false
         super.hideWaitingView()
+    }
+
+    private fun nodefyStartCall(userId: String) {
+
+        val roomID = viewModel.checkRoomIfExist(userId)
+        if (TextUtils.isEmpty(roomID)) {
+            showToast(getString(R.string.account_contact_call_tips))
+            return
+        }
+
+        viewModel.startCall(roomID, targetContact.contacts_id!!)
     }
 
     private fun showLoading() {

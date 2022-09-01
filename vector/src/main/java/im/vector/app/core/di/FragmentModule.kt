@@ -24,6 +24,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.multibindings.IntoMap
+import im.vector.app.features.accountcontact.HomeContactFragment
 import im.vector.app.features.analytics.ui.consent.AnalyticsOptInFragment
 import im.vector.app.features.attachments.preview.AttachmentsPreviewFragment
 import im.vector.app.features.contactsbook.ContactsBookFragment
@@ -999,4 +1000,9 @@ interface FragmentModule {
     @IntoMap
     @FragmentKey(RoomUploadsLinksFragment::class)
     fun bindRoomUploadsLinksFragment(fragment: RoomUploadsLinksFragment): Fragment
+
+    /*@Binds
+    @IntoMap
+    @FragmentKey(HomeContactFragment::class)
+    fun bindHomeContactFragment(fragment: HomeContactFragment): Fragment*/
 }

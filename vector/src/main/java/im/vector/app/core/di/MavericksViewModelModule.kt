@@ -20,7 +20,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.multibindings.IntoMap
-import im.vector.app.features.accountcontact.ContactCreateDirectRoomViewModel
+import im.vector.app.features.accountcontact.viewmodel.ContactCallViewModel
+import im.vector.app.features.accountcontact.viewmodel.ContactCreateDirectRoomViewModel
 import im.vector.app.features.analytics.accountdata.AnalyticsAccountDataViewModel
 import im.vector.app.features.analytics.ui.consent.AnalyticsConsentViewModel
 import im.vector.app.features.auth.ReAuthViewModel
@@ -606,4 +607,9 @@ interface MavericksViewModelModule {
     @IntoMap
     @MavericksViewModelKey(ContactCreateDirectRoomViewModel::class)
     fun createContactDirectRoomViewModelFactory(factory: ContactCreateDirectRoomViewModel.Factory): MavericksAssistedViewModelFactory<*, *>
+
+    @Binds
+    @IntoMap
+    @MavericksViewModelKey(ContactCallViewModel::class)
+    fun contactCallViewModelFactory(factory: ContactCallViewModel.Factory): MavericksAssistedViewModelFactory<*, *>
 }
