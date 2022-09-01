@@ -55,8 +55,7 @@ class ContactCreateDirectRoomViewModel @AssistedInject constructor(
         private val rawService: RawService,
         val session: Session,
         val analyticsTracker: AnalyticsTracker
-) :
-        VectorViewModel<CreateDirectRoomViewState, CreateDirectRoomAction, CreateDirectRoomViewEvents>(initialState) {
+) : VectorViewModel<CreateDirectRoomViewState, CreateDirectRoomAction, CreateDirectRoomViewEvents>(initialState) {
 
     @AssistedFactory
     interface Factory : MavericksAssistedViewModelFactory<ContactCreateDirectRoomViewModel, CreateDirectRoomViewState> {
@@ -64,34 +63,6 @@ class ContactCreateDirectRoomViewModel @AssistedInject constructor(
     }
 
     companion object : MavericksViewModelFactory<ContactCreateDirectRoomViewModel, CreateDirectRoomViewState> by hiltMavericksViewModelFactory()
-
-    override fun handle(action: CreateDirectRoomAction) {
-        when (action) {
-            //is CreateDirectRoomAction.CreateRoomAndInviteSelectedUsers -> onSubmitInvitees(action.selections)
-            is CreateDirectRoomAction.QrScannedAction                  -> onCodeParsed(action)
-        }
-    }
-
-    private fun onCodeParsed(action: CreateDirectRoomAction.QrScannedAction) {
-        val mxid = (PermalinkParser.parse(action.result) as? PermalinkData.UserLink)?.userId
-
-        if (mxid === null) {
-            _viewEvents.post(CreateDirectRoomViewEvents.InvalidCode)
-        } else {
-            // The following assumes MXIDs are case insensitive
-            if (mxid.equals(other = session.myUserId, ignoreCase = true)) {
-                _viewEvents.post(CreateDirectRoomViewEvents.DmSelf)
-            } else {
-                // Try to get user from known users and fall back to creating a User object from MXID
-                val qrInvitee = if (session.getUser(mxid) != null) {
-                    session.getUser(mxid)!!
-                } else {
-                    User(mxid, null, null)
-                }
-                //onSubmitInvitees(setOf(PendingSelection.UserPendingSelection(qrInvitee)))
-            }
-        }
-    }
 
     /**
      * If users already have a DM room then navigate to it instead of creating a new room.
@@ -135,5 +106,9 @@ class ContactCreateDirectRoomViewModel @AssistedInject constructor(
                 )
             }
         }
+    }
+
+    override fun handle(action: CreateDirectRoomAction) {
+
     }
 }

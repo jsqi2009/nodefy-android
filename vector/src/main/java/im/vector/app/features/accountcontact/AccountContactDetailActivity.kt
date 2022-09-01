@@ -103,7 +103,9 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         statusBarWhiteColor(this)
 
         initView()
-        getRelations(true)
+        if (defaultChanelType == Contants.NODEFY_TYPE) {
+            getRelations(true)
+        }
 
         viewModel.onEach(CreateDirectRoomViewState::createAndInviteState) {
             renderCreateAndInviteState(it)
@@ -133,17 +135,12 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         xmppContactList = intent.getSerializableExtra("xmppContactList") as ArrayList<XmppContact>
         targetContact = intent.getSerializableExtra("item") as AccountContactInfo
 
+        defaultChanelType = targetContact.contacts_type!!.lowercase()
+
         Timber.d("contact item info---${contactList[0]}")
         Timber.d("sip contact item info---${sipContactList}")
         Timber.d("xmpp contact item info---${xmppContactList}")
         Timber.d("item info---$targetContact")
-
-        if (targetContact.contacts_type!!.lowercase() == nodefyType) {
-            views.associateLayout.visibility = View.VISIBLE
-        } else {
-            views.associateLayout.visibility = View.GONE
-            views.tvEdit.visibility = View.GONE
-        }
 
         views.tvUsername.text = targetContact.displayname
         AvatarRendererUtil.render(mContext, targetContact, views.ivAvatar)
@@ -165,6 +162,23 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         views.whatsappDelete.setOnClickListener(this)
         views.llMessage.setOnClickListener(this)
         views.llCall.setOnClickListener(this)
+
+        if (targetContact.contacts_type!!.lowercase() == Contants.XMPP_TYPE) {
+            views.llCall.isEnabled = true
+            views.tvCall.setTextColor(resources.getColor(R.color.text_color_black, null))
+            views.callIcon.setImageResource(R.drawable.ic_dialer_call)
+        }
+
+        if (targetContact.contacts_type!!.lowercase() == nodefyType) {
+            views.associateLayout.visibility = View.VISIBLE
+        } else {
+            views.associateLayout.visibility = View.GONE
+            views.tvEdit.visibility = View.GONE
+        }
+
+        if (targetContact.contacts_type!!.lowercase() == Contants.SIP_TYPE) {
+            setDefaultNumber()
+        }
     }
 
     override fun onClick(v: View?) {
@@ -622,8 +636,14 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             }
         }
         xmppContactList.forEach {
-            if (item.user_id == it.jid.toString()) {
-                xmppItem = it
+            if (targetContact.contacts_type!!.lowercase() == Contants.XMPP_TYPE) {
+                if (targetContact.contacts_id == it.jid.toString()) {
+                    xmppItem = it
+                }
+            } else {
+                if (item.user_id == it.jid.toString()) {
+                    xmppItem = it
+                }
             }
         }
 
@@ -677,8 +697,14 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             }
         }
         sipContactList.forEach {
-            if (item.user_id == it.id) {
-                sipContactInfo = it
+            if (targetContact.contacts_type!!.lowercase() == Contants.SIP_TYPE) {
+                if (targetContact.contacts_id == it.id) {
+                    sipContactInfo = it
+                }
+            } else {
+                if (item.user_id == it.id) {
+                    sipContactInfo = it
+                }
             }
         }
 
