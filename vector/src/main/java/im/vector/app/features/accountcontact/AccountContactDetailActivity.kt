@@ -569,6 +569,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
     @Subscribe
     fun onAssociateContactEvent(event: UpdateContactRelationResponseEvent) {
+        hideLoading()
         if (event.isSuccess) {
             getRelations(false)
         } else {

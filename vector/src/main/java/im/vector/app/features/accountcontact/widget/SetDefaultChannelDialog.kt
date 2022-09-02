@@ -94,7 +94,11 @@ class SetDefaultChannelDialog(val mContext: Context, val mBus: AndroidBus, priva
                 dismiss()
             }
             R.id.tv_save -> {
-                saveChannel()
+                if (contactChannelList.size == 1) {
+                    dismiss()
+                } else {
+                    saveChannel()
+                }
             }
             else -> {
             }
