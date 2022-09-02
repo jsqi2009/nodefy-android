@@ -661,8 +661,10 @@ class RoomListFragment @Inject constructor(
         var publicList: PagedList<RoomSummary>? = null
         val items : ArrayList<RoomSummary> = ArrayList()
         pl.snapshot().forEach {
-            if (it.displayName.contains(terms)) {
-                items.add(it)
+            if (it != null) {
+                if (it.displayName.contains(terms)) {
+                    items.add(it)
+                }
             }
         }
         if (items.isNotEmpty()) {
