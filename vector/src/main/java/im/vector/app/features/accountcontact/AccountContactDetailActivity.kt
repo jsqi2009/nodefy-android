@@ -68,6 +68,7 @@ import im.vector.app.kelare.network.models.XmppContact
 import im.vector.app.kelare.widget.SipAccountPopup
 import org.matrix.android.sdk.api.failure.Failure
 import org.matrix.android.sdk.api.session.Session
+import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.api.session.room.failure.CreateRoomFailure
 import timber.log.Timber
 import java.net.HttpURLConnection
@@ -923,6 +924,18 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         val roomID = viewModel.checkRoomIfExist(userId)
         if (TextUtils.isEmpty(roomID)) {
             showToast(getString(R.string.account_contact_call_tips))
+            return
+        }
+
+        val room = session!!.getRoom(roomID)!!
+        val roomSummary = room.roomSummary()
+        if (roomSummary!!.joinedMembersCount == 1) {
+            val pendingInvite = roomSummary.invitedMembersCount ?: 0 > 0
+            if (pendingInvite) {
+                showToast(getString(R.string.cannot_call_yourself_with_invite))
+            } else {
+                showToast(getString(R.string.cannot_call_yourself))
+            }
             return
         }
 
