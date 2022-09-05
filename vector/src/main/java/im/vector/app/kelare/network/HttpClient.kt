@@ -11,6 +11,7 @@ import im.vector.app.kelare.network.event.DeleteContactRelationResponseEvent
 import im.vector.app.kelare.network.event.DeleteContactResponseEvent
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.GetAccountContactResponseEvent
+import im.vector.app.kelare.network.event.GetAllContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
@@ -37,6 +38,7 @@ import im.vector.app.kelare.network.response.DeleteContactRelationResponse
 import im.vector.app.kelare.network.response.DeleteContactResponse
 import im.vector.app.kelare.network.response.DialerAccountInfoResponse
 import im.vector.app.kelare.network.response.GetAccountContactResponse
+import im.vector.app.kelare.network.response.GetAllContactRelationResponse
 import im.vector.app.kelare.network.response.GetContactRelationResponse
 import im.vector.app.kelare.network.response.GetContactResponse
 import im.vector.app.kelare.network.response.GetLicenseResponse
@@ -366,6 +368,15 @@ object HttpClient {
 
         val call = mHttpApi!!.deleteContactRelation(getHeaders(context), relationInfo)
         dispatchClient!!.enqueue(call, DeleteContactRelationResponse::class.java, DeleteContactRelationResponseEvent::class.java, type)
+    }
+
+    /**
+     * get all Contact Relations
+     */
+    fun getAllContactRelations(context: Context) {
+
+        val call = mHttpApi!!.getAllContactRelations(getHeaders(context))
+        dispatchClient!!.enqueue(call, GetAllContactRelationResponse::class.java, GetAllContactRelationResponseEvent::class.java)
     }
 
 

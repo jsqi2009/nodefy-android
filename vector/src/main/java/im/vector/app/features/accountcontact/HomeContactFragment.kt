@@ -33,11 +33,14 @@ import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.databinding.FragmentHomeContactBinding
 import im.vector.app.features.home.HomeActivity
 import im.vector.app.kelare.adapter.AccountContactAdapter
+import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.network.HttpClient
 import im.vector.app.kelare.network.event.GetAccountContactResponseEvent
+import im.vector.app.kelare.network.event.GetAllContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.PresenceStatusResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
+import im.vector.app.kelare.network.models.ContactRelationInfo
 import im.vector.app.kelare.network.models.DialerAccountInfo
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.XmppContact
@@ -58,10 +61,12 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     private var param2: String? = null
 
     private var contactList: ArrayList<AccountContactInfo> = ArrayList()
+    private var filterContactList: ArrayList<AccountContactInfo> = ArrayList()
     private lateinit var mAdapter: AccountContactAdapter
     private var terms = ""
     private var sipContactList:ArrayList<DialerContactInfo> = ArrayList()
     private var xmppContactList: ArrayList<XmppContact> = ArrayList()
+    private var allRelationsList: ArrayList<ContactRelationInfo> = ArrayList()
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?) =
             FragmentHomeContactBinding.inflate(inflater, container, false)
@@ -78,6 +83,11 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        //getContacts()
+    }
+
+    override fun onResume() {
+        super.onResume()
         getContacts()
     }
 
@@ -88,14 +98,14 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     }
 
     private fun getContacts() {
-        showLoadingDialog()
+        this@HomeContactFragment.vectorBaseActivity.showLoadingDialog()
         HttpClient.getAccountContact(this@HomeContactFragment.vectorBaseActivity)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Subscribe
     fun onContactEvent(event: GetAccountContactResponseEvent) {
-        hideLoadingDialog()
+        this@HomeContactFragment.vectorBaseActivity.hideLoadingDialog()
         contactList.clear()
         if (event.isSuccess) {
             val mList = event.model!!.data
@@ -148,7 +158,8 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     @SuppressLint("NotifyDataSetChanged")
     private fun updateList() {
         val filterList: ArrayList<AccountContactInfo> = ArrayList()
-        contactList.forEach {
+//        contactList.forEach {
+        filterContactList.forEach {
             if (it.displayname!!.contains(terms.lowercase())) {
                 filterList.add(it)
             }
@@ -181,7 +192,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     }
 
     @Subscribe
-    fun onGetContactEvent(event: GetContactResponseEvent) {
+    fun onGetSipContactEvent(event: GetContactResponseEvent) {
         //hideLoadingDialog()
         if (event.isSuccess) {
             Timber.e("info: ${event.model!!.data}")
@@ -190,7 +201,8 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             sipContactList.forEach {
                 val contactInfo: AccountContactInfo = AccountContactInfo()
                 contactInfo.contacts_id = it.id
-                contactInfo.contacts_type = "sip"
+//                contactInfo.contacts_type = Contants.SIP_TYPE.lowercase()
+                contactInfo.contacts_type = Contants.SIP_TYPE
                 contactInfo.displayname = it.first_name
                 contactInfo.avatar_url = ""
                 contactInfo.isOnline = false
@@ -198,12 +210,14 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
                 contactList.add(contactInfo)
             }
 
-            mAdapter.data.clear()
+            /*mAdapter.data.clear()
             mAdapter.data.addAll(contactList)
-            mAdapter.notifyDataSetChanged()
+            mAdapter.notifyDataSetChanged()*/
 
+            //get all contact relations
+            getAllRelations()
             //check presence status
-            checkStatus()
+            //checkStatus()
         }
     }
 
@@ -229,7 +243,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             xmppContactList.forEach {
                 val contactInfo: AccountContactInfo = AccountContactInfo()
                 contactInfo.contacts_id = it.jid.toString()
-                contactInfo.contacts_type = "xmpp"
+                contactInfo.contacts_type = Contants.XMPP_TYPE
                 contactInfo.displayname = it.jid.toString()
                 contactInfo.avatar_url = ""
                 contactInfo.isOnline = false
@@ -249,6 +263,41 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             }
         }
         return accountName
+    }
+
+    private fun getAllRelations() {
+        this@HomeContactFragment.vectorBaseActivity.showLoadingDialog()
+        HttpClient.getAllContactRelations(this@HomeContactFragment.vectorBaseActivity)
+    }
+
+    @Subscribe
+    fun onAllRelationsEvent(event: GetAllContactRelationResponseEvent) {
+        this@HomeContactFragment.vectorBaseActivity.hideLoadingDialog()
+        if (event.isSuccess) {
+            allRelationsList.clear()
+            filterContactList.clear()
+            allRelationsList = event.model!!.related_contacts
+
+            contactList.forEach { item ->
+                var isExist = false
+                allRelationsList.forEach {
+                    if (it.user_id == item.contacts_id) {
+                        isExist = true
+                        return@forEach
+                    }
+                }
+                if (!isExist) {
+                  filterContactList.add(item)
+                }
+            }
+
+            mAdapter.data.clear()
+            mAdapter.data.addAll(filterContactList)
+            mAdapter.notifyDataSetChanged()
+
+            //check presence status
+            checkStatus()
+        }
     }
 
     override fun onPause() {

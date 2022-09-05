@@ -130,4 +130,7 @@ public interface HttpApi {
     @HTTP(method = "DELETE", path = "_matrix/client/r0/relations", hasBody = true)
     Call<JsonObject> deleteContactRelation(@HeaderMap Map<String, String> headerMap, @Body UpdateContactRelationInfo info);
 
+    @GET("_matrix/client/r0/relations")
+    Call<JsonObject> getAllContactRelations(@HeaderMap Map<String, String> headerMap);
+
 }

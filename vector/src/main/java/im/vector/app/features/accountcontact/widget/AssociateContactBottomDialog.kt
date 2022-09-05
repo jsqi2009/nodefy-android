@@ -125,7 +125,12 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         backView!!.setOnClickListener(this)
         searchView!!.addTextChangedListener(textWatcher)
 
-        desView!!.text = getString(R.string.account_contact_associate) + " " + type + " " + getString(R.string.account_contact_sheet_account_to_admin)
+        if (type.lowercase() == Contants.SIP_TYPE.lowercase()) {
+            desView!!.text = getString(R.string.account_contact_associate) + " " + mContext.getString(R.string.account_contact_sip) + " " + getString(R.string.account_contact_sheet_account_to_admin)
+        } else {
+            desView!!.text = getString(R.string.account_contact_associate) + " " + type + " " + getString(R.string.account_contact_sheet_account_to_admin)
+        }
+
 
         recyclerView!!.layoutManager = LinearLayoutManager(context)
         mAdapter = AssociateContactAdapter(mContext, arrayListOf())
@@ -187,9 +192,9 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
 
     private fun filterData() {
         filterContactList.clear()
-        if (type.lowercase() == Contants.SIP_TYPE) {
+        if (type.lowercase() == Contants.SIP_TYPE.lowercase()) {
             contactList.forEach {
-                if (it.contacts_type!!.lowercase() == Contants.SIP_TYPE) {
+                if (it.contacts_type!!.lowercase() == Contants.SIP_TYPE.lowercase()) {
                     filterContactList.add(it)
                 }
             }
@@ -245,7 +250,7 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     private fun updateList() {
         val list: ArrayList<AccountContactInfo> = ArrayList()
         filterContactList.forEach {
-            if (it.displayname!!.contains(terms)) {
+            if (it.displayname!!.contains(terms.lowercase())) {
                 list.add(it)
             }
         }

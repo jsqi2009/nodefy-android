@@ -193,7 +193,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             views.tvEdit.visibility = View.GONE
         }
 
-        if (targetContact.contacts_type!!.lowercase() == Contants.SIP_TYPE) {
+        if (targetContact.contacts_type!!.lowercase() == Contants.SIP_TYPE.lowercase()) {
             setDefaultNumber()
         }
     }
@@ -218,7 +218,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                 channelDialog.show()
             }
             R.id.sipAssociate -> {
-                associateContact(getString(R.string.account_contact_sip))
+                associateContact(getString(R.string.account_contact_sip_local))
             }
             R.id.xmppAssociate -> {
                 associateContact(getString(R.string.account_contact_xmpp))
@@ -236,7 +236,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                 associateContact(getString(R.string.account_contact_whatsapp))
             }
             R.id.sipDelete -> {
-                deleteAction(getString(R.string.account_contact_sip))
+                deleteAction(getString(R.string.account_contact_sip_local))
             }
             R.id.xmppDelete -> {
                 deleteAction(getString(R.string.account_contact_xmpp))
@@ -275,7 +275,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         if (isEdit) {
             relationsList.forEach {
-                if (it.account_type!!.lowercase() == Contants.SIP_TYPE) {
+                if (it.account_type!!.lowercase() == Contants.SIP_TYPE.lowercase()) {
                     views.sipDelete.visibility = View.VISIBLE
                 }
                 if (it.account_type!!.lowercase() == Contants.XMPP_TYPE) {
@@ -328,7 +328,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
     private fun renderAssociateInfo() {
         relationsList.forEach { item ->
-            if (item.account_type!!.lowercase() == Contants.SIP_TYPE) {
+            if (item.account_type!!.lowercase() == Contants.SIP_TYPE.lowercase()) {
                 sipContactList.forEach {
                     if (it.id == item.user_id) {
                         views.sipAssociate.text = it.first_name
@@ -427,7 +427,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
     private fun resetUI(type: String) {
         when (type) {
-            Contants.SIP_TYPE -> {
+            Contants.SIP_TYPE.lowercase() -> {
                 views.sipDelete.visibility = View.GONE
                 views.sipAssociate.text = getString(R.string.account_contact_associate)
             }
@@ -474,7 +474,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             channelInfo.contacts_type = it.account_type
             channelInfo.isDefault = it.is_main!!
             channelInfo.checked = it.is_main!!
-            if (it.account_type!!.lowercase() == Contants.SIP_TYPE) {
+            if (it.account_type!!.lowercase() == Contants.SIP_TYPE.lowercase()) {
                 channelInfo.displayType = getString(R.string.account_contact_channel_sip)
             }else if (it.account_type!!.lowercase() == Contants.XMPP_TYPE) {
                 channelInfo.displayType = getString(R.string.account_contact_channel_xmpp)
@@ -522,7 +522,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             views.callIcon.setImageResource(R.drawable.ic_dialer_call)
         }
 
-        if (defaultChanelType.lowercase() == Contants.SIP_TYPE) {
+        if (defaultChanelType.lowercase() == Contants.SIP_TYPE.lowercase()) {
             setDefaultNumber()
         }
 
@@ -592,7 +592,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                 showLoading()
                 viewModel.onSubmitInvitees(targetContact.contacts_id!!)
             }
-            Contants.SIP_TYPE    -> {
+            Contants.SIP_TYPE.lowercase()    -> {
                 if (core.accountList.isEmpty()) {
                     return
                 }
@@ -621,7 +621,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             Contants.NODEFY_TYPE -> {
                 nodefyStartCall(targetContact.contacts_id!!)
             }
-            Contants.SIP_TYPE    -> {
+            Contants.SIP_TYPE.lowercase()    -> {
                 if (core.accountList.isEmpty()) {
                     return
                 }
@@ -710,13 +710,13 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         var item = ContactRelationInfo()
         relationsList.forEach {
-            if (it.account_type!!.lowercase() == Contants.SIP_TYPE) {
+            if (it.account_type!!.lowercase() == Contants.SIP_TYPE.lowercase()) {
                 item = it
                 return@forEach
             }
         }
         sipContactList.forEach {
-            if (targetContact.contacts_type!!.lowercase() == Contants.SIP_TYPE) {
+            if (targetContact.contacts_type!!.lowercase() == Contants.SIP_TYPE.lowercase()) {
                 if (targetContact.contacts_id == it.id) {
                     sipContactInfo = it
                 }

@@ -3295,6 +3295,7 @@
     <string name="account_contact_message">Message</string>
     <string name="account_contact_call">Call</string>
     <string name="account_contact_sip">SIP</string>
+    <string name="account_contact_sip_local">sipLocal</string>
     <string name="account_contact_xmpp">XMPP</string>
     <string name="account_contact_skype">SKYPE</string>
     <string name="account_contact_slack">SLACK</string>
