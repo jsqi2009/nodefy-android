@@ -60,6 +60,15 @@
             android:textColor="@color/text_color_black1"
             tools:ignore="HardcodedText" />
 
+        <ImageView
+            android:id="@+id/defaultStatus"
+            android:layout_width="@dimen/margin_25"
+            android:layout_height="@dimen/margin_25"
+            android:layout_marginEnd="@dimen/margin_15"
+            android:src="@drawable/ic_checked_channel"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
     </LinearLayout>
 
     <View

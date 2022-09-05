@@ -38,6 +38,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
+import com.kaopiz.kprogresshud.KProgressHUD
 import com.squareup.otto.Subscribe
 import im.vector.app.R
 import im.vector.app.kelare.adapter.AssociateContactAdapter
@@ -46,6 +47,7 @@ import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.Contants
 import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.HttpClient
+import im.vector.app.kelare.network.event.GetAllContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.UpdateContactRelationResponseEvent
 import im.vector.app.kelare.network.models.AccountContactInfo
@@ -89,6 +91,9 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     private var relationsList: ArrayList<ContactRelationInfo> = ArrayList()
 
     private var terms = ""
+    private var loading: KProgressHUD? = null
+    private var allRelationsList: ArrayList<ContactRelationInfo> = ArrayList()
+    private var targetContactList: ArrayList<AccountContactInfo> = ArrayList()
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -125,11 +130,12 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         backView!!.setOnClickListener(this)
         searchView!!.addTextChangedListener(textWatcher)
 
-        if (type.lowercase() == Contants.SIP_TYPE.lowercase()) {
+        desView!!.text = getString(R.string.account_contact_associate) + " " + type + " " + getString(R.string.account_contact_sheet_account_to_admin)
+        /*if (type.lowercase() == Contants.SIP_TYPE.lowercase()) {
             desView!!.text = getString(R.string.account_contact_associate) + " " + mContext.getString(R.string.account_contact_sip) + " " + getString(R.string.account_contact_sheet_account_to_admin)
         } else {
             desView!!.text = getString(R.string.account_contact_associate) + " " + type + " " + getString(R.string.account_contact_sheet_account_to_admin)
-        }
+        }*/
 
 
         recyclerView!!.layoutManager = LinearLayoutManager(context)
@@ -139,7 +145,8 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         mAdapter.addChildClickViewIds(R.id.associateView)
         mAdapter.setOnItemChildClickListener(this)
 
-        filterData()
+        getAllRelations()
+        //filterData()
     }
 
     override fun onClick(v: View?) {
@@ -193,44 +200,54 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
     private fun filterData() {
         filterContactList.clear()
         if (type.lowercase() == Contants.SIP_TYPE.lowercase()) {
-            contactList.forEach {
-                if (it.contacts_type!!.lowercase() == Contants.SIP_TYPE.lowercase()) {
+//            contactList.forEach {
+            targetContactList.forEach {
+                if (it.contacts_type!!.lowercase() == Contants.SIP_TYPE.lowercase() || it.contacts_type!!.lowercase() == Contants.SIP_TYPE_LOCAL.lowercase()) {
                     filterContactList.add(it)
                 }
             }
         } else if (type.lowercase() == Contants.XMPP_TYPE) {
-            contactList.forEach {
+//            contactList.forEach {
+            targetContactList.forEach {
                 if (it.contacts_type!!.lowercase() == Contants.XMPP_TYPE) {
                     filterContactList.add(it)
                 }
             }
         } else if (type.lowercase() == Contants.SLACK_TYPE) {
-            contactList.forEach {
+//            contactList.forEach {
+            targetContactList.forEach {
                 if (it.contacts_type!!.lowercase() == Contants.SLACK_TYPE) {
                     filterContactList.add(it)
                 }
             }
         } else if (type.lowercase() == Contants.SKYPE_TYPE) {
-            contactList.forEach {
+//            contactList.forEach {
+            targetContactList.forEach {
                 if (it.contacts_type!!.lowercase() == Contants.SKYPE_TYPE) {
                     filterContactList.add(it)
                 }
             }
         }else if (type.lowercase() == Contants.TELEGRAM_TYPE) {
-            contactList.forEach {
+//            contactList.forEach {
+            targetContactList.forEach {
                 if (it.contacts_type!!.lowercase() == Contants.TELEGRAM_TYPE) {
                     filterContactList.add(it)
                 }
             }
         }else if (type.lowercase() == Contants.WHATSAPP_TYPE) {
-            contactList.forEach {
+//            contactList.forEach {
+            targetContactList.forEach {
                 if (it.contacts_type!!.lowercase() == Contants.WHATSAPP_TYPE) {
                     filterContactList.add(it)
                 }
             }
         }
 
-        if (relationsList.isNotEmpty()) {
+        filterContactList.forEach {
+            it.isAssociate = false
+        }
+
+        /*if (relationsList.isNotEmpty()) {
             relationsList.forEach {
                 filterContactList.forEach { item ->
                     if (it.account_type!!.lowercase() == item.contacts_type!!.lowercase() && it.user_id == item.contacts_id) {
@@ -239,7 +256,7 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
                     }
                 }
             }
-        }
+        }*/
 
         mAdapter.data.clear()
         mAdapter.data.addAll(filterContactList)
@@ -258,6 +275,36 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         mAdapter.data.clear()
         mAdapter.data.addAll(list)
         mAdapter.notifyDataSetChanged()
+    }
+
+    private fun getAllRelations() {
+        showLoading()
+        HttpClient.getAllContactRelations(mContext)
+    }
+
+    @Subscribe
+    fun onAllRelationsEvent(event: GetAllContactRelationResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            allRelationsList.clear()
+            targetContactList.clear()
+            allRelationsList = event.model!!.related_contacts
+
+            contactList.forEach { item ->
+                var isExist = false
+                allRelationsList.forEach {
+                    if (it.user_id == item.contacts_id) {
+                        isExist = true
+                        return@forEach
+                    }
+                }
+                if (!isExist) {
+                    targetContactList.add(item)
+                }
+            }
+
+            filterData()
+        }
     }
 
     private val textWatcher: TextWatcher =  object : TextWatcher {
@@ -294,6 +341,22 @@ class AssociateContactBottomDialog (val mContext: Context, val mBus: AndroidBus,
         try {
             mBus.unregister(this)
         } catch (e: Exception) {
+        }
+    }
+
+    private fun showLoading() {
+        if (loading == null || !loading!!.isShowing) {
+            loading = KProgressHUD.create(mContext)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDimAmount(0.5f)
+            loading!!.show()
+        }
+    }
+
+    private fun hideLoading() {
+        if (loading != null && loading!!.isShowing) {
+            loading!!.dismiss()
+            loading = null
         }
     }
 

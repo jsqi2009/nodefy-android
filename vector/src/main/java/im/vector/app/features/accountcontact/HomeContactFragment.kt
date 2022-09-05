@@ -26,6 +26,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.kaopiz.kprogresshud.KProgressHUD
 import com.squareup.otto.Subscribe
 import im.vector.app.R
 import im.vector.app.core.di.ActiveSessionHolder
@@ -67,6 +68,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     private var sipContactList:ArrayList<DialerContactInfo> = ArrayList()
     private var xmppContactList: ArrayList<XmppContact> = ArrayList()
     private var allRelationsList: ArrayList<ContactRelationInfo> = ArrayList()
+    private var loading: KProgressHUD? = null
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?) =
             FragmentHomeContactBinding.inflate(inflater, container, false)
@@ -98,14 +100,14 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     }
 
     private fun getContacts() {
-        this@HomeContactFragment.vectorBaseActivity.showLoadingDialog()
+        //showLoading()
         HttpClient.getAccountContact(this@HomeContactFragment.vectorBaseActivity)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Subscribe
     fun onContactEvent(event: GetAccountContactResponseEvent) {
-        this@HomeContactFragment.vectorBaseActivity.hideLoadingDialog()
+        //hideLoading()
         contactList.clear()
         if (event.isSuccess) {
             val mList = event.model!!.data
@@ -194,6 +196,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     @Subscribe
     fun onGetSipContactEvent(event: GetContactResponseEvent) {
         //hideLoadingDialog()
+        //hideLoading()
         if (event.isSuccess) {
             Timber.e("info: ${event.model!!.data}")
             sipContactList = event.model!!.data
@@ -227,7 +230,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             Timber.e("mConnectionList size: ${mConnectionList.size}")
             for (connection in mConnectionList) {
                 val roster = Roster.getInstanceFor(connection)
-                Timber.e("roster entries  szie: ${roster.entries.size}")
+                Timber.e("roster entries  size: ${roster.entries.size}")
                 for (entry in roster.entries) {
                     val xContact = XmppContact()
                     xContact.jid = entry.jid
@@ -266,13 +269,13 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     }
 
     private fun getAllRelations() {
-        this@HomeContactFragment.vectorBaseActivity.showLoadingDialog()
+        //showLoading()
         HttpClient.getAllContactRelations(this@HomeContactFragment.vectorBaseActivity)
     }
 
     @Subscribe
     fun onAllRelationsEvent(event: GetAllContactRelationResponseEvent) {
-        this@HomeContactFragment.vectorBaseActivity.hideLoadingDialog()
+        //hideLoading()
         if (event.isSuccess) {
             allRelationsList.clear()
             filterContactList.clear()
@@ -305,6 +308,22 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
         try {
             mBus.unregister(this)
         } catch (e: Exception) {
+        }
+    }
+
+    private fun showLoading() {
+        if (loading == null || !loading!!.isShowing) {
+            loading = KProgressHUD.create(activity)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDimAmount(0.5f)
+            loading!!.show()
+        }
+    }
+
+    private fun hideLoading() {
+        if (loading != null && loading!!.isShowing) {
+            loading!!.dismiss()
+            loading = null
         }
     }
 

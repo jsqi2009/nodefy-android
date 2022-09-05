@@ -37,8 +37,8 @@ object Contants {
     var Public_Room_ID = ""
 
     const val NODEFY_TYPE = "nodefy"
-//    const val SIP_TYPE = "sip"
-    const val SIP_TYPE = "sipLocal"
+    const val SIP_TYPE = "sip"
+    const val SIP_TYPE_LOCAL = "sipLocal"
     const val XMPP_TYPE = "xmpp"
     const val SKYPE_TYPE = "skype"
     const val SLACK_TYPE = "slack"

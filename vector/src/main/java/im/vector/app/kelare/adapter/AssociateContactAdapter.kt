@@ -59,9 +59,12 @@ class AssociateContactAdapter(val mContext: Context, data: ArrayList<AccountCont
 
         if (item.isAssociate) {
             holder.getView<TextView>(R.id.associateView).visibility = View.GONE
+            holder.getView<ImageView>(R.id.defaultStatus).visibility = View.VISIBLE
         } else {
             holder.getView<TextView>(R.id.associateView).visibility = View.VISIBLE
+            holder.getView<ImageView>(R.id.defaultStatus).visibility = View.GONE
         }
+
     }
 
 }
