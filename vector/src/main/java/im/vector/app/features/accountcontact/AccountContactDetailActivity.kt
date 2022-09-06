@@ -30,6 +30,7 @@ import im.vector.app.core.ui.views.CurrentCallsView
 import im.vector.app.core.utils.onPermissionDeniedDialog
 import im.vector.app.core.utils.registerForPermissionsResult
 import im.vector.app.databinding.ActivityAccountContactDetailBinding
+import im.vector.app.features.accountcontact.event.RefreshContactEvent
 import im.vector.app.features.accountcontact.util.AvatarRendererUtil
 import im.vector.app.features.accountcontact.viewmodel.ContactCallViewModel
 import im.vector.app.features.accountcontact.viewmodel.ContactCreateDirectRoomViewModel
@@ -201,6 +202,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.rl_back -> {
+                mBus.post(RefreshContactEvent())
                 finish()
             }
             R.id.tv_edit -> {
@@ -919,7 +921,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     override fun onPause() {
         super.onPause()
         try {
-            mBus.unregister(this)
+            //mBus.unregister(this)
         } catch (e: Exception) {
         }
     }
@@ -927,7 +929,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     override fun onDestroy() {
         super.onDestroy()
         try {
-            mBus.unregister(this)
+            //mBus.unregister(this)
         } catch (e: Exception) {
         }
     }

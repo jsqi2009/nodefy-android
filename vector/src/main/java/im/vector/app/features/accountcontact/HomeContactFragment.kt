@@ -32,6 +32,7 @@ import im.vector.app.R
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.databinding.FragmentHomeContactBinding
+import im.vector.app.features.accountcontact.event.RefreshContactEvent
 import im.vector.app.features.home.HomeActivity
 import im.vector.app.kelare.adapter.AccountContactAdapter
 import im.vector.app.kelare.content.Contants
@@ -69,6 +70,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     private var xmppContactList: ArrayList<XmppContact> = ArrayList()
     private var allRelationsList: ArrayList<ContactRelationInfo> = ArrayList()
     private var loading: KProgressHUD? = null
+    private var isAlreadyRequest = false
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?) =
             FragmentHomeContactBinding.inflate(inflater, container, false)
@@ -90,7 +92,14 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
 
     override fun onResume() {
         super.onResume()
-        getContacts()
+
+        try {
+            mBus.register(this)
+            getContacts()
+        } catch (e: Exception) {
+            getContacts()
+        }
+
     }
 
     private fun initView() {
@@ -101,7 +110,14 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
 
     private fun getContacts() {
         //showLoading()
+        Timber.e("contact fragment resume")
         HttpClient.getAccountContact(this@HomeContactFragment.vectorBaseActivity)
+        /*if (!isAlreadyRequest) {
+            Timber.e("contact fragment resume")
+            isAlreadyRequest = true
+            HttpClient.getAccountContact(this@HomeContactFragment.vectorBaseActivity)
+        }*/
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -153,7 +169,8 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             intent.putExtra("sipContactList", sipContactList as Serializable)
             intent.putExtra("xmppContactList", xmppContactList as Serializable)
             intent.putExtra("item", mAdapter.getItem(position) as Serializable)
-            startActivity(intent)
+            requireActivity().startActivity(intent)
+            //startActivity(intent)
         }
     }
 
@@ -198,7 +215,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
         //hideLoadingDialog()
         //hideLoading()
         if (event.isSuccess) {
-            Timber.e("info: ${event.model!!.data}")
+            Timber.e("contact page info: ${event.model!!.data}")
             sipContactList = event.model!!.data
 
             sipContactList.forEach {
@@ -226,7 +243,13 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getXmppContact() {
+        /*contactList.forEach {
+            if (it.contacts_type == Contants.XMPP_TYPE) {
+                contactList.remove(it)
+            }
+        }*/
         if (mConnectionList.isNotEmpty()) {
+            xmppContactList.clear()
             Timber.e("mConnectionList size: ${mConnectionList.size}")
             for (connection in mConnectionList) {
                 val roster = Roster.getInstanceFor(connection)
@@ -299,14 +322,22 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             mAdapter.notifyDataSetChanged()
 
             //check presence status
-            checkStatus()
+            //checkStatus()
         }
     }
+
+    @Subscribe
+    fun refreshData(event: RefreshContactEvent) {
+        Timber.e("get the refresh event")
+        //getContacts()
+    }
+
 
     override fun onPause() {
         super.onPause()
         try {
             mBus.unregister(this)
+            isAlreadyRequest = false
         } catch (e: Exception) {
         }
     }
