@@ -3320,4 +3320,16 @@
     <string name="account_contact_call_tips">The other party has not yet accepted the invitation to join the room</string>
 
 
+    <!-- nodefy authenticate account setting -->
+    <string name="settings_authenticate_account">Authenticate account</string>
+    <string name="authenticate_account_title">Authenticate account</string>
+    <string name="authenticate_account_skype_title">Skype Account</string>
+    <string name="authenticate_account_skype">Authenticate Skype Account</string>
+    <string name="authenticate_account_slack_title">Slack Account</string>
+    <string name="authenticate_account_slack">Authenticate Slack Account</string>
+    <string name="authenticate_account_telegram_title">Telegram Account</string>
+    <string name="authenticate_account_telegram">Authenticate Telegram Account</string>
+    <string name="authenticate_account_whatsapp_title">Whatsapp Account</string>
+    <string name="authenticate_account_whatsapp">Authenticate Whatsapp Account</string>
+
 </resources>

@@ -150,6 +150,7 @@ import im.vector.app.features.settings.VectorSettingsPinFragment
 import im.vector.app.features.settings.VectorSettingsPreferencesFragment
 import im.vector.app.features.settings.VectorSettingsSecurityPrivacyFragment
 import im.vector.app.features.settings.account.deactivation.DeactivateAccountFragment
+import im.vector.app.features.settings.authenticateaccount.AuthenticateAccountFragment
 import im.vector.app.features.settings.crosssigning.CrossSigningSettingsFragment
 import im.vector.app.features.settings.devices.VectorSettingsDevicesFragment
 import im.vector.app.features.settings.devtools.AccountDataFragment
@@ -1000,6 +1001,11 @@ interface FragmentModule {
     @IntoMap
     @FragmentKey(RoomUploadsLinksFragment::class)
     fun bindRoomUploadsLinksFragment(fragment: RoomUploadsLinksFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(AuthenticateAccountFragment::class)
+    fun bindAuthenticateAccountFragment(fragment: AuthenticateAccountFragment): Fragment
 
     /*@Binds
     @IntoMap

@@ -76,4 +76,12 @@
         android:title="@string/settings_deactivate_my_account"
         app:fragment="im.vector.app.features.settings.account.deactivation.DeactivateAccountFragment" />
 
+    <im.vector.app.core.preference.VectorPreference
+        android:key="SETTINGS_AUTHENTICATE_ACCOUNT_KEY"
+        android:icon="@drawable/ic_authenticate_account"
+        android:persistent="false"
+        android:title="@string/settings_authenticate_account"
+        app:fragment="im.vector.app.features.settings.authenticateaccount.AuthenticateAccountFragment" />
+
+
 </androidx.preference.PreferenceScreen>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/dialer_et_bg"
+    tools:context=".features.settings.authenticateaccount.AuthenticateAccountFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:textColor="@color/text_color_black1"
+            android:textSize="@dimen/textsize_14"
+            android:text="@string/authenticate_account_skype_title"/>
+
+        <TextView
+            android:id="@+id/skypeAuth"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:textSize="@dimen/textsize_16"
+            android:textColor="@color/light_blue_color"
+            android:text="@string/authenticate_account_skype"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:textColor="@color/text_color_black1"
+            android:textSize="@dimen/textsize_14"
+            android:text="@string/authenticate_account_slack_title"/>
+
+        <TextView
+            android:id="@+id/slackAuth"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:textSize="@dimen/textsize_16"
+            android:textColor="@color/light_blue_color"
+            android:text="@string/authenticate_account_slack"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:textColor="@color/text_color_black1"
+            android:textSize="@dimen/textsize_14"
+            android:text="@string/authenticate_account_telegram_title"/>
+
+        <TextView
+            android:id="@+id/telegramAuth"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:textSize="@dimen/textsize_16"
+            android:textColor="@color/light_blue_color"
+            android:text="@string/authenticate_account_telegram"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:textColor="@color/text_color_black1"
+            android:textSize="@dimen/textsize_14"
+            android:text="@string/authenticate_account_whatsapp_title"/>
+
+        <TextView
+            android:id="@+id/whatsappAuth"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:paddingHorizontal="@dimen/margin_16"
+            android:textSize="@dimen/textsize_16"
+            android:textColor="@color/light_blue_color"
+            android:text="@string/authenticate_account_whatsapp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
+
+
+</LinearLayout>

@@ -84,6 +84,7 @@ import im.vector.app.features.roomprofile.settings.RoomSettingsViewModel
 import im.vector.app.features.roomprofile.settings.joinrule.advanced.RoomJoinRuleChooseRestrictedViewModel
 import im.vector.app.features.roomprofile.uploads.RoomUploadsViewModel
 import im.vector.app.features.settings.account.deactivation.DeactivateAccountViewModel
+import im.vector.app.features.settings.authenticateaccount.AuthenticateAccountViewModel
 import im.vector.app.features.settings.crosssigning.CrossSigningSettingsViewModel
 import im.vector.app.features.settings.devices.DeviceVerificationInfoBottomSheetViewModel
 import im.vector.app.features.settings.devices.DevicesViewModel
@@ -612,4 +613,9 @@ interface MavericksViewModelModule {
     @IntoMap
     @MavericksViewModelKey(ContactCallViewModel::class)
     fun contactCallViewModelFactory(factory: ContactCallViewModel.Factory): MavericksAssistedViewModelFactory<*, *>
+
+    @Binds
+    @IntoMap
+    @MavericksViewModelKey(AuthenticateAccountViewModel::class)
+    fun authenticateAccountViewModelFactory(factory: AuthenticateAccountViewModel.Factory): MavericksAssistedViewModelFactory<*, *>
 }
