@@ -30,5 +30,12 @@ class AuthWhatsappAccountActivity : VectorBaseActivity<ActivityAuthWhatsappAccou
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
+    }
+
+    private fun initView() {
+        setupToolbar(views.authToolbar).allowBack()
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
     }
 }

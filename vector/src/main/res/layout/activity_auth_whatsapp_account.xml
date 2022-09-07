@@ -6,4 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".features.settings.authenticateaccount.auth.AuthWhatsappAccountActivity">
 
+    <LinearLayout
+        android:id="@+id/titleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
+
+            <!-- Use Widget.Vector.Toolbar.Settings on this screen for better alignment with setting items -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/authToolbar"
+                style="@style/Widget.Vector.Toolbar.Settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:navigationIcon="@drawable/ic_back_24dp"
+                tools:title="" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/titleLayout"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/textsize_18"
+            android:textStyle="bold"
+            android:text="@string/auth_whatsapp_account_title"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_45"
+            android:gravity="center"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/text_color_black1"
+            android:text="@string/auth_whatsapp_account_description"/>
+
+        <ImageView
+            android:layout_width="@dimen/margin_200"
+            android:layout_height="@dimen/margin_200"
+            android:layout_marginVertical="@dimen/margin_30"
+            android:layout_gravity="center"
+            android:src="@drawable/nodefy_logo"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/text_color_black1"
+            android:text="@string/auth_whatsapp_account_tips_1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_15"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/text_color_black1"
+            android:text="@string/auth_whatsapp_account_tips_2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_15"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/text_color_black1"
+            android:text="@string/auth_whatsapp_account_tips_3"/>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

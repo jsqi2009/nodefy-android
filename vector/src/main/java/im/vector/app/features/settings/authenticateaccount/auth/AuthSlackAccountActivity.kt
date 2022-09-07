@@ -19,18 +19,37 @@ package im.vector.app.features.settings.authenticateaccount.auth
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import dagger.hilt.android.AndroidEntryPoint
+import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityAuthSkypeAccountBinding
 import im.vector.app.databinding.ActivityAuthSlackAccountBinding
 
 @AndroidEntryPoint
-class AuthSlackAccountActivity : VectorBaseActivity<ActivityAuthSlackAccountBinding>() {
+class AuthSlackAccountActivity : VectorBaseActivity<ActivityAuthSlackAccountBinding>(), View.OnClickListener {
 
     override fun getBinding() = ActivityAuthSlackAccountBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
+    }
+
+    private fun initView() {
+        setupToolbar(views.authToolbar).allowBack()
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
+        views.authSlackView.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.authSlackView -> {
+
+            }
+            else               -> {}
+        }
     }
 }

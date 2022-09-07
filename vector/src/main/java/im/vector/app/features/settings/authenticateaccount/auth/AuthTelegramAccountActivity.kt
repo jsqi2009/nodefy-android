@@ -18,17 +18,54 @@ package im.vector.app.features.settings.authenticateaccount.auth
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.view.View
 import dagger.hilt.android.AndroidEntryPoint
+import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityAuthSkypeAccountBinding
 import im.vector.app.databinding.ActivityAuthTelegramAccountBinding
+import timber.log.Timber
 
 @AndroidEntryPoint
-class AuthTelegramAccountActivity : VectorBaseActivity<ActivityAuthTelegramAccountBinding>() {
+class AuthTelegramAccountActivity : VectorBaseActivity<ActivityAuthTelegramAccountBinding>(), View.OnClickListener {
     override fun getBinding() = ActivityAuthTelegramAccountBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
+    }
+
+    private fun initView() {
+        setupToolbar(views.authToolbar).allowBack()
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
+        views.codePicker.registerCarrierNumberEditText(views.phoneField)
+        views.codePicker.setOnCountryChangeListener {
+            views.phoneField.setText("")
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.authTelegramView-> {
+                telegramAuth()
+            }
+            else               -> {}
+        }
+    }
+
+    private fun telegramAuth() {
+        val phoneNumber = views.phoneField.text.toString()
+
+        if (TextUtils.isEmpty(phoneNumber)) {
+            showToast(getString(R.string.auth_telegram_phone_input_tips))
+            return
+        }
+
+        Timber.e("country code1---->${views.codePicker.fullNumber}")
+        Timber.e("country code2---->${views.codePicker.fullNumberWithPlus}")
+        Timber.e("country code3---->${views.codePicker.formattedFullNumber}")
     }
 }

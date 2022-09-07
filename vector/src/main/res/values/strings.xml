@@ -3350,6 +3350,7 @@
     <string name="auth_telegram_account_description">Sign in your Telegram account to continue to Telegram</string>
     <string name="auth_telegram_account_phone_hint">Phone number</string>
     <string name="auth_telegram_account_next">Next</string>
+    <string name="auth_telegram_phone_input_tips">Please input phone number</string>
 
     <!-- authenticate whatsapp account -->
     <string name="auth_whatsapp_account_title">Import Your Whatsapp Account</string>

@@ -38,6 +38,9 @@ import im.vector.app.features.settings.account.deactivation.DeactivateAccountAct
 import im.vector.app.features.settings.account.deactivation.DeactivateAccountViewEvents
 import im.vector.app.features.settings.account.deactivation.DeactivateAccountViewModel
 import im.vector.app.features.settings.authenticateaccount.auth.AuthSkypeAccountActivity
+import im.vector.app.features.settings.authenticateaccount.auth.AuthSlackAccountActivity
+import im.vector.app.features.settings.authenticateaccount.auth.AuthTelegramAccountActivity
+import im.vector.app.features.settings.authenticateaccount.auth.AuthWhatsappAccountActivity
 import org.matrix.android.sdk.api.session.uia.exceptions.UiaCancelledException
 import java.io.Serializable
 import javax.inject.Inject
@@ -97,28 +100,24 @@ class AuthenticateAccountFragment @Inject constructor() : VectorBaseFragment<Fra
             when (it) {
                 is AuthenticateAccountViewEvents.AuthType       -> {
                     //showLoadingDialog(it.type)
-                    if (it.type == requireActivity().getString(R.string.authenticate_account_skype_title)) {
-                        val intent = Intent(context, AuthSkypeAccountActivity::class.java)
-                        requireActivity().startActivity(intent)
+                    when (it.type) {
+                        requireActivity().getString(R.string.authenticate_account_skype_title)    -> {
+                            val intent = Intent(context, AuthSkypeAccountActivity::class.java)
+                            requireActivity().startActivity(intent)
+                        }
+                        requireActivity().getString(R.string.authenticate_account_slack_title)    -> {
+                            val intent = Intent(context, AuthSlackAccountActivity::class.java)
+                            requireActivity().startActivity(intent)
+                        }
+                        requireActivity().getString(R.string.authenticate_account_telegram_title) -> {
+                            val intent = Intent(context, AuthTelegramAccountActivity::class.java)
+                            requireActivity().startActivity(intent)
+                        }
+                        else                                                                      -> {
+                            val intent = Intent(context, AuthWhatsappAccountActivity::class.java)
+                            requireActivity().startActivity(intent)
+                        }
                     }
-                }
-                is AuthenticateAccountViewEvents.Loading       -> {
-                    settingsActivity?.ignoreInvalidTokenError = true
-                    showLoadingDialog(it.message)
-                }
-                AuthenticateAccountViewEvents.InvalidAuth      -> {
-                    dismissLoadingDialog()
-                    settingsActivity?.ignoreInvalidTokenError = false
-                }
-                is AuthenticateAccountViewEvents.OtherFailure  -> {
-                    settingsActivity?.ignoreInvalidTokenError = false
-                    dismissLoadingDialog()
-                    if (it.throwable !is UiaCancelledException) {
-                        displayErrorDialog(it.throwable)
-                    }
-                }
-                AuthenticateAccountViewEvents.Done             -> {
-                    MainActivity.restartApp(requireActivity(), MainActivityArgs(clearCredentials = true, isAccountDeactivated = true))
                 }
             }
         }
