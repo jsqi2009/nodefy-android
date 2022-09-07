@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".features.settings.authenticateaccount.auth.AuthSkypeAccountActivity">
+
+    <LinearLayout
+        android:id="@+id/titleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
+
+            <!-- Use Widget.Vector.Toolbar.Settings on this screen for better alignment with setting items -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/authToolbar"
+                style="@style/Widget.Vector.Toolbar.Settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:navigationIcon="@drawable/ic_back_24dp"
+                tools:title="" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/titleLayout"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:gravity="center"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/textsize_18"
+            android:textStyle="bold"
+            android:text="@string/auth_skype_account_title"/>
+
+        <TextView
+            android:id="@+id/skypeAuth"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_45"
+            android:gravity="center"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/text_color_black1"
+            android:text="@string/auth_skype_account_description"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/usernameFieldTil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_10"
+            app:errorEnabled="false"
+            app:hintEnabled="false"
+            app:boxStrokeColor="@color/white"
+            tools:hint="@string/auth_skype_account_username_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameField"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_45"
+                android:background="@drawable/shape_kelare_login_et_bg_5dp"
+                android:hint="@string/auth_skype_account_username_hint"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingVertical="0dp"
+                android:paddingStart="@dimen/margin_10"
+                android:textSize="@dimen/textsize_14"
+                tools:ignore="RtlSymmetry" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordFieldTil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_10"
+            app:errorEnabled="false"
+            app:hintEnabled="false"
+            app:boxStrokeColor="@color/white"
+            tools:hint="@string/auth_skype_account_password_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordField"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_45"
+                android:background="@drawable/shape_kelare_login_et_bg_5dp"
+                android:hint="@string/auth_skype_account_password_hint"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingVertical="0dp"
+                android:paddingStart="@dimen/margin_10"
+                android:textSize="@dimen/textsize_14"
+                tools:ignore="RtlSymmetry" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/authSkypeView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_30"
+            android:background="@drawable/shape_kelare_login_button_bg_5dp"
+            android:gravity="center"
+            android:text="@string/auth_skype_account"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_16"
+            tools:enabled="false"
+            tools:ignore="RelativeOverlap" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

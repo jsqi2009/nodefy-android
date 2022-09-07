@@ -78,9 +78,7 @@
         android:taskAffinity="${applicationId}.${appTaskAffinitySuffix}"
         android:theme="@style/Theme.Vector.Light"
         tools:replace="android:allowBackup">
-        <activity
-            android:name=".features.accountcontact.AccountContactDetailActivity"
-            android:exported="false" />
+
 
         <meta-data
             android:name="android.max_aspect"
@@ -429,6 +427,22 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/Launcher"
             android:turnScreenOn="true" />
+
+        <activity
+            android:name=".features.settings.authenticateaccount.auth.AuthSkypeAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".features.settings.authenticateaccount.auth.AuthSlackAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".features.settings.authenticateaccount.auth.AuthTelegramAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".features.settings.authenticateaccount.auth.AuthWhatsappAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".features.accountcontact.AccountContactDetailActivity"
+            android:exported="false" />
 
         <service
             android:name=".core.services.CallService"

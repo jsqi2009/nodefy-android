@@ -3332,4 +3332,30 @@
     <string name="authenticate_account_whatsapp_title">Whatsapp Account</string>
     <string name="authenticate_account_whatsapp">Authenticate Whatsapp Account</string>
 
+    <!-- authenticate skype account -->
+    <string name="auth_skype_account_title">Import Your Skype Account</string>
+    <string name="auth_skype_account_description">Sign in your Skype account to continue to Skype</string>
+    <string name="auth_skype_account_username_hint">Username</string>
+    <string name="auth_skype_account_password_hint">Password</string>
+    <string name="auth_skype_account">Authenticate</string>
+    <string name="auth_skype_account_input_tips">Please input username or password</string>
+
+    <!-- authenticate slack account -->
+    <string name="auth_slack_account_title">Import Your Slack Account</string>
+    <string name="auth_slack_account_description">Sign in your Slack account to continue to Slack</string>
+    <string name="auth_slack_account">Click here to authorize slack synchronize the workspace</string>
+
+    <!-- authenticate telegram account -->
+    <string name="auth_telegram_account_title">Import Your Telegram Account</string>
+    <string name="auth_telegram_account_description">Sign in your Telegram account to continue to Telegram</string>
+    <string name="auth_telegram_account_phone_hint">Phone number</string>
+    <string name="auth_telegram_account_next">Next</string>
+
+    <!-- authenticate whatsapp account -->
+    <string name="auth_whatsapp_account_title">Import Your Whatsapp Account</string>
+    <string name="auth_whatsapp_account_description">Scan Whatsapp web QR Code</string>
+    <string name="auth_whatsapp_account_tips_1">1. Launch Whatsapp on your mobile device</string>
+    <string name="auth_whatsapp_account_tips_2">2. Under Setting Linked devices, Select join Multi Device Beta and then Link a Device</string>
+    <string name="auth_whatsapp_account_tips_3">3. Scan QR code here to link your Whatsapp account to Nodefy.me</string>
+
 </resources>

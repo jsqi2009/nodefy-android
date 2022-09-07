@@ -17,6 +17,7 @@
 package im.vector.app.features.settings.authenticateaccount
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,12 +31,15 @@ import im.vector.app.databinding.FragmentAuthenticateAccountBinding
 import im.vector.app.databinding.FragmentDeactivateAccountBinding
 import im.vector.app.features.MainActivity
 import im.vector.app.features.MainActivityArgs
+import im.vector.app.features.accountcontact.AccountContactDetailActivity
 import im.vector.app.features.auth.ReAuthActivity
 import im.vector.app.features.settings.VectorSettingsActivity
 import im.vector.app.features.settings.account.deactivation.DeactivateAccountAction
 import im.vector.app.features.settings.account.deactivation.DeactivateAccountViewEvents
 import im.vector.app.features.settings.account.deactivation.DeactivateAccountViewModel
+import im.vector.app.features.settings.authenticateaccount.auth.AuthSkypeAccountActivity
 import org.matrix.android.sdk.api.session.uia.exceptions.UiaCancelledException
+import java.io.Serializable
 import javax.inject.Inject
 
 class AuthenticateAccountFragment @Inject constructor() : VectorBaseFragment<FragmentAuthenticateAccountBinding>()  {
@@ -72,19 +76,19 @@ class AuthenticateAccountFragment @Inject constructor() : VectorBaseFragment<Fra
 
     private fun setupViewListeners() {
         views.skypeAuth.debouncedClicks {
-            viewModel.handle(AuthenticateAccountAction.AuthAccount(getString(R.string.authenticate_account_skype_title)))
+            viewModel.handle(AuthenticateAccountAction.AuthAccount(requireActivity().getString(R.string.authenticate_account_skype_title)))
         }
 
         views.slackAuth.debouncedClicks {
-            viewModel.handle(AuthenticateAccountAction.AuthAccount(getString(R.string.authenticate_account_slack_title)))
+            viewModel.handle(AuthenticateAccountAction.AuthAccount(requireActivity().getString(R.string.authenticate_account_slack_title)))
         }
 
         views.telegramAuth.debouncedClicks {
-            viewModel.handle(AuthenticateAccountAction.AuthAccount(getString(R.string.authenticate_account_telegram_title)))
+            viewModel.handle(AuthenticateAccountAction.AuthAccount(requireActivity().getString(R.string.authenticate_account_telegram_title)))
         }
 
         views.whatsappAuth.debouncedClicks {
-            viewModel.handle(AuthenticateAccountAction.AuthAccount(getString(R.string.authenticate_account_whatsapp_title)))
+            viewModel.handle(AuthenticateAccountAction.AuthAccount(requireActivity().getString(R.string.authenticate_account_whatsapp_title)))
         }
     }
 
@@ -92,7 +96,11 @@ class AuthenticateAccountFragment @Inject constructor() : VectorBaseFragment<Fra
         viewModel.observeViewEvents {
             when (it) {
                 is AuthenticateAccountViewEvents.AuthType       -> {
-                    showLoadingDialog(it.type)
+                    //showLoadingDialog(it.type)
+                    if (it.type == requireActivity().getString(R.string.authenticate_account_skype_title)) {
+                        val intent = Intent(context, AuthSkypeAccountActivity::class.java)
+                        requireActivity().startActivity(intent)
+                    }
                 }
                 is AuthenticateAccountViewEvents.Loading       -> {
                     settingsActivity?.ignoreInvalidTokenError = true
