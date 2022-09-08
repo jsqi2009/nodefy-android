@@ -21,6 +21,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -30,26 +31,19 @@ import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.textfield.TextInputEditText
+import com.hbb20.CountryCodePicker
+import com.pedaily.yc.ycdialoglib.toast.ToastUtils.showToast
 import im.vector.app.R
-import im.vector.app.features.accountcontact.widget.AssociateContactBottomDialog
+import timber.log.Timber
 
 /**
  * author : Jason
  *  date   : 2022/9/8 11:21
  *  desc   :
  */
-class AuthenticateAccountBottomSheet (val mContext: Context) : BottomSheetDialogFragment(), View.OnClickListener {
+class AuthenticateWhatsappAccountBottomSheet (val mContext: Context) : BottomSheetDialogFragment(), View.OnClickListener {
 
-    private var skypeView: LinearLayout? = null
-    private var slackView: LinearLayout? = null
-    private var whatsappView: LinearLayout? = null
-    private var telegramView: LinearLayout? = null
-    private var skypeInfo: TextView? = null
-    private var slackInfo: TextView? = null
-    private var whatsappInfo: TextView? = null
-    private var telegramInfo: TextView? = null
-    private var saveView: TextView? = null
-    private var skipView: TextView? = null
 
     interface InteractionListener {
         fun onSave()
@@ -59,7 +53,7 @@ class AuthenticateAccountBottomSheet (val mContext: Context) : BottomSheetDialog
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (activity == null) return super.onCreateDialog(savedInstanceState)
         val bottomDialog = BottomSheetDialog(activity!!, R.style.BottomSheetDialog)
-        val rootView = LayoutInflater.from(activity).inflate(R.layout.bottom_sheet_authenticate_account, null)
+        val rootView = LayoutInflater.from(activity).inflate(R.layout.bottom_sheet_authenticate_whatsapp_account, null)
         bottomDialog.setContentView(rootView)
         bottomDialog.setCanceledOnTouchOutside(false)
         //set height
@@ -74,46 +68,10 @@ class AuthenticateAccountBottomSheet (val mContext: Context) : BottomSheetDialog
 
     private fun initView(rootView: View) {
 
-        skypeView = rootView.findViewById<LinearLayout>(R.id.authSkypeLayout)
-        slackView = rootView.findViewById<LinearLayout>(R.id.authSlackLayout)
-        telegramView = rootView.findViewById<LinearLayout>(R.id.authTelegramLayout)
-        whatsappView = rootView.findViewById<LinearLayout>(R.id.authWhatsappLayout)
-        saveView = rootView.findViewById<TextView>(R.id.saveView)
-        skipView = rootView.findViewById<TextView>(R.id.skipView)
-        skypeInfo = rootView.findViewById<TextView>(R.id.skypeInfo)
-        slackInfo = rootView.findViewById<TextView>(R.id.slackInfo)
-        telegramInfo = rootView.findViewById<TextView>(R.id.telegramInfo)
-        whatsappInfo = rootView.findViewById<TextView>(R.id.whatsappInfo)
-
-        skypeView!!.setOnClickListener(this)
-        slackView!!.setOnClickListener(this)
-        whatsappView!!.setOnClickListener(this)
-        telegramView!!.setOnClickListener(this)
-
     }
 
     override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.authSkypeLayout   -> {
-                AuthenticateSkypeAccountBottomSheet(mContext).show(parentFragmentManager, "auth")
-            }
-            R.id.authSlackLayout   -> {
-                AuthenticateSlackAccountBottomSheet(mContext).show(parentFragmentManager, "auth")
-            }
-            R.id.authWhatsappLayout   -> {
-                AuthenticateWhatsappAccountBottomSheet(mContext).show(parentFragmentManager, "auth")
-            }
-            R.id.authTelegramLayout  -> {
-                AuthenticateTelegramAccountBottomSheet(mContext).show(parentFragmentManager, "auth")
-            }
-            R.id.saveView  -> {
 
-            }
-            R.id.skipView  -> {
-
-            }
-            else -> {}
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
