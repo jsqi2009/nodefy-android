@@ -109,7 +109,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     }
 
     private fun getContacts() {
-        //showLoading()
+        showLoading()
         Timber.e("contact fragment resume")
         HttpClient.getAccountContact(this@HomeContactFragment.vectorBaseActivity)
         /*if (!isAlreadyRequest) {
@@ -123,7 +123,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     @SuppressLint("NotifyDataSetChanged")
     @Subscribe
     fun onContactEvent(event: GetAccountContactResponseEvent) {
-        //hideLoading()
+        hideLoading()
         contactList.clear()
         if (event.isSuccess) {
             val mList = event.model!!.data
@@ -322,7 +322,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             mAdapter.notifyDataSetChanged()
 
             //check presence status
-            //checkStatus()
+            checkStatus()
         }
     }
 
