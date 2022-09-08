@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_associate_contact_bottom_sheet"
+    android:orientation="vertical"
+    tools:context=".features.accountcontact.widget.ContactAssociateBottomSheet">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_40"
+        android:layout_marginTop="@dimen/margin_10"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:text="@string/bottom_sheet_auth_account"
+            android:textSize="@dimen/textsize_16"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_30"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:gravity="center"
+        android:text="@string/bottom_sheet_auth_account_description"
+        android:textColor="@color/text_color_black1"
+        android:textSize="@dimen/textsize_14"
+        tools:ignore="HardcodedText" />
+
+    <LinearLayout
+        android:id="@+id/authSkypeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:background="@drawable/shape_kelare_login_et_bg_5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/margin_30"
+            android:layout_height="@dimen/margin_30"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_skype_line"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/skypeInfo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:layout_marginStart="@dimen/margin_10"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_16"
+            android:text="@string/bottom_sheet_auth_account_skype"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/authWhatsappLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:background="@drawable/shape_kelare_login_et_bg_5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/margin_30"
+            android:layout_height="@dimen/margin_30"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_icon_whatsapp_line"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/whatsappInfo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:layout_marginStart="@dimen/margin_10"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_16"
+            android:text="@string/bottom_sheet_auth_account_whatsapp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/authSlackLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:background="@drawable/shape_kelare_login_et_bg_5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/margin_30"
+            android:layout_height="@dimen/margin_30"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_slack"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/slackInfo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:layout_marginStart="@dimen/margin_10"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_16"
+            android:text="@string/bottom_sheet_auth_account_slack"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/authTelegramLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:background="@drawable/shape_kelare_login_et_bg_5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/margin_30"
+            android:layout_height="@dimen/margin_30"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_telegram_line"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/telegramInfo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:layout_marginStart="@dimen/margin_10"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_16"
+            android:text="@string/bottom_sheet_auth_account_telegram"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/saveView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_30"
+        android:background="@drawable/shape_kelare_login_button_bg_5dp"
+        android:gravity="center"
+        android:text="@string/bottom_sheet_auth_account_save"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16"
+        tools:enabled="false"
+        tools:ignore="RelativeOverlap" />
+
+    <TextView
+        android:id="@+id/skipView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@drawable/shape_skip_auth_account_bg"
+        android:gravity="center"
+        android:text="@string/bottom_sheet_auth_account_skip"
+        android:textColor="@color/text_color_black1"
+        android:textSize="@dimen/textsize_16"
+        tools:enabled="false"
+        tools:ignore="RelativeOverlap" />
+
+
+</LinearLayout>

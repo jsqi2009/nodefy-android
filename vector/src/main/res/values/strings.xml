@@ -3359,4 +3359,20 @@
     <string name="auth_whatsapp_account_tips_2">2. Under Setting Linked devices, Select join Multi Device Beta and then Link a Device</string>
     <string name="auth_whatsapp_account_tips_3">3. Scan QR code here to link your Whatsapp account to Nodefy.me</string>
 
+    <!-- nodefy bottom sheet authenticate account -->
+    <string name="bottom_sheet_auth_account">Authenticate Account</string>
+    <string name="bottom_sheet_auth_account_description">Authenticate account will sync your account\'s contact list group and avatar</string>
+    <string name="bottom_sheet_auth_account_skype">Import Skype Account</string>
+    <string name="bottom_sheet_auth_account_whatsapp">Import Whatsapp Account</string>
+    <string name="bottom_sheet_auth_account_slack">Import Slack Account</string>
+    <string name="bottom_sheet_auth_account_telegram">Import Telegram Account</string>
+    <string name="bottom_sheet_auth_account_save">Save</string>
+    <string name="bottom_sheet_auth_account_skip">Skip</string>
+
+
+
+
+
+
+
 </resources>
