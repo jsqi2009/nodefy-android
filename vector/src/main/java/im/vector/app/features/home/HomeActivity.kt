@@ -103,13 +103,20 @@ import timber.log.Timber
 import javax.inject.Inject
 import android.R.attr.action
 import android.os.Handler
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
+import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import im.vector.app.VectorApplication
+import im.vector.app.core.error.ErrorFormatter
 import im.vector.app.features.accountcontact.HomeContactFragment
+import im.vector.app.features.createdirect.CreateDirectRoomViewState
 import im.vector.app.features.home.event.ChooseGroupTypeEvent
 import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.event.ToSpaceDetailsEvent
@@ -120,6 +127,10 @@ import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
 import im.vector.app.kelare.network.event.GetThemesResponseEvent
 import im.vector.app.kelare.voip.VoiceCallActivity
+import org.matrix.android.sdk.api.failure.Failure
+import org.matrix.android.sdk.api.session.getRoom
+import org.matrix.android.sdk.api.session.room.failure.CreateRoomFailure
+import java.net.HttpURLConnection
 import java.util.Timer
 import java.util.TimerTask
 
@@ -163,6 +174,7 @@ class HomeActivity :
     @Inject lateinit var appStateHandler: AppStateHandler
 
     @Inject lateinit var session: Session
+    @Inject lateinit var errorFormatter: ErrorFormatter
 
     private val createSpaceResultLauncher = registerStartForActivityResult { activityResult ->
         if (activityResult.resultCode == Activity.RESULT_OK) {
@@ -317,6 +329,10 @@ class HomeActivity :
         statusBarColor(this)
         //close the Drawer swipe open
         views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        homeActivityViewModel.onEach(HomeActivityViewState::createAndInviteState) {
+            renderCreateBotRoomState(it)
+        }
 
         setBottomNavigationView()
     }
@@ -767,6 +783,16 @@ class HomeActivity :
         }
     }
 
+    private fun renderCreateBotRoomState(state: Async<String>) {
+        Timber.e("create bot room state---->", state.toString())
+        when (state) {
+            is Loading -> Unit
+            is Success -> renderCreationSuccess(state())
+            is Fail    -> renderCreationFailure(state.error)
+            else       -> Unit
+        }
+    }
+
     private fun setBaseInfo() {
         val userID = session.myUserId
         val accessToken = session.sessionParams.credentials.accessToken
@@ -818,9 +844,13 @@ class HomeActivity :
             val botRoomInfo = event.model!!.data
             if (botRoomInfo == null) {
                 Timber.e("has not create bot room")
+                if (TextUtils.isEmpty(homeActivityViewModel.checkRoomIfExist(Contants.SkypeBotID))) {
+                    Timber.e("skype bot room not exist")
+                }
             } else {
                 Timber.e("bot room---->$botRoomInfo")
                 if (botRoomInfo.skype_bot_room_id != null) {
+
 
                     //homeActivityViewModel.onSubmitInvitees("")
                 }
@@ -1035,4 +1065,40 @@ class HomeActivity :
         intent.data = null
         intent.extras?.clear()
     }
+
+    private fun renderCreationSuccess(roomId: String) {
+        //navigator.openRoom(context = this, roomId = roomId, trigger = ViewRoom.Trigger.MessageUser)
+
+        val room = session!!.getRoom(roomId)!!
+        val roomSummary = room.roomSummary()
+    }
+
+    private fun renderCreationFailure(error: Throwable) {
+        when (error) {
+            is CreateRoomFailure.CreatedWithTimeout           -> {
+
+            }
+            is CreateRoomFailure.CreatedWithFederationFailure -> {
+                MaterialAlertDialogBuilder(this)
+                        .setMessage(getString(R.string.create_room_federation_error, error.matrixError.message))
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok) { _, _ -> finish() }
+                        .show()
+            }
+            else                                              -> {
+                val message = if (error is Failure.ServerError && error.httpCode == HttpURLConnection.HTTP_INTERNAL_ERROR /*500*/) {
+                    // This error happen if the invited userId does not exist.
+                    getString(R.string.create_room_dm_failure)
+                } else {
+                    errorFormatter.toHumanReadable(error)
+                }
+                MaterialAlertDialogBuilder(this)
+                        .setMessage(message)
+                        .setPositiveButton(R.string.ok, null)
+                        .show()
+            }
+        }
+    }
+
+
 }

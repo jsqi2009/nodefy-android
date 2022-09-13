@@ -51,25 +51,25 @@ object Contants {
     //gitter.im server
     const val SERVER_GITTER = "gitter.im"
 
-    //机器人房间名字
+    //bot room name
     const val SkypeBotRoomName = "Skype-Bot-Room-GmQHk5QBe5RFVL"
     const val WhatsAppBotRoomName = "WhatsApp-Bot-Room-GmQHk5QBe5RFVL"
     const val TelegramBotRoomName = "Telegram-Bot-Room-GmQHk5QBe5RFVL"
     const val SlackBotRoomName = "Slack-Bot-Room-GmQHk5QBe5RFVL"
 
-    //机器人ID
+    //bot ID
     const val SkypeBotID = "skype_bot_room_id"
     const val WhatsAppBotID = "whatsapp_bot_room_id"
     const val TelegramBotID = "telegram_bot_room_id"
     const val SlackBotID = "slack_bot_room_id"
 
-    //机器人名字
+    //bot name
     const val SkypeBotName = "@skypebridgebot"
     const val WhatsAppBotName = "@whatsappbot"
     const val TelegramBotName = "@telegrambot"
     const val SlackBotName = "@_slackpuppet_bot"
 
-    //第三方账号用户前缀
+    //Third-party account user prefix
     const val SkypeUserIDPrefix = "@skype-"
     const val WhatsAppUserIDPrefix = "@whatsapp_"
     const val TelegramUserIDPrefix = "@telegram_"
