@@ -7,6 +7,7 @@ import im.vector.app.kelare.network.models.DeleteAccountInfo;
 import im.vector.app.kelare.network.models.DeleteDialerContact;
 import im.vector.app.kelare.network.models.DialerContactInfo;
 import im.vector.app.kelare.network.models.SaveAccountInfo;
+import im.vector.app.kelare.network.models.SetBotRoomInfo;
 import im.vector.app.kelare.network.models.UpdateAccountInfo;
 
 import java.util.Map;
@@ -132,5 +133,12 @@ public interface HttpApi {
 
     @GET("_matrix/client/r0/relations")
     Call<JsonObject> getAllContactRelations(@HeaderMap Map<String, String> headerMap);
+
+    @GET("_matrix/client/r0/account/bot_accounts")
+    Call<JsonObject> getBotAccounts(@HeaderMap Map<String, String> headerMap, @QueryMap Map<String, Object> map);
+
+    @POST("_matrix/client/r0/account/bot_accounts")
+    Call<JsonObject> setBridgeBotRoom(@HeaderMap Map<String, String> headerMap, @Body SetBotRoomInfo info);
+
 
 }

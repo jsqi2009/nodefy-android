@@ -17,7 +17,9 @@
 package im.vector.app.features.home
 
 import androidx.lifecycle.asFlow
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MavericksViewModelFactory
+import com.airbnb.mvrx.Success
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -25,9 +27,15 @@ import im.vector.app.config.analyticsConfig
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.di.MavericksAssistedViewModelFactory
 import im.vector.app.core.di.hiltMavericksViewModelFactory
+import im.vector.app.core.mvrx.runCatchingToAsync
 import im.vector.app.core.platform.VectorViewModel
+import im.vector.app.features.analytics.AnalyticsTracker
+import im.vector.app.features.analytics.plan.CreatedRoom
 import im.vector.app.features.analytics.store.AnalyticsStore
+import im.vector.app.features.call.webrtc.WebRtcCallManager
 import im.vector.app.features.login.ReAuthHelper
+import im.vector.app.features.raw.wellknown.getElementWellknown
+import im.vector.app.features.raw.wellknown.isE2EByDefault
 import im.vector.app.features.session.coroutineScope
 import im.vector.app.features.settings.VectorPreferences
 import kotlinx.coroutines.Dispatchers
@@ -41,13 +49,16 @@ import org.matrix.android.sdk.api.auth.UserPasswordAuth
 import org.matrix.android.sdk.api.auth.data.LoginFlowTypes
 import org.matrix.android.sdk.api.auth.registration.RegistrationFlowResponse
 import org.matrix.android.sdk.api.auth.registration.nextUncompletedStage
+import org.matrix.android.sdk.api.extensions.orFalse
 import org.matrix.android.sdk.api.extensions.tryOrNull
+import org.matrix.android.sdk.api.raw.RawService
 import org.matrix.android.sdk.api.session.crypto.model.CryptoDeviceInfo
 import org.matrix.android.sdk.api.session.crypto.model.MXUsersDevicesMap
 import org.matrix.android.sdk.api.session.getUser
 import org.matrix.android.sdk.api.session.initsync.SyncStatusService
 import org.matrix.android.sdk.api.session.pushrules.RuleIds
 import org.matrix.android.sdk.api.session.room.model.Membership
+import org.matrix.android.sdk.api.session.room.model.create.CreateRoomParams
 import org.matrix.android.sdk.api.session.room.roomSummaryQueryParams
 import org.matrix.android.sdk.api.settings.LightweightSettingsStorage
 import org.matrix.android.sdk.api.util.awaitCallback
@@ -64,7 +75,9 @@ class HomeActivityViewModel @AssistedInject constructor(
         private val reAuthHelper: ReAuthHelper,
         private val analyticsStore: AnalyticsStore,
         private val lightweightSettingsStorage: LightweightSettingsStorage,
-        private val vectorPreferences: VectorPreferences
+        private val vectorPreferences: VectorPreferences,
+        private val rawService: RawService,
+        private val analyticsTracker: AnalyticsTracker,
 ) : VectorViewModel<HomeActivityViewState, HomeActivityViewActions, HomeActivityViewEvents>(initialState) {
 
     @AssistedFactory
@@ -315,4 +328,60 @@ class HomeActivityViewModel @AssistedInject constructor(
             }
         }
     }
+
+    /**
+     * If users already have a DM room then navigate to it instead of creating a new room.
+     */
+    fun onSubmitInvitees(userId: String) {
+        val session = activeSessionHolder.getSafeActiveSession() ?: return
+
+        val existingRoomId = session.roomService().getExistingDirectRoomWithUser(userId)
+        if (existingRoomId != null) {
+            // Do not create a new DM, just tell that the creation is successful by passing the existing roomId
+            setState {
+                copy(createAndInviteState = Success(existingRoomId))
+            }
+        } else {
+            // Create the DM
+            createRoomAndInviteSelectedUsers(userId)
+        }
+    }
+
+    private fun createRoomAndInviteSelectedUsers(userId: String) {
+        val session = activeSessionHolder.getSafeActiveSession() ?: return
+
+        setState { copy(createAndInviteState = Loading()) }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val adminE2EByDefault = rawService.getElementWellknown(session.sessionParams)
+                    ?.isE2EByDefault()
+                    ?: true
+
+            val roomParams = CreateRoomParams()
+                    .apply {
+                        invitedUserIds.add(userId)
+                        setDirectMessage()
+                        enableEncryptionIfInvitedUsersSupportIt = adminE2EByDefault
+                    }
+
+            val result = runCatchingToAsync {
+                session.roomService().createRoom(roomParams)
+            }
+            analyticsTracker.capture(CreatedRoom(isDM = roomParams.isDirect.orFalse()))
+
+            setState {
+                copy(
+                        createAndInviteState = result
+                )
+            }
+        }
+    }
+
+    fun checkRoomIfExist(userId: String): String {
+        val session = activeSessionHolder.getSafeActiveSession() ?: return ""
+
+        val existingRoomId = session.roomService().getExistingDirectRoomWithUser(userId)
+        return existingRoomId ?: ""
+    }
+
 }

@@ -12,6 +12,7 @@ import im.vector.app.kelare.network.event.DeleteContactResponseEvent
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.GetAccountContactResponseEvent
 import im.vector.app.kelare.network.event.GetAllContactRelationResponseEvent
+import im.vector.app.kelare.network.event.GetBotRoomResponseEvent
 import im.vector.app.kelare.network.event.GetContactRelationResponseEvent
 import im.vector.app.kelare.network.event.GetContactResponseEvent
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
@@ -20,6 +21,7 @@ import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
 import im.vector.app.kelare.network.event.GetThemesResponseEvent
 import im.vector.app.kelare.network.event.SaveAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.SaveContactInfoResponseEvent
+import im.vector.app.kelare.network.event.SetBotRoomResponseEvent
 import im.vector.app.kelare.network.event.UpdateAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.UpdateContactInfoResponseEvent
 import im.vector.app.kelare.network.event.UpdateContactRelationResponseEvent
@@ -30,6 +32,7 @@ import im.vector.app.kelare.network.models.DeleteAccountInfo
 import im.vector.app.kelare.network.models.DeleteDialerContact
 import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.SaveAccountInfo
+import im.vector.app.kelare.network.models.SetBotRoomInfo
 import im.vector.app.kelare.network.models.UpdateAccountInfo
 import im.vector.app.kelare.network.models.UpdateContactRelationInfo
 import im.vector.app.kelare.network.response.DefaultContactRelationResponse
@@ -39,6 +42,7 @@ import im.vector.app.kelare.network.response.DeleteContactResponse
 import im.vector.app.kelare.network.response.DialerAccountInfoResponse
 import im.vector.app.kelare.network.response.GetAccountContactResponse
 import im.vector.app.kelare.network.response.GetAllContactRelationResponse
+import im.vector.app.kelare.network.response.GetBotRoomResponse
 import im.vector.app.kelare.network.response.GetContactRelationResponse
 import im.vector.app.kelare.network.response.GetContactResponse
 import im.vector.app.kelare.network.response.GetLicenseResponse
@@ -47,6 +51,7 @@ import im.vector.app.kelare.network.response.GetThemesResponse
 import im.vector.app.kelare.network.response.PresenceStatusResponse
 import im.vector.app.kelare.network.response.SaveAccountInfoResponse
 import im.vector.app.kelare.network.response.SaveContactInfoResponse
+import im.vector.app.kelare.network.response.SetBotRoomResponse
 import im.vector.app.kelare.network.response.UpdateAccountInfoResponse
 import im.vector.app.kelare.network.response.UpdateContactInfoResponse
 import im.vector.app.kelare.network.response.UpdateContactRelationResponse
@@ -377,6 +382,27 @@ object HttpClient {
 
         val call = mHttpApi!!.getAllContactRelations(getHeaders(context))
         dispatchClient!!.enqueue(call, GetAllContactRelationResponse::class.java, GetAllContactRelationResponseEvent::class.java)
+    }
+
+    /**
+     * get bot rooms
+     */
+    fun getBotAccounts(context: Context,userID: String) {
+
+        var formMap: HashMap<String, Any> = HashMap<String, Any>()
+        formMap.put("user_id",userID)
+
+        val call = mHttpApi!!.getBotAccounts(getHeaders(context), formMap)
+        dispatchClient!!.enqueue(call, GetBotRoomResponse::class.java, GetBotRoomResponseEvent::class.java)
+    }
+
+    /**
+     * set bot room
+     */
+    fun setBridgeBotRoom(context: Context, info: SetBotRoomInfo) {
+
+        val call = mHttpApi!!.setBridgeBotRoom(getHeaders(context), info)
+        dispatchClient!!.enqueue(call, SetBotRoomResponse::class.java, SetBotRoomResponseEvent::class.java)
     }
 
 

@@ -115,6 +115,7 @@ import im.vector.app.features.home.event.CreateGroupRoomEvent
 import im.vector.app.features.home.event.ToSpaceDetailsEvent
 import im.vector.app.features.home.room.list.widget.ChooseCreateGroupTypeDialog
 import im.vector.app.features.spaces.SpaceListFragment
+import im.vector.app.kelare.network.event.GetBotRoomResponseEvent
 import im.vector.app.kelare.network.event.GetLicenseResponseEvent
 import im.vector.app.kelare.network.event.GetPublicRoomResponseEvent
 import im.vector.app.kelare.network.event.GetThemesResponseEvent
@@ -219,8 +220,8 @@ class HomeActivity :
     override fun getBinding() = ActivityHomeBinding.inflate(layoutInflater)
 
     private var accountList: ArrayList<DialerAccountInfo> = ArrayList()
-    private var sipAccountList : ArrayList<DialerAccountInfo> = ArrayList()
-    private var xmppAccountList : ArrayList<DialerAccountInfo> = ArrayList()
+    private var sipAccountList: ArrayList<DialerAccountInfo> = ArrayList()
+    private var xmppAccountList: ArrayList<DialerAccountInfo> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -574,7 +575,7 @@ class HomeActivity :
         serverBackupStatusViewModel.refreshRemoteStateIfNeeded()
 
         //delay, call api need time
-        Timer().schedule(object :TimerTask(){
+        Timer().schedule(object : TimerTask() {
             override fun run() {
                 firstLoginToBackUp()
             }
@@ -783,6 +784,7 @@ class HomeActivity :
         HttpClient.init(this, mBus)
 
         getPublicRoom()
+        getBotRooms()
         getDialerAccounts()
         getFcmToken()
         getDialerLicense()
@@ -800,6 +802,30 @@ class HomeActivity :
         try {
             HttpClient.getDialerAccountInfo(this, dialerSession.userID)
         } catch (e: Exception) {
+        }
+    }
+
+    private fun getBotRooms() {
+        try {
+            HttpClient.getBotAccounts(this, session.myUserId)
+        } catch (e: Exception) {
+        }
+    }
+
+    @Subscribe
+    fun onBotRoomEvent(event: GetBotRoomResponseEvent) {
+        if (event.isSuccess) {
+            val botRoomInfo = event.model!!.data
+            if (botRoomInfo == null) {
+                Timber.e("has not create bot room")
+            } else {
+                Timber.e("bot room---->$botRoomInfo")
+                if (botRoomInfo.skype_bot_room_id != null) {
+
+                    //homeActivityViewModel.onSubmitInvitees("")
+                }
+
+            }
         }
     }
 
@@ -881,7 +907,6 @@ class HomeActivity :
 
                     if (mAccount != null) {
                         if (mAccount.state.toInt() == 2) {  //2:OK
-
                         } else {
                             SIPLoginUtil(this, core, dialerAccountInfo, daoSession).loginSIPAccount()
                         }
@@ -897,7 +922,6 @@ class HomeActivity :
                 }
             }
         }
-
     }
 
     /**
@@ -1002,8 +1026,7 @@ class HomeActivity :
                     startActivity(callIntent)
                 }
             }
-            else -> {
-
+            else               -> {
             }
         }
 
@@ -1012,5 +1035,4 @@ class HomeActivity :
         intent.data = null
         intent.extras?.clear()
     }
-
 }
