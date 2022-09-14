@@ -332,6 +332,11 @@ class CoreContext(
 
         core = Factory.instance().createCoreWithConfig(coreConfig, context)
 
+        /**
+         * this is very important, or it will have SSL handshake fail: X509
+         */
+        core.verifyServerCertificates(false)
+
         stopped = false
         _lifecycleRegistry.currentState = Lifecycle.State.CREATED
         Log.i("[Context] Ready")

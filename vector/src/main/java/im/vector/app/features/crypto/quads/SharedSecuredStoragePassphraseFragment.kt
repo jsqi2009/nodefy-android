@@ -18,10 +18,14 @@ package im.vector.app.features.crypto.quads
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.ITALIC
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -135,6 +139,17 @@ class SharedSecuredStoragePassphraseFragment @Inject constructor(
         views.ssssPassphraseReset.setOnClickListener {
             sharedViewModel.handle(SharedSecureStorageAction.ForgotResetAll)
         }
+
+        val spannable2 = SpannableString(resources.getString(R.string.forget_phrase_to_use_recovery_key))
+        spannable2.setSpan(
+                ForegroundColorSpan(Color.RED), spannable2.length - 14, spannable2.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable2.setSpan(
+                StyleSpan(ITALIC), spannable2.length - 14, spannable2.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable2.setSpan(RelativeSizeSpan(1.3f), spannable2.length - 14, spannable2.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        views.ssssPassphraseUseKey.text = spannable2
 
     }
 }

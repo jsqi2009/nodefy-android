@@ -247,6 +247,8 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                 return
             }
 
+            core.verifyServerCertificates(false)
+
             var transportType: TransportType? = null
             var mediaEncryption: MediaEncryption? = null
             for (index in transportList.indices) {
@@ -270,6 +272,23 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
             // Ensure push notification is enabled for this account
             accountParams.pushNotificationAllowed = true
             accountParams.registerEnabled = true
+
+            //set natPolicy
+            var natPolicy = accountParams.natPolicy
+            if (natPolicy == null) {
+                Timber.e("create natPolicy")
+                natPolicy = core.createNatPolicy()
+            }
+            natPolicy.enableStun(true)
+            natPolicy.enableTurn(true)
+            natPolicy.enableIce(true)
+            natPolicy.enableUpnp(true)
+            natPolicy.enableTcpTurnTransport(true)
+            natPolicy.enableTlsTurnTransport(true)
+            natPolicy.enableUdpTurnTransport(true)
+            natPolicy.stunServer = "stun:turn.matrix.org"
+
+            accountParams.natPolicy = natPolicy
 
             // We also need to configure where the proxy server is located
             //val address = Factory.instance().createAddress("sip:${proxy}")

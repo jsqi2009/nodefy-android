@@ -810,7 +810,7 @@ class HomeActivity :
         HttpClient.init(this, mBus)
 
         getPublicRoom()
-        getBotRooms()
+        //getBotRooms()
         getDialerAccounts()
         getFcmToken()
         getDialerLicense()

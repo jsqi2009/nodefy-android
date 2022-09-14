@@ -36,6 +36,8 @@ class SIPLoginUtil(val context: Context, val core: Core, private val accountInfo
             return
         }
 
+        core.verifyServerCertificates(false)
+
         var transportType: TransportType? = null
         var mediaEncryption: MediaEncryption? = null
         for (index in transportList.indices) {

@@ -30,6 +30,7 @@ import im.vector.app.kelare.adapter.ContactChannelAdapter
 import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.models.ContactChannelInfo
+import timber.log.Timber
 
 /**
  * author : Jason
@@ -45,10 +46,11 @@ class SetDefaultChannelDialog(val mContext: Context, val mBus: AndroidBus, priva
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mAdapter: ContactChannelAdapter
     private var channelListener: ChannelListener? = null
+    private var originSelectedType = ""
 
 
     interface ChannelListener {
-        fun onDefaultChannel(item: ContactChannelInfo, isNodefy: Boolean)
+        fun onDefaultChannel(item: ContactChannelInfo, isNodefy: Boolean, isChanged: Boolean)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +77,13 @@ class SetDefaultChannelDialog(val mContext: Context, val mBus: AndroidBus, priva
 
         tvCancel!!.setOnClickListener(this)
         tvSave!!.setOnClickListener(this)
+
+        contactChannelList.forEach {
+            if (it.checked) {
+                originSelectedType = it.displayType!!
+            }
+        }
+        Timber.e("origin type----$originSelectedType")
 
     }
 
@@ -109,6 +118,7 @@ class SetDefaultChannelDialog(val mContext: Context, val mBus: AndroidBus, priva
         var item = ContactChannelInfo()
 
         var isNodefy = false
+        var isChanged = true
         contactChannelList.forEach {
             if (it.checked) {
                 if (it.displayType == mContext.getString(R.string.account_contact_channel_nodefy)) {
@@ -125,7 +135,10 @@ class SetDefaultChannelDialog(val mContext: Context, val mBus: AndroidBus, priva
                 }
             }
         }
-        channelListener!!.onDefaultChannel(item, isNodefy)
+        Timber.e("selected type----${item.displayType}")
+        isChanged = item.displayType != originSelectedType
+
+        channelListener!!.onDefaultChannel(item, isNodefy, isChanged)
 
         dismiss()
     }

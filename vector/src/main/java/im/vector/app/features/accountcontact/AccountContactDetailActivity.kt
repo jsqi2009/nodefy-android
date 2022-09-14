@@ -536,7 +536,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         getRelations(false)
     }
 
-    override fun onDefaultChannel(item: ContactChannelInfo, isNodefy: Boolean) {
+    override fun onDefaultChannel(item: ContactChannelInfo, isNodefy: Boolean, isChanged: Boolean) {
         val relationInfo: DefaultContactRelationInfo = DefaultContactRelationInfo()
 
         val childrenInfo: ChildrenInfo = ChildrenInfo()

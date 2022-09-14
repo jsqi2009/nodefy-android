@@ -141,7 +141,10 @@ class SectionHeaderAdapter(
             }
 
             binding.roomAddImageView.setOnClickListener {
-                mBus.post(CreateGroupRoomEvent(roomsSectionData.name, isHome))
+                try {
+                    mBus.post(CreateGroupRoomEvent(roomsSectionData.name, isHome))
+                } catch (e: Exception) {
+                }
             }
 
             binding.roomCategoryTitleView.setOnClickListener {
