@@ -701,18 +701,24 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
     }
 
     fun showLoadingDialog() {
-        if (this.loadingDialog == null || !this.loadingDialog!!.isShowing) {
-            loadingDialog = KProgressHUD.create(this)
-                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                    .setDimAmount(0.5f)
-            loadingDialog!!.show()
+        try {
+            if (this.loadingDialog == null || !this.loadingDialog!!.isShowing) {
+                loadingDialog = KProgressHUD.create(this)
+                        .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                        .setDimAmount(0.5f)
+                loadingDialog!!.show()
+            }
+        } catch (e: Exception) {
         }
     }
 
     fun hideLoadingDialog() {
-        if (this.loadingDialog != null && this.loadingDialog!!.isShowing) {
-            this.loadingDialog!!.dismiss()
-            this.loadingDialog = null
+        try {
+            if (this.loadingDialog != null && this.loadingDialog!!.isShowing) {
+                this.loadingDialog!!.dismiss()
+                this.loadingDialog = null
+            }
+        } catch (e: Exception) {
         }
     }
 

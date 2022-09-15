@@ -20,6 +20,8 @@ import CreateGroupNameEvent
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.Spanned
 import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
@@ -28,6 +30,8 @@ import im.vector.app.R
 import im.vector.app.kelare.content.AndroidBus
 import im.vector.app.kelare.content.DialerSession
 import im.vector.app.kelare.network.models.DialerAccountInfo
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 /**
  * author : Jason
@@ -62,6 +66,7 @@ class CreateXMPPGroupDialog(private val mContext: Activity, private val mBus: An
         tvCancel!!.setOnClickListener(this)
         tvCreate!!.setOnClickListener(this)
 
+        setEditTextInputSpeChat()
     }
 
     override fun onClick(view: View?) {
@@ -90,6 +95,34 @@ class CreateXMPPGroupDialog(private val mContext: Activity, private val mBus: An
     override fun dismiss() {
         super.dismiss()
         mBus.unregister(this)
+    }
+
+    private fun setEditTextInputSpeChat() {
+        val filter: InputFilter = object : InputFilter {
+            override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned?, dstart: Int, dend: Int): CharSequence? {
+                val speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]"
+                val pattern: Pattern = Pattern.compile(speChat)
+                val matcher: Matcher = pattern.matcher(source.toString())
+                return if (matcher.find()) {
+                    ""
+                } else {
+                    null
+                }
+            }
+        }
+        val emojiFilter: InputFilter = object : InputFilter {
+            var emoji: Pattern = Pattern.compile(
+                    "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+                    Pattern.UNICODE_CASE or Pattern.CASE_INSENSITIVE
+            )
+            override fun filter(source: CharSequence?, start: Int, end: Int, dest: Spanned?, dstart: Int, dend: Int): CharSequence? {
+                val emojiMatcher: Matcher = emoji.matcher(source)
+                return if (emojiMatcher.find()) {
+                    ""
+                } else null
+            }
+        }
+        etGroupName!!.filters = arrayOf<InputFilter>(filter, emojiFilter)
     }
 
 

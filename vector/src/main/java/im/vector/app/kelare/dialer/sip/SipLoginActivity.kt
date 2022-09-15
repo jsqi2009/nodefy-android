@@ -397,6 +397,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         advancedInfo.rtpVideoPortStart = accountInfo.extension.rtpVideoPortStart
         advancedInfo.rtpVideoPortEnd= accountInfo.extension.rtpVideoPortEnd
         advancedInfo.tlsEnable= accountInfo.extension.tlsEnable
+        advancedInfo.isUpload= accountInfo.is_upload
     }
 
     @Subscribe
@@ -672,5 +673,9 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
                 }
             }
         }
+    }
+
+    private fun disableUploadAccount() {
+
     }
 }

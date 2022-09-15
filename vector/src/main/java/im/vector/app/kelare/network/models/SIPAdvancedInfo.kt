@@ -25,7 +25,8 @@ class SIPAdvancedInfo:Serializable {
     var rtpAudioPortEnd: String? = null
     var tlsEnable: Boolean = false
     var displayAs : String? = null
+    var isUpload: Boolean = false
     override fun toString(): String {
-        return "SIPAdvancedInfo(outProxy=$outProxy, authName=$authName, incomingCalls=$incomingCalls, refreshInterval=$refreshInterval, interval=$interval, sipTransport=$sipTransport, encryptMedia=$encryptMedia, sipPortStart=$sipPortStart, sipPortEnd=$sipPortEnd, rtpVideoPortEnd=$rtpVideoPortEnd, rtpVideoPortStart=$rtpVideoPortStart, rtpAudioPortStart=$rtpAudioPortStart, rtpAudioPortEnd=$rtpAudioPortEnd, tlsEnable=$tlsEnable, displayAs=$displayAs)"
+        return "SIPAdvancedInfo(outProxy=$outProxy, authName=$authName, incomingCalls=$incomingCalls, refreshInterval=$refreshInterval, interval=$interval, sipTransport=$sipTransport, encryptMedia=$encryptMedia, sipPortStart=$sipPortStart, sipPortEnd=$sipPortEnd, rtpVideoPortEnd=$rtpVideoPortEnd, rtpVideoPortStart=$rtpVideoPortStart, rtpAudioPortStart=$rtpAudioPortStart, rtpAudioPortEnd=$rtpAudioPortEnd, tlsEnable=$tlsEnable, displayAs=$displayAs, isUpload=$isUpload)"
     }
 }

@@ -104,6 +104,7 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
         })
 
         views.recyclerXmppAccount.setOnItemClickListener(object :OnItemClickListener{
+
             override fun onItemClick(view: View?, adapterPosition: Int) {
                 val intent = Intent(this@DialerSettingActivity, XMPPLoginActivity::class.java)
                 intent.putExtra("index", "2")

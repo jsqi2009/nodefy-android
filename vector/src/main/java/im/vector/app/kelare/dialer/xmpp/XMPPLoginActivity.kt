@@ -255,6 +255,7 @@ class XMPPLoginActivity : VectorBaseActivity<ActivityXmppLoginBinding>(),View.On
             views.etUsername.isEnabled = false
             views.etPassword.isEnabled = false
             views.etDomain.isEnabled = false
+            views.sbEnable.isEnabled = false
         } else {
             views.etAccount.isEnabled = !isEnable
             views.etUsername.isEnabled = !isEnable
