@@ -103,9 +103,9 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     }
 
     private fun initView() {
-        views.searchText.addTextChangedListener(textWatcher)
-
         initRecycler()
+
+        views.searchText.addTextChangedListener(textWatcher)
     }
 
     private fun getContacts() {
@@ -160,10 +160,14 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
     }
 
     private fun initRecycler() {
+
         mAdapter = AccountContactAdapter(requireActivity(), arrayListOf())
         views.contactListView.layoutManager = LinearLayoutManager(context)
         views.contactListView.adapter = mAdapter
         mAdapter.setOnItemClickListener { adapter, view, position ->
+
+            views.searchText.setText("")
+
             val intent = Intent(context, AccountContactDetailActivity::class.java)
             intent.putExtra("contactList", contactList as Serializable)
             intent.putExtra("sipContactList", sipContactList as Serializable)
@@ -172,7 +176,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             requireActivity().startActivity(intent)
             //startActivity(intent)
         }
-        views.searchText.setText("")
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

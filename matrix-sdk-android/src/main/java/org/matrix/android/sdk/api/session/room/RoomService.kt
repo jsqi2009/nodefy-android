@@ -229,10 +229,10 @@ interface RoomService {
 
     private val defaultPagedListConfig
         get() = PagedList.Config.Builder()
-                .setPageSize(10)
-                .setInitialLoadSizeHint(20)
+                .setPageSize(100)
+                .setInitialLoadSizeHint(200)
                 .setEnablePlaceholders(false)
-                .setPrefetchDistance(10)
+                .setPrefetchDistance(100)
                 .build()
 
     fun getFlattenRoomSummaryChildrenOf(spaceId: String?, memberships: List<Membership> = Membership.activeMemberships()): List<RoomSummary>

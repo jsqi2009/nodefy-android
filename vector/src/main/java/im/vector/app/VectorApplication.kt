@@ -242,6 +242,8 @@ class VectorApplication :
         initGreenDao(applicationContext)
         AndroidSmackInitializer.initialize(this)
         BgManager.getInstance().init(this)
+
+        //ensureCoreExists(applicationContext)
     }
 
     private val startSyncOnFirstStart = object : DefaultLifecycleObserver {

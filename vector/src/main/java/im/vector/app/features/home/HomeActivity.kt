@@ -851,7 +851,6 @@ class HomeActivity :
                 Timber.e("bot room---->$botRoomInfo")
                 if (botRoomInfo.skype_bot_room_id != null) {
 
-
                     //homeActivityViewModel.onSubmitInvitees("")
                 }
 

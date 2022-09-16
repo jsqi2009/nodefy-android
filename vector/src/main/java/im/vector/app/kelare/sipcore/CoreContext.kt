@@ -330,7 +330,13 @@ class CoreContext(
             notificationsManager.startForeground(service, useAutoStartDescription)
         }
 
+        // Some configuration can be done before the Core is created, for example enable debug logs.
+        //Factory.instance().setDebugMode(true, "Hello Linphone")
+        //Factory.instance().isChatroomBackendAvailable(ChatRoomBackend.Basic)
+
         core = Factory.instance().createCoreWithConfig(coreConfig, context)
+
+        core.addListener(listener)
 
         /**
          * this is very important, or it will have SSL handshake fail: X509

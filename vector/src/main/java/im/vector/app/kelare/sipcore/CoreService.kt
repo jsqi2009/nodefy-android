@@ -71,7 +71,7 @@ class CoreService : CoreService() {
         } else if (!corePreferences.keepServiceAlive) {
             if (coreContext.core.isInBackground) {
                 Log.i("[Service] Task removed, stopping Core")
-                coreContext.stop()
+                //coreContext.stop()
             } else {
                 Log.w("[Service] Task removed but Core in not in background, skipping")
             }

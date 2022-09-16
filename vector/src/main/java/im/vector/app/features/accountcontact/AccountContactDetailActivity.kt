@@ -202,7 +202,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.rl_back -> {
-                mBus.post(RefreshContactEvent())
+                //mBus.post(RefreshContactEvent())
                 finish()
             }
             R.id.tv_edit -> {
@@ -918,18 +918,10 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        try {
-            //mBus.unregister(this)
-        } catch (e: Exception) {
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         try {
-            //mBus.unregister(this)
+            mBus.unregister(this)
         } catch (e: Exception) {
         }
     }

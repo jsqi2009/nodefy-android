@@ -68,10 +68,10 @@ class RoomListSectionBuilderSpace(
 ) : RoomListSectionBuilder {
 
     private val pagedListConfig = PagedList.Config.Builder()
-            .setPageSize(10)
-            .setInitialLoadSizeHint(20)
+            .setPageSize(100)
+            .setInitialLoadSizeHint(200)
             .setEnablePlaceholders(true)
-            .setPrefetchDistance(10)
+            .setPrefetchDistance(100)
             .build()
 
     override fun buildSections(mode: RoomListDisplayMode): List<RoomsSection> {
