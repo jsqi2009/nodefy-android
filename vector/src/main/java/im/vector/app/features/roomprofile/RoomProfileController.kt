@@ -307,7 +307,7 @@ class RoomProfileController @Inject constructor(
             } else {
                 buildProfileAction(
                         id = "enableEncryption",
-                        title = stringProvider.getString(R.string.room_settings_enable_encryption_no_permission),
+                        title = stringProvider.getString(R.string.room_settings_enable_encryption_no_permission2),
                         icon = R.drawable.ic_shield_black,
                         divider = false,
                         editable = false

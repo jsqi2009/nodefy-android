@@ -95,7 +95,7 @@ class RoomMemberListFragment @Inject constructor(
     }
 
     private fun setupSearchView() {
-        views.roomSettingGeneric.searchView.queryHint = getString(R.string.search_members_hint)
+        views.roomSettingGeneric.searchView.queryHint = getString(R.string.search_members_hint2)
         views.roomSettingGeneric.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return true

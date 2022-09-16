@@ -44,13 +44,13 @@ sealed class EditablePermission(@StringRes val labelResId: Int, @StringRes val s
 
     class ChangeMainAddressForTheRoom : EventTypeEditablePermission(
             EventType.STATE_ROOM_CANONICAL_ALIAS,
-            R.string.room_permissions_change_main_address_for_the_room,
+            R.string.room_permissions_change_main_address_for_the_room2,
             R.string.room_permissions_change_main_address_for_the_space
     )
 
     class EnableRoomEncryption : EventTypeEditablePermission(
             EventType.STATE_ROOM_ENCRYPTION,
-            R.string.room_permissions_enable_room_encryption,
+            R.string.room_permissions_enable_room_encryption2,
             R.string.room_permissions_enable_space_encryption
     )
 
@@ -72,12 +72,12 @@ sealed class EditablePermission(@StringRes val labelResId: Int, @StringRes val s
 
     class SendRoomServerAclEvents : EventTypeEditablePermission(
             EventType.STATE_ROOM_SERVER_ACL,
-            R.string.room_permissions_send_m_room_server_acl_events
+            R.string.room_permissions_send_m_room_server_acl_events2
     )
 
     class UpgradeTheRoom : EventTypeEditablePermission(
             EventType.STATE_ROOM_TOMBSTONE,
-            R.string.room_permissions_upgrade_the_room,
+            R.string.room_permissions_upgrade_the_room2,
             R.string.room_permissions_upgrade_the_space
     )
 

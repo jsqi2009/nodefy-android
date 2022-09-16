@@ -129,9 +129,9 @@ class SIPLoginUtil(val context: Context, val core: Core, private val accountInfo
     private val loginCoreListener = object: CoreListenerStub() {
         override fun onAccountRegistrationStateChanged(core: Core, account: Account, state: RegistrationState, message: String) {
             if (state == RegistrationState.Failed || state == RegistrationState.Cleared) {
-                Timber.e("[Account] Login failure")
+                Timber.d("[Account] Login failure")
             } else if (state == RegistrationState.Ok) {
-                Timber.e("[Account] Login success")
+                Timber.d("[Account] Login success")
 
             }
         }

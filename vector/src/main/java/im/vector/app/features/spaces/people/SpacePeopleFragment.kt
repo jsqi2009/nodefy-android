@@ -112,7 +112,7 @@ class SpacePeopleFragment @Inject constructor(
     }
 
     private fun setupSearchView() {
-        views.memberNameFilter.queryHint = getString(R.string.search_members_hint)
+        views.memberNameFilter.queryHint = getString(R.string.search_members_hint2)
         views.memberNameFilter.queryTextChanges()
                 .debounce(100)
                 .onEach {

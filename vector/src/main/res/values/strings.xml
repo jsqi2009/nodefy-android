@@ -3191,9 +3191,20 @@
     <string name="room_permissions_notice_read_only2">"You don't have permission to update the roles required to change various parts of the group"</string>
     <string name="room_permissions_change_room_avatar2">Change group avatar</string>
     <string name="room_permissions_change_room_name2">Change group name</string>
+    <string name="room_permissions_change_main_address_for_the_room2">Change main address for the group</string>
+    <string name="room_permissions_enable_room_encryption2">Enable group encryption</string>
+    <string name="room_permissions_send_m_room_server_acl_events2">Send m.group.server_acl events</string>
+    <string name="room_permissions_upgrade_the_room2">Upgrade the group</string>
+
+
+
+
 
     <string name="uploads_links_title">LINKS</string>
     <string name="uploads_links_no_result">There are no links in this room</string>
+
+    <string name="search_members_hint2">Filter group members</string>
+    <string name="room_settings_enable_encryption_no_permission2">You don\'t have permission to enable encryption in this group.</string>
 
 
     <!-- nodefy license  -->
