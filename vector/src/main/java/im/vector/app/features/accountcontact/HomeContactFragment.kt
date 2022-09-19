@@ -50,6 +50,7 @@ import org.jivesoftware.smack.roster.Roster
 import org.matrix.android.sdk.api.session.Session
 import timber.log.Timber
 import java.io.Serializable
+import java.util.Collections
 import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
@@ -129,6 +130,17 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             val mList = event.model!!.data
             contactList.addAll(mList)
 
+            //sort
+            Collections.sort(contactList, object : Comparator<AccountContactInfo> {
+                override fun compare(o1: AccountContactInfo?, o2: AccountContactInfo?): Int {
+                    if (o2!!.contacts_type == Contants.SIP_TYPE || o2!!.contacts_type == Contants.XMPP_TYPE) {
+                        return 0
+                    } else {
+                        return o1!!.contacts_id!!.compareTo(o2!!.contacts_id!!)
+                    }
+                }
+            })
+
             getXmppContact()
             getSipContact()
         }
@@ -166,16 +178,19 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
         views.contactListView.adapter = mAdapter
         mAdapter.setOnItemClickListener { adapter, view, position ->
 
-            views.searchText.setText("")
-
             val intent = Intent(context, AccountContactDetailActivity::class.java)
             intent.putExtra("contactList", contactList as Serializable)
             intent.putExtra("sipContactList", sipContactList as Serializable)
             intent.putExtra("xmppContactList", xmppContactList as Serializable)
             intent.putExtra("item", mAdapter.getItem(position) as Serializable)
+
+            views.searchText.setText("")
+
             requireActivity().startActivity(intent)
             //startActivity(intent)
         }
+
+
 
     }
 

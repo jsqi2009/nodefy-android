@@ -597,6 +597,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             }
             Contants.SIP_TYPE.lowercase()    -> {
                 if (core.accountList.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.account_contact_sip_tips), Toast.LENGTH_SHORT).show()
                     return
                 }
                 sendSipMessage()
@@ -626,6 +627,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
             }
             Contants.SIP_TYPE.lowercase()    -> {
                 if (core.accountList.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.account_contact_sip_tips), Toast.LENGTH_SHORT).show()
                     return
                 }
                 sipCall()
@@ -679,6 +681,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         if (sipAccountList.size > 0) {
             val filterList = checkDefaultDomain()
             if (filterList!!.isEmpty()) {
+                Toast.makeText(this, getString(R.string.account_contact_sip_tips), Toast.LENGTH_SHORT).show()
                 return
             }
             if (filterList.size == 1) {
@@ -686,9 +689,14 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                 directlyToCall()
             } else {
                 val callPopupWindow = SipAccountPopup(this, mBus, filterList, true, false, true, false)
-                callPopupWindow!!.showOnAnchor(views.llCall, RelativePopupWindow.VerticalPosition.ABOVE,
-                        RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, true)
+                callPopupWindow!!.showOnAnchor(
+                        views.llCall, RelativePopupWindow.VerticalPosition.ABOVE,
+                        RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT, true
+                )
             }
+        } else {
+            Toast.makeText(this, getString(R.string.account_contact_sip_tips), Toast.LENGTH_SHORT).show()
+            return
         }
     }
 
@@ -758,6 +766,7 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
         if (sipAccountList.size > 0) {
             val filterList = checkDefaultDomain()
             if (filterList!!.isEmpty()) {
+                Toast.makeText(this, getString(R.string.account_contact_sip_tips), Toast.LENGTH_SHORT).show()
                 return
             }
             if (filterList.size == 1) {
@@ -765,9 +774,14 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
                 directlyToMessage(filterList[0])
             } else {
                 val callPopupWindow = SipAccountPopup(this, mBus, filterList, true, false, true, true)
-                callPopupWindow.showOnAnchor(views.llMessage, RelativePopupWindow.VerticalPosition.ABOVE,
-                        RelativePopupWindow.HorizontalPosition.ALIGN_LEFT, true)
+                callPopupWindow.showOnAnchor(
+                        views.llMessage, RelativePopupWindow.VerticalPosition.ABOVE,
+                        RelativePopupWindow.HorizontalPosition.ALIGN_LEFT, true
+                )
             }
+        } else {
+            Toast.makeText(this, getString(R.string.account_contact_sip_tips), Toast.LENGTH_SHORT).show()
+            return
         }
     }
 

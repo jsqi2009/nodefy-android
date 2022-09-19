@@ -3329,6 +3329,7 @@
     <string name="account_contact_set_use">Use</string>
     <string name="account_contact_save">Save</string>
     <string name="account_contact_call_tips">The other party has not yet accepted the invitation to join the room</string>
+    <string name="account_contact_sip_tips">There are no available sip accounts</string>
 
 
     <!-- nodefy authenticate account setting -->
