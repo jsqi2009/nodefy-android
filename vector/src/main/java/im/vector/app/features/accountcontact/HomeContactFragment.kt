@@ -187,11 +187,7 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
             views.searchText.setText("")
 
             requireActivity().startActivity(intent)
-            //startActivity(intent)
         }
-
-
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
