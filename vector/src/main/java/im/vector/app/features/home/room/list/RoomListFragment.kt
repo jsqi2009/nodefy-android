@@ -351,7 +351,8 @@ class RoomListFragment @Inject constructor(
                                         section.notificationCount.observe(viewLifecycleOwner) { counts ->
                                             sectionAdapter.updateSection {
                                                 it.copy(
-                                                        notificationCount = counts.totalCount,
+                                                        //notificationCount = counts.totalCount,
+                                                        notificationCount = getRoomNotificationCount(section.sectionName, counts.totalCount),
                                                         isHighlighted = counts.isHighlight,
                                                 )
                                             }
@@ -615,6 +616,7 @@ class RoomListFragment @Inject constructor(
                 }
             }
         }
+
         if (items.isNotEmpty()) {
             publicList = generatePublicRoomList(items)
         }
@@ -751,6 +753,22 @@ class RoomListFragment @Inject constructor(
         Timber.e("filter roomID------${event.spaceSummary!!.roomId}")
 
         roomListViewModel.handle(RoomListAction.SelectRoom(event.spaceSummary!!))
+    }
+
+    private fun getRoomNotificationCount(sectionName: String, totalCount: Int): Int {
+        val publicRoomNotificationCount = roomListViewModel.getPublicRoomNotificationCount(dialerSession.publicRoomID)
+        Timber.e("total notification count-----$totalCount")
+        Timber.e("public room notification count-----$publicRoomNotificationCount")
+
+        if (sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase()) {
+           return publicRoomNotificationCount
+        } else if (sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
+            Timber.e("group room notification count-----${totalCount - publicRoomNotificationCount}")
+            return (totalCount - publicRoomNotificationCount)
+        } else {
+            Timber.e("direct room notification count-----${totalCount}")
+            return totalCount
+        }
     }
 
 }

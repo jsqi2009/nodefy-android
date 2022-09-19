@@ -48,7 +48,9 @@ import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.api.session.getRoomSummary
 import org.matrix.android.sdk.api.session.room.UpdatableLivePageResult
 import org.matrix.android.sdk.api.session.room.members.ChangeMembershipState
+import org.matrix.android.sdk.api.session.room.model.Membership
 import org.matrix.android.sdk.api.session.room.model.tag.RoomTag
+import org.matrix.android.sdk.api.session.room.roomSummaryQueryParams
 import org.matrix.android.sdk.api.session.room.state.isPublic
 import org.matrix.android.sdk.api.util.toMatrixItem
 import org.matrix.android.sdk.flow.flow
@@ -332,4 +334,17 @@ class RoomListViewModel @AssistedInject constructor(
             _viewEvents.post(value)
         }
     }
+
+    fun getPublicRoomNotificationCount(roomId: String): Int {
+
+        val totalCount = session.roomService().getNotificationCountForRooms(
+                roomSummaryQueryParams {
+                    this.memberships = listOf(Membership.JOIN)
+                    this.roomId = QueryStringValue.Equals(roomId)
+                }
+        )
+
+        return totalCount.totalCount
+    }
+
 }
