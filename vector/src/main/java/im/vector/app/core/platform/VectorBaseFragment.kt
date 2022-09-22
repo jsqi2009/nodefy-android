@@ -150,7 +150,7 @@ abstract class VectorBaseFragment<VB : ViewBinding> : Fragment(), MavericksView 
         }
 
         //dialer module
-        VectorApplication.ensureCoreExists(activity!!)
+        //VectorApplication.ensureCoreExists(activity!!)
         mBus = VectorApplication.get(activity!!).mBus
         mBus.register(this)
         //core = VectorApplication.get(activity!!).linphoneCore

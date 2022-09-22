@@ -286,7 +286,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
             natPolicy.enableTcpTurnTransport(true)
             natPolicy.enableTlsTurnTransport(true)
             natPolicy.enableUdpTurnTransport(true)
-            natPolicy.stunServer = "stun:turn.matrix.org"
+            natPolicy.stunServer = "stun:stun1.l.google.com:19302"
 
             accountParams.natPolicy = natPolicy
 

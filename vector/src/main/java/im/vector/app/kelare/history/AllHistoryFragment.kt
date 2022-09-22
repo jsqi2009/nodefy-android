@@ -34,6 +34,7 @@ import im.vector.app.kelare.adapter.RecyclerItemClickListener
 import im.vector.app.kelare.dialer.call.DialerCallActivity
 import org.linphone.core.Account
 import org.linphone.core.CallLog
+import org.linphone.core.LoggingServiceListenerStub
 import org.linphone.core.RegistrationState
 import timber.log.Timber
 
@@ -102,6 +103,8 @@ class AllHistoryFragment : VectorBaseFragment<FragmentAllHistoryBinding>(), View
         }
 
         refreshCallHistory()
+
+
     }
 
     private fun refreshCallHistory() {

@@ -53,7 +53,7 @@ abstract class GenericActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         Log.i("[Generic Activity] Ensuring Core exists")
-        ensureCoreExists(applicationContext)
+        //ensureCoreExists(applicationContext)
 
         lifecycleScope.launch(Dispatchers.Main) {
             WindowInfoTracker

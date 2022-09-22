@@ -243,7 +243,7 @@ class VectorApplication :
         AndroidSmackInitializer.initialize(this)
         BgManager.getInstance().init(this)
 
-        //ensureCoreExists(applicationContext)
+        ensureCoreExists(applicationContext)
     }
 
     private val startSyncOnFirstStart = object : DefaultLifecycleObserver {

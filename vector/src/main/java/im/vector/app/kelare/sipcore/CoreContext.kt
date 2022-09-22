@@ -66,10 +66,12 @@ import im.vector.app.VectorApplication.Companion.getDaoSession
 import im.vector.app.kelare.telecom.TelecomHelper
 import im.vector.app.kelare.utils.SipCallEvent
 import im.vector.app.kelare.compatibility.PhoneStateInterface
+import im.vector.app.kelare.dialer.call.ComingCallActivity
 import org.linphone.core.*
 import im.vector.app.kelare.utils.AppUtils
 import im.vector.app.kelare.utils.LinphoneUtils
 import im.vector.app.kelare.voip.VoiceCallActivity
+import org.zhx.common.bgstart.library.impl.BgStart
 import timber.log.Timber
 
 class CoreContext(
@@ -154,6 +156,14 @@ class CoreContext(
                     call.decline(Reason.Busy)
                     return
                 }
+
+                Timber.e("receivedPeerUser: 监听到来电")
+                Timber.e("received call message-----$message")
+
+                Timber.e("call remote domain: ${call.remoteAddress.domain}")
+                Timber.e("call remote user: ${call.remoteAddress.username}")
+                Timber.e("call local domain: ${call.callLog.localAddress.domain}")
+                Timber.e("call local user: ${call.callLog.localAddress.username}")
 
                 // Starting SDK 24 (Android 7.0) we rely on the fullscreen intent of the call incoming notification
                 if (Version.sdkStrictlyBelow(Version.API24_NOUGAT_70)) {
@@ -299,7 +309,14 @@ class CoreContext(
                 when (level) {
                     LogLevel.Error   -> Timber.tag(domain).e(message)
                     LogLevel.Warning -> Timber.tag(domain).w(message)
-                    LogLevel.Message -> Timber.tag(domain).i(message)
+                    LogLevel.Message -> {
+                        if (message.contains("channel")) {
+                            Timber.e("message channel----${message.split(",")[0]}")
+                        } else {
+                            Timber.tag(domain).i(message)
+                        }
+                        //Timber.tag(domain).i(message)
+                    }
                     LogLevel.Fatal   -> Timber.tag(domain).wtf(message)
                     else             -> Timber.tag(domain).d(message)
                 }
@@ -334,7 +351,15 @@ class CoreContext(
         //Factory.instance().setDebugMode(true, "Hello Linphone")
         //Factory.instance().isChatroomBackendAvailable(ChatRoomBackend.Basic)
 
-        core = Factory.instance().createCoreWithConfig(coreConfig, context)
+        //core = Factory.instance().createCoreWithConfig(coreConfig, context)
+
+        val factory = Factory.instance()
+        // Some configuration can be done before the Core is created, for example enable debug logs.
+        core = Factory.instance().createCore(null, null, context)
+        factory.setDebugMode(true, "Hello Linphone")
+        factory.isChatroomBackendAvailable(ChatRoomBackend.Basic)
+        Factory.instance().setLogCollectionPath(context.filesDir.absolutePath)
+        factory.enableLogCollection(LogCollectionState.Enabled)
 
         core.addListener(listener)
 

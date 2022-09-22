@@ -131,6 +131,9 @@ class RoomDetailActivity :
         views.drawerLayout.addDrawerListener(drawerListener)
 
         playbackTracker.trackActivity(playbackActivityListener)
+
+        //close the Drawer swipe open
+        views.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
     private fun handleRoomLeft(roomLeft: RequireActiveMembershipViewEvents.RoomLeft) {

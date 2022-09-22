@@ -155,7 +155,9 @@ class AccountContactDetailActivity : VectorBaseActivity<ActivityAccountContactDe
 
         defaultChanelType = targetContact.contacts_type!!.lowercase()
 
-        Timber.d("contact item info---${contactList[0]}")
+        if (contactList.isNotEmpty()) {
+            Timber.d("sip contact item info---${sipContactList}")
+        }
         Timber.d("sip contact item info---${sipContactList}")
         Timber.d("xmpp contact item info---${xmppContactList}")
         Timber.d("item info---$targetContact")

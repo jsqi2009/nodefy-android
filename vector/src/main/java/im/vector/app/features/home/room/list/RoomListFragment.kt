@@ -764,7 +764,11 @@ class RoomListFragment @Inject constructor(
            return publicRoomNotificationCount
         } else if (sectionName.lowercase() == getString(R.string.bottom_action_rooms2).lowercase()) {
             Timber.e("group room notification count-----${totalCount - publicRoomNotificationCount}")
-            return (totalCount - publicRoomNotificationCount)
+            if (totalCount == 0) {
+                return totalCount
+            } else {
+                return (totalCount - publicRoomNotificationCount)
+            }
         } else {
             Timber.e("direct room notification count-----${totalCount}")
             return totalCount

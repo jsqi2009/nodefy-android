@@ -267,7 +267,7 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
         }
 
         //Dialer
-        VectorApplication.ensureCoreExists(applicationContext)
+        //VectorApplication.ensureCoreExists(applicationContext)
         mContext = this
         mBus = VectorApplication.get(this).mBus
         this.mBus.register(this)
