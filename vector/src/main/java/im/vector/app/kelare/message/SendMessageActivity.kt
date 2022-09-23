@@ -24,6 +24,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.labo.kaji.relativepopupwindow.RelativePopupWindow
@@ -340,6 +341,11 @@ class SendMessageActivity : VectorBaseActivity<ActivitySendMessageBinding>(), Vi
     private fun sendMessage(name:String, isMultiple:Boolean, index:Int, size:Int) {
 
         if (TextUtils.isEmpty(views.tvDefaultAccount.text.toString())) {
+            return
+        }
+
+        if (TextUtils.isEmpty(views.message.text.toString())) {
+            Toast.makeText(this, getString(R.string.sip_send_message_tips), Toast.LENGTH_SHORT).show()
             return
         }
 

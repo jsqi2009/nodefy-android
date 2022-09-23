@@ -361,7 +361,7 @@ class CoreContext(
         Factory.instance().setLogCollectionPath(context.filesDir.absolutePath)
         factory.enableLogCollection(LogCollectionState.Enabled)
 
-        core.addListener(listener)
+        //core.addListener(listener)
 
         /**
          * this is very important, or it will have SSL handshake fail: X509
@@ -397,6 +397,7 @@ class CoreContext(
         _lifecycleRegistry.currentState = Lifecycle.State.STARTED
 
         initPhoneStateListener()
+
 
         notificationsManager.onCoreReady()
 

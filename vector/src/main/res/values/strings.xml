@@ -3382,7 +3382,8 @@
     <string name="bottom_sheet_auth_account_skip">Skip</string>
 
 
-
+    <!-- Dialer SIP-->
+    <string name="sip_send_message_tips">Please input the message</string>
 
 
 

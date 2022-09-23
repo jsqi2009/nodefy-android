@@ -367,9 +367,14 @@ class DialerCallActivity : VectorBaseActivity<ActivityDialerCallBinding>(), View
                 Call.State.Connected        -> {
                     // When the 200 OK has been received
                     //bindView.tvStatus.text = "Connected"
+
+                    /*views.tvStatus.visibility = View.GONE
+                    views.llDuration.visibility = View.VISIBLE
+                    startExecutorTimer()*/
+
                     views.tvStatus.visibility = View.GONE
                     views.llDuration.visibility = View.VISIBLE
-                    startExecutorTimer()
+                    finish()
                 }
                 Call.State.StreamsRunning   -> {
                     // This state indicates the call is active.

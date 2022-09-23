@@ -44,6 +44,7 @@ import org.linphone.core.tools.Log
 import im.vector.app.R
 import im.vector.app.features.home.HomeActivity
 import im.vector.app.kelare.voip.VoiceCallActivity
+import timber.log.Timber
 
 class Notifiable(val notificationId: Int) {
     val messages: ArrayList<NotifiableMessage> = arrayListOf()
@@ -129,7 +130,10 @@ class NotificationsManager(private val context: Context) {
                         displayMissedCallNotification(call.remoteAddress)
                     }
                 }
-                else -> displayCallNotification(call)
+                else -> {
+                    Timber.e("sip push outgoing call----sip push")
+                    displayCallNotification(call)
+                }
             }
         }
 
