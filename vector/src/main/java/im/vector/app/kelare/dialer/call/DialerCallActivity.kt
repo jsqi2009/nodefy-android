@@ -400,6 +400,10 @@ class DialerCallActivity : VectorBaseActivity<ActivityDialerCallBinding>(), View
                     finish()
                 }
                 Call.State.Error            -> {
+
+                    views.tvStatus.text = "Temporarily Unavailable"
+                    finish()
+
                     /*stopExecutorTimer()
                     finish()*/
                 }else                       -> {
