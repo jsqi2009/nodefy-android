@@ -568,24 +568,34 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/margin_70"
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/iv_vm"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_dialer_vm"
-            tools:ignore="ContentDescription" />
+        <LinearLayout
+            android:id="@+id/vmLayout"
+            android:layout_width="0dp"
+            android:paddingEnd="@dimen/margin_40"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:layout_weight="1"
+            tools:ignore="RtlSymmetry">
+
+            <ImageView
+                android:id="@+id/iv_vm"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_dialer_vm"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_call"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
             android:src="@drawable/ic_icon_outgoing_call"
             tools:ignore="ContentDescription"
             android:visibility="visible"/>
@@ -600,12 +610,23 @@
             tools:ignore="ContentDescription"
             android:visibility="gone"/>
 
-        <ImageView
-            android:id="@+id/iv_delete"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_icon_delete_num"
-            tools:ignore="ContentDescription" />
+        <LinearLayout
+            android:id="@+id/deleteLayout"
+            android:layout_width="0dp"
+            android:paddingStart="@dimen/margin_40"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:ignore="RtlSymmetry">
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_icon_delete_num"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

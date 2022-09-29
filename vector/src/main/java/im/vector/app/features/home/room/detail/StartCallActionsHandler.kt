@@ -37,15 +37,15 @@ class StartCallActionsHandler(
         private val showDialogWithMessage: (String) -> Unit,
         private val onTapToReturnToCall: () -> Unit) {
 
-    fun onVideoCallClicked() {
-        handleCallRequest(true)
+    fun onVideoCallClicked(isPaid: Boolean) {
+        handleCallRequest(true, isPaid)
     }
 
-    fun onVoiceCallClicked() {
-        handleCallRequest(false)
+    fun onVoiceCallClicked(isPaid: Boolean) {
+        handleCallRequest(false, isPaid)
     }
 
-    private fun handleCallRequest(isVideoCall: Boolean) = withState(timelineViewModel) { state ->
+    private fun handleCallRequest(isVideoCall: Boolean, isPaid: Boolean) = withState(timelineViewModel) { state ->
         val roomSummary = state.asyncRoomSummary.invoke() ?: return@withState
         when (roomSummary.joinedMembersCount) {
             1    -> {
@@ -79,32 +79,7 @@ class StartCallActionsHandler(
                         safeStartCall(isVideoCall)
                     } else {
 
-                        if (state.hasActiveJitsiWidget()) {
-                            // A conference is already in progress, return
-                        } else {
-                            MaterialAlertDialogBuilder(fragment.requireContext())
-                                    .setTitle(if (isVideoCall) R.string.video_meeting else R.string.audio_meeting)
-                                    .setMessage(R.string.audio_video_meeting_description)
-                                    .setPositiveButton(fragment.getString(R.string.create)) { _, _ ->
-                                        // create the widget, then navigate to it..
-                                        timelineViewModel.handle(RoomDetailAction.AddJitsiWidget(isVideoCall))
-                                    }
-                                    .setNegativeButton(fragment.getString(R.string.action_cancel), null)
-                                    .show()
-                        }
-
-                        /*if (!state.isAllowedToManageWidgets) {
-                            // You do not have permission to start a conference call in this room
-                            showDialogWithMessage(
-                                    fragment.getString(
-                                            if (state.isDm()) {
-                                                R.string.no_permissions_to_start_conf_call_in_direct_room
-                                            } else {
-                                                R.string.no_permissions_to_start_conf_call
-                                            }
-                                    )
-                            )
-                        } else {
+                        if (isPaid) {
                             if (state.hasActiveJitsiWidget()) {
                                 // A conference is already in progress, return
                             } else {
@@ -118,40 +93,40 @@ class StartCallActionsHandler(
                                         .setNegativeButton(fragment.getString(R.string.action_cancel), null)
                                         .show()
                             }
-                        }*/
+                        } else {
+                            if (!state.isAllowedToManageWidgets) {
+                                // You do not have permission to start a conference call in this room
+                                showDialogWithMessage(
+                                        fragment.getString(
+                                                if (state.isDm()) {
+                                                    R.string.no_permissions_to_start_conf_call_in_direct_room
+                                                } else {
+                                                    R.string.no_permissions_to_start_conf_call
+                                                }
+                                        )
+                                )
+                            } else {
+                                if (state.hasActiveJitsiWidget()) {
+                                    // A conference is already in progress, return
+                                } else {
+                                    MaterialAlertDialogBuilder(fragment.requireContext())
+                                            .setTitle(if (isVideoCall) R.string.video_meeting else R.string.audio_meeting)
+                                            .setMessage(R.string.audio_video_meeting_description)
+                                            .setPositiveButton(fragment.getString(R.string.create)) { _, _ ->
+                                                // create the widget, then navigate to it..
+                                                timelineViewModel.handle(RoomDetailAction.AddJitsiWidget(isVideoCall))
+                                            }
+                                            .setNegativeButton(fragment.getString(R.string.action_cancel), null)
+                                            .show()
+                                }
+                            }
+                        }
                     }
                 }
             }
             else -> {
 
-                if (state.hasActiveJitsiWidget()) {
-                    // A conference is already in progress, return
-                } else {
-                    MaterialAlertDialogBuilder(fragment.requireContext())
-                            .setTitle(if (isVideoCall) R.string.video_meeting else R.string.audio_meeting)
-                            .setMessage(R.string.audio_video_meeting_description)
-                            .setPositiveButton(fragment.getString(R.string.create)) { _, _ ->
-                                // create the widget, then navigate to it..
-                                timelineViewModel.handle(RoomDetailAction.AddJitsiWidget(isVideoCall))
-                            }
-                            .setNegativeButton(fragment.getString(R.string.action_cancel), null)
-                            .show()
-                }
-
-                // it's jitsi call
-                // can you add widgets??
-                /*if (!state.isAllowedToManageWidgets) {
-                    // You do not have permission to start a conference call in this room
-                    showDialogWithMessage(
-                            fragment.getString(
-                                    if (state.isDm()) {
-                                        R.string.no_permissions_to_start_conf_call_in_direct_room
-                                    } else {
-                                        R.string.no_permissions_to_start_conf_call
-                                    }
-                            )
-                    )
-                } else {
+                if (isPaid) {
                     if (state.hasActiveJitsiWidget()) {
                         // A conference is already in progress, return
                     } else {
@@ -165,7 +140,36 @@ class StartCallActionsHandler(
                                 .setNegativeButton(fragment.getString(R.string.action_cancel), null)
                                 .show()
                     }
-                }*/
+                }else{
+                    // it's jitsi call
+                    // can you add widgets??
+                    if (!state.isAllowedToManageWidgets) {
+                        // You do not have permission to start a conference call in this room
+                        showDialogWithMessage(
+                                fragment.getString(
+                                        if (state.isDm()) {
+                                            R.string.no_permissions_to_start_conf_call_in_direct_room
+                                        } else {
+                                            R.string.no_permissions_to_start_conf_call
+                                        }
+                                )
+                        )
+                    } else {
+                        if (state.hasActiveJitsiWidget()) {
+                            // A conference is already in progress, return
+                        } else {
+                            MaterialAlertDialogBuilder(fragment.requireContext())
+                                    .setTitle(if (isVideoCall) R.string.video_meeting else R.string.audio_meeting)
+                                    .setMessage(R.string.audio_video_meeting_description)
+                                    .setPositiveButton(fragment.getString(R.string.create)) { _, _ ->
+                                        // create the widget, then navigate to it..
+                                        timelineViewModel.handle(RoomDetailAction.AddJitsiWidget(isVideoCall))
+                                    }
+                                    .setNegativeButton(fragment.getString(R.string.action_cancel), null)
+                                    .show()
+                        }
+                    }
+                }
             }
         }
     }

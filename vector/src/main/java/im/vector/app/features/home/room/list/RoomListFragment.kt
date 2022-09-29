@@ -174,7 +174,7 @@ class RoomListFragment @Inject constructor(
         }
     }
 
-    private fun refreshCollapseStates() {
+    private fun refreshCollapseStates(isClicked: Boolean, sectionName: String) {
         val sectionsCount = adapterInfosList.count { !it.sectionHeaderAdapter.roomsSectionData.isHidden }
         roomListViewModel.sections.forEachIndexed { index, roomsSection ->
             val actualBlock = adapterInfosList[index]
@@ -199,6 +199,16 @@ class RoomListFragment @Inject constructor(
                 // force expand if the section is not collapsable
                 roomListViewModel.handle(RoomListAction.ToggleSection(roomsSection))
             }
+
+            if (isClicked && roomsSection.sectionName.lowercase() == sectionName.lowercase()) {
+                Timber.e("click room section------>${roomsSection.sectionName}")
+                if (roomsSection.sectionName.lowercase() == getString(R.string.bottom_action_rooms_public).lowercase()) {
+                    if (publicRoom != null) {
+                        roomListViewModel.handle(RoomListAction.SelectRoom(publicRoom!!))
+                    }
+                }
+            }
+
         }
     }
     override fun showFailure(throwable: Throwable) {
@@ -344,7 +354,7 @@ class RoomListFragment @Inject constructor(
                                                         isLoading = false
                                                 )
                                             }
-                                            refreshCollapseStates()
+                                            refreshCollapseStates(false,section.sectionName)
                                             checkEmptyState()
                                         }
                                         observeItemCount(section, sectionAdapter)
@@ -358,7 +368,7 @@ class RoomListFragment @Inject constructor(
                                             }
                                         }
                                         section.isExpanded.observe(viewLifecycleOwner) { _ ->
-                                            refreshCollapseStates()
+                                            refreshCollapseStates(true,section.sectionName)
                                         }
                                         controller.listener = this
                                     }
@@ -375,12 +385,12 @@ class RoomListFragment @Inject constructor(
                                                         isLoading = false
                                                 )
                                             }
-                                            refreshCollapseStates()
+                                            refreshCollapseStates(false,section.sectionName)
                                             checkEmptyState()
                                         }
                                         observeItemCount(section, sectionAdapter)
                                         section.isExpanded.observe(viewLifecycleOwner) { _ ->
-                                            refreshCollapseStates()
+                                            refreshCollapseStates(true,section.sectionName)
                                         }
                                         controller.listener = this
                                     }
@@ -397,7 +407,7 @@ class RoomListFragment @Inject constructor(
                                                         isLoading = false,
                                                 )
                                             }
-                                            refreshCollapseStates()
+                                            refreshCollapseStates(false,section.sectionName)
                                             checkEmptyState()
                                         }
                                         observeItemCount(section, sectionAdapter)
@@ -410,7 +420,7 @@ class RoomListFragment @Inject constructor(
                                             }
                                         }
                                         section.isExpanded.observe(viewLifecycleOwner) { _ ->
-                                            refreshCollapseStates()
+                                            refreshCollapseStates(true,section.sectionName)
                                         }
                                         controller.listener = this
                                     }

@@ -532,11 +532,12 @@
         <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" /> <!-- The following is mandatory to have our SDK to handle push automatically -->
         <service
             android:name="org.linphone.core.tools.firebase.FirebaseMessaging"
-            android:exported="false">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service> <!-- This is to handle the PUSH_RECEIVED broadcast emitted by our SDK upon push reception -->
+        </service>    <!-- This is to handle the PUSH_RECEIVED broadcast emitted by our SDK upon push reception -->
         <receiver
             android:name=".kelare.broadcast.LinphonePushBroadcastReceiver"
             android:exported="false">

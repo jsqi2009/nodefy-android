@@ -149,7 +149,7 @@ class SectionHeaderAdapter(
 
             binding.roomCategoryTitleView.setOnClickListener {
                 if (roomsSectionData.name.lowercase() == binding.root.context.getString(R.string.bottom_action_rooms_public).lowercase()) {
-                    mBus.post(ToPublicDetailsEvent())
+                    //mBus.post(ToPublicDetailsEvent())
                 }
             }
 

@@ -1134,11 +1134,11 @@ class TimelineFragment @Inject constructor(
                 true
             }
             R.id.voice_call                        -> {
-                callActionsHandler.onVoiceCallClicked()
+                callActionsHandler.onVoiceCallClicked(dialerSession.isPaid)
                 true
             }
             R.id.video_call                        -> {
-                callActionsHandler.onVideoCallClicked()
+                callActionsHandler.onVideoCallClicked(dialerSession.isPaid)
                 true
             }
             R.id.menu_timeline_thread_list         -> {

@@ -74,7 +74,7 @@ class RageShake @Inject constructor(private val activity: FragmentActivity,
             vibrate(activity)
             dialogDisplayed = true
 
-            MaterialAlertDialogBuilder(activity)
+            /*MaterialAlertDialogBuilder(activity)
                     .setMessage(R.string.send_bug_report_alert_message)
                     .setPositiveButton(R.string.yes) { _, _ -> openBugReportScreen() }
                     .also {
@@ -86,7 +86,7 @@ class RageShake @Inject constructor(private val activity: FragmentActivity,
                     }
                     .setOnDismissListener { dialogDisplayed = false }
                     .setNegativeButton(R.string.no, null)
-                    .show()
+                    .show()*/
         }
     }
 

@@ -78,12 +78,15 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
         views.ll9.setOnClickListener(this)
         views.ll11.setOnClickListener(this)
         views.ll12.setOnClickListener(this)
-        views.ivVm.setOnClickListener(this)
+        //views.ivVm.setOnClickListener(this)
         views.ivCall.setOnClickListener(this)
-        views.ivDelete.setOnClickListener(this)
+        //views.ivDelete.setOnClickListener(this)
         views.ivHangUp.setOnClickListener(this)
 
         views.ll0.setOnLongClickListener(this)
+
+        views.vmLayout.setOnClickListener(this)
+        views.deleteLayout.setOnClickListener(this)
 
         core.addListener(outgoingCallCoreListener)
         core.enableVideoCapture(true)
@@ -269,7 +272,8 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
 
     override fun onClick(view: View?) {
         when (view!!.id) {
-            R.id.iv_vm-> {
+            //R.id.iv_vm-> {
+            R.id.vmLayout-> {
 
                 vmCall()
             }
@@ -339,7 +343,8 @@ class OutgoingCallActivity : VectorBaseActivity<ActivityOutgoingCallBinding>(), 
                 fullAccount += views.tv12Num.text.toString()
                 views.etAccount.setText(fullAccount)
             }
-            R.id.iv_delete-> {
+            //R.id.iv_delete-> {
+            R.id.deleteLayout-> {
                 if (fullAccount.length > 1) {
                     fullAccount = fullAccount.substring(0, fullAccount.length - 1)
                 } else {
