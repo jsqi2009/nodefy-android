@@ -14,7 +14,8 @@
 
             <ImageView
                 style="@style/LoginLogo"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"
+                android:visibility="gone"/>
 
             <TextView
                 style="@style/Widget.Vector.TextView.Title"

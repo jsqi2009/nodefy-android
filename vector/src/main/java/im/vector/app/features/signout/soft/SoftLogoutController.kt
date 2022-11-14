@@ -61,9 +61,9 @@ class SoftLogoutController @Inject constructor(
 
     private fun buildHeader(state: SoftLogoutViewState) {
         val host = this
-        loginHeaderItem {
+        /*loginHeaderItem {
             id("header")
-        }
+        }*/
         loginTitleItem {
             id("title")
             text(host.stringProvider.getString(R.string.soft_logout_title))
