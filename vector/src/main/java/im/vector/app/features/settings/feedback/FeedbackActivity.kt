@@ -17,20 +17,14 @@
 package im.vector.app.features.settings.feedback
 
 import android.annotation.SuppressLint
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import dagger.hilt.android.AndroidEntryPoint
-import im.vector.app.R
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityFeedbackBinding
-import im.vector.app.databinding.ActivitySipTransportBinding
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -38,7 +32,8 @@ class FeedbackActivity : VectorBaseActivity<ActivityFeedbackBinding>(){
 
     override fun getBinding() = ActivityFeedbackBinding.inflate(layoutInflater)
 
-    private var localUrl: String = "file:///android_asset/ReportAnIssue.html"
+    //private var localUrl: String = "file:///android_asset/ReportAnIssue.html"
+    private var localUrl: String = "https://nodefy.me/jira/public/nodand"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,28 +57,35 @@ class FeedbackActivity : VectorBaseActivity<ActivityFeedbackBinding>(){
         views.webView.settings.allowFileAccess = true
         views.webView.settings.domStorageEnabled = true
         views.webView.settings.javaScriptCanOpenWindowsAutomatically = true
+        views.webView.settings.setGeolocationEnabled(true)
         views.webView.settings.databaseEnabled = true
+        views.webView.settings.javaScriptCanOpenWindowsAutomatically = true
         views.webView.fitsSystemWindows = true
-
-        views.webView.addJavascriptInterface(object : Object(){
-            @JavascriptInterface
-            fun jsAndroid(){
-                this@FeedbackActivity.finish()
-            }
-        },"androidBridge")
-
-        views.webView.webViewClient = object : WebViewClient(){
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                callJS()
-            }
-        }
+        views.webView.webViewClient = webViewClient()
+        views.webView.addJavascriptInterface(this, "androidBridge")
 
         views.webView.loadUrl(localUrl)
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    fun callJS() {
-        views.webView.loadUrl("javascript:sos()")
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    fun jsCallAndroid(msg: String) {
+        //JS call android method
+        Timber.e("js message---%s", msg)
+        if (msg.equals("cancel", ignoreCase = true)) {
+            finish()
+        } else if (msg.equals("submit", ignoreCase = true)) {
+            Toast.makeText(this, "submit success", Toast.LENGTH_LONG).show()
+            finish()
+        } else {
+            Toast.makeText(this, "submit error, you can try again", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private class webViewClient : WebViewClient() {
+        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+            view.loadUrl(url)
+            return false
+        }
     }
 }
