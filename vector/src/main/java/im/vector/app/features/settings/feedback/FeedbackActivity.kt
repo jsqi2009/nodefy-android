@@ -17,8 +17,12 @@
 package im.vector.app.features.settings.feedback
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.webkit.JavascriptInterface
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -34,6 +38,10 @@ class FeedbackActivity : VectorBaseActivity<ActivityFeedbackBinding>(){
 
     //private var localUrl: String = "file:///android_asset/ReportAnIssue.html"
     private var localUrl: String = "https://nodefy.me/jira/public/nodand"
+
+    var mUploadMessage: ValueCallback<Uri?>? = null
+    private var mUploadCallbackAboveL: ValueCallback<Array<Uri?>>? = null
+    private val FILE_CHOOSER_RESULT_CODE = 200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +70,7 @@ class FeedbackActivity : VectorBaseActivity<ActivityFeedbackBinding>(){
         views.webView.settings.javaScriptCanOpenWindowsAutomatically = true
         views.webView.fitsSystemWindows = true
         views.webView.webViewClient = webViewClient()
+        views.webView.setWebChromeClient(webChromeClient())
         views.webView.addJavascriptInterface(this, "androidBridge")
 
         views.webView.loadUrl(localUrl)
@@ -82,10 +91,73 @@ class FeedbackActivity : VectorBaseActivity<ActivityFeedbackBinding>(){
         }
     }
 
-    private class webViewClient : WebViewClient() {
+    inner class webViewClient : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             view.loadUrl(url)
             return false
         }
+    }
+
+    inner class webChromeClient : WebChromeClient() {
+        // For Android < 3.0
+        fun openFileChooser(valueCallback: ValueCallback<Uri?>) {
+            mUploadMessage = valueCallback
+        }
+
+        //For Android  >= 4.1
+        fun openFileChooser(valueCallback: ValueCallback<Uri?>, acceptType: String?, capture: String?) {
+            mUploadMessage = valueCallback
+        }
+
+        // For Android >= 5.0
+        override fun onShowFileChooser(webView: WebView, filePathCallback: ValueCallback<Array<Uri?>>, fileChooserParams: FileChooserParams): Boolean {
+            mUploadCallbackAboveL = filePathCallback
+            openFileChooserActivity()
+            return true
+        }
+    }
+
+    private fun openFileChooserActivity() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivityForResult(Intent.createChooser(intent, "File Chooser"), FILE_CHOOSER_RESULT_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == FILE_CHOOSER_RESULT_CODE) {
+            if (null == mUploadMessage && null == mUploadCallbackAboveL) return
+            val result = if (data == null || resultCode != RESULT_OK) null else data.data
+            if (mUploadCallbackAboveL != null) {
+                onActivityResultAboveL(requestCode, resultCode, data)
+            } else if (mUploadMessage != null) {
+                mUploadMessage!!.onReceiveValue(result)
+                mUploadMessage = null
+            }
+        }
+    }
+
+    private fun onActivityResultAboveL(requestCode: Int, resultCode: Int, intent: Intent?) {
+        if (requestCode != FILE_CHOOSER_RESULT_CODE || mUploadCallbackAboveL == null) return
+        var results: Array<Uri?>? = null
+        if (resultCode == RESULT_OK) {
+            if (intent != null) {
+                val dataString = intent.dataString
+                val clipData = intent.clipData
+                if (clipData != null) {
+                    results = arrayOfNulls(clipData.itemCount)
+                    for (i in 0 until clipData.itemCount) {
+                        val item = clipData.getItemAt(i)
+                        results[i] = item.uri
+                    }
+                }
+                if (dataString != null) results = arrayOf(Uri.parse(dataString))
+            }
+        }
+        mUploadCallbackAboveL!!.onReceiveValue(results)
+        mUploadCallbackAboveL = null
     }
 }

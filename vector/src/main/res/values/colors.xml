@@ -18,6 +18,7 @@
     <color name="red">#ff0000</color>
     <color name="tab_bottom_line_color">#DCE4E6</color>
     <color name="line_color_2">#F8F8F8</color>
+    <color name="web_sip_bg">#fff3f5f9</color>
     <color name="green">#FF00FF00</color>
     <color name="black">#000000</color>
     <color name="sky_blue">#14B5EB</color>

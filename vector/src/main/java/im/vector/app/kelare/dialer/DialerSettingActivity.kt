@@ -96,6 +96,11 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
 
         views.recyclerSipAccount.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(view: View?, adapterPosition: Int) {
+
+                if (sipAccountList[adapterPosition].extension.accountName == null) {
+                    return
+                }
+
                 val intent = Intent(this@DialerSettingActivity, SipLoginActivity::class.java)
                 intent.putExtra("index", "2")
                 intent.putExtra("account", sipAccountList[adapterPosition])
@@ -142,9 +147,10 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
         if (event.isSuccess) {
             accountList.clear()
             event.model!!.sip_accounts!!.forEach {
-                if (it.extension.accountName != null) {
+                /*if (it.extension.accountName != null) {
                     accountList.add(it)
-                }
+                }*/
+                accountList.add(it)
             }
             dialerSession.accountListInfo = accountList
             Timber.e("account info: $accountList")

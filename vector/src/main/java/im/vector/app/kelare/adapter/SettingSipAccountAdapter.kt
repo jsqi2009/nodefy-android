@@ -47,22 +47,32 @@ class SettingSipAccountAdapter(private val mContext: Activity) : AbstractBaseRec
         val holder = holder as ViewHolder
         val info = getDataList()!![position]
 
-        if (info.enabled) {
-            if (info.extension.isConnected) {
-                holder.iv_enable_online.visibility = View.VISIBLE
-                holder.iv_enable_offline.visibility = View.GONE
-                holder.iv_disable.visibility = View.GONE
-            } else {
-                holder.iv_enable_online.visibility = View.GONE
-                holder.iv_enable_offline.visibility = View.VISIBLE
-                holder.iv_disable.visibility = View.GONE
-            }
-        } else {
+        if (info.extension.accountName == null) {
+            holder.root.setBackgroundColor(mContext.getColor(R.color.web_sip_bg))
+
             holder.iv_disable.visibility = View.VISIBLE
             holder.iv_enable_offline.visibility = View.GONE
             holder.iv_enable_online.visibility = View.GONE
+        } else {
+            holder.root.setBackgroundColor(mContext.getColor(R.color.white))
+            if (info.enabled) {
+                if (info.extension.isConnected) {
+                    holder.iv_enable_online.visibility = View.VISIBLE
+                    holder.iv_enable_offline.visibility = View.GONE
+                    holder.iv_disable.visibility = View.GONE
+                } else {
+                    holder.iv_enable_online.visibility = View.GONE
+                    holder.iv_enable_offline.visibility = View.VISIBLE
+                    holder.iv_disable.visibility = View.GONE
+                }
+            } else {
+                holder.iv_disable.visibility = View.VISIBLE
+                holder.iv_enable_offline.visibility = View.GONE
+                holder.iv_enable_online.visibility = View.GONE
+            }
         }
         holder.tv_accountname.text = info.account_name
+
 
         /*if (position == 0) {
             holder.lineView.visibility = View.GONE
