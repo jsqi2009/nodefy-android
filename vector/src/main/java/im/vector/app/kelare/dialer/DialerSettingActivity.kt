@@ -21,6 +21,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.otto.Subscribe
@@ -98,6 +99,7 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
             override fun onItemClick(view: View?, adapterPosition: Int) {
 
                 if (sipAccountList[adapterPosition].extension.accountName == null) {
+                    Toast.makeText(this@DialerSettingActivity, "This is a web sip account, please use the nodefy web client to access this account.", Toast.LENGTH_SHORT).show()
                     return
                 }
 
