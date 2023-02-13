@@ -24,6 +24,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mylhyl.circledialog.CircleDialog
+import com.mylhyl.circledialog.view.listener.OnButtonClickListener
 import com.squareup.otto.Subscribe
 import com.yanzhenjie.recyclerview.OnItemClickListener
 import com.yanzhenjie.recyclerview.OnItemMenuClickListener
@@ -45,6 +47,7 @@ import im.vector.app.kelare.network.event.DeleteAccountInfoResponseEvent
 import im.vector.app.kelare.network.event.DialerAccountInfoResponseEvent
 import im.vector.app.kelare.network.models.DeleteAccountInfo
 import im.vector.app.kelare.network.models.DialerAccountInfo
+import im.vector.app.kelare.network.models.DialerContactInfo
 import im.vector.app.kelare.network.models.ItemInfo
 import im.vector.app.kelare.utils.UIUtils
 import timber.log.Timber
@@ -99,7 +102,8 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
             override fun onItemClick(view: View?, adapterPosition: Int) {
 
                 if (sipAccountList[adapterPosition].extension.accountName == null) {
-                    Toast.makeText(this@DialerSettingActivity, "This is a web sip account, please use the nodefy web client to access this account.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@DialerSettingActivity, "This is a web sip account, please use the nodefy web client to access this account.", Toast.LENGTH_SHORT).show()
+                    confirmDialog()
                     return
                 }
 
@@ -340,5 +344,31 @@ class DialerSettingActivity : VectorBaseActivity<ActivityDialerSettingBinding>()
             }
             mConnectionList.removeAt(position)
         }
+    }
+
+    private fun confirmDialog() {
+
+        CircleDialog.Builder()
+                .setTitle("Reminder")
+                .setTitleColor(resources.getColor(R.color.black, null))
+                .configTitle() { params ->
+                    params.textSize = 18
+                }
+                .setWidth(0.75f)
+                .setText("This is a web sip account, please use the nodefy web client to access this account.")
+                .setTextColor(resources.getColor(R.color.text_color_black, null))
+                .configText { params ->
+                    params.textSize = 16
+                }
+                .setPositive("OK", object : OnButtonClickListener {
+                    override fun onClick(v: View?): Boolean {
+                        return true
+                    }
+                })
+                .configPositive { params ->
+                    params!!.textColor = resources.getColor(R.color.colorPrimary, null)
+                    params!!.textSize = 18
+                }
+                .show(this.supportFragmentManager)
     }
 }
