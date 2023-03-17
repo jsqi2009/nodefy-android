@@ -412,6 +412,8 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
 
         //formatAccountInfo(isConnected)
         accountInfo.extension.isConnected = isConnected
+        accountInfo.client_type = "app"
+
         val saveAccountInfo = SaveAccountInfo()
         saveAccountInfo.sip_accounts!!.add(accountInfo)
         saveAccountInfo.primary_user_id = dialerSession.userID
@@ -475,6 +477,7 @@ class SipLoginActivity : VectorBaseActivity<ActivitySipLoginBinding>(), View.OnC
         accountInfo.password = views.etPassword.text.toString().trim().trimEnd()
         accountInfo.domain = views.etDomain.text.toString().replace(" ", "")
         accountInfo.voice_mail = views.etVoice.text.toString().trim().trimEnd()
+        accountInfo.client_type = "app"
 
         accountInfo.extension.accountName = views.etAccount.text.toString().trim().trimEnd()
         accountInfo.extension.displayAs = views.etDisplay.text.toString().trim().trimEnd()

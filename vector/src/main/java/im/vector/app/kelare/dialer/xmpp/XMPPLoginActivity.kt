@@ -467,6 +467,7 @@ class XMPPLoginActivity : VectorBaseActivity<ActivityXmppLoginBinding>(),View.On
         accountInfo.username = views.etUsername.text.toString()
         accountInfo.password = views.etPassword.text.toString()
         accountInfo.domain = views.etDomain.text.toString()
+        accountInfo.client_type = "app"
 
         accountInfo.extension.accountName = views.etAccount.text.toString()
         accountInfo.extension.username = views.etUsername.text.toString()

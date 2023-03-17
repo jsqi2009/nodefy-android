@@ -24,6 +24,7 @@ class DialerAccountInfo:Serializable {
     var update_ts: String? = null
     var outproxy: String? = null
     var is_upload: Boolean = false
+    var client_type: String? = null     //client_type = app or web
     var extension: Extension = Extension()
 
     inner class Extension : Serializable {
