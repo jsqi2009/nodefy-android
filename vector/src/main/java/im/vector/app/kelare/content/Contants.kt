@@ -69,7 +69,7 @@ object Contants {
     const val TelegramBotName = "@telegrambot"
     const val SlackBotName = "@_slackpuppet_bot"
 
-    //Third-party account user prefix
+    //Third-party account userID prefix
     const val SkypeUserIDPrefix = "@skype-"
     const val WhatsAppUserIDPrefix = "@whatsapp_"
     const val TelegramUserIDPrefix = "@telegram_"

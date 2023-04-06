@@ -128,7 +128,12 @@ class HomeContactFragment : VectorBaseFragment<FragmentHomeContactBinding>(), Vi
         contactList.clear()
         if (event.isSuccess) {
             val mList = event.model!!.data
-            contactList.addAll(mList)
+            mList.forEach {
+                if (it.contacts_type == Contants.NODEFY_TYPE) {
+                    contactList.add(it)
+                }
+            }
+            //contactList.addAll(mList)
 
             //sort
             Collections.sort(contactList, object : Comparator<AccountContactInfo> {
